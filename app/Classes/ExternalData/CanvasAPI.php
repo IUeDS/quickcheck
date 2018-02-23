@@ -261,6 +261,22 @@ class CanvasAPI
     /************************************************************************/
 
     /**
+    * Determine if an API error was found in the response
+    *
+    * @param  []   $response
+    * @return mixed (string of error message if found, otherwise false if no error found)
+    */
+
+    private function getApiError($response)
+    {
+        if (array_key_exists('errors', $response)) {
+            return $response['errors']['message'];
+        }
+
+        return false;
+    }
+
+    /**
     * Get a single submission for a student on an assignment from the Canvas API
     *
     * @param  int  $courseId
