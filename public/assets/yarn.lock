@@ -488,7 +488,7 @@ commander@^2.8.1, commander@^2.9.0:
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"
 
-components-font-awesome@latest:
+components-font-awesome@~4.6.3:
   version "4.6.3"
   resolved "https://registry.yarnpkg.com/components-font-awesome/-/components-font-awesome-4.6.3.tgz#52435b352a529e5781293641f00a3facf1f67e63"
 
