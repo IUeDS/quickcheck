@@ -1,0 +1,122 @@
+<div class="panel panel-default qc-question-panel">
+    <div class="panel-heading qc-question-panel-heading" role="button"
+        data-toggle="collapse"
+        data-target="#question-data-{{vm.question.id}}"
+        aria-expanded="false"
+        aria-controls="question-data-{{vm.question.id}}"
+        ng-click="vm.toggleQuestionClosed()">
+        <span class="qc-accordion-arrow fa fa-lg"
+            ng-class="vm.question.questionClosed ? 'fa-caret-right' : 'fa-caret-down'"
+            aria-hidden="true">
+        </span>
+        <h2 id="question-header-{{vm.question.question_order}}" tabindex="-1"
+            class="qc-question-header-number">Question #{{vm.question.question_order}}</h2>
+
+        <!-- delete question button -->
+        <span class="qc-delete-btn qc-delete-question-btn" role="button" type="button"
+            ng-click="vm.deleteQuestion($event)"
+            ng-if="!vm.readOnly">
+            <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+            <span class="sr-only">Delete question #{{vm.question.question_order}}</span>
+        </span>
+
+        <!-- arrows to reorder question -->
+        <span class="qc-reorder-btn-group">
+            <span class="qc-reorder-up-btn" role="button" type="button"
+                ng-click="vm.reorderQuestionUp($event)"
+                ng-if="!vm.readOnly && !vm.isFirstQuestion()">
+                <span ng-include="$root.iconArrowUpPath" aria-hidden="true"></span>
+                <span class="sr-only">Move question #{{vm.question.question_order}} up in order></span>
+            </span>
+            <span class="qc-reorder-down-btn" role="button" type="button"
+                ng-click="vm.reorderQuestionDown($event)"
+                ng-if="!vm.readOnly && !vm.isLastQuestion()">
+                <span ng-include="$root.iconArrowDownPath" aria-hidden="true"></span>
+                <span class="sr-only">Move question #{{vm.question.question_order}} down in order></span>
+            </span>
+        </span>
+    </div>
+    <div class="panel-body collapse in" id="question-data-{{vm.question.id}}">
+        <!-- question type -->
+        <label for="question-type-{{vm.question.id}}">
+            <h3>Question type <span class="sr-only">for question # {{vm.question.question_order}}</span></h3>
+        </label>
+        <select class="form-control" id="question-type-{{vm.question.id}}"
+            ng-model="vm.question.question_type"
+            ng-change="vm.onQuestionTypeChanged(vm.question.question_type, '{{ vm.question.question_type }}')"
+            ng-disabled="vm.readOnly">
+            <option ng-repeat="(key, value) in vm.questionTypes track by value.constantName"
+                ng-value="value.constantName">{{ value.displayName }}</option>
+        </select>
+        <hr>
+
+        <!-- question text -->
+        <label id="question-text-label-{{vm.question.id}}">
+            <h3>Question text <span class="sr-only">for question # {{vm.question.question_order}}, using a rich text editor</span></h3>
+        </label>
+
+        <!-- WYSIWYG editor -->
+        <textarea ui-tinymce="vm.tinymceOptions" ng-if="!vm.readOnly"
+            ng-model="vm.question.question_text"
+            ng-change="vm.onEdited()"
+            aria-labelledby="question-text-label-{{vm.question.id}}">
+        </textarea>
+
+        <!-- for read-only users, show the text in a disabled form field -->
+        <div ng-if="vm.readOnly" ng-bind-html="vm.question.question_text"
+            class="form-control"
+            aria-labelledby="question-text-label-{{vm.question.id}}"
+            ng-disabled="true">
+        </div>
+
+        <!-- show question options based on question type -->
+        <qc-edit-multiple-choice ng-if="vm.isQuestionType('multipleChoice')"
+            qc-on-question-edited="vm.onSubComponentEdited($event)"
+            qc-on-saved-option-deleted="vm.onSavedOptionDeleted($event)"
+            qc-question="vm.question"
+            qc-read-only="vm.readOnly">
+        </qc-edit-multiple-choice>
+
+        <qc-edit-multiple-correct ng-if="vm.isQuestionType('multipleCorrect')"
+            qc-on-question-edited="vm.onSubComponentEdited($event)"
+            qc-on-saved-option-deleted="vm.onSavedOptionDeleted($event)"
+            qc-question="vm.question"
+            qc-read-only="vm.readOnly">
+        </qc-edit-multiple-correct>
+
+        <qc-edit-matching ng-if="vm.isQuestionType('matching')"
+            qc-on-question-edited="vm.onSubComponentEdited($event)"
+            qc-on-saved-option-deleted="vm.onSavedOptionDeleted($event)"
+            qc-question="vm.question"
+            qc-read-only="vm.readOnly">
+        </qc-edit-matching>
+
+        <qc-edit-dropdowns ng-if="vm.isQuestionType('dropdowns')"
+            qc-on-question-edited="vm.onSubComponentEdited($event)"
+            qc-on-saved-option-deleted="vm.onSavedOptionDeleted($event)"
+            qc-question="vm.question"
+            qc-read-only="vm.readOnly">
+        </qc-edit-dropdowns>
+
+        <qc-edit-matrix ng-if="vm.isQuestionType('matrix')"
+            qc-on-question-edited="vm.onSubComponentEdited($event)"
+            qc-on-saved-option-deleted="vm.onSavedOptionDeleted($event)"
+            qc-question="vm.question"
+            qc-read-only="vm.readOnly">
+        </qc-edit-matrix>
+
+        <qc-edit-textmatch ng-if="vm.isQuestionType('textmatch')"
+            qc-on-question-edited="vm.onSubComponentEdited($event)"
+            qc-on-saved-option-deleted="vm.onSavedOptionDeleted($event)"
+            qc-question="vm.question"
+            qc-read-only="vm.readOnly">
+        </qc-edit-textmatch>
+
+        <qc-edit-numerical ng-if="vm.isQuestionType('numerical')"
+            qc-on-question-edited="vm.onSubComponentEdited($event)"
+            qc-on-saved-option-deleted="vm.onSavedOptionDeleted($event)"
+            qc-question="vm.question"
+            qc-read-only="vm.readOnly">
+        </qc-edit-numerical>
+    </div>
+</div>

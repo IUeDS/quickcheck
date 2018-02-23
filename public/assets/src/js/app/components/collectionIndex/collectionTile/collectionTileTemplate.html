@@ -1,0 +1,48 @@
+<div class="col-sm-5 col-xs-12 qc-collection-tile" ng-class="{'col-sm-offset-1': (vm.index + 1) % 2 == 0, 'qc-new-row': (vm.index + 1) % 2 == 1}" ng-if="vm.collection">
+    <div ng-hide="vm.collection.isEditing">
+        <div class="qc-collection-header">
+            <h2 id="collection-header-{{vm.collection.id}}" tabindex="-1">{{ vm.collection.name }}</h2>
+            <span class="qc-edit-btn qc-collection-edit-btn" role="button" ng-click="vm.editCollection()" ng-if="!vm.membership.read_only">
+                <span ng-include="$root.iconEditPath" aria-hidden="true"></span>
+                <span class="sr-only">Edit set {{ vm.collection.name }}</span>
+            </span>
+            <span class="qc-delete-btn qc-collection-delete-btn" role="button" ng-click="vm.deleteCollection()" ng-if="!vm.membership.read_only">
+                <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+                <span class="sr-only">Delete set {{ vm.collection.name }}</span>
+            </span>
+        </div>
+        <h3>Owner: <span class="qc-owner-name">{{ vm.collection.owner }}</span></h3>
+        <h3 ng-if="vm.membership.read_only">Permissions: Read-Only</h3>
+        <h3 ng-if="vm.collection.public_collection == 'true'"><span class="fa fa-eye" aria-hidden="true"></span> Public set</h3>
+        <div class="row">
+            <div class="col-xs-6">
+                <a ng-href="../index.php/collection/{{vm.collection.id}}{{vm.utils.isLti ? '?context=' + vm.utils.contextId : ''}}" target="_self">
+                    <button type="button" class="btn qc-view-set-btn qc-btn">Go to set<span class="sr-only"> {{ vm.collection.name }}</span></button>
+                </a>
+            </div>
+            <div class="col-xs-6">
+                <a ng-if="vm.utils.isLti" ng-href="../index.php/collection/{{vm.collection.id}}" target="_blank">
+                    <button type="button qc-btn" class="btn qc-view-new-tab-btn"><span class="fa fa-mail-forward" aria-hidden="true"></span> View<span class="sr-only"> set {{ vm.collection.name }}</span> in new tab</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div ng-if="vm.collection.isEditing">
+        <form ng-submit="vm.updateCollection()">
+            <h3 id="edit-collection-header-{{vm.collection.id}}" class="edit-collection-header" tabindex="-1">Edit set</h3>
+            <div class="form-group">
+                <label for="collection-name-{{vm.collection.id}}">Set name (for internal use only, not displayed to student)</label>
+                <input type="text" class="form-control" id="collection-name-{{vm.collection.id}}"
+                    ng-model="vm.collection.editingData.name" required>
+            </div>
+            <div class="form-group">
+                <label for="collection-description-{{vm.collection.id}}">Set description (optional)</label>
+                <textarea class="form-control" id="collection-description-{{vm.collection.id}}" ng-model="vm.collection.editingData.description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success qc-btn">Save <span class="sr-only"> edits to set {{ vm.collection.name }}</span></button>
+                <button type="button" class="btn btn-default qc-btn" ng-click="vm.collectionEditingClose()">Cancel <span class="sr-only"> edits to set {{ vm.collection.name }}</span></button>
+            </div>
+        </form>
+    </div>
+</div>

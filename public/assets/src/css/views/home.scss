@@ -1,0 +1,89 @@
+.qc-home-page {
+    background-image: url('../img/home_background_darkened.jpg');
+    background-size: cover;
+
+    body,
+    h1,
+    h2,
+    p {
+        color: $white;
+    }
+
+    //make sure danger alert keeps same text coloring
+    .alert {
+        p {
+            color: inherit;
+        }
+    }
+
+    h1 {
+        font-size: 3em;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-style: normal;
+        text-transform: none;
+    }
+
+    .qc-add-indent {
+        margin: 20px;
+    }
+
+    //not currently in use
+    .qc-home-description {
+        @include respond-to('xs') {
+            display: none;
+        }
+
+        font-weight: 700;
+        padding: 100px 50px 30px;
+        text-align: left;
+    }
+
+    .qc-home-hero {
+        padding: 50px 20px 150px 30px;
+    }
+
+    .qc-hero-add-btn {
+        @include respond-to('xs') {
+            font-size: 2.5em;
+            padding: 15px;
+        }
+
+        background-color: $thirty-percent-opaque;
+        border: solid $white 2px;
+        border-radius: 20px;
+        color: $white;
+        font-family: 'BentonSans';
+        font-size: 3.5em;
+        font-weight: 300;
+        padding: 35px;
+        text-transform: uppercase;
+
+        &:hover {
+            background-color: $seventy-percent-opaque;
+            color: $light-gray;
+        }
+    }
+
+    .qc-nav {
+        background-color: transparent;
+    }
+
+    .qc-home-add-panel {
+        padding: 30px;
+
+        h2 {
+            color: $black;
+            text-transform: uppercase;
+        }
+    }
+
+    //extra space above so nav isn't sitting right on top of the button/panel
+    .qc-home-add-panel,
+    .qc-hero-add-btn {
+        margin-top: 100px;
+    }
+}

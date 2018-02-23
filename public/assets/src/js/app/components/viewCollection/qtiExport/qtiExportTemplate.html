@@ -1,0 +1,41 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Export QTI Package (1.2)</h3>
+    </div>
+    <div class="panel-body" id="qti-export-panel">
+        <p>A QTI package exported from Quick Check is a .zip file that can be uploaded to a Learning Management System, in order to export quick checks and migrate your quiz questions to another platform. Quick Check's QTI export system is optimized for Canvas. Note that since Canvas does not contain a matrix question type, matrix questions will be converted to separate multiple choice questions (one for each row of the matrix question).</p>
+        <div class="qc-qti-export-list form-group">
+            <p class="lead">Select the quick checks from this set that you would like to export:</p>
+            <ul>
+                <li>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-click="vm.toggleQtiExportCheckAll()" ng-checked="vm.checkAll">
+                            All quick checks in this set
+                        </label>
+                    </div>
+                    <ul>
+                        <li ng-repeat="exportAssessmentGroup in vm.assessmentGroups">
+                            {{exportAssessmentGroup.name}}:
+                            <ul>
+                                <li ng-repeat="assessment in exportAssessmentGroup.assessments" ng-if="!assessment.custom_activity_id">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-click="vm.toggleAssessmentExport(assessment.id.toString())" ng-checked="vm.assessmentList[assessment.id.toString()]">
+                                            {{assessment.name}}
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <form method="POST" action="/index.php/exportQTI" target="_blank">
+            <input type="hidden" ng-repeat="assessment in vm.assessments track by $index" name="assessments[{{$index}}]" ng-value="assessment">
+            <button type="submit" class="btn btn-primary qc-btn" ng-disabled="!vm.assessments.length">Export QTI package</button>
+            <button type="button" class="btn btn-default qc-btn" ng-click="vm.cancelQtiExport()">Close <span class="sr-only">QTI export panel</span></button>
+        </form>
+    </div>
+</div>

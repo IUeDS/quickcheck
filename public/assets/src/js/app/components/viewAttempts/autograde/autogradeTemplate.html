@@ -1,0 +1,24 @@
+<div class="form-group" ng-hide="vm.graded">
+    <button ng-click="vm.autoGrade()" ng-disabled="vm.beforeDueDate()" role="button" class="btn qc-btn qc-autograde-btn" data-toggle="tooltip" data-placement="left" title="Send each student's highest grade before the due date (if applicable) to the gradebook. Students who have not made an attempt will still have a blank grade. This is only available after the due date has passed.">
+        <span class="fa fa-book" aria-hidden="true"></span> Auto-grade ungraded assignments
+    </button>
+</div>
+<div class="row">
+    <div class="col-xs-12 text-center">
+        <div ng-if="vm.loading" class="alert alert-info text-center" role="alert">
+            <p><strong>Auto-grade in progress. This may take several minutes if you have a large class.</strong></p>
+            <p class="text-center"><span class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></span><span class="sr-only">Loading...</span></p>
+        </div>
+        <div ng-if="vm.error" class="alert alert-danger text-center" role="alert">
+            <p><span class="fa fa-exclamation" aria-hidden="true"></span> Auto-grade error: {{ vm.error }}</p>
+        </div>
+        <div ng-if="vm.success" class="alert alert-success text-center" role="alert">
+            <p><span class="fa fa-check" aria-hidden="true"></span> Auto-grade successful</p>
+        </div>
+    </div>
+</div>
+<div class="form-group bg-success text-center qc-graded-message" ng-show="vm.graded">
+    <span class="fa fa-check correct-icon" aria-hidden="true"></span>
+    <span ng-if="vm.ungradedAssessment">This quick check is ungraded</span>
+    <span ng-if="!vm.ungradedAssessment">All on-time assignments graded</span>
+</div>

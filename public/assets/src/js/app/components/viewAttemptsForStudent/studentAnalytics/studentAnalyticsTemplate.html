@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-xs-6">
+        <h1>Analytics for {{ vm.studentName }}</h1>
+    </div>
+    <div class="col-xs-6 text-right">
+        <a class="btn btn-default qc-btn qc-btn-download-csv qc-btn-attempts-csv" ng-if="!vm.readOnly" target="_blank" ng-href="/index.php/attempts/csv/download/{{vm.utils.contextId}}/{{vm.studentId}}">
+            <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
+        </a>
+    </div>
+</div>
+<div class="row section-white" ng-if="!vm.utils.loading">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-5 col-xs-offset-1 text-center qc-student-analytics-blurb">
+                <p class="lead">Total attempts: </p>
+                <p class="qc-student-analytics-total-attempts">
+                    <span class="qc-student-analytics-number">{{ vm.totalAttempts }}</span>
+                </p>
+            </div>
+            <div class="col-xs-5 text-center qc-student-analytics-blurb">
+                <p class="lead">Average score: </p>
+                <p class="qc-student-analytics-avg-score">
+                    <span class="qc-student-analytics-number">{{ vm.averageScore }}%</span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-5 col-xs-offset-1 text-center qc-student-analytics-blurb">
+                <p class="lead">Total questions answered: </p>
+                <p class="qc-student-analytics-total-questions">
+                    <span class="qc-student-analytics-number">{{ vm.totalQuestions }}</span>
+                </p>
+            </div>
+            <div class="col-xs-5 text-center qc-student-analytics-blurb">
+                <p class="lead">Average number of retries: </p>
+                <p class="qc-student-analytics-avg-retries">
+                    <span class="qc-student-analytics-number">{{ vm.averageRetries }}</span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table class="table table-striped qc-student-analytics-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Before due date</th>
+                            <th>After due date</th>
+                            <th>Overall</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Total time spent:</th>
+                            <td>
+                                <p class="lead qc-student-analytics-time-before-due">{{ vm.utils.formatDuration(vm.totalTimeBeforeDueDate) }}</p>
+                            </td>
+                            <td>
+                                <p class="lead qc-student-analytics-time-after-due">{{ vm.utils.formatDuration(vm.totalTimeAfterDueDate) }}</p>
+                            </td>
+                            <td>
+                                <p class="lead qc-student-analytics-total-time"> {{ vm.utils.formatDuration(vm.totalTime) }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Average attempt duration:</th>
+                            <td>
+                                <p class="lead qc-student-analytics-avg-time-before-due">{{  vm.utils.formatDuration(vm.averageTimeBeforeDueDate) }}</p>
+                            </td>
+                            <td>
+                                <p class="lead qc-student-analytics-avg-time-after-due">{{  vm.utils.formatDuration(vm.averageTimeAfterDueDate) }}</p>
+                            </td>
+                            <td>
+                                <p class="lead qc-student-analytics-avg-time">{{ vm.utils.formatDuration(vm.averageTime) }}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="lead"><strong>How long before the due date, on average, is the student starting a quick check?</strong> <span class="qc-student-analytics-avg-time-until-due">{{ vm.utils.formatDuration(vm.averageTimeUntilDueDate) }}</span></p>
+            </div>
+        </div>
+    </div>
+</div>

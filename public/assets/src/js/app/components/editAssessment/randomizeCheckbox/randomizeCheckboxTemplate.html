@@ -1,0 +1,10 @@
+<div class="checkbox">
+    <input type="checkbox" class="qc-randomize-checkbox" id="randomize-{{vm.question.id}}"
+        ng-click="vm.toggleRandomized()"
+        ng-disabled="vm.readOnly"
+        ng-checked="vm.isRandomized()">
+    <label for="randomize-{{vm.question.id}}">
+        Randomize options
+        <span class="sr-only">for question #{{ vm.question.question_order }}</span>
+    </label>
+</div>

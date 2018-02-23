@@ -1,0 +1,97 @@
+<button class="btn btn-sm btn-default qc-btn qc-btn-add-feedback" type="button"
+    ng-click="vm.toggleCustomFeedback()"
+    ng-hide="vm.isFeedbackPresent()">
+    <span class="fa fa-plus-circle" aria-hidden="true"></span>
+    Add custom feedback <span class="sr-only">for question #{{ vm.question.question_order }}</span>
+</button>
+<div ng-if="vm.isFeedbackPresent()" class="well qc-custom-feedback-container clearfix">
+    <span class="qc-delete-btn qc-delete-option-btn-inline qc-delete-feedback-btn" role="button" type="button"
+        ng-click="vm.toggleCustomFeedback()"
+        ng-if="!vm.readOnly">
+        <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+        <span class="sr-only">Delete feedback for question #{{ vm.question.question_order }}</span>
+    </span>
+    <h3 class="qc-feedback-header">Custom Feedback</h3>
+    <qc-rich-content-toggle
+        qc-on-rich-content-toggle="vm.onRichContentToggle($event)"
+        qc-question="vm.question"
+        qc-toggle-type="'feedback'">
+    </qc-rich-content-toggle>
+    <div ng-if="!vm.perResponseFeedback" class="qc-custom-feedback-general">
+        <div class="form-group qc-custom-feedback-correct">
+            <label for="qc-correct-feedback-{{vm.question.id}}"
+                id="qc-correct-feedback-{{vm.question.id}}-label">
+                <span class="fa fa-check" aria-hidden="true"></span>
+                Correct feedback
+                <span class="sr-only">for question # {{ vm.question.question_order }} </span>
+                (required)
+            </label>
+            <textarea id="correct-feedback-{{vm.question.id}}" class="form-control"
+                ng-if="!vm.isRichContentToggled"
+                rows="5" required
+                ng-model="vm.question.question_feedback[0].feedback_text"
+                ng-change="vm.onEdited()">
+            </textarea>
+            <textarea ui-tinymce="vm.tinymceOptions"
+                ng-if="vm.isRichContentToggled"
+                aria-labelled-by="qc-correct-feedback-{{vm.question.id}}-label"
+                ng-model="vm.question.question_feedback[0].feedback_text"
+                ng-change="vm.onEdited()"
+                required>
+            </textarea>
+        </div>
+        <div class="form-group qc-custom-feedback-incorrect">
+            <label for="incorrect-feedback-{{vm.question.id}}"
+                id="incorrect-feedback-{{question.id}}-label">
+                <span class="fa fa-remove" aria-hidden="true"></span>
+                Incorrect feedback
+                <span class="sr-only">for question # {{ vm.question.question_order }} </span>
+                (required)
+            </label>
+            <textarea id="incorrect-feedback-{{question.id}}" class="form-control"
+                ng-if="!vm.isRichContentToggled"
+                rows="5" required
+                ng-model="vm.question.question_feedback[1].feedback_text"
+                ng-change="vm.onEdited()">
+            </textarea>
+            <textarea ui-tinymce="vm.tinymceOptions"
+                ng-if="vm.isRichContentToggled"
+                aria-labelled-by="qc-incorrect-feedback-{{vm.question.id}}-label"
+                ng-model="vm.question.question_feedback[1].feedback_text"
+                ng-change="vm.onEdited()"
+                required>
+            </textarea>
+        </div>
+    </div>
+    <div ng-if="vm.isPerResponseFeedbackAvailable()" class="checkbox qc-custom-feedback-response-checkbox">
+        <p>Multiple choice and multiple correct questions can include feedback for each possible response. Feedback is required for each possible response.</p>
+        <input type="checkbox" ng-click="vm.toggleOptionFeedback()" ng-checked="vm.perResponseFeedback">
+        <label>
+            Use per-response feedback
+            <span class="sr-only">for question #{{ vm.question.question_order }} </span>
+            (<em>Note that checking this box this will remove general correct/incorrect feedback.</em>)
+        </label>
+    </div>
+    <div ng-if="vm.perResponseFeedback">
+        <div ng-repeat="option in vm.question.options track by $index" ng-class="vm.isCorrect(option) ? 'qc-custom-feedback-correct' : 'qc-custom-feedback-incorrect'">
+            <label for="response-feedback-{{option.id}}"
+                id="response-feedback-{{option.id}}-label">
+                <span class="fa" ng-class="vm.isCorrect(option) ? 'fa-check' : 'fa-remove'" aria-hidden="true"></span>
+                <span>Feedback for option #{{ $index + 1 }}</span>
+                <span>(<em>{{ option.answer_text }}</em>)</span></label>
+            <textarea class="form-control" id="response-feedback-{{option.id}}"
+                ng-if="!vm.isRichContentToggled"
+                rows="3" required
+                ng-model="option.mc_option_feedback.feedback_text"
+                ng-change="vm.onEdited()">
+            </textarea>
+            <textarea ui-tinymce="vm.tinymceOptions"
+                ng-if="vm.isRichContentToggled"
+                aria-labelled-by="response-feedback-{{option.id}}-label"
+                ng-model="option.mc_option_feedback.feedback_text"
+                ng-change="vm.onEdited()"
+                required>
+            </textarea>
+        </div>
+    </div>
+</div>

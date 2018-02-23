@@ -1,0 +1,83 @@
+<div class="qc-matrix-options">
+    <p class="lead qc-edit-instructions">A matrix question is formatted as a table, with answer options in a grid of columns and rows. Each row must match to a column. Only one column option may be selected by the student for each row. However, column options can be used multiple times in different rows.</p>
+    <button class="btn btn-sm btn-primary qc-btn" type="button" ng-click="vm.addColumn()" ng-if="!vm.readOnly">
+        <span class="fa fa-plus" aria-hidden="true"></span> Add column
+        <span class="sr-only">to question #{{ vm.question.question_order }}</span>
+    </button>
+    <button class="btn btn-sm btn-primary qc-btn" type="button" ng-click="vm.addRow()" ng-if="!vm.readOnly">
+        <span class="fa fa-plus" aria-hidden="true"></span> Add row
+        <span class="sr-only">to question #{{ vm.question.question_order }}</span>
+    </button>
+    <table class="table table-striped table-bordered qc-matrix-entry-table" ng-show="vm.question.columns.length || vm.question.rows.length">
+        <thead>
+            <th></th>
+            <th ng-repeat="column in vm.question.columns track by $index" class="qc-matrix-row-header">
+                <div class="qc-matrix-header-container">
+                    <label for="matrix-column-{{column.id}}" class="sr-only">
+                        Column text
+                        <span class="sr-only"> for question #{{ vm.question.question_order }}, column #{{ $index + 1 }}</span>:
+                    </label>
+                    <input type="text" id="matrix-column-{{column.id}}" class="form-control"
+                        ng-model="column.answer_text"
+                        ng-change="vm.onEdit()"
+                        required
+                        ng-disabled="vm.readOnly">
+                    <qc-delete-option-btn
+                        qc-index="$index"
+                        qc-on-delete="vm.deleteColumn($event)"
+                        qc-option="column"
+                        qc-option-type-text="'matrix column'"
+                        qc-question="vm.question"
+                        ng-if="!vm.readOnly">
+                    </qc-delete-option-btn>
+                </div>
+            </th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in vm.question.rows track by $index">
+                <td>
+                    <div class="qc-matrix-header-container">
+                        <label for="matrix-row-{{row.id}}" class="sr-only">
+                            Row text
+                            <span class="sr-only"> for question #{{ vm.question.question_order }}, row #{{ $index + 1 }}</span>:
+                        </label>
+                        <input type="text" id="matrix-row-{{row.id}}" class="form-control"
+                            ng-model="row.answer_text"
+                            ng-change="vm.onEdited()"
+                            required
+                            ng-disabled="vm.readOnly">
+                        <qc-delete-option-btn
+                            qc-index="$index"
+                            qc-on-delete="vm.deleteRow($event)"
+                            qc-option="row"
+                            qc-option-type-text="'matrix row'"
+                            qc-question="vm.question"
+                            ng-if="!vm.readOnly">
+                        </qc-delete-option-btn>
+                    </div>
+                </td>
+                <td ng-repeat="column in vm.question.columns">
+                    <div class="checkbox">
+                        <p class="sr-only" id="matrixrow-{{row.id}}-column-{{column.id}}">Check this box to match {{row.answer_text}} to {{column.answer_text}}</p>
+                        <label>
+                            <input type="checkbox" name="{{row.id}}" value="{{column.answer_text}}"
+                                ng-checked="row.columnAnswerId == column.id"
+                                ng-click='vm.onSelect(column.id, row)'
+                                aria-labeled-by="matrixrow-{{row.id}}-column-{{column.id}}"
+                                ng-disabled="vm.readOnly">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <qc-custom-feedback ng-if="!vm.readOnly"
+        qc-on-question-edited="vm.onSubComponentEdited($event)"
+        qc-question="vm.question">
+    </qc-custom-feedback>
+    <qc-randomize-checkbox
+        qc-on-question-edited="vm.onSubComponentEdited($event)"
+        qc-question="vm.question"
+        qc-read-only="vm.readOnly">
+    </qc-randomize-checkbox>
+</div>

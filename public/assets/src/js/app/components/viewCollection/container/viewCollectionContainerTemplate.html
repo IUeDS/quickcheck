@@ -1,0 +1,103 @@
+<qc-nav qc-current-page="vm.currentPage"></qc-nav>
+<qc-loading ng-show="vm.utils.loading"></qc-loading>
+<div class="row">
+    <div class="col-xs-12">
+        <qc-error-message ng-if="vm.utils.errorFound" qc-utils="vm.utils"></qc-error-message>
+        <div ng-cloak>
+            <div class="row">
+                <div class="col-xs-6">
+                    <h1 class="qc-view-set-header">View Set</h1>
+                    <h2 class="qc-view-set-subheader">{{ vm.collection.name }}</h2>
+                    <small ng-if="collection.description" class="text-muted">Description: {{ vm.collection.description }}</small>
+                    <qc-read-only-notice ng-if="vm.readOnly"></qc-read-only-notice>
+                </div>
+                <div class="col-xs-6 text-right" ng-if="!vm.readOnly">
+                    <div class="form-group">
+                        <qc-qti-import-btn
+                            qc-is-importing-qti="vm.isImportingQti">
+                        </qc-qti-import-btn>
+                        <qc-qti-export-btn
+                            qc-is-exporting-qti="vm.isExportingQti">
+                        </qc-qti-export-btn>
+                    </div>
+                    <qc-toggle-public-collection
+                        ng-if="vm.admin && vm.collection"
+                        qc-collection="vm.collection"
+                        qc-utils="vm.utils">
+                    </qc-toggle-public-collection>
+                </div>
+            </div>
+            <div class="row" ng-cloak>
+                <div class="col-xs-4 col-md-3">
+                    <div class="form-group" ng-if="vm.assessmentGroups.length">
+                        <label for="search-box" class="sr-only">Search set: </label>
+                        <input type="text" class="form-control qc-search-box" id="search-box"
+                            placeholder="Search set"
+                            ng-model="vm.searchTerm"
+                            ng-model-options="{ debounce: 500}"
+                            ng-change="vm.search()">
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="vm.searchTerm && !vm.utils.loading">
+                <div class="col-xs-12 col-sm-6">
+                    <h3>Search results:</h3>
+                    <div class="well text-center" ng-if="!vm.searchResults">
+                        <h4>No results found</h4>
+                    </div>
+                    <div ng-if="vm.searchResults">
+                        <ul>
+                            <li ng-repeat="assessment in vm.searchResults" class="qc-search-assessment-result">
+                                <strong><a href="{{vm.utils.setContextLink('../assessment/' + assessment.id + '/edit')}}" target="_self">{{ assessment.name }}</a></strong>
+                                <ul>
+                                    <li ng-repeat="question in assessment.questionSearchResults" class="qc-search-question-result">Question #{{ question.question_order }}</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <qc-qti-import ng-show="vm.isImportingQti"
+                qc-assessment-groups="vm.assessmentGroups"
+                qc-is-importing-qti="vm.isImportingQti">
+            </qc-qti-import>
+
+            <qc-qti-export ng-show="vm.isExportingQti"
+                qc-assessment-groups="vm.assessmentGroups"
+                qc-is-exporting-qti="vm.isExportingQti">
+            </qc-qti-export>
+        </div>
+        <div ng-cloak>
+            <qc-users
+                qc-collection-id="vm.collectionId"
+                qc-current-user="vm.currentUser"
+                qc-read-only="vm.readOnly"
+                qc-utils="vm.utils">
+            </qc-users>
+            <qc-features
+                qc-collection-id="vm.collectionId"
+                qc-read-only="vm.readOnly"
+                qc-utils="vm.utils">
+            </qc-features>
+            <h2 class="qc-h1-style">Subsets</h2>
+            <qc-add-assessment-group
+                ng-if="!vm.readOnly"
+                qc-collection-id="vm.collectionId"
+                qc-on-save="vm.onAssessmentGroupSaved($event)"
+                qc-utils="vm.utils">
+            </qc-add-assessment-group>
+            <p ng-if="!vm.assessmentGroups.length && !vm.readOnly && !vm.utils.loading" class="lead qc-subset-instructions">Looks like you haven't added a subset yet. A subset is a way to organize your quick checks. All quick checks must belong to a subset group. Click the button to add a new subset to get started.</p>
+            <div class="panel-group qc-panel-group" id="accordion" role="tablist" aria-multiselectable="true" ng-if="vm.assessmentGroups.length">
+                <qc-assessment-group
+                    ng-repeat="assessmentGroup in vm.assessmentGroups track by $index"
+                    qc-assessment-group-data="assessmentGroup"
+                    qc-assessment-group-index="$index"
+                    qc-on-assessment-copy="vm.onAssessmentCopy($event)"
+                    qc-on-delete="vm.onAssessmentGroupDeleted($event)"
+                    qc-read-only="vm.readOnly"
+                    qc-utils="vm.utils">
+                </qc-assessment-group>
+            </div>
+        </div>
+    </div>
+</div>

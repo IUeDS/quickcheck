@@ -1,0 +1,42 @@
+<div class="panel qc-home-add-panel" ng-cloak>
+    <div ng-if="vm.loading">
+        <p class="text-center" aria-live="polite"><span class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></span><span class="sr-only">Data loading, please wait.</span></p>
+    </div>
+    <form ng-submit="vm.saveAssessment()" ng-hide="vm.loading">
+        <h2>Add quick check</h2>
+        <div class="form-group">
+            <div class="form-group">
+                <label for="collection-select">Set:</label>
+                <select class="form-control" ng-model="vm.assessment.collection.id" ng-change="vm.collectionSelected()" id="collection-select" required>
+                    <option ng-repeat="membership in vm.memberships" ng-value="membership.collection.id">{{membership.collection.name}}</option>
+                    <option value="new">[Add new set]</option>
+                </select>
+            </div>
+            <div class="form-group well qc-add-indent" ng-if="vm.newCollectionAdded">
+                <label for="collection-name">New set name:</label>
+                <input type="text" class="form-control" ng-model="vm.assessment.collection.name" id="collection-name" required placeholder="Example: Psychology 101">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-group">
+                <label for="assessment-group-select">Subset:</label>
+                <select class="form-control" ng-model="vm.assessment.assessmentGroup.id" ng-change="vm.groupSelected()" id="assessment-group-select" required>
+                    <option ng-repeat="assessmentGroup in vm.selectedCollection.assessment_groups" ng-value="assessmentGroup.id">{{assessmentGroup.name}}</option>
+                    <option value="new">[Add new subset]</option>
+                </select>
+            </div>
+            <div class="form-group well qc-add-indent" ng-if="vm.newAssessmentGroupAdded || vm.newCollectionAdded">
+                <label for="assessment-group-name">New subset name:</label>
+                <input type="text" class="form-control" ng-model="vm.assessment.assessmentGroup.name" id="assessment-group-name" required placeholder="Example: Module 1">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="assessment-name">Quick Check Name:</label>
+            <input type="text" class="form-control" ng-model="vm.assessment.name" required id="assessment-name">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-success qc-btn" type="submit">Save</button>
+            <button class="btn btn-default qc-btn" type="button" ng-click="vm.cancelAdd()">Cancel</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,70 @@
+<qc-nav qc-current-page="vm.currentPage"></qc-nav>
+<qc-loading ng-show="vm.utils.loading"></qc-loading>
+<div class="row">
+    <div class="col-xs-12">
+        <h1>Sets</h1>
+        <qc-error-message ng-if="vm.utils.errorFound" qc-utils="vm.utils"></qc-error-message>
+        <qc-admin-panel ng-if="vm.admin" ng-cloak
+            qc-collection-data="vm.adminCollectionData"
+            qc-utils="vm.utils">
+        </qc-admin-panel>
+        <div class="row" ng-cloak>
+            <div class="col-xs-4 col-md-3">
+                <div class="form-group" ng-if="vm.memberships.length">
+                    <label for="search-name" class="sr-only">Filter by set name: </label>
+                    <input type="text" class="form-control qc-search-box" id="search-name" ng-model="vm.search.collectionName" placeholder="Filter by set name">
+                </div>
+            </div>
+            <div class="col-xs-2 col-xs-offset-4 col-md-1 col-md-offset-6">
+                <div class="form-group">
+                    <button class="btn btn-lg btn-default qc-btn qc-view-public-btn" ng-click="vm.togglePublicCollectionVisibility()">
+                        <span ng-if="!vm.publicCollectionsVisible">Show </span>
+                        <span ng-if="vm.publicCollectionsVisible">Hide </span>
+                        public sets
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div ng-cloak>
+            <qc-public-collections ng-show="vm.publicCollectionsVisible"
+                qc-user="vm.user"
+                qc-utils="vm.utils">
+            </qc-public-collections>
+            <div ng-if="!vm.adminCollectionData.viewAll">
+                <div ng-if="!vm.memberships.length && !vm.utils.loading">
+                    <h2>Looks like you haven't created a set yet.</h2>
+                    <p class="lead qc-collection-instructions">A set is a group of Quick Checks that you would like to organize together for use in a course or series of related courses.</p>
+                </div>
+                <div ng-if="vm.memberships.length">
+                    <div ng-repeat="membership in membershipList = (vm.memberships | membershipFilter:vm.search.collectionName) track by $index">
+                        <qc-collection-tile
+                            qc-collection="membership.collection"
+                            qc-membership="membership"
+                            qc-index="$index"
+                            qc-utils="vm.utils">
+                        </qc-collection-tile>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="vm.adminCollectionData.viewAll" ng-hide="vm.utils.loading">
+                <div ng-if="!vm.adminCollectionData.collections.length">
+                    <h2>There are currently no sets saved in the system.</h2>
+                    <p class="lead">Add one below!</p>
+                </div>
+                <div ng-if="vm.adminCollectionData.collections.length">
+                    <div ng-repeat="collection in collectionList = (vm.adminCollectionData.collections | collectionFilter:vm.search.collectionName) track by $index">
+                        <qc-collection-tile
+                            qc-collection="collection"
+                            qc-index="$index"
+                            qc-utils="vm.utils">
+                        </qc-collection-tile>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<qc-add-collection ng-cloak
+    qc-on-save="vm.onCollectionAdded($event)"
+    qc-utils="vm.utils">
+</qc-add-collection>

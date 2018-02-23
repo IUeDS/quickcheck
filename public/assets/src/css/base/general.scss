@@ -1,0 +1,54 @@
+//hide ng-cloaked items
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+    display: none !important;
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+//don't automatically bold labels
+label {
+    font-weight: 400;
+}
+
+//set max-width the same as Canvas's, so that the layout doesn't get funky in a new tab
+main {
+    max-width: 1366px;
+}
+
+.section-white {
+    background-color: $white;
+    padding-top: 20px;
+}
+
+.inline-block {
+    display: inline-block !important;
+}
+
+//bootstrap was making text in cells smaller than necessary
+td,
+th {
+    font-size: 100%;
+}
+
+//for accessibility, we sometimes need to bring focus to a header when something is added/altered,
+//but we don't want the visible outline for sighted users
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.qc-collection-header,
+.qc-row-feedback,
+.qc-question-number {
+    &:focus {
+        outline: none;
+    }
+}

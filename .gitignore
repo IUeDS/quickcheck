@@ -1,0 +1,15 @@
+/bootstrap/compiled.php
+/vendor
+composer.phar
+*.env
+.env
+.DS_Store
+Thumbs.db
+_notes/
+node_modules/
+.sass-cache/
+/app/config/eds/config-credentials.php
+public/assets/dist/
+public/assets/config/env.js
+public/assets/src/js/tests/protractor/usercreds.js
+public/customActivities/

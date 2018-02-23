@@ -1,0 +1,223 @@
+.btn { //if a link, make sure there is no underline
+    text-decoration: none;
+}
+
+//darker green for acccessible color contrast
+.btn-success {
+    background-color: $success-green;
+    border-color: $success-green;
+    color: $white;
+
+    &:hover {
+        background-color: $success-green-darker;
+        color: $white;
+    }
+}
+
+//darker red for accessibility
+.btn-danger {
+    background-color: $danger-red;
+}
+
+//common to all buttons in the instructor view
+.qc-btn {
+    font-family: 'BentonSansCompBook';
+    font-style: normal;
+    text-transform: uppercase;
+}
+
+//bootstrap default font size was looking rather small with the new font we're using
+.qc-btn.btn-sm { //sass-lint:disable-line force-element-nesting
+    font-size: 1em;
+}
+
+//add button as arrow-shape pointing to the right
+//inspiration: http://dabblet.com/gist/4639593
+//sass-lint:disable nesting-depth
+.qc-btn-add {
+    background-color: $white;
+    border: solid $dark-gray 1px;
+    border-bottom-left-radius: 6px;
+    border-radius: 0;
+    border-right: 0;
+    border-top-left-radius: 6px;
+    color: $iron-gray;
+    font-family: 'BentonSansCompBook';
+    font-size: 2em;
+    height: 64px;
+    margin-bottom: 20px;
+    position: relative;
+    text-align: left;
+    text-transform: uppercase;
+    width: 240px;
+
+    &::after {
+        background-color: $white;
+        border-right: solid 1px $dark-gray;
+        border-top: solid 1px $dark-gray;
+        content: '';
+        height: 37px;
+        margin: -19px -16px;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: rotate(30deg) skewY(30deg); // create a rhombus
+        // 49.1deg = atan(1.15) = atan(47px/40px)
+        width: 32px;
+    }
+
+    span {
+        padding-right: 20px;
+    }
+
+    &:hover,
+    &:hover::after { //sass-lint:disable-line force-pseudo-nesting
+        background-color: $light-gray;
+        border-color: $iron-gray;
+    }
+
+    &:focus,
+    &:focus::after {
+        background-color: $light-gray;
+    }
+}
+
+
+.qc-btn-analytics,
+.qc-btn-download-csv,
+.qc-btn-qti-import,
+.qc-btn-qti-export
+{
+    background-color: $dark-gray;
+    font-family: 'BentonSansComp';
+    font-size: 1em;
+    margin-top: 20px;
+    text-transform: uppercase;
+
+    .fa {
+        color: $white;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    &:disabled {
+        background-color: $light-gray;
+
+        &:hover {
+            background-color: $light-gray;
+        }
+    }
+}
+
+.qc-copy-btn,
+.qc-delete-btn,
+.qc-edit-btn,
+.qc-view-btn
+{
+    svg {
+        height: 25px;
+        width: 25px;
+
+        &:active {
+            outline: none;
+        }
+    }
+
+    &:active {
+        outline: none; //don't show dotted outline when clicked
+    }
+
+    &:focus {
+        outline: none; //no dotted outline, adding custom border styles instead
+
+        svg { //focus border styles need to be circular rather than square: ;
+            border-radius: 50%;
+        }
+    }
+}
+
+.qc-copy-btn {
+    svg {
+        &:hover {
+            path {
+                fill: $muted-purple;
+            }
+        }
+    }
+
+    &:focus {
+        svg {
+            border: solid $muted-purple 3px;
+        }
+    }
+}
+
+.qc-delete-btn {
+    svg {
+        &:hover {
+            path {
+                fill: $crimson-red;
+            }
+        }
+    }
+
+    &:focus {
+        svg {
+            border: solid $crimson-red 3px;
+        }
+    }
+}
+
+.qc-edit-btn {
+    svg {
+        &:hover {
+            path {
+                fill: $electric-blue;
+            }
+        }
+    }
+
+    &[disabled] {
+        svg {
+            path {
+                fill: $dark-gray;
+            }
+
+            &:hover {
+                cursor: not-allowed;
+                fill: $dark-gray;
+            }
+        }
+
+        &:hover {
+            cursor: not-allowed;
+        }
+    }
+
+    &:focus {
+        svg {
+            border: solid $electric-blue 3px;
+        }
+    }
+}
+
+.qc-feature-toggle-btn {
+    float: left;
+    margin-right: 15px;
+}
+
+.qc-view-btn {
+    svg {
+        &:hover {
+            path {
+                fill: $seafoam-green;
+            }
+        }
+    }
+
+    &:focus {
+        svg {
+            border: solid $seafoam-green 3px;
+        }
+    }
+}

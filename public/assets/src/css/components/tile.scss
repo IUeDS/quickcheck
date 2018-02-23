@@ -1,0 +1,94 @@
+.qc-collection-tile {
+    background: linear-gradient(to bottom, transparent 0%, $light-gray 30%);
+    border-radius: 10px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+
+    h2 {
+        display: inline-block;
+        font-family: 'BentonSansCompBook';
+        font-style: normal;
+        padding-right: 20px;
+        vertical-align: middle;
+    }
+
+    h3 {
+        text-transform: uppercase;
+    }
+
+    .qc-owner-name {
+        font-family: 'BentonSansComp';
+        font-weight: 700;
+        text-transform: none;
+    }
+
+    .qc-view-set-btn,
+    .qc-view-new-tab-btn {
+        margin-top: 50px; //make the tiles a bit bigger by plumping up space between this and stuff above
+    }
+}
+
+//each new row of 2 sets needs to clear both, so that when editing in the row above, it doesn't float up
+.qc-new-row {
+    clear: both;
+}
+
+.qc-collection-edit-btn,
+.qc-collection-delete-btn {
+    svg {
+        vertical-align: middle;
+    }
+}
+
+.qc-collection-edit-btn {
+    svg {
+        margin-right: 10px;
+    }
+}
+
+.qc-view-set-btn,
+.qc-view-new-tab-btn,
+.qc-join-btn,
+.qc-opt-out-btn {
+    border-radius: 25px;
+    font-family: 'BentonSansCompBook';
+    font-size: 1.2em;
+    padding: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.qc-view-set-btn {
+    background-color: $crimson-red;
+    color: $white;
+
+    &:hover {
+        background-color: $crimson-red-darker;
+        color: $white;
+    }
+}
+
+.qc-view-new-tab-btn {
+    background-color: transparent;
+    border: solid $black 1px;
+    color: $black;
+
+    &:hover {
+        background-color: $thirty-percent-opaque-white;
+        color: $black;
+    }
+}
+
+.qc-public-collections-list {
+    .qc-view-set-btn,
+    .qc-join-btn,
+    .qc-opt-out-btn {
+        margin-top: 0;
+    }
+
+    .qc-opt-out-btn {
+        background-color: $iron-gray-lighter;
+        color: $white;
+    }
+}

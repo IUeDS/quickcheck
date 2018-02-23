@@ -1,0 +1,54 @@
+<div class="panel panel-default qc-accordion-panel qc-student-attempts-panel">
+    <div class="panel-heading qc-student-attempts-panel-heading"
+        role="tab" role="button"
+        id="heading-group-{{vm.assessment.id}}"
+        data-toggle="collapse"
+        href="#collapse-group-{{vm.assessment.id}}"
+        aria-expanded="{{ vm.isAccordionClosed() ? 'false' : 'true'}}"
+        aria-controls="collapse-group-{{vm.assessment.id}}"
+        ng-click="vm.toggleAccordion()">
+        <span class="fa fa-lg qc-accordion-arrow" ng-class="vm.isAccordionClosed() ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true"></span>
+        <h3>{{ vm.assessment.name }}</h3>
+    </div>
+    <div id="collapse-group-{{vm.assessment.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-group-{{vm.assessment.id}}">
+        <div class="panel-body">
+            <div ng-if="!vm.responseViewVisible">
+                <p ng-if="vm.dueAt" class="qc-due-at">Due at: {{ vm.dueAt }}</p>
+                <qc-attempt-data
+                    ng-if="!vm.isAccordionClosed()"
+                    qc-attempts="vm.attempts"
+                    qc-course-context="vm.courseContext"
+                    qc-grades-loading="vm.gradesLoading"
+                    qc-is-student="false"
+                    qc-is-visible="false"
+                    qc-large-class-size="false"
+                    qc-points-possible="vm.pointsPossible"
+                    qc-show-responses="true"
+                    qc-submissions="vm.submission"
+                    qc-users="vm.user"
+                    qc-utils="vm.utils"
+                    qc-view-responses="vm.viewResponses($event)">
+                </qc-attempt-data>
+            </div>
+            <div ng-if="vm.responseViewVisible">
+                <a href='#' ng-click="vm.hideResponses()">
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                    Back to attempts
+                </a>
+                <h1 id="response-header" tabindex="-1">Responses for {{ ::vm.responseAttempt.student.lis_person_name_given }} {{ ::vm.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
+                <p class="lead">Starting at {{ ::vm.utils.formatTimeWithTimeZone(vm.responseAttempt.created_at, vm.courseContext.time_zone) }}</p>
+                <qc-responses
+                    qc-attempt="vm.responseAttempt"
+                    qc-course-context="vm.courseContext"
+                    qc-is-student="false"
+                    qc-questions="vm.questions"
+                    qc-responses="vm.studentResponses">
+                </qc-responses>
+                <span class="sr-only">
+                    <!-- screenreader user will be moving down the page, so easier for the back button to be down here -->
+                    <a href='#' ng-click="vm.hideResponses()">Back to attempts</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

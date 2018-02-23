@@ -1,0 +1,137 @@
+<div class="panel panel-default qc-accordion-panel qc-subset-panel">
+    <div class="panel-heading" role="tab" id="heading-group-{{vm.assessmentGroup.id}}" role="button" data-toggle="collapse"
+        href="#collapse-group-{{vm.assessmentGroup.id}}" aria-expanded="{{ vm.assessmentGroup.closed ? 'false' : 'true'}}"
+        aria-controls="collapse-group-{{vm.assessmentGroup.id}}" ng-click="vm.toggleAccordion()">
+        <div class="qc-assessment-group-title">
+            <span class="fa fa-lg qc-accordion-arrow" ng-class="vm.assessmentGroup.closed ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true" ng-hide="vm.isEditing"></span>
+            <h3 ng-hide="vm.isEditing">{{ vm.assessmentGroup.name }}</h3>
+            <div ng-if="vm.isEditing" class="qc-edit-subset">
+                <form ng-submit="vm.updateAssessmentGroup()">
+                    <h3 class="edit-assessmentgroup-header sr-only" id="edit-assessmentgroup-header-{{vm.assessmentGroup.id}}" tabindex="-1">Edit subset</h3>
+                    <label for="assessment-group-name-{{vm.assessmentGroup.id}}" class="sr-only">Subset name</label>
+                    <input type="text" id="assessment-group-name-{{vm.assessmentGroup.id}}" class="form-control qc-edit-subset-input" ng-model="vm.editingData.name" required ng-click="vm.stopAccordion($event)">
+                    <button type="button" class="btn btn-sm" ng-click="vm.editAssessmentGroupCancel()">Cancel <span class="sr-only">edits to subset {{vm.assessmentGroup.name}}</span></button>
+                </form>
+            </div>
+            <span class="qc-edit-btn qc-subset-edit-btn" role="button" ng-click="vm.editAssessmentGroup($event)" ng-hide="vm.isEditing" ng-if="!vm.readOnly">
+                <span ng-include="$root.iconEditPath" aria-hidden="true"></span>
+                <span class="sr-only">Edit subset {{vm.assessmentGroup.name}}</span>
+            </span>
+            <span class="qc-delete-btn qc-subset-delete-btn" role="button" ng-click="vm.deleteAssessmentGroup($event)" ng-if="!vm.readOnly">
+                <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+                <span class="sr-only">Delete subset {{vm.assessmentGroup.name}}</span>
+            </span>
+        </div>
+    </div>
+    <div id="collapse-group-{{vm.assessmentGroup.id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-group-{{vm.assessmentGroup.id}}">
+        <div class="panel-body">
+            <p ng-if="!vm.assessmentGroup.assessments.length && !vm.readOnly">There are currently no quick checks in this subset. Click the button to add a new quick check to the subset, and then edit the quick check to start adding questions.</p>
+            <div class="row qc-quiz-row" ng-repeat="assessment in vm.assessmentGroup.assessments track by $index">
+                <div class="col-xs-12 col-sm-5">
+                    <h4 class="admin-assessment-name">
+                        <strong>{{ assessment.name }}</strong>
+                        <span ng-if="assessment.custom_activity_id" class="label label-info qc-label-custom"><span class="fa fa-cog" aria-hidden="true"></span> Custom</span>
+                    </h4>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-sm-offset-1">
+                    <a ng-href="{{vm.utils.setContextLink('../assessment/' + assessment.id + '/edit')}}" target="_self" id="assessment-edit-{{assessment.id}}" class="qc-edit-btn qc-quiz-edit-btn">
+                        <span ng-include="$root.iconEditPath" aria-hidden="true"></span>
+                        <span class="sr-only">
+                            <span ng-if="!vm.readOnly">Edit </span>
+                            <span ng-if="vm.readOnly">View </span>
+                            quick check {{ assessment.name }}
+                        </span>
+                    </a>
+                    <a ng-href="../assessment/{{assessment.id}}?preview=true" target="_blank" class="qc-view-btn qc-quiz-preview-btn">
+                        <span ng-include="$root.iconViewPath" aria-hidden="true"></span>
+                        <span class="sr-only">Preview quick check {{ assessment.name }}</span>
+                    </a>
+                    <span class="qc-delete-btn qc-quiz-delete-btn" role="button" ng-click="vm.deleteAssessment(assessment.id, $index)" ng-if="!vm.readOnly">
+                        <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+                        <span class="sr-only">Delete quick check {{ assessment.name }}</span>
+                    </span>
+                    <span class="qc-copy-btn qc-quiz-copy-btn" role="button" ng-click="vm.initCopyAssessment(assessment)" ng-if="!vm.readOnly">
+                            <span ng-include="$root.iconCopyPath" aria-hidden="true"></span>
+                            <span class="sr-only">Copy quick check {{ assessment.name }}</span>
+                    </span>
+                </div>
+                <div class="row qc-quiz-copy-panel" ng-if="assessment.isCopying">
+                    <div class="col-xs-10 col-xs-offset-1 panel panel-default qc-assessment-copy-panel">
+                        <h5 class="lead">Copy Quick Check <span class="sr-only">{{ assessment.name }}</span></h5>
+                        <div ng-if="vm.memberships" ng-hide="assessment.copyData.copied">
+                            <div class="form-group">
+                                <label for="copy-assessment-{{assessment.id}}-collection">Set</label>
+                                <select id="copy-assessment-{{assessment.id}}-collection"
+                                    class="form-control qc-copy-quiz-collection"
+                                    ng-model="assessment.copyData.collection_id"
+                                    ng-change="vm.onCopyAssessmentCollectionSelected(assessment)">
+                                    <option ng-repeat="membership in vm.memberships" ng-value="membership.collection.id" ng-if="membership.read_only !== 'true'">
+                                        {{ membership.collection.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="copy-assessment-{{assessment.id}}-group">Subset</label>
+                                <select id="copy-assessment-{{assessment.id}}-group"
+                                    class="form-control qc-copy-quiz-assessment-group"
+                                    ng-model="assessment.copyData.assessment_group_id">
+                                    <option ng-repeat="assessmentGroup in assessment.copyData.assessmentGroups" ng-value="assessmentGroup.id">
+                                        {{ assessmentGroup.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="copy-assessment-{{assessment.id}}-name">Name</label>
+                                <input type="text" class="form-control qc-copy-quiz-name" ng-model="assessment.copyData.assessment_name">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-success qc-btn qc-copy-quiz-submit" type="submit" ng-click="vm.copyAssessment(assessment)">
+                                    Copy
+                                </button>
+                                <button class="btn btn-sm btn-default qc-btn" type="button" ng-click="vm.copyAssessmentCancel(assessment)">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                        <div ng-show="assessment.copyData.copied">
+                            <div class="alert alert-success" role="alert">
+                                <p><strong>Success!</strong></p>
+                            </div>
+                            <div class="form-group">
+                                <a ng-href="{{assessment.copyData.editUrl}}" target="_self">
+                                    <button class="btn btn-sm btn-primary qc-btn qc-quiz-copy-edit-btn" type="button">
+                                        <span class="fa fa-pencil" aria-hidden="true"></span>
+                                        Edit copied quick check
+                                    </button>
+                                </a>
+                                <button class="btn btn-sm btn-default qc-btn" type="button" ng-click="vm.copyAssessmentCancel(assessment)">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-lg qc-btn qc-btn-add qc-btn-add-quiz" ng-click="vm.initNewAssessment()" ng-show="vm.isAddingAssessment !== vm.assessmentGroup.id" type="button" ng-if="!vm.readOnly"><span class="fa fa-plus" aria-hidden="true"></span> Add new quick check to subset <span class="sr-only">{{ vm.assessmentGroup.name }}</span></button>
+            <div class="row" ng-if="vm.isAddingAssessment">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body qc-add-quiz-panel">
+                            <h4 class="create-assessment-header qc-add-header" id="create-assessment-header-{{vm.assessmentGroup.id}}" tabindex="-1">Create new quick check</h4>
+                            <form ng-submit="vm.saveNewAssessment()">
+                                <label for="new-assessment-{{vm.assessmentGroup.id}}">Quick check name</label>
+                                <input type="text" class="form-control"
+                                        id="new-assessment-{{vm.assessmentGroup.id}}"
+                                        ng-model="vm.newAssessment.name"
+                                        required>
+                                <hr>
+                                <button type="submit" class="btn btn-sm btn-success qc-btn">Save <span class="sr-only">new quick check to subset {{vm.assessmentGroup.name}}</span></button>
+                                <button type="button" class="btn btn-sm btn-default qc-btn" ng-click="vm.newAssessmentCancel()">Cancel <span class="sr-only">adding new quick check to subset {{vm.assessmentGroup.name}}</span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+rsync.exclude
+.env
+*.env.example
+.git*
+npm-debug.log
+.DS_Store
+node_modules/
+storage/logs
+public/assets/src
+public/customActivities/
+storage/app/

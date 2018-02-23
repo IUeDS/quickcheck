@@ -1,0 +1,95 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Import QTI Package (1.2)</h3>
+    </div>
+    <div class="panel-body" id="qc-qti-import-panel">
+
+        <!-- instructions and upload form -->
+        <div ng-hide="vm.done">
+            <p>A QTI package is a .zip file exported from an LMS that contains assessments in a standardized format that is compatible with this application. Note that <a tabindex="0" data-toggle="popover" role="button" data-trigger="focus" title="Unsupported Question Types" data-content="This application does not support the following question types: fill in multiple blanks, formula, essay, file upload, and text." data-placement="top" data-container="#qti-import-panel">not all question types are supported</a>, and <a tabindex="0" data-toggle="popover" role="button" data-trigger="focus" title="Unsupported Content" data-content="Links that are relative to a course in an LMS will not operate in an external tool, and images, audio, and video that are uploaded to a specific course cannot be uploaded to this application. (External links to public resources online will of course function normally.)" data-placement="top" data-container="#qti-import-panel">LMS-specific links or media cannot be imported</a>. You will be notified if any uploaded questions, links, or media are incompatible in your QTI import. Imports can include one or many assessments. All assessments will be entered in the subset you specify. The QTI import tool has been optimized for Canvas's QTI export, using QTI version 1.2.</p>
+            <div class="alert alert-danger" ng-if="!vm.assessmentGroups.length">You need to create a subet first to import quizzes into.</div>
+            <form ng-submit="vm.importQti()" enctype="multipart/form-data" ng-if="vm.assessmentGroups.length">
+                <div class="form-group">
+                    <label for="qc-qti-import-assessment-group">Subset</label>
+                    <select ng-model="vm.assessment_group_id" class="form-control" id="qc-qti-import-assessment-group" required>
+                        <option></option>
+                        <option ng-repeat="possibleAssessmentGroup in vm.assessmentGroups" value="{{possibleAssessmentGroup.id}}">{{ possibleAssessmentGroup.name }}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="importFile">QTI package file (.zip)</label>
+                    <input type="file" id="importFile" name="importFile" accept=".zip" ng-model="vm.zipFile" ngf-select ngf-accept="'.zip'" required>
+                </div>
+                <button type="submit" class="btn btn-sm btn-success qc-btn-qti-import-submit qc-btn">Submit <span class="sr-only">QTI import package</span></button>
+                <button type="button" class="btn btn-sm btn-default qc-btn" ng-click="vm.cancelQtiImport()">Cancel <span class="sr-only">QTI import</span></button>
+            </form>
+        </div>
+
+        <!-- uploading status -->
+        <div ng-if="vm.uploading" class="text-center qti-import-loading" aria-live="polite">
+            <span class="fa fa-refresh fa-spin fa-3x" aria-hidden="true"></span><span class="sr-only">QTI import uploading, please wait.</span>
+        </div>
+
+        <!-- completion -->
+        <div ng-if="vm.done" class="qc-qti-import-finished form-group">
+            <!-- error sending/receiving request -->
+            <div ng-if="vm.error" class="qti-import-error">
+                <div class="alert alert-danger" role="alert">
+                    <h4><span class="fa fa-warning" aria-hidden="true"></span> Error</h4>
+                    <p>{{ vm.error }}</p>
+                </div>
+            </div>
+
+            <!-- critical notices that halted import -->
+            <div ng-if="vm.criticalNotices" class="qc-qti-import-critical form-group">
+                <h4>Error importing one or more quizzes:</h4>
+                <div class="alert alert-danger" role="alert" ng-repeat="criticalNotice in vm.criticalNotices">
+                    <h5><span class="fa fa-warning" aria-hidden="true"></span> Error:</h5>
+                    <p>{{ criticalNotice }}</p>
+                </div>
+            </div>
+
+            <!-- minor notices, to inform user of data that may not be 100% the same -->
+            <div ng-if="vm.notices" class="qc-qti-import-notices form-group">
+                <h4>QTI package imported. The following content was incompatible:</h4>
+                <div class="alert alert-warning" role="alert" ng-repeat="notice in vm.notices">
+                    <h5><span class="fa fa-exclamation" aria-hidden="true"></span> Notice:</h5>
+                    <div ng-bind-html="notice"></div>
+                </div>
+            </div>
+
+            <!-- if no problems encountered whatsoever -->
+            <div ng-if="!vm.error && !vm.notices" class="qc-qti-import-success form-group">
+                <div class="alert alert-success" role="alert">
+                    <h4><span class="fa fa-thumbs-up" aria-hidden="true"></span> Woohoo!</h4>
+                    <p>Your QTI package was imported successfully.</p>
+                </div>
+            </div>
+
+            <!-- for critical notices, want to provide option to save quizzes or not -->
+            <div ng-if="vm.criticalNotices && vm.quizzes.length" class="form-group">
+                <h4>Do you still wish to save the following quizzes?</h4>
+                <ul>
+                    <li ng-repeat="quiz in vm.quizzes">{{quiz.title}}</li>
+                </ul>
+                <button type="button" class="btn btn-sm btn-success qc-btn" ng-click="vm.saveImportQuizzes()">Yes, save these quizzes</button>
+                <button type="button" class="btn btn-sm btn-danger qc-btn" ng-click="vm.resetQtiImport()">No, don't save these quizzes and cancel my import</button>
+                <hr>
+            </div>
+
+            <!-- once finished, show links to newly saved quizzes -->
+            <div ng-if="!vm.criticalNotices && vm.quizzes.length" class="form-group">
+                <p>Imported content links:</p>
+                <ul>
+                    <li ng-repeat="quiz in vm.quizzes">
+                        <a class="qc-import-qti-link" href="{{vm.utils.setContextLink('../assessment/' + quiz.id + '/edit')}}" target="_self">Edit {{ quiz.title }}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- close panel or restart -->
+            <button type="button" class="btn btn-sm btn-primary qc-btn" ng-click="vm.resetQtiImport()">Import another QTI Package</button>
+            <button type="button" class="btn btn-sm btn-default qc-btn" ng-click="vm.cancelQtiImport()">Close <span class="sr-only">QTI import panel</span></button>
+        </div>
+    </div>
+</div>
