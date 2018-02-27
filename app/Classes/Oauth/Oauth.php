@@ -30,6 +30,26 @@ class Oauth
     }
 
     /**
+    * Send OAuth-signed XML in POST message (typically for reading/sending grade)
+    *
+    * @param  string  $endpoint
+    * @param  string  $postBody
+    * @return string
+    */
+
+    public function sendXmlInPost($endpoint, $postBody)
+    {
+        $contentType = "Content-type: application/xml";
+        $header = $this->generateXmlHeader($endpoint, $postBody);
+
+        $curlHeaders[0] = $header;
+        $curlHeaders[1] = $contentType;
+
+        $response = $this->curlPost($endpoint, $curlHeaders, $postBody);
+        return $response;
+    }
+
+    /**
     * Verify that the OAuth launch information is valid
     *
     * @return void
@@ -46,14 +66,16 @@ class Oauth
     /**
     * Build the OAuth signature string and hash
     *
+    * @param  []      $rawParameters
+    * @param  string  $url
     * @return string
     */
 
-    private function buildSignature()
+    private function buildSignature($rawParameters, $url)
     {
         $method = strtoupper($this->request->method()) . '&';
-        $url = rawurlencode($this->request->url()) . '&';
-        $parameters = $this->encodeLaunchParameters();
+        $url = rawurlencode($url) . '&';
+        $parameters = $this->encodeParameters($rawParameters);
         $signatureString = "{$method}{$url}{$parameters}"; //combine all parts
 
         //encode the signature
@@ -71,7 +93,7 @@ class Oauth
     private function checkSignature()
     {
         $signature = $this->request->input('oauth_signature');
-        $builtSignature = $this->buildSignature();
+        $builtSignature = $this->buildSignature($this->request->all(), $this->request->url());
 
         if ($signature !== $builtSignature) {
             throw new OAuthException("Invalid oauth signature.");
@@ -108,15 +130,36 @@ class Oauth
     }
 
     /**
-    * Launch parameters should be url encoded in a string with ampersand between params
+    * Send a cURL POST request
     *
+    * @param  string  $endpoint
+    * @param  []      $headers
+    * @param  string  $xml
     * @return string
     */
 
-    private function encodeLaunchParameters()
+    private function curlPost($endpoint, $headers, $xml)
     {
-        $parameters = $this->request->all();
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $endpoint);
+        curl_setopt ($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
+    }
 
+    /**
+    * Launch parameters should be url encoded in a string with ampersand between params
+    *
+    * @param  []  $parameters
+    * @return string
+    */
+
+    private function encodeParameters($parameters)
+    {
         // Parameters are sorted by name, using lexicographical byte value ordering.
         // Ref: Spec: 9.1.1 (1)
         uksort($parameters, 'strcmp');
@@ -131,6 +174,7 @@ class Oauth
 
             $parameterString = rawurlencode($key);
             $parameterString .= rawurlencode('=');
+
             //apparently must be encoded twice to be counted as valid?
             //was running into errors when value was only encoded once.
             $value = rawurlencode($value);
@@ -138,8 +182,67 @@ class Oauth
             array_push($encodedParameters, $parameterString);
         }
 
-        //return in format with url encoded & character between params
-        return implode($encodedParameters, '%26'); //urlencoded &
+        //return in format with ampersand joining params
+        $ampersand = rawurlencode('&');
+        return implode($encodedParameters, $ampersand);
+    }
+
+    /**
+    * Encode the XML header string when sending a signed XML request
+    *
+    * @param  []  $headers
+    * @return string
+    */
+
+    private function encodeXmlHeader($headers)
+    {
+        $header = 'Authorization: OAuth realm=""';
+        foreach($headers as $headerKey => $headerValue) {
+            $key = ',' . rawurlencode($headerKey) . '=';
+            $value = '"' . rawurlencode($headerValue) . '"';
+            $header .= "{$key}{$value}";
+        }
+
+        return $header;
+    }
+
+    /**
+    * Generate a nonce out of the current time, a random integer, and a hash
+    *
+    * @return string
+    */
+
+    private function generateNonce()
+    {
+        $time = microtime();
+        $randomInt = random_int(0, 1000);
+        return md5($time . $randomInt);
+    }
+
+    /**
+    * Generate a header for signed XML requests
+    *
+    * @param  string  $endpoint
+    * @param  string  $postBody
+    * @return string
+    */
+
+    private function generateXmlHeader($endpoint, $postBody)
+    {
+        $bodyHash = base64_encode(sha1($postBody, true));
+        $headers = [
+            'oauth_version' => $this->version,
+            'oauth_nonce' => $this->generateNonce(),
+            'oauth_timestamp' => time(),
+            'oauth_consumer_key' => $this->consumerKey,
+            'oauth_body_hash' => $bodyHash,
+            'oauth_signature_method' => $this->signatureMethod,
+        ];
+        $signature = $this->buildSignature($headers, $endpoint);
+        $headers['oauth_signature'] = $signature;
+
+        $header = $this->encodeXmlHeader($headers);
+        return $header;
     }
 
     /**

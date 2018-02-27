@@ -9,14 +9,16 @@ use DateTimeZone;
 class Grade {
 
     private $attempt;
+    private $request;
 
     /************************************************************************/
     /* PUBLIC FUNCTIONS *****************************************************/
     /************************************************************************/
 
-    public function __construct($attempt)
+    public function __construct($attempt, $request)
     {
         $this->attempt = $attempt;
+        $this->request = $request;
     }
 
     /**
@@ -106,7 +108,7 @@ class Grade {
             return true;
         }
 
-        $gradeSendResult = $outcome->sendGrade($sourcedID, $this->attempt, $gradeToSubmit);
+        $gradeSendResult = $outcome->sendGrade($sourcedID, $this->attempt, $gradeToSubmit, $this->request);
         if ($gradeSendResult !== TRUE) {
             return "api.php: doGradePassback() failed. Grade to submit: $gradeToSubmit. Outcome model returned: $gradeSendResult";
         }
@@ -142,7 +144,7 @@ class Grade {
 
     private function isHighestScore($gradeToSubmit, $sourcedID, $outcome)
     {
-        $existinggrade = floatval($outcome->readGrade($sourcedID, $this->attempt));
+        $existinggrade = floatval($outcome->readGrade($sourcedID, $this->attempt, $this->request));
         //E. Scull: A grade of "0" needs to be entered in the gradebook if they earn that score on the first try.
         // A non-existent grade is converted to 0 by floatval().
         // If the existing grade is 0 (i.e., doesn't exist), and the current grade is 0, we still need to submit.
