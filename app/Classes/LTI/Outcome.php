@@ -3,8 +3,7 @@
 namespace App\Classes\LTI;
 use Log;
 use App\Models\Attempt;
-
-require_once(app_path() . '/OAuth/OAuthBody.php');
+use App\Classes\Oauth\Oauth;
 
 class Outcome
 {
@@ -70,8 +69,6 @@ class Outcome
     private $oauth_consumer_key = null;
     private $oauth_consumer_secret = null;
     private $sourcedid = null;
-    private $method="POST";
-    private $content_type = "application/xml";
     private $endpoint = null;
     private $grade = null;
 
@@ -149,7 +146,7 @@ class Outcome
     * @return mixed (bool: true on success, string: error message on failure)
     */
 
-    public function sendGrade($sourcedid, $attempt, $grade)
+    public function sendGrade($sourcedid, $attempt, $grade, $request)
     {
         if (is_null($grade) || is_null($sourcedid)) {
             Log::error("Outcome.php: Grade and/or sourcedid missing. grade: $grade, sourcedid: $sourcedid");
@@ -169,7 +166,8 @@ class Outcome
         $startTime = time();
 
         //Do the send, signed by OAuth. Capture response.
-        $response = sendOAuthBodyPOST($this->method, $this->endpoint, $this->oauth_consumer_key, $this->oauth_consumer_secret, $this->content_type, $postBody);
+        $oauth = new Oauth($this->oauth_consumer_key, $request, $this->oauth_consumer_secret);
+        $response = $oauth->sendXmlInPost($this->endpoint, $postBody);
 
         $endTime = time();
         if ($endTime - $startTime > 10) {
@@ -192,7 +190,7 @@ class Outcome
     * @return mixed (float: grade value 0-1 on success, string: error message on failure)
     */
 
-    public function readGrade($sourcedid, $attempt)
+    public function readGrade($sourcedid, $attempt, $request)
     {
         if (!$sourcedid) {
             return false;
@@ -211,7 +209,8 @@ class Outcome
         $startTime = time();
 
         //Do the send, signed by OAuth. Capture response.
-        $response = sendOAuthBodyPOST($this->method, $this->endpoint, $this->oauth_consumer_key, $this->oauth_consumer_secret, $this->content_type, $postBody);
+        $oauth = new Oauth($this->oauth_consumer_key, $request, $this->oauth_consumer_secret);
+        $response = $oauth->sendXmlInPost($this->endpoint, $postBody);
 
         $endTime = time();
         if ($endTime - $startTime > 10) {
