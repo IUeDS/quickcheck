@@ -1,6 +1,7 @@
 //Gruntfile.js
 
 var dependenciesDir = 'node_modules/',
+    srcCssFontsDir = 'src/css/fonts',
     config = {
         jsDependencies: [
             dependenciesDir + 'jquery/dist/jquery.min.js',
@@ -128,7 +129,7 @@ module.exports = function(grunt) {
 
         //for tinymce, have to copy skin CSS files to js dist directory, otherwise they're not found
         //for angular components, copy the template html to dist
-        //for css fonts, copy over font awesome fonts and tinymce fonts
+        //for css fonts, copy over font awesome fonts, tinymce fonts, and Benton Sans
         copy: {
             dist: {
                 files: [
@@ -162,6 +163,12 @@ module.exports = function(grunt) {
                         cwd: dependenciesDir + 'tinymce/skins/lightgray/fonts/',
                         src: ['*'],
                         dest: 'dist/css/fonts/'
+                    },
+                    {
+                        expand: true,
+                        cwd: srcCssFontsDir,
+                        src: ['*'],
+                        dest: 'dist/fonts/'
                     }
                 ]
             }

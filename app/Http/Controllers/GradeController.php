@@ -34,7 +34,7 @@ class GradeController extends \BaseController
             $student = Student::find($attempt->student_id);
             $attempt->student = $student;
 
-            $grade = new Grade($attempt);
+            $grade = new Grade($attempt, $request);
             $result = $grade->submitGrade();
             $response = ['attempt' => $attempt->toArray(), 'score' => $attempt->getCalculatedScore()];
             if ($result === true) {
@@ -97,7 +97,7 @@ class GradeController extends \BaseController
         $attemptGraded = false;
         $attemptId = $request->input('attemptId');
         $attempt = Attempt::find($attemptId);
-        $grade = new Grade($attempt);
+        $grade = new Grade($attempt, $request);
         if ($grade->isReadyForGrade()) {
             if ($grade->isGradePassbackEnabled()) {
                 $grade->submitGrade();
@@ -164,7 +164,7 @@ class GradeController extends \BaseController
         }
 
         $outcome = new Outcome;
-        $result = $outcome->sendGrade($sourcedId, $attempt, $grade);
+        $result = $outcome->sendGrade($sourcedId, $attempt, $grade, $request);
         if (!$result) {
             return response()->error(500, [$result]);
         }
