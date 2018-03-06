@@ -1,4 +1,4 @@
-<main class="container-fluid" ng-attr-aria-hidden="{{ vm.modalVisible ? 'true' : 'false' }}">
+<main class="container-fluid">
     <div class="row section-white qc-quiz-view" ng-cloak>
         <div class="col-xs-12">
             <h1 ng-if="vm.assessmentTitle" class="qc-assessment-title">{{ vm.assessmentTitle }}</h1>
@@ -10,7 +10,7 @@
                 tabindex="-1" aria-live="assertive" aria-atomic="true">
                 Question {{ vm.currentQuestionIndex + 1 }} out of {{ vm.pointsPossible }}
             </h2>
-            <div ng-if="vm.currentQuestion">
+            <div ng-if="vm.currentQuestion" ng-attr-aria-hidden="{{ vm.modalVisible ? 'true' : 'false' }}">
                 <qc-multiple-choice ng-if="vm.isQuestionType('multiple_choice')"
                     qc-current-question="vm.currentQuestion"
                     qc-on-answer-selection="vm.onAnswerSelection($event)">
