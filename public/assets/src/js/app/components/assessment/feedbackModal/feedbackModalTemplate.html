@@ -3,7 +3,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header sr-only">
-                    <h1 class="modal-title" id="qc-feedback-label">Feedback</h1>
+                    <h1 class="modal-title" id="qc-feedback-label">Quick Check question feedback</h1>
                 </div>
                 <div class="modal-body" id="qc-feedback-dialog-content">
                     <h2 class="clearfix" ng-if="vm.isCorrect">Correct</h2>
@@ -12,7 +12,7 @@
                     <button type="button" class="btn qc-btn qc-continue-btn"
                         ng-class="{'btn-success': vm.isCorrect, 'btn-danger': !vm.isCorrect}"
                         ng-click="vm.nextQuestion()"
-                        ng-disabled="vm.isNextBtnDisabled">Click to continue</button>
+                        ng-disabled="vm.isNextBtnDisabled">Click to continue <span class="sr-only">the quick check</span></button>
                 </div>
             </div>
         </div>
