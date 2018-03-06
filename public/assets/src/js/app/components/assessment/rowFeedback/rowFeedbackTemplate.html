@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="well well-lg qc-row-feedback" tabindex="-1" role="alertdialog">
-            <div class="sr-only"><h1>Feedback</h1></div>
+            <div class="sr-only"><h1>Quick Check question feedback</h1></div>
             <h2 ng-if="vm.isCorrect">Correct</h2>
             <h2 ng-if="!vm.isCorrect">Incorrect. <span ng-if="vm.partialCredit">Partial credit assigned.</span></h2>
             <p class="custom-feedback" ng-repeat="feedbackItem in vm.feedback" ng-bind-html="feedbackItem.feedback_text"></p>
@@ -16,7 +16,7 @@
                 ng-class="{'btn-success': vm.isCorrect, 'btn-danger': !vm.isCorrect}"
                 ng-click="vm.next()"
                 ng-disabled="vm.isNextBtnDisabled">
-                Click to continue
+                Click to continue <span class="sr-only">the quick check</span>
             </button>
         </div>
     </div>
