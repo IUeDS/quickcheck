@@ -18,7 +18,36 @@ The acceptance tests are configured to work specifically with IU systems, and sh
    6. `sudo webdriver-manager update`
    7. Install the most recent JDK version from here: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
+2. In public/assets/src/js/tests/protractor, add a usercreds.js file with the following code to include information on the various guest accounts used while testing (make sure to fill in the values with the credential information):
+
+```
+module.exports = {
+    'admin': {
+        'username': '',
+        'password': '',
+        'id': '80001101342',
+        'first': 'IUeDS',
+        'last': 'Testuser'
+    },
+    'instructor': {
+        'username': '',
+        'password': '',
+        'id': '80001101345',
+        'first': 'IUeDS',
+        'last': 'Testinstructor'
+    },
+    'student': {
+        'username': '',
+        'password': '',
+        'id': '80001101347',
+        'first': 'IUeDS',
+        'last': 'Teststudent'
+    }
+};
+```
+
 3. In a separate terminal window, navigate to the app root on the server and run `php artisan migrate:refresh --seed` to reset the database
 4. In the regression testing course, make sure that all assignments and modules are deleted, if they are still present from previous tests.
-5. In a separate terminal window, navigate to the app root locally, then navigate to public/assets/src/js/tests/protractor, and then run `protractor conf.js`
-6. 4 test suites will be run within Canvas, in the regression testing course. Tests typically take 7-8 minutes. IU guest accounts are used for instructor, student, and admin roles. If you need to run tests multiple times while developing a feature, make sure to refresh/reseed the database on the server and delete all assignments/modules in the test course before running the test suite again.
+5. In a separate terminal window, run `webdriver-manager start` to fire up the local selenium server. If you encounter an error, you may need to run `webdriver-manager update` first.
+6. In a separate terminal window, navigate to the app root locally, then navigate to public/assets/src/js/tests/protractor, and then run `protractor conf.js`
+7. 4 test suites will be run within Canvas, in the regression testing course. Tests typically take 8-10 minutes. IU guest accounts are used for instructor, student, and admin roles. If you need to run tests multiple times while developing a feature, make sure to refresh/reseed the database on the server and delete all assignments/modules in the test course before running the test suite again.
