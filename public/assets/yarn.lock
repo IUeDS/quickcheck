@@ -2597,10 +2597,6 @@ mute-stream@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.5.tgz#8fbfabb0a98a253d3184331f9e8deb7372fac6c0"
 
-n@^2.1.8:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/n/-/n-2.1.8.tgz#9b770f6ae0a93c49c64fb614625a63cc5a22d1fd"
-
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
