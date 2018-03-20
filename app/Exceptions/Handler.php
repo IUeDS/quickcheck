@@ -124,7 +124,7 @@ class Handler extends ExceptionHandler
 
     private function addErrorIdMessage($errorId)
     {
-        return ' Your error ID is: ' . $errorId;
+        return ' Your error ID is: ' . $errorId . '.';
     }
 
     /**
