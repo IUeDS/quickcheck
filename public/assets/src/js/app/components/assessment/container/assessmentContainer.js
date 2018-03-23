@@ -7,9 +7,9 @@ app.component('qcAssessment', {
     }]
 });
 
-AssessmentController.$inject = ['$location', '$sce', 'Assessment', 'Utilities'];
+AssessmentController.$inject = ['$location', '$sce', 'Assessment', 'Caliper', 'Utilities'];
 
-function AssessmentController($location, $sce, Assessment, Utilities) {
+function AssessmentController($location, $sce, Assessment, Caliper, Utilities) {
     var vm = this;
 
     //variables
@@ -18,6 +18,7 @@ function AssessmentController($location, $sce, Assessment, Utilities) {
     vm.assessmentTitle = null;
     vm.assessmentDescription = null;
     vm.attemptId = false;
+    vm.caliper = null;
     vm.complete = false;
     vm.countCorrect = 0;
     vm.countIncorrect = 0;
@@ -51,6 +52,7 @@ function AssessmentController($location, $sce, Assessment, Utilities) {
     vm.nextQuestion = nextQuestion;
     vm.onAnswerSelection = onAnswerSelection;
     vm.onCompletion = onCompletion;
+    vm.parseCaliperData = parseCaliperData;
     vm.resetQuestionVariables = resetQuestionVariables;
     vm.restart = restart;
     vm.showErrorModal = showErrorModal;
@@ -75,6 +77,7 @@ function AssessmentController($location, $sce, Assessment, Utilities) {
             .then(function (resp) {
                 var data = vm.utils.getResponseData(resp);
                 vm.attemptId = data.attemptId;
+                vm.parseCaliperData(data);
                 vm.utils.loadingFinished();
             }, function (resp) {
                 var serverError = vm.utils.getQuizError(resp),
@@ -235,6 +238,24 @@ function AssessmentController($location, $sce, Assessment, Utilities) {
         vm.utils.focusToElement('.qc-btn-restart-assessment');
     }
 
+    function parseCaliperData(data) {
+        var caliperData = data.caliper;
+
+        if (!caliperData) {
+            return false;
+        }
+
+        if (!vm.caliper) {
+            vm.caliper = new Caliper(caliperData);
+        }
+
+        if (!vm.caliper.isEnabled()) {
+            return false;
+        }
+
+        vm.caliper.forwardEvent(caliperData);
+    }
+
     function resetQuestionVariables() {
         vm.currentQuestion = null;
         vm.studentAnswer = null;
@@ -298,6 +319,7 @@ function AssessmentController($location, $sce, Assessment, Utilities) {
                 vm.updateScore(data);
                 vm.showFeedback(data);
                 vm.utils.loadingFinished();
+                vm.parseCaliperData(data);
                 if (vm.isComplete()) {
                     vm.complete = true;
                 }

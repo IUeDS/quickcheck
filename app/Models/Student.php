@@ -51,6 +51,17 @@ class Student extends Eloquent {
     }
 
     /**
+    * Return the canvas user login ID of the student (string)
+    *
+    * @return int
+    */
+
+    public function getCanvasUserLoginId()
+    {
+        return $this->lti_custom_canvas_user_login_id;
+    }
+
+    /**
     * Initialize a new student
     *
     * @param  Request  $request
