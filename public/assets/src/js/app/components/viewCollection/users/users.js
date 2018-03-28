@@ -147,7 +147,7 @@ function UsersController(Collection, User) {
                     vm.isAddingUser.validationError = true;
                 }
             }, function(resp) {
-                vm.utils.showError(resp);
+                vm.isAddingUser.validationError = true;
             });
     }
 }
