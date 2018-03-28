@@ -112,6 +112,17 @@ describe('Viewing analytics for an individual student', function() {
         expect(studentResultsPage.getAverageTimeBeforeDueDate()).toContain('seconds');
         expect(studentResultsPage.getAverageTimeAfterDueDate()).toContain('seconds');
         expect(studentResultsPage.getAverageTimeOverall()).toContain('seconds');
+    });
+});
+
+describe('Viewing student results after student toggle was previously set', function() {
+    it('should keep student results toggled if previously set', function() {
+        studentResultsPage.nav.goToResults();
+        expect(attemptOverviewPage.isStudentToggleEnabled()).toBeTruthy();
+    });
+
+    it('should still show student data when student toggle is persisted', function() {
+        expect(attemptOverviewPage.getStudents().count()).toBe(3);
         studentResultsPage.nav.goToSets();
     });
 });

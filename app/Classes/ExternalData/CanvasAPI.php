@@ -34,14 +34,21 @@ class CanvasAPI
     {
         $assignmentUrl = $this->canvasDomain . '/courses/' . $courseId . '/assignments/' . $assignmentId;
         $JSONresponse = $this->curlGet($assignmentUrl, $this->apiToken, false, false, false);
-        $header = null;
-        $body = null;
-        list($header, $body) = explode("\r\n\r\n", $JSONresponse, 2); //assigns header and body to the right portions of the response
-        $assignment = json_decode($body, true);
+
+        $assignment = $this->getResponseBody($JSONresponse);
+
+        // See if error exists
+        $errorMessage = $this->getApiError($assignment);
+
+        if ($errorMessage) {
+            abort(500, 'Error retrieving assignment from the Canvas API. Canvas API returned: ' . $errorMessage);
+        }
+
         //convert dueAt from ISO8601 to Unix timestamp
         if (array_key_exists('due_at', $assignment)) { //only convert to time if there is a due date
             $assignment['due_at'] = date("U", strtotime($assignment['due_at']));
         }
+
         return $assignment;
     }
 
@@ -72,15 +79,17 @@ class CanvasAPI
         if ($includeStudentCount) {
             $includeStudentCount = 'total_students'; //specify what to include from API
         }
-        $JSON_course = $this->curlGet($courseUrl, $this->apiToken, false, $includeStudentCount, false);
-        if (!$JSON_course) {
-            return false;
+        $JSONresponse = $this->curlGet($courseUrl, $this->apiToken, false, $includeStudentCount, false);
+
+        $course = $this->getResponseBody($JSONresponse);
+
+        // See if error exists
+        $errorMessage = $this->getApiError($course);
+
+        if ($errorMessage) {
+            abort(500, 'Error retrieving course from the Canvas API. Canvas API returned: ' . $errorMessage);
         }
-        $header = null;
-        $body = null;
-        //assigns header and body to the right portions of the response
-        list($header, $body) = explode("\r\n\r\n", $JSON_course, 2);
-        $course = json_decode($body, true);
+
         return $course;
     }
 
@@ -94,17 +103,17 @@ class CanvasAPI
     public function getCourseGroups($courseId)
     {
         $courseGroupsUrl = $this->canvasDomain . '/courses/' . $courseId . '/groups';
-        $JSON_courseGroups = $this->curlGet($courseGroupsUrl, $this->apiToken, '100', false, false);
-        if (!$JSON_courseGroups) {
-            return false;
+        $JSONresponse = $this->curlGet($courseGroupsUrl, $this->apiToken, '100', false, false);
+
+        $courseGroups = $this->getResponseBody($JSONresponse);
+
+        // See if error exists
+        $errorMessage = $this->getApiError($courseGroups);
+
+        if ($errorMessage) {
+            abort(500, 'Error retrieving course groups from the Canvas API. Canvas API returned: ' . $errorMessage);
         }
-        //NOTE: we would typically get a potential pagination next page in the header of the response,
-        //but I'm going to optimistically assume there are not going to be 100+ groups in a course!
-        $header = null;
-        $body = null;
-        //assigns header and body to the right portions of the response
-        list($header, $body) = explode("\r\n\r\n", $JSON_courseGroups, 2);
-        $courseGroups = json_decode($body, true);
+
         return $courseGroups;
     }
 
@@ -118,11 +127,17 @@ class CanvasAPI
     public function getGroupUsers($groupId)
     {
         $groupUsersUrl = $this->canvasDomain . '/groups/' . $groupId . '/users';
-        $JSON_groupUsers = $this->curlGet($groupUsersUrl, $this->apiToken, '100', false, false);
-        $header = null;
-        $body = null;
-        list($header, $body) = explode("\r\n\r\n", $JSON_groupUsers, 2);
-        $groupUsers = json_decode($body, true);
+        $JSONresponse = $this->curlGet($groupUsersUrl, $this->apiToken, '100', false, false);
+
+        $groupUsers = $this->getResponseBody($JSONresponse);
+
+        // See if error exists
+        $errorMessage = $this->getApiError($groupUsers);
+
+        if ($errorMessage) {
+            abort(500, 'Error retrieving group users from the Canvas API. Canvas API returned: ' . $errorMessage);
+        }
+
         return $groupUsers;
     }
 
@@ -198,11 +213,17 @@ class CanvasAPI
     public function getUserFromAPIBySISLogin($username)
     {
         $userUrl = $this->canvasDomain . '/users/sis_login_id:' . $username;
-        $JSON_user = $this->curlGet($userUrl, $this->apiToken);
-        $header = null;
-        $body = null;
-        list($header, $body) = explode("\r\n\r\n", $JSON_user, 2);
-        $user = json_decode($body, true);
+        $JSONresponse = $this->curlGet($userUrl, $this->apiToken);
+
+        $user = $this->getResponseBody($JSONresponse);
+
+        // See if error exists
+        $errorMessage = $this->getApiError($user);
+
+        if ($errorMessage) {
+            abort(500, 'Error retrieving user from the Canvas API. Canvas API returned: ' . $errorMessage);
+        }
+
         return $user;
     }
 
@@ -261,6 +282,28 @@ class CanvasAPI
     /************************************************************************/
 
     /**
+    * Determine if an API error was found in the response
+    *
+    * @param  []   $response
+    * @return mixed (string of error message if found, otherwise false if no error found)
+    */
+
+    private function getApiError($response)
+    {
+        $errorMessage = '';
+
+        if (array_key_exists('errors', $response)) {
+            foreach ($response['errors'] as $error) {
+                $errorMessage .= $error['message'];
+            }
+
+            return $errorMessage;
+        }
+
+        return false;
+    }
+
+    /**
     * Get a single submission for a student on an assignment from the Canvas API
     *
     * @param  int  $courseId
@@ -273,10 +316,16 @@ class CanvasAPI
     {
         $submissionUrl = $this->canvasDomain . '/courses/' . $courseId . '/assignments/' . $assignmentId . '/submissions/' . $userId;
         $JSONresponse = $this->curlGet($submissionUrl, $this->apiToken, false, 'assignment');
-        $header = null;
-        $body = null;
-        list($header, $body) = explode("\r\n\r\n", $JSONresponse, 2); //assigns header and body to the right portions of the response
-        $submission = json_decode($body, true);
+
+        $submission = $this->getResponseBody($JSONresponse);
+
+        // See if error exists
+        $errorMessage = $this->getApiError($submission);
+
+        if ($errorMessage) {
+            abort(500, 'Error retrieving submission from the Canvas API. Canvas API returned: ' . $errorMessage);
+        }
+
         return $submission;
     }
 
@@ -296,10 +345,16 @@ class CanvasAPI
         $submissionsUrl = $this->canvasDomain . '/courses/' . $courseId . '/assignments/' . $assignmentId . '/submissions';
         //returns both the header and the body of the API response, so we can determine if pagination is needed
         $JSONresponse = $this->curlGet($submissionsUrl, $this->apiToken, '100', 'assignment', $paginationNumber);
-        $header = null;
-        $body = null;
-        list($header, $body) = explode("\r\n\r\n", $JSONresponse, 2); //assigns header and body to the right portions of the response
-        $submissions = json_decode($body, true);
+
+        $submissions = $this->getResponseBody($JSONresponse);
+        $header = $this->getResponseHeader($JSONresponse);
+
+        // See if error exists
+        $errorMessage = $this->getApiError($submissions);
+
+        if ($errorMessage) {
+            abort(500, 'Error retrieving submissions from the Canvas API. Canvas API returned: ' . $errorMessage);
+        }
 
         //combine previous submissions (if any) and current submissions
         $allSubmissions = array_merge($this->submissions, $submissions);
@@ -332,10 +387,16 @@ class CanvasAPI
     {
         $userUrl = $this->canvasDomain . '/courses/' . $courseId . '/users/' . $userId;
         $JSONresponse = $this->curlGet($userUrl, $this->apiToken);
-        $header = null;
-        $body = null;
-        list($header, $body) = explode("\r\n\r\n", $JSONresponse, 2); //assigns header and body to the right portions of the response
-        $user = json_decode($body, true);
+
+        $user = $this->getResponseBody($JSONresponse);
+
+        // See if error exists
+        $errorMessage = $this->getApiError($user);
+
+        if ($errorMessage) {
+            abort(500, 'Error retrieving user from the Canvas API. Canvas API returned: ' . $errorMessage);
+        }
+
         return $user;
     }
 
@@ -354,10 +415,16 @@ class CanvasAPI
         $usersUrl = $this->canvasDomain . '/courses/' . $courseId . '/users';
         //returns both the header and the body of the API response, so we can determine if pagination is needed
         $JSONresponse = $this->curlGet($usersUrl, $this->apiToken, '600', false, $paginationNumber);
-        $header = null;
-        $body = null;
-        list($header, $body) = explode("\r\n\r\n", $JSONresponse, 2); //assigns header and body to the right portions of the response
-        $users = json_decode($body, true);
+
+        $users = $this->getResponseBody($JSONresponse);
+        $header = $this->getResponseHeader($JSONresponse);
+
+        // See if error exists
+        $errorMessage = $this->getApiError($users);
+
+        if ($errorMessage) {
+            abort(500, 'Error retrieving users from the Canvas API. Canvas API returned: ' . $errorMessage);
+        }
 
         //combine previous submissions (if any) and current submissions
         $allUsers = array_merge($this->users, $users);
@@ -468,5 +535,30 @@ class CanvasAPI
             }
         }
         return $retVal;
+    }
+
+    private function getResponseHeader($jsonResponse) {
+        $responseHeader = null;
+
+        $splitArray = explode("\r\n\r\n", $jsonResponse, 2);
+
+        $responseHeader = $splitArray[0];
+
+        return $responseHeader;
+    }
+
+    private function getResponseBody($jsonResponse) {
+
+        if (!$jsonResponse) {
+            abort(500, 'Error contacting the Canvas API.');
+        }
+
+        $body = null;
+        $splitArray = explode("\r\n\r\n", $jsonResponse, 2); //assigns header and body to the right portions of the response
+        $body = $splitArray[1];
+
+        $responseBody = json_decode($body, true);
+
+        return $responseBody;
     }
 }

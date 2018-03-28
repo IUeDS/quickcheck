@@ -6,6 +6,7 @@ var AttemptOverviewPage = function(browserRef) {
     page.attempts = page.browser.element.all(by.repeater('attempt in vm.attempts'));
     page.searchBox = page.browser.element(by.css('.qc-search-box'));
     page.studentResultsToggle = page.browser.element(by.css('.qc-student-results-toggle label'));
+    page.studentResultsToggleInput = page.browser.element(by.css('.qc-student-results-toggle input'));
     page.students = page.browser.element.all(by.repeater('student in vm.students'));
 
     //sub-string selectors
@@ -17,6 +18,7 @@ var AttemptOverviewPage = function(browserRef) {
     page.getAttempts = getAttempts;
     page.getStudentResultsToggle = getStudentResultsToggle;
     page.getStudents = getStudents;
+    page.isStudentToggleEnabled = isStudentToggleEnabled;
     page.search = search;
 
     function clearSearch() {
@@ -41,6 +43,10 @@ var AttemptOverviewPage = function(browserRef) {
 
     function getStudents() {
         return page.students;
+    }
+
+    function isStudentToggleEnabled() {
+        return page.studentResultsToggleInput.getAttribute('checked');
     }
 
     function search(text) {
