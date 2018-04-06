@@ -135,8 +135,7 @@ class LtiConfig {
             'custom_canvas_courseSection_id' => '$CourseSection.sourcedId',
             'custom_canvas_section_id' => '$Canvas.course.sectionIds',
             'custom_canvas_user_id' => '$Canvas.user.id',
-            'custom_canvas_user_login_id' => '$Canvas.user.loginId',
-            'lis_course_offering_sourcedid' => '$CourseOffering.sourcedId'
+            'custom_canvas_user_login_id' => '$Canvas.user.loginId'
         ];
 
         foreach ($customVars as $varName => $customVar) {

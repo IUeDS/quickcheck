@@ -191,8 +191,12 @@ class LtiContext {
         $thisAssessment['course_context_id'] = $this->getCourseContextIdFromSession($request);
 
         //data needed for Caliper events:
+        $courseSisId = null;
+        if ($request->has('lis_course_offering_sourcedid')) {
+            $courseSisId = $request->lis_course_offering_sourcedid;
+        }
+        $thisAssessment['lis_course_offering_sourcedid'] = $courseSisId;
         $thisAssessment['oauth_nonce'] = $request->oauth_nonce;
-        $thisAssessment['lis_course_offering_sourcedid'] = $request->lis_course_offering_sourcedid;
         $thisAssessment['resource_link_id'] = $request->resource_link_id;
 
         $currentAssessments[$assessmentId] = $thisAssessment;
