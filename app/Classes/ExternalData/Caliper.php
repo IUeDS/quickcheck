@@ -23,11 +23,15 @@ class Caliper
     *
     * @param  string  $action
     * @param  Attempt $attempt
-    * @return []
+    * @return mixed (array on success, null if unable to build event)
     */
 
     public function buildBaseEventData($action, $attempt)
     {
+        if ($attempt->isAnonymous()) { //if no LTI data, can't build Caliper event
+            return null;
+        }
+
         $eventData = [];
         $eventData['isEnabled'] = $this->isEnabled();
         $eventData['sensorHost'] = $this->sensorHost;

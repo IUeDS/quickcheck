@@ -377,6 +377,23 @@ class Attempt extends Eloquent {
     }
 
     /**
+    * Determine if the attempt is anonymous (outside of LTI context, such as a preview)
+    *
+    * @return boolean
+    */
+
+    public function isAnonymous()
+    {
+        //using course context id for determining, as a course context
+        //can only be determined inside of an LTI launch
+        if (!$this->course_context_id) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
     * Determine if the attempt is complete
     *
     * @return boolean
