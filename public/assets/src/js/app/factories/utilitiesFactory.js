@@ -364,7 +364,7 @@ function QcUtils($timeout, $location, $window, $rootScope) {
                     height = $('body').height() - utils.scrollingLtiHeight;
                 }
 
-                window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height +'px'}), '*');
+                window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
             }, 0, false);
         }
 

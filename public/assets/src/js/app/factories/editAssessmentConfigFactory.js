@@ -53,7 +53,7 @@ function editAssessmentConfigFactory() {
             'paste textcolor colorpicker textpattern imagetools mathquill'];
 
         var tinymceToolbar = 'undo redo | styleselect | bold italic | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | link image mathquill';
+            'alignright alignjustify ltr rtl | bullist numlist outdent indent | link image mathquill';
 
         return {
             plugins: tinymcePlugins,
