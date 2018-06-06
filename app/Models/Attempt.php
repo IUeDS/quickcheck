@@ -4,6 +4,7 @@ use DateTime;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Http\Request;
 use App\Classes\ExternalData\CanvasAPI;
+use App\Classes\ExternalData\Caliper;
 use App\Classes\LTI\Outcome;
 use App\Classes\LTI\Grade;
 use App\Models\CourseContext;
@@ -312,6 +313,30 @@ class Attempt extends Eloquent {
     }
 
     /**
+    * Return the url of the LTI consumer (derived from outcome service url)
+    *
+    * @return string
+    */
+
+    public function getLtiConsumerUrl()
+    {
+        $outcomeServiceUrl = $this->lis_outcome_service_url;
+        $splitUrl = explode('/api/', $outcomeServiceUrl);
+        return $splitUrl[0];
+    }
+
+    /**
+    * Return the foreign key ID of the student this attempt belongs to
+    *
+    * @return int
+    */
+
+    public function getStudentId()
+    {
+        return $this->student_id;
+    }
+
+    /**
     * Initialize an attempt for a given assessment_id;
     * Writes a record in the database for the attempt, and can create either LTI or anonymous attempts;
     *
@@ -324,6 +349,7 @@ class Attempt extends Eloquent {
         $attemptType = $this->getAttemptType($request);
         $attempt = null;
         $groupName = null;
+        $caliperData = null;
 
         if ($attemptType === 'LTI') {
             $attempt = $this->initLtiAttempt($assessmentId, $request);
@@ -337,7 +363,34 @@ class Attempt extends Eloquent {
             $groupName = $this->getGroupName($attemptType, $attempt);
         }
 
-        return ['attemptId' => $attempt->id, 'attemptType' => $attemptType, 'groupName' => $groupName];
+        $caliper = new Caliper();
+        if ($caliper->isEnabled()) {
+            $caliperData = $caliper->buildAssessmentStartedEventData($attempt);
+        }
+
+        return [
+            'attemptId' => $attempt->id,
+            'attemptType' => $attemptType,
+            'caliper' => $caliperData,
+            'groupName' => $groupName
+        ];
+    }
+
+    /**
+    * Determine if the attempt is anonymous (outside of LTI context, such as a preview)
+    *
+    * @return boolean
+    */
+
+    public function isAnonymous()
+    {
+        //using course context id for determining, as a course context
+        //can only be determined inside of an LTI launch
+        if (!$this->course_context_id) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -413,13 +466,23 @@ class Attempt extends Eloquent {
     */
 
     public function updateAttempt($attemptData) {
+        $caliperData = null;
         $this->saveOptionalParams($attemptData);
         //sometimes score is passed explicitly in custom activities; otherwise, calculate based on assessment
         if (!array_key_exists('calculated_score', $attemptData)) {
             $this->calculated_score = $this->getScore();
         }
         $this->save();
-        return ['displayedScore' => $this->calculated_score];
+
+        $caliper = new Caliper();
+        if ($this->isComplete() && $caliper->isEnabled()) {
+            $caliperData = $caliper->buildAssessmentSubmittedEventData($this);
+        }
+
+        return [
+            'caliper' => $caliperData,
+            'displayedScore' => $this->calculated_score
+        ];
     }
 
     /************************************************************************/
