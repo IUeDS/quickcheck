@@ -76,8 +76,7 @@ class Caliper
     public function isEnabled()
     {
         //only enabled if in production environment
-        //TEMP/TODO: while testing, also include dev; to be removed after testing complete
-        if (!App::environment(['dev', 'prod'])) {
+        if (!App::environment('prod')) {
             return false;
         }
 
