@@ -14,6 +14,7 @@ angular.module('qcApp.shared', [
 angular.module('qcApp.services', [
     'assessmentService',
     'assessmentEditService',
+    'caliperForwarderService',
     'collectionService',
     'configService',
     'customActivityService',
@@ -25,6 +26,7 @@ angular.module('qcApp.services', [
 
 //factories
 angular.module('qcApp.factories', [
+    'caliperFactory',
     'editAssessmentConfigFactory',
     'submissionFactory',
     'utilitiesFactory'

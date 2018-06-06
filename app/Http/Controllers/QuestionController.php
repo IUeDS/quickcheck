@@ -56,7 +56,7 @@ class QuestionController extends \BaseController {
 
         //update the attempt
         $attemptResult = $attempt->updateAttempt($attemptData);
-        $clientResponse['displayedScore'] = $attemptResult['displayedScore'];
+        $clientResponse = array_merge($clientResponse, $attemptResult);
 
         //return to the client
         return response()->success($clientResponse);

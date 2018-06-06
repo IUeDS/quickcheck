@@ -62,6 +62,54 @@ class LtiContext {
     }
 
     /**
+    * Get the course offering sourcedid for the current launch
+    *
+    * @param  int  $assessmentId
+    * @return string
+    */
+
+    public function getCourseOfferingSourcedid($assessmentId)
+    {
+        return $this->getAssessmentValueFromSession($assessmentId, 'lis_course_offering_sourcedid');
+    }
+
+    /**
+    * Get the nonce for the current launch
+    *
+    * @param  int  $assessmentId
+    * @return string
+    */
+
+    public function getNonce($assessmentId)
+    {
+        return $this->getAssessmentValueFromSession($assessmentId, 'oauth_nonce');
+    }
+
+    /**
+    * Get the person sourcedid for the current logged-in user
+    *
+    * @return string
+    */
+
+    public function getPersonSourcedid()
+    {
+        $studentData = Session::get($this->studentContextKey);
+        return $studentData['lis_person_sourcedid'];
+    }
+
+    /**
+    * Get the resource link ID for the current launch
+    *
+    * @param  int  $assessmentId
+    * @return string
+    */
+
+    public function getResourceLinkId($assessmentId)
+    {
+        return $this->getAssessmentValueFromSession($assessmentId, 'resource_link_id');
+    }
+
+    /**
     * Get the user's login ID to Canvas from BLTI session
     *
     * @return string $custom_canvas_user_login_id
@@ -115,7 +163,9 @@ class LtiContext {
         $currentAssessments = $request->session()->get($this->assessmentsContextKey);
         if (array_key_exists($assessmentId, $currentAssessments)) {
             //if assessment info already in session from previous attempt,
+            //update the oauth nonce, which changes with every launch, then
             //verify that due at time is still the same (update if not) and return
+            $this->updateNonce($request, $currentAssessments, $assessmentId);
             $this->verifyDueAt($request, $currentAssessments, $assessmentId);
             return;
         }
@@ -139,6 +189,15 @@ class LtiContext {
             $this->initCourseContext($request);
         }
         $thisAssessment['course_context_id'] = $this->getCourseContextIdFromSession($request);
+
+        //data needed for Caliper events:
+        $courseSisId = null;
+        if ($request->has('lis_course_offering_sourcedid')) {
+            $courseSisId = $request->lis_course_offering_sourcedid;
+        }
+        $thisAssessment['lis_course_offering_sourcedid'] = $courseSisId;
+        $thisAssessment['oauth_nonce'] = $request->oauth_nonce;
+        $thisAssessment['resource_link_id'] = $request->resource_link_id;
 
         $currentAssessments[$assessmentId] = $thisAssessment;
         $request->session()->put($this->assessmentsContextKey, $currentAssessments);
@@ -331,7 +390,26 @@ class LtiContext {
             $student = new Student();
             $student->initialize($request);
         }
-        $request->session()->put($this->studentContextKey, $student->toArray());
+
+        $userData = $student->toArray();
+        //needed this piece of data for Caliper events
+        $userData['lis_person_sourcedid'] = $request->lis_person_sourcedid;
+        $request->session()->put($this->studentContextKey, $userData);
+    }
+
+    /**
+    * Update nonce in session when assessment is re-launched.
+    *
+    * @param  Request  $request
+    * @param  []  $currentAssessments
+    * @param  int $assessmentId
+    * @return void
+    */
+
+    private function updateNonce(Request $request, $currentAssessments, $assessmentId)
+    {
+        $currentAssessments[$assessmentId]['oauth_nonce'] = $request->oauth_nonce;
+        $request->session()->put($this->assessmentsContextKey, $currentAssessments);
     }
 
     /**
