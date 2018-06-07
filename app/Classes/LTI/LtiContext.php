@@ -94,6 +94,15 @@ class LtiContext {
     public function getPersonSourcedid()
     {
         $studentData = Session::get($this->studentContextKey);
+
+        if (!$studentData) {
+            return false;
+        }
+
+        if (!array_key_exists('lis_person_sourcedid', $studentData)) {
+            return false;
+        }
+
         return $studentData['lis_person_sourcedid'];
     }
 
@@ -127,17 +136,6 @@ class LtiContext {
         }
 
         return $student['lti_custom_canvas_user_login_id'];
-    }
-
-    /**
-    * Get sourcedId of the assignment from the BLTI session (sourcedId is used for grade passback)
-    *
-    * @return string $lis_result_sourcedid
-    */
-
-    public function getSourcedIdFromSession($assessmentId)
-    {
-        return $this->getAssessmentValueFromSession($assessmentId, 'lis_result_sourcedid');
     }
 
     /**
@@ -265,13 +263,20 @@ class LtiContext {
 
     private function getAssessmentValueFromSession($assessmentId, $key)
     {
-        if (Session::has($this->assessmentsContextKey)) {
-            $currentAssessments = Session::get($this->assessmentsContextKey);
-            if (array_key_exists($assessmentId, $currentAssessments)) {
-                return $currentAssessments[$assessmentId][$key];
-            }
+        if (!Session::has($this->assessmentsContextKey)) {
+            return false;
         }
-        return false;
+
+        $currentAssessments = Session::get($this->assessmentsContextKey);
+        if (!array_key_exists($assessmentId, $currentAssessments)) {
+            return false;
+        }
+
+        if (!array_key_exists($key, $currentAssessments[$assessmentId])) {
+            return false;
+        }
+
+        return $currentAssessments[$assessmentId][$key];
     }
 
     /**
