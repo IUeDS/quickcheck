@@ -59,6 +59,17 @@ class CollectionFeature extends Eloquent {
     }
 
     /**
+    * Determine if attempt timeout is enabled for the collection an assessment belongs to
+    *
+    * @param  int  $assessmentId
+    * @return boolean
+    */
+
+    public function isAttemptTimeoutEnabled($assessmentId) {
+        return $this->isFeatureEnabled($assessmentId, config('constants.features.ATTEMPT_TIMEOUT'));
+    }
+
+    /**
     * Determine if automatic grade passback is enabled for the collection an assessment belongs to
     *
     * @param  int  $assessmentId

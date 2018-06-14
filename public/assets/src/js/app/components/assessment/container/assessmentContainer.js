@@ -36,6 +36,7 @@ function AssessmentController($location, $sce, Assessment, Caliper, Utilities) {
     vm.preview = false; //if preview query param in URL, send to server, valid LTI session not needed
     vm.score = 0;
     vm.studentAnswer = null;
+    vm.timeoutSecondsRemaining = null; //seconds of timeout remaining, if feature enabled
     vm.utils = new Utilities();
 
     //functions
@@ -53,10 +54,12 @@ function AssessmentController($location, $sce, Assessment, Caliper, Utilities) {
     vm.onAnswerSelection = onAnswerSelection;
     vm.onCompletion = onCompletion;
     vm.parseCaliperData = parseCaliperData;
+    vm.parseTimeoutData = parseTimeoutData;
     vm.resetQuestionVariables = resetQuestionVariables;
     vm.restart = restart;
     vm.showErrorModal = showErrorModal;
     vm.showFeedback = showFeedback;
+    vm.showTimeoutModal = showTimeoutModal;
     vm.shuffleAnswerOptions = shuffleAnswerOptions;
     vm.shuffleQuestions = shuffleQuestions;
     vm.submitAnswer = submitAnswer;
@@ -78,6 +81,7 @@ function AssessmentController($location, $sce, Assessment, Caliper, Utilities) {
                 var data = vm.utils.getResponseData(resp);
                 vm.attemptId = data.attemptId;
                 vm.parseCaliperData(data);
+                vm.parseTimeoutData(data);
                 vm.utils.loadingFinished();
             }, function (resp) {
                 var serverError = vm.utils.getQuizError(resp),
@@ -256,6 +260,14 @@ function AssessmentController($location, $sce, Assessment, Caliper, Utilities) {
         vm.caliper.forwardEvent(caliperData);
     }
 
+    function parseTimeoutData(data) {
+        if (!data.timeoutRemaining || data.timeoutRemaining <= 0) {
+            return;
+        }
+
+        vm.showTimeoutModal(data.timeoutRemaining);
+    }
+
     function resetQuestionVariables() {
         vm.currentQuestion = null;
         vm.studentAnswer = null;
@@ -291,6 +303,11 @@ function AssessmentController($location, $sce, Assessment, Caliper, Utilities) {
             vm.utils.formatMath(); //if equations are shown in the feedback
             vm.utils.focusToElement('.qc-continue-btn');
         }
+    }
+
+    function showTimeoutModal(timeoutSecondsRemaining) {
+        vm.timeoutSecondsRemaining = timeoutSecondsRemaining;
+        vm.modalVisible = true;
     }
 
     //if any of the questions have random order for the answer options, then shuffle them

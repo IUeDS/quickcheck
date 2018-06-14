@@ -10,34 +10,34 @@ use App\Models\Collection;
 class TimeoutFeature extends Command
 {
     /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    * The name and signature of the console command.
+    *
+    * @var string
+    */
     protected $signature = 'feature:timeout {action}';
 
     /**
-     * The console command description.
-     *
-     * @var string
-     */
+    * The console command description.
+    *
+    * @var string
+    */
     protected $description = 'Add or remove the experimental, admin-only set feature to impose a timeout when students have made too many attempts in a short period of time (indicating they are clicking mindlessly through answers). Use the "add" argument to add the feature to all sets, or the "remove" argument to remove from all sets.';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
+    * Create a new command instance.
+    *
+    * @return void
+    */
     public function __construct()
     {
         parent::__construct();
     }
 
     /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
+    * Execute the console command.
+    *
+    * @return mixed
+    */
     public function handle()
     {
         $action = $this->argument('action');
