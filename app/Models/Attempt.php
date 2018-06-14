@@ -39,7 +39,7 @@ class Attempt extends Eloquent {
     public $TIMEOUT_MAX_COUNT = 2;
     public $TIMEOUT_MILESTONE = 'timeout';
     public $TIMEOUT_LENGTH = '2 minutes';
-
+    public $TIMEOUT_SESSION_KEY = 'timeoutEnd';
 
     public function assessment() {
         return $this->belongsTo('App\Models\Assessment');
@@ -613,6 +613,30 @@ class Attempt extends Eloquent {
     }
 
     /**
+    * Get time in seconds remaining in timeout based on session data;
+    * session value allows for timeout periods that last longer than the
+    * boundary period (i.e., 1 minute window for attempts but 2 minute timeout)
+    *
+    * @param  Request  $request
+    * @return mixed (int if value in session and in future, otherwise false)
+    */
+
+    private function getTimeoutInSession(Request $request) {
+        $timeoutEnd = $request->session()->get($this->TIMEOUT_SESSION_KEY);
+        if (!$timeoutEnd) {
+            return false;
+        }
+
+        $now = new DateTime();
+        $timeRemaining = $timeoutEnd - $now->getTimestamp();
+        if ($timeRemaining <= 0) {
+            return false;
+        }
+
+        return $timeRemaining;
+    }
+
+    /**
     * Get time in seconds of timeout time remaining if feature enabled in collection
     *
     * @param  Request  $request
@@ -624,6 +648,11 @@ class Attempt extends Eloquent {
             return 0;
         }
 
+        $timeoutRemainingInSession = $this->getTimeoutInSession($request);
+        if ($timeoutRemainingInSession) {
+            return $timeoutRemainingInSession;
+        }
+
         $recentAttempts = $this->getAttemptsInTimeoutWindow();
         if ($recentAttempts->count() < $this->TIMEOUT_MAX_COUNT) {
             return 0;
@@ -632,8 +661,11 @@ class Attempt extends Eloquent {
         $lastValidAttempt = $recentAttempts->last();
         $endTimeout = new DateTime($lastValidAttempt->updated_at);
         $endTimeout->modify('+' . $this->TIMEOUT_LENGTH);
+        $endTimeoutTimestamp = $endTimeout->getTimestamp();
+        $this->setTimeoutInSession($request, $endTimeoutTimestamp);
+
         $now = new DateTime();
-        $timeRemaining = $endTimeout->getTimestamp() - $now->getTimestamp(); //difference in seconds
+        $timeRemaining = $endTimeoutTimestamp - $now->getTimestamp(); //difference in seconds
 
         return $timeRemaining;
     }
@@ -708,5 +740,17 @@ class Attempt extends Eloquent {
                 $this->setAttribute($optionalParam, $attemptData[$optionalParam]);
             }
         }
+    }
+
+    /**
+    * If timeout feature turned on, set the end of the timeout in the session with a timestamp
+    *
+    * @param  Request $request
+    * @param  int     $endTimeoutTimestamp
+    * @return void
+    */
+
+    private function setTimeoutInSession(Request $request, $endTimeoutTimestamp) {
+        $request->session()->put($this->TIMEOUT_SESSION_KEY, $endTimeoutTimestamp);
     }
 }
