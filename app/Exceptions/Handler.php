@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Log;
 use Request;
+use Session;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -137,6 +138,7 @@ class Handler extends ExceptionHandler
     {
         $requestInfo = "\nUrl: " . Request::url();
         $requestInfo .= "\nInput: " . json_encode(Request::all());
+        $requestInfo .= "\nSession: " . json_encode(Session::all());
         $requestInfo .= "\nUser agent: " . Request::header('User-Agent') . "\n";
         return $requestInfo;
     }

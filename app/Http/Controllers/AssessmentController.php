@@ -92,6 +92,7 @@ class AssessmentController extends \BaseController
         if (!$ltiContext->isInLtiContext()) {
             $ltiContext->initContext($request);
         }
+        $ltiContext->validateLaunch($request); //check required params every launch
         $ltiContext->initAssessmentContext($request, $assessmentId);
 
         $assessment = Assessment::findOrFail($assessmentId);
