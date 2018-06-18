@@ -658,9 +658,11 @@ class Attempt extends Eloquent {
             return 0;
         }
 
+        //timeout length can be specified in env, but defaults to constant defined in class
+        $timeoutLength = env('TIMEOUT_LENGTH', $this->TIMEOUT_LENGTH);
         $lastValidAttempt = $recentAttempts->last();
         $endTimeout = new DateTime($lastValidAttempt->updated_at);
-        $endTimeout->modify('+' . $this->TIMEOUT_LENGTH);
+        $endTimeout->modify('+' . $timeoutLength);
         $endTimeoutTimestamp = $endTimeout->getTimestamp();
         $this->setTimeoutInSession($request, $endTimeoutTimestamp);
 

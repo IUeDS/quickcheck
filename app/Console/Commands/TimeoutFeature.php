@@ -21,7 +21,7 @@ class TimeoutFeature extends Command
     *
     * @var string
     */
-    protected $description = 'Add or remove the experimental, admin-only set feature to impose a timeout when students have made too many attempts in a short period of time (indicating they are clicking mindlessly through answers). Use the "add" argument to add the feature to all sets, or the "remove" argument to remove from all sets.';
+    protected $description = 'Add or remove the experimental, admin-only set feature to impose a timeout when students have made too many attempts in a short period of time (indicating they are clicking randomly through answers). Use the "add" argument to add the feature to all sets, or the "remove" argument to remove from all sets.';
 
     /**
     * Create a new command instance.
@@ -55,7 +55,7 @@ class TimeoutFeature extends Command
 
         $feature = Feature::create([
             'name' => config('constants.features.ATTEMPT_TIMEOUT'),
-            'description' => 'When the system detects excessive attempts made by a student (more than 5 attempts in 5 minutes, where at least one question has been answered per attempt, and before the due date), the student will receive a 1 minute timeout.',
+            'description' => 'When the system detects excessive attempts made by a student (more than 2 attempts in 1 minute, where at least one question has been answered per attempt, and on a graded assignment before the due date), the student will receive a 2 minute timeout, to deter random guessing of answers.',
             'default_state' => 'false',
             'admin_only' => 'true'
         ]);
