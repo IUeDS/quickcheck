@@ -34,8 +34,12 @@ var QcPage = function(browserRef) {
     page.selectables = page.browser.element.all(by.css('.qc-selectable-answer-option'));
     page.selects = page.browser.element.all(by.css('select')); //keeping this generic for both matching/dropdowns
     page.score = page.browser.element(by.css('.qc-current-score'));
+    page.startOverBtn = page.browser.element(by.css('.qc-restart'));
     page.submitBtn = page.browser.element(by.css('.qc-submit-response'));
     page.textmatchInput = page.browser.element(by.css('input[type="text"]'));
+    page.timeoutModal = page.browser.element(by.css('#qc-assessment-timeout-modal'));
+    page.timeoutRestartBtn = page.browser.element(by.css('#qc-assessment-timeout-modal .qc-btn-restart-assessment'));
+    page.timeoutTimer = page.browser.element(by.css('.qc-timeout-timer'));
     page.title = page.browser.element(by.css('.qc-assessment-title'));
 
     //substring selectors
@@ -67,6 +71,9 @@ var QcPage = function(browserRef) {
     page.getSelects = getSelects;
     page.getScore = getScore;
     page.getTextmatchInput = getTextmatchInput;
+    page.getTimeoutModal = getTimeoutModal;
+    page.getTimeoutRestartBtn = getTimeoutRestartBtn;
+    page.getTimeoutTimer = getTimeoutTimer;
     page.getTitle = getTitle;
     page.isCompletionModalVisible = isCompletionModalVisible;
     page.isCorrectModal = isCorrectModal;
@@ -85,6 +92,7 @@ var QcPage = function(browserRef) {
     page.selectMatrixCheckboxByIndex = selectMatrixCheckboxByIndex;
     page.selectMcOptionByIndex = selectMcOptionByIndex;
     page.selectOption = selectOption;
+    page.startOver = startOver;
     page.submit = submit;
     page.waitForModalClose = waitForModalClose;
 
@@ -185,6 +193,18 @@ var QcPage = function(browserRef) {
 
     function getTextmatchInput() {
         return page.textmatchInput;
+    }
+
+    function getTimeoutModal() {
+        return page.timeoutModal;
+    }
+
+    function getTimeoutRestartBtn() {
+        return page.timeoutRestartBtn;
+    }
+
+    function getTimeoutTimer() {
+        return page.timeoutTimer;
     }
 
     function getTitle() {
@@ -293,6 +313,7 @@ var QcPage = function(browserRef) {
 
     function restart() {
         page.browser.wait(EC.visibilityOf(page.modalCompletion));
+        page.browser.sleep(1000); //make sure modal animation is fully complete
         page.restartBtn.click();
         page.browser.sleep(1000);
     }
@@ -326,6 +347,11 @@ var QcPage = function(browserRef) {
         var select = page.getSelects().get(selectIndex);
         page.waitForModalClose(select);
         select.sendKeys(text);
+    }
+
+    function startOver() {
+        page.startOverBtn.click();
+        page.browser.sleep(1000);
     }
 
     function submit() {

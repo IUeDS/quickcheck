@@ -307,6 +307,7 @@ function AssessmentController($location, $sce, Assessment, Caliper, Utilities) {
 
     function showTimeoutModal(timeoutSecondsRemaining) {
         vm.timeoutSecondsRemaining = timeoutSecondsRemaining;
+        $('#qc-assessment-timeout-modal').modal({backdrop: 'static', keyboard: false});
         vm.modalVisible = true;
     }
 

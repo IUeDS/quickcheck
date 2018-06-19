@@ -9,9 +9,9 @@ app.component('qcTimeoutModal', {
     }]
 });
 
-TimeoutModalController.$inject = ['$timeout'];
+TimeoutModalController.$inject = ['$interval'];
 
-function TimeoutModalController($timeout) {
+function TimeoutModalController($interval) {
     var vm = this;
 
     vm.countdownAnimation = null; //path for svg to animate
@@ -24,20 +24,27 @@ function TimeoutModalController($timeout) {
     vm.timeoutMsRemaining = 0;
     vm.timeoutSecondsRemaining = 0;
     vm.timeoutStartedTime = null;
+    vm.timerInterval = null;
 
-    vm.$onInit = $onInit;
+    vm.$onChanges = $onChanges;
     vm.incrementTimer = incrementTimer;
     vm.restart = restart;
     vm.runTimer = runTimer;
 
-    function $onInit() {
+    function $onChanges(changesObj) {
+        var timeoutSecondsRemaining = changesObj.timeoutSecondsRemaining.currentValue;
+
+        if (!timeoutSecondsRemaining) {
+            return false;
+        }
+
+        vm.timeoutSecondsRemaining = timeoutSecondsRemaining;
         vm.timeoutStartedTime = moment();
         vm.timeoutFinishedTime = moment().add(vm.timeoutSecondsRemaining, 'seconds');
         vm.timeoutMsRemaining = vm.timeoutSecondsRemaining * 1000;
         //the amount of the circle that should be incremented on each repaint; calculated as
         //a proportion of total degrees in circle and repaint time divided by total time
         vm.countdownIncrement = (vm.countdownRepaint * 360) / vm.timeoutMsRemaining;
-        $('#qc-assessment-timeout-modal').modal({backdrop: 'static', keyboard: false});
         vm.runTimer();
     }
 
@@ -56,6 +63,7 @@ function TimeoutModalController($timeout) {
 
         if (now.isSameOrAfter(vm.timeoutFinishedTime)) {
             vm.timeoutFinished = true;
+            $interval.cancel(vm.timerInterval);
             return;
         }
 
@@ -69,7 +77,6 @@ function TimeoutModalController($timeout) {
         vm.countdownAnimation = 'M 0 0 v -' + vm.countdownRadius +
             ' A ' + vm.countdownRadius + ' ' + vm.countdownRadius +
             ' 1 ' + mid + ' 1 ' + x + ' ' + y + ' z';
-        vm.runTimer();
     }
 
     function restart() {
@@ -78,7 +85,7 @@ function TimeoutModalController($timeout) {
     }
 
     function runTimer() {
-        $timeout(function() {
+        vm.timerInterval = $interval(function() {
             vm.incrementTimer();
         }, vm.countdownRepaint);
     }

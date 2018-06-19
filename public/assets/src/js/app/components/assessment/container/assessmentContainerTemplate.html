@@ -78,11 +78,11 @@
             qc-points-possible="vm.pointsPossible"
             qc-score="vm.score">
         </qc-completion-modal>
+        <qc-timeout-modal
+            qc-timeout-seconds-remaining="vm.timeoutSecondsRemaining">
+        </qc-timeout-modal>
         <qc-error-modal ng-if="vm.errorMessage"
             qc-error-message="vm.errorMessage">
         </qc-error-modal>
-        <qc-timeout-modal ng-if="vm.timeoutSecondsRemaining"
-            qc-timeout-seconds-remaining="vm.timeoutSecondsRemaining">
-        </qc-timeout-modal>
     </div>
 </main>
