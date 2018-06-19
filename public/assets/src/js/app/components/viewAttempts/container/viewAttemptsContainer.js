@@ -195,6 +195,10 @@ function ViewAttemptsController($location, Manage, Submission, Utilities) {
         if (vm.isLargeClassSize()) {
             vm.largeClassSize = true;
         }
+        //no need for infinite scrolling if a small amount of attempts
+        if (vm.attempts.length <= 100) {
+            vm.utils.removeScrollHeight();
+        }
     }
 
     function isAttemptsView() {
