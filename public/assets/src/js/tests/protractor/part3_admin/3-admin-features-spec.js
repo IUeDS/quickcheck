@@ -15,7 +15,7 @@ describe('Viewing set features as an admin', function() {
 
     it('should show both standard features and admin-only features', function() {
         viewSetsPage.toggleAdminViewAllSets();
-        set = viewSetsPage.getMembershipTiles().first();
+        set = viewSetsPage.getAdminSetTiles().first();
         viewSetsPage.getGoToSetBtn(set).click();
         setPage.openFeaturesAccordion();
         features = setPage.featurePanel.getFeatures();
