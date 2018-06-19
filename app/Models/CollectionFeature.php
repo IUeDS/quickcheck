@@ -32,16 +32,41 @@ class CollectionFeature extends Eloquent {
     public function addDefaultFeatures($collectionId) {
         $features = Feature::all();
         foreach ($features as $feature) {
-            $collectionFeature = new CollectionFeature;
-            $collectionFeature->collection_id = $collectionId;
-            $collectionFeature->feature_id = $feature->id;
-            $collectionFeature->enabled = $feature->default_state;
-            $result = $collectionFeature->save();
+            $result = $this->addFeature($collectionId, $feature);
             if (!$result) {
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+    * Add a feature to a collection
+    *
+    * @param  int  $collectionId
+    * @param  Feature  $feature
+    * @return boolean (true on success, false on failure)
+    */
+
+    public function addFeature($collectionId, $feature) {
+        $collectionFeature = new CollectionFeature;
+        $collectionFeature->collection_id = $collectionId;
+        $collectionFeature->feature_id = $feature->id;
+        $collectionFeature->enabled = $feature->default_state;
+        $result = $collectionFeature->save();
+
+        return $result;
+    }
+
+    /**
+    * Determine if attempt timeout is enabled for the collection an assessment belongs to
+    *
+    * @param  int  $assessmentId
+    * @return boolean
+    */
+
+    public function isAttemptTimeoutEnabled($assessmentId) {
+        return $this->isFeatureEnabled($assessmentId, config('constants.features.ATTEMPT_TIMEOUT'));
     }
 
     /**
@@ -52,7 +77,7 @@ class CollectionFeature extends Eloquent {
     */
 
     public function isGradePassbackEnabled($assessmentId) {
-        return $this->isFeatureEnabled($assessmentId, 'Automatic grade passback');
+        return $this->isFeatureEnabled($assessmentId, config('constants.features.AUTOMATIC_GRADE_PASSBACK'));
     }
 
     /**
@@ -63,7 +88,7 @@ class CollectionFeature extends Eloquent {
     */
 
     public function areEmptyAttemptsHidden($assessmentId) {
-        return $this->isFeatureEnabled($assessmentId, 'Hide empty attempts');
+        return $this->isFeatureEnabled($assessmentId, config('constants.features.HIDE_EMPTY_ATTEMPTS'));
     }
 
     /**
@@ -74,7 +99,7 @@ class CollectionFeature extends Eloquent {
     */
 
     public function isViewableResponsesEnabled($assessmentId) {
-        return $this->isFeatureEnabled($assessmentId, 'Show responses in student view');
+        return $this->isFeatureEnabled($assessmentId, config('constants.features.STUDENT_VIEW_RESPONSES'));
     }
 
     /************************************************************************/

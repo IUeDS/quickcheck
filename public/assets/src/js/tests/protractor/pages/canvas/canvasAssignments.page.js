@@ -15,9 +15,11 @@ var CanvasAssignmentsPage = function(browserRef) {
     page.ltiContent = page.browser.element(by.css('.tool_content_wrapper'));
     page.modulesLink = page.browser.element(by.css('#section-tabs .modules'));
     page.nameInput = page.browser.element(by.css('#assignment_name'));
+    page.navSettingsLink = page.browser.element(by.css('#section-tabs .settings'));
     page.newAssignmentBtn = page.browser.element(by.css('.new_assignment'));
     page.pointsPossible = page.browser.element(by.css('#assignment_points_possible'));
     page.saveBtn = page.browser.element(by.css('.save_and_publish'));
+    page.studentViewBtn = page.browser.element(by.css('.student_view_button'));
     page.submissionType = page.browser.element(by.css('#assignment_submission_type'));
     page.toolLink = page.browser.element(by.css('#context_external_tools_select')).element(by.partialLinkText(page.common.toolEmbedName));
 
@@ -29,6 +31,8 @@ var CanvasAssignmentsPage = function(browserRef) {
     page.getAssignmentLink = getAssignmentLink;
     page.goToAssignments = goToAssignments;
     page.goToModules = goToModules;
+    page.goToSettings = goToSettings;
+    page.goToStudentView = goToStudentView;
     page.openAssignment = openAssignment;
     page.saveEmbed = saveEmbed;
     page.selectExternalTool = selectExternalTool;
@@ -74,6 +78,17 @@ var CanvasAssignmentsPage = function(browserRef) {
     function goToModules() {
         page.browser.wait(EC.presenceOf(page.modulesLink), page.maxWait);
         page.modulesLink.click();
+    }
+
+    function goToSettings() {
+        page.browser.wait(EC.elementToBeClickable(page.navSettingsLink));
+        page.navSettingsLink.click();
+    }
+
+    function goToStudentView() {
+        page.goToSettings();
+        page.browser.wait(EC.elementToBeClickable(page.studentViewBtn));
+        page.studentViewBtn.click();
     }
 
     function openAssignment(assignmentName) {

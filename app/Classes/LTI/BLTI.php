@@ -2,8 +2,10 @@
 
 namespace App\Classes\LTI;
 
+use Log;
 use Session;
 use App\Classes\Oauth\Oauth;
+use Illuminate\Http\Request;
 
 class BLTI {
 
@@ -40,10 +42,11 @@ class BLTI {
     *
     * @param  string   $secret
     * @param  Request  $request
+    * @param  array    $requiredParams
     * @return void
     */
 
-    public function init($secret, $request)
+    public function init($secret, $request, $requiredParams)
     {
         $this->request = $request;
 
@@ -53,6 +56,7 @@ class BLTI {
         }
 
         $this->verifyOauth($secret, $request);
+        $this->verifyLaunch($request, $requiredParams);
         $this->initSession();
     }
 
@@ -112,6 +116,26 @@ class BLTI {
     }
 
     /**
+    * Determine if necessary LTI data is present for the launch, beyond what's available in BLTI class
+    *
+    * @param  Request  $request
+    * @param  array    $requiredParams
+    * @return boolean
+    */
+
+    public function isLtiDataPresent(Request $request, $requiredParams)
+    {
+        foreach($requiredParams as $requiredParam) {
+            if (!$request->filled($requiredParam)) {
+                Log::error('LTI launch data missing for the following value: ' . $requiredParam);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
     * Initialize LTI session data
     *
     * @return void
@@ -165,6 +189,26 @@ class BLTI {
         }
 
         return true;
+    }
+
+    /**
+    * Verify that the LTI launch was valid and contained all required params
+    *
+    * @param  Request  $request
+    * @param  array    $requiredParams
+    * @return void (or Exception on error)
+    */
+
+    private function verifyLaunch(Request $request, $requiredParams)
+    {
+        if (!$this->valid) {
+            abort(403, 'Valid LTI context could not be established. Please contact your instructor to report the problem.');
+        }
+
+        //Confirm that we have what we need in the POST. It should be there from the BLTI object init, but be sure.
+        if (!$this->isLtiDataPresent($request, $requiredParams)) {
+            abort(500, 'A piece of LTI data required for launch is missing. Please refresh the page.');
+        }
     }
 
     /**

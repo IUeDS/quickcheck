@@ -22,6 +22,7 @@ function Common(browserRef) {
     common.getTinyMceIframeFromElement = getTinyMceIframeFromElement;
     common.getTinyMceText = getTinyMceText;
     common.goToQuickCheck = goToQuickCheck;
+    common.leaveStudentView = leaveStudentView;
     common.leaveTinyMceIframe = leaveTinyMceIframe;
     common.refresh = refresh;
     common.saveOptionList = saveOptionList;
@@ -98,6 +99,10 @@ function Common(browserRef) {
     function goToQuickCheck() {
         common.browser.driver.findElement(by.linkText(common.toolName)).click();
         return common.switchToLtiTool();
+    }
+
+    function leaveStudentView() {
+        common.browser.driver.findElement(by.css('.leave_student_view')).click();
     }
 
     function leaveTinyMceIframe() {

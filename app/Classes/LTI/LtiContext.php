@@ -3,7 +3,6 @@
 namespace App\Classes\LTI;
 use App\Classes\LTI\BLTI;
 use Session;
-use Log;
 use Illuminate\Http\Request;
 use App\Models\CourseContext;
 use App\Models\Student;
@@ -16,6 +15,16 @@ class LtiContext {
     private $assessmentsContextKey = 'currentAssessments';
     private $courseContextKey = 'courseContexts';
     private $studentContextKey = 'studentContext';
+    private $requiredParams = [
+        'context_id',
+        'custom_canvas_course_id',
+        'custom_canvas_user_id',
+        'custom_canvas_user_login_id',
+        'lis_person_name_family',
+        'lis_person_name_given',
+        'oauth_consumer_key',
+        'user_id'
+    ];
 
     /************************************************************************/
     /* PUBLIC FUNCTIONS *****************************************************/
@@ -211,8 +220,7 @@ class LtiContext {
     {
         $secret = env('LTI_SECRET');
         $context = new BLTI();
-        $context->init($secret, $request);
-        $this->verifyLtiLaunch($request, $context);
+        $context->init($secret, $request, $this->requiredParams);
         $this->initUserContext($request);
         $this->initCourseContext($request);
     }
@@ -247,6 +255,21 @@ class LtiContext {
         $isDesigner = $blti->isDesigner();
         $allowAccess = $isInstructor || $isDesigner ? true : false;
         return $allowAccess;
+    }
+
+    /**
+    * Ensure all required launch params are present; abort if not present
+    *
+    * @param  Request  $request
+    * @return void
+    */
+
+    public function validateLaunch(Request $request)
+    {
+        $blti = new BLTI();
+        if (!$blti->isLtiDataPresent($request, $this->requiredParams)) {
+            abort(500, 'A piece of LTI data required for launch is missing. Please refresh the page.');
+        }
     }
 
     /************************************************************************/
@@ -478,28 +501,6 @@ class LtiContext {
     }
 
     /**
-    * Verify that an LTI launch contains the information required for the app to function
-    *
-    * @param  Request  $request
-    * @param  BLTI  $context
-    * @return void (or abort on error to throw exception)
-    */
-
-    private function verifyLtiLaunch(Request $request, BLTI $context)
-    {
-        if (!$context->valid) {
-            Log::alert('Valid LTI context could not be established.');
-            abort(403, 'Valid LTI context could not be established. Please contact your instructor to report the problem.');
-        }
-
-        //Confirm that we have what we need in the POST. It should be there from the BLTI object init, but be sure.
-        if (!$this->isLtiDataPresent($request)) {
-            Log::alert('A piece of LTI data required for launch was missing from the POST vars.');
-            abort(500, 'A piece of LTI data required for launch is missing. Please contact your instructor to report the problem.');
-        }
-    }
-
-    /**
     * Verify that the user in the session has not changed; this will only occur if an
     * instructor is accessing via Canvas student view or vice versa
     *
@@ -513,26 +514,5 @@ class LtiContext {
             //reset assessments context in session
             $request->session()->put($this->assessmentsContextKey, []);
         }
-    }
-
-    /**
-    * Determine if necessary LTI data is present for the launch, beyond what's available in BLTI class
-    *
-    * @param  Request  $request
-    * @return boolean
-    */
-
-    private function isLtiDataPresent(Request $request)
-    {
-        $neededData = ['oauth_consumer_key', 'context_id', 'custom_canvas_user_login_id',
-        'user_id', 'lis_person_name_given', 'lis_person_name_family'];
-
-        foreach($neededData as $neededDatum) {
-            if (!$request->has($neededDatum)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
