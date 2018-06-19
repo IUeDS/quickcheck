@@ -106,6 +106,19 @@
     }
 }
 
+.qc-timeout-timer {
+    display: block;
+    margin: 20px auto;
+}
+
+.qc-timeout-border {
+    fill: $dark-blue;
+}
+
+.qc-timeout-loader {
+    fill: $electric-blue;
+}
+
 .checkmark {
     animation: dash 2s ease-out forwards;
     stroke: $green;

@@ -21,8 +21,9 @@ exports.config = {
         'part2_student/3-results-spec.js',
         'part3_admin/1-admin-view-and-users-spec.js',
         'part3_admin/2-public-sets-spec.js',
-        'part3_admin/3-adding-and-editing-custom-activities-spec.js',
-        'part3_admin/4-embedding-custom-activities-spec.js',
+        'part3_admin/3-admin-features-spec.js',
+        'part3_admin/4-adding-and-editing-custom-activities-spec.js',
+        'part3_admin/5-embedding-custom-activities-spec.js',
         'part4_instructor/1-searching-results-spec.js',
         'part4_instructor/2-reviewing-results-spec.js',
         'part4_instructor/3-analytics-spec.js',
@@ -30,7 +31,8 @@ exports.config = {
         'part4_instructor/5-grading-spec.js',
         'part4_instructor/6-individual-student-results.js',
         'part4_instructor/7-custom-activities-spec.js',
-        'part4_instructor/8-public-sets-spec.js'
+        'part4_instructor/8-public-sets-spec.js',
+        'part4_instructor/9-timeout-feature-spec.js'
     ],
     rootElement: 'main',
     params: {
@@ -46,7 +48,7 @@ exports.config = {
     },
     onPrepare: function() {
         var width = 1200,
-  		    height = 800;
+  		    height = 1200;
         browser.driver.manage().window().setSize(width, height);
         var SpecReporter = require('jasmine-spec-reporter').SpecReporter;
         jasmine.getEnv().addReporter(new SpecReporter({

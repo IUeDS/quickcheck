@@ -12,6 +12,10 @@ module.exports = {
         'SHOW RESPONSES IN STUDENT VIEW'
     ],
 
+    featureNamesAdmin: [
+        'TIMEOUT FOR EXCESSIVE ATTEMPTS'
+    ],
+
     qtiImports: {
         'quiz1': 'Assessment QTI Export Research',
         'quiz2': 'Assessment QTI Export Research 2'

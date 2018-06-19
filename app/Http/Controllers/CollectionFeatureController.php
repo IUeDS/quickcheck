@@ -2,6 +2,7 @@
 use Illuminate\Http\Request;
 use App\Models\Collection;
 use App\Models\CollectionFeature;
+use App\Models\User;
 
 class CollectionFeatureController extends \BaseController
 {
@@ -20,7 +21,22 @@ class CollectionFeatureController extends \BaseController
     public function getFeatures(Request $request, $collectionId)
     {
         $collection = Collection::find($collectionId);
-        $collectionFeatures = $collection->collectionFeatures()->with('feature')->get();
+        $collectionFeatures = null;
+
+        if (User::isAdmin()) {
+            $collectionFeatures = $collection->collectionFeatures()
+                ->with('feature')
+                ->get();
+        }
+        else {
+            $collectionFeatures = $collection->collectionFeatures()
+                ->with('feature')
+                ->get()
+                ->filter(function ($collectionFeature, $key) {
+                    return $collectionFeature->feature->admin_only === 'false';
+                });
+        }
+
         return response()->success(['features' => $collectionFeatures]);
     }
 
@@ -40,7 +56,11 @@ class CollectionFeatureController extends \BaseController
             return response()->error(403);
         }
 
-        $collectionFeature = CollectionFeature::findOrFail($id);
+        $collectionFeature = CollectionFeature::with('feature')->findOrFail($id);
+        if ($collectionFeature->feature->admin_only === 'true' && !User::isAdmin()) {
+            return response()->error(403);
+        }
+
         $collectionFeature->enabled = $featureToUpdate['enabled'];
         $collectionFeature->save();
         return response()->success();
