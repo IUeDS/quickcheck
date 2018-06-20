@@ -5,6 +5,7 @@ namespace App\Classes\LTI;
 use Log;
 use Session;
 use App\Classes\Oauth\Oauth;
+use App\Exceptions\LtiLaunchDataMissingException;
 use Illuminate\Http\Request;
 
 class BLTI {
@@ -127,7 +128,7 @@ class BLTI {
     {
         foreach($requiredParams as $requiredParam) {
             if (!$request->filled($requiredParam)) {
-                Log::error('LTI launch data missing for the following value: ' . $requiredParam);
+                Log::notice('LTI launch data missing for the following value: ' . $requiredParam);
                 return false;
             }
         }
@@ -207,7 +208,7 @@ class BLTI {
 
         //Confirm that we have what we need in the POST. It should be there from the BLTI object init, but be sure.
         if (!$this->isLtiDataPresent($request, $requiredParams)) {
-            abort(500, 'A piece of LTI data required for launch is missing. Please refresh the page.');
+            throw new LtiLaunchDataMissingException;
         }
     }
 

@@ -8,7 +8,6 @@
         <div class="col-xs-12">
             <h1>Quick Check Error</h1>
             <div class="alert alert-danger" role="alert">
-                <!--<p class="lead">Quick Check error:</p>-->
                 <p>{{ $exception->getMessage() }}</p>
             </div>
         </div>
