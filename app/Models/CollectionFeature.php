@@ -117,15 +117,21 @@ class CollectionFeature extends Eloquent {
     private function isFeatureEnabled($assessmentId, $name) {
         $assessment = Assessment::find($assessmentId);
         $collectionId = $assessment->assessmentGroup->collection->id;
-        $featureId = Feature::where('name', '=', $name)->first()->id;
+        $feature = Feature::where('name', '=', $name)->first();
+
+        //in cases were features are optional (such as attempt timeout), feature may not be present
+        if (!$feature) {
+            return false;
+        }
+
         $collectionFeature = CollectionFeature::where('collection_id', '=', $collectionId)
-            ->where('feature_id', '=', $featureId)
+            ->where('feature_id', '=', $feature->id)
             ->first();
+
         if ($collectionFeature->enabled === 'true') {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 }
