@@ -6,6 +6,7 @@ use Session;
 use Illuminate\Http\Request;
 use App\Models\CourseContext;
 use App\Models\Student;
+use App\Exceptions\LtiLaunchDataMissingException;
 use App\Exceptions\SessionMissingAssessmentDataException;
 use App\Exceptions\SessionMissingStudentDataException;
 use App\Exceptions\SessionMissingLtiContextException;
@@ -268,7 +269,7 @@ class LtiContext {
     {
         $blti = new BLTI();
         if (!$blti->isLtiDataPresent($request, $this->requiredParams)) {
-            abort(500, 'A piece of LTI data required for launch is missing. Please refresh the page.');
+            throw new LtiLaunchDataMissingException;
         }
     }
 

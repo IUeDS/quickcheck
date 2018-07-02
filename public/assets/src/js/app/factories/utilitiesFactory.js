@@ -51,6 +51,7 @@ function QcUtils($timeout, $location, $window, $rootScope) {
         utils.isSuccessResponse = isSuccessResponse;
         utils.loadingFinished = loadingFinished;
         utils.loadingStarted = loadingStarted;
+        utils.removeScrollHeight = removeScrollHeight;
         utils.scrollToLtiTop = scrollToLtiTop;
         utils.setContextLink = setContextLink;
         utils.setError = setError;
@@ -316,6 +317,11 @@ function QcUtils($timeout, $location, $window, $rootScope) {
         function loadingStarted() {
             utils.loading = true;
             utils.errorFound = false; //reset if it had been set in a previous failed request
+        }
+
+        function removeScrollHeight() {
+            utils.scrollingLtiHeight = false;
+            utils.setLtiHeight();
         }
 
         function scrollToLtiTop() {

@@ -24,6 +24,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+        LtiLaunchDataMissingException::class,
         SessionMissingAssessmentDataException::class,
         SessionMissingStudentDataException::class,
         SessionMissingLtiContextException::class,
@@ -67,6 +68,15 @@ class Handler extends ExceptionHandler
         $statusCode = 500; //default
 
         switch($e) {
+            case ($e instanceof LtiLaunchDataMissingException):
+                //error is thrown before the page loads rather than through the API;
+                //creating a new exception was the only way I could find to set a standard message
+                $message = $e->getMessage();
+                $this->logNotice($message, $errorId);
+                $message .= $this->addErrorIdMessage($errorId); //add error ID for user
+                $newException = new LtiLaunchDataMissingException($message);
+                return response()->view('errors.500', ['exception' => $newException]);
+                break;
             case ($e instanceof SessionMissingAssessmentDataException):
                 $message = $e->getMessage();
                 $this->logNotice($message, $errorId);
