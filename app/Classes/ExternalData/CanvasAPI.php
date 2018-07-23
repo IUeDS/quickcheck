@@ -467,7 +467,7 @@ class CanvasAPI
             $url = $url . '?per_page=100';
         }
         if ($includes) {
-            $url = $url . '&include[]=' . $includes;
+            $url = $url . '&' . urlencode('include[]') . '=' . $includes;
         }
         if ($pagination) {
             $url = $url . '&page=' . $pagination;
