@@ -89,7 +89,7 @@ describe('Auto-grading an assessment', function() {
             assessmentName = data.sets.featuresAllOff.quickchecks.resultsNotReleased;
 
         attemptOverviewPage.getAssessmentByName(assessmentName).click();
-        browser.sleep(1000);
+        browser.sleep(2000);
         attemptsPage.autoGrade();
         expect(attemptsPage.attempts.getEditGradeLink(attemptIndex).getText()).toContain('0');
         attemptsPage.nav.goToResults();

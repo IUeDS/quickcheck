@@ -24,6 +24,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+        DeletedCollectionException::class,
         LtiLaunchDataMissingException::class,
         SessionMissingAssessmentDataException::class,
         SessionMissingStudentDataException::class,
@@ -102,6 +103,10 @@ class Handler extends ExceptionHandler
                 $message = $e->getMessage();
                 $this->logError($message, $errorId, $e->getTrace());
                 return response()->view('errors.500', ['exception' => $e]);
+                break;
+            case ($e instanceof DeletedCollectionException):
+                $message = $e->getMessage();
+                $this->logNotice($message, $errorId);
                 break;
             case ($e instanceof NotFoundHttpException):
                 $message = '404 for path: ' . $request->path();

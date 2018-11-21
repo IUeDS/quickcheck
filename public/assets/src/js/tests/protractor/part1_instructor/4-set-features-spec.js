@@ -29,6 +29,11 @@ describe('Viewing features for a collection', function () {
         expect(setPage.featurePanel.isFeatureOn(feature)).toBeTruthy();
     });
 
+    it('should default timeout for excessive attempts to ON', function() {
+        var feature = features.get(3);
+        expect(setPage.featurePanel.isFeatureOn(feature)).toBeTruthy();
+    });
+
     it('should save a feature after the feature is toggled and the page refreshed', function () {
         var feature = features.get(1);
         setPage.featurePanel.toggleFeature(feature);

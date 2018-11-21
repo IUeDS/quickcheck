@@ -24,5 +24,12 @@ class FeatureTableSeeder extends Seeder {
             'default_state' => 'true',
             'admin_only' => 'false'
         ]);
+
+        Feature::create([
+            'name' => config('constants.features.ATTEMPT_TIMEOUT'),
+            'description' => 'When the system detects excessive attempts made by a student (more than 2 attempts in 1 minute, where at least one question has been answered per attempt, and on a graded assignment before the due date), the student will receive a 2 minute timeout, to deter random guessing of answers.',
+            'default_state' => 'true',
+            'admin_only' => 'false'
+        ]);
     }
 }

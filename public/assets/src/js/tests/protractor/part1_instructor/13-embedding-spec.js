@@ -103,7 +103,8 @@ describe('Embedding assessments', function() {
         canvasModulesPage.addExternalToolLink();
         return common.switchToLtiToolEmbed().then(function() {
             common.enterAngularPage();
-            embedPage.selectQuickCheckByIndex(3);
+            embedPage.search(qcName);
+            embedPage.selectSearchedQuickCheckByIndex(0);
             common.switchToCanvas().then(function() {
                 canvasModulesPage.setExternalToolTitle(qcName);
                 canvasModulesPage.saveExternalTool();
@@ -122,7 +123,8 @@ describe('Embedding assessments', function() {
         var qcName = data.sets.featuresAllOff.quickchecks.featuresAllOffPastDue;
         canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '1', 'Jan 1').then(function() {
             common.enterAngularPage();
-            embedPage.selectQuickCheckByIndex(4);
+            embedPage.search(qcName);
+            embedPage.selectSearchedQuickCheckByIndex(0);
             common.switchToCanvas().then(function() {
                 canvasAssignmentsPage.saveEmbed();
             });
@@ -133,7 +135,8 @@ describe('Embedding assessments', function() {
         var qcName = data.sets.featuresAllOff.quickchecks.resultsNotReleased;
         canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '1').then(function() {
             common.enterAngularPage();
-            embedPage.selectQuickCheckByIndex(5);
+            embedPage.search(qcName);
+            embedPage.selectSearchedQuickCheckByIndex(0);
             common.switchToCanvas().then(function() {
                 canvasAssignmentsPage.saveEmbed();
             });
@@ -147,7 +150,8 @@ describe('Embedding assessments', function() {
         var qcName = data.sets.featuresAllOn.quickchecks.qtiImportGraded;
         canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '1').then(function() {
             common.enterAngularPage();
-            embedPage.selectQuickCheckByIndex(1);
+            embedPage.search(qcName);
+            embedPage.selectSearchedQuickCheckByIndex(0);
             common.switchToCanvas().then(function() {
                 canvasAssignmentsPage.saveEmbed();
             });

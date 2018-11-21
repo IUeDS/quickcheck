@@ -1,5 +1,6 @@
 var EmbedPage = function(browserRef) {
-    var page = this;
+    var page = this,
+        EC = protractor.ExpectedConditions;
     page.browser = browserRef;
     page.includes = require('../common/includes.js');
     page.common = new page.includes.Common(page.browser);
@@ -20,6 +21,7 @@ var EmbedPage = function(browserRef) {
 
     //functions
     page.clearSearch = clearSearch;
+    page.focus = focus;
     page.getAdminSets = getAdminSets;
     page.getQuickChecks = getQuickChecks;
     page.getSearchResults = getSearchResults;
@@ -33,6 +35,14 @@ var EmbedPage = function(browserRef) {
 
     function clearSearch() {
         page.clearSearchBtn.click();
+    }
+
+    //protractor was throwing bugs where it never had before when entering the embed iframe;
+    //focus seems to be off and what seems to be happening is that clicking a button will
+    //remove the focus that is set but it won't actually click the button we want clicked.
+    //so calling this function to click on nothing in particular before we click buttons on this page.
+    function focus() {
+        page.browser.element(by.css('body')).click();
     }
 
     function getAdminSets() {
@@ -56,7 +66,9 @@ var EmbedPage = function(browserRef) {
     }
 
     function previewQuickCheckByIndex(index) {
-        page.getQuickChecks().get(index).element(by.css(page.previewBtn)).click();
+        var btn = page.getQuickChecks().get(index).element(by.css(page.previewBtn));
+        page.focus();
+        btn.click();
     }
 
     function search(searchTerm) {
@@ -64,15 +76,20 @@ var EmbedPage = function(browserRef) {
     }
 
     function selectQuickCheckByIndex(index) {
-        page.getQuickChecks().get(index).element(by.css(page.selectBtn)).click();
+        var btn = page.getQuickChecks().get(index).element(by.css(page.selectBtn));
+        page.focus();
+        btn.click();
     }
 
     function selectSearchedQuickCheckByIndex(index) {
-        page.getSearchResults().get(index).element(by.css(page.selectBtn)).click();
+        var btn = page.getSearchResults().get(index).element(by.css(page.selectBtn));
+        page.focus();
+        btn.click();
         page.browser.sleep(1000);
     }
 
     function toggleAdminViewAll() {
+        page.focus();
         page.adminToggleViewAll.click();
     }
 }

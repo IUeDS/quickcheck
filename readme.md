@@ -39,7 +39,8 @@ Quick Check is an LTI (Learning Tools Interoperability) tool for creating format
 1. In public/assets, run: `yarn install` to install front-end dependencies.
     - Note: if you currently do not have yarn installed on your system, please see [yarn's installation directions](https://yarnpkg.com/lang/en/docs/install/). Alternatively, if yarn is not an option, `npm install` can also be used to install dependencies, but yarn is preferred.
 2. In public/assets/config, copy env.example.js to a new file called env.js and enter your front-end configuration information.
-3. In public/assets, run `grunt` to compile the front-end assets.
+3. If you do not have the grunt cli installed globally on your system, run `npm install -g grunt-cli` (or `yarn global add grunt-cli`)
+4. In public/assets, run `grunt` to compile the front-end assets.
     - Compiling .scss files requires that Ruby and Sass are installed. For more information, see the [grunt-contrib-sass documentation](https://github.com/gruntjs/grunt-contrib-sass). If Ruby and/or Sass are not installed on your system, see the [Ruby installation directions](https://www.ruby-lang.org/en/downloads/) and the [Sass installation directions](http://sass-lang.com/install).
 
 ### Running locally

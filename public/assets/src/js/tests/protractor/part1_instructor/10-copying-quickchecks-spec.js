@@ -16,6 +16,7 @@ describe('Copying a quick check', function() {
         //navigate to set.
         //open in new tab so we can delete the copied QC without protractor
         //freaking out over a confirm that appears in an iframe
+        browser.sleep(1000); //was running into error because page was not fully loaded
         setPage.nav.goToSets();
         set = viewSetsPage.getMembershipTiles().first();
         viewSetsPage.getGoToSetNewTabBtn(set).click();

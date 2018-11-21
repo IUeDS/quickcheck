@@ -9,12 +9,12 @@ module.exports = {
     featureNames: [
         'AUTOMATIC GRADE PASSBACK',
         'HIDE EMPTY ATTEMPTS',
-        'SHOW RESPONSES IN STUDENT VIEW'
-    ],
-
-    featureNamesAdmin: [
+        'SHOW RESPONSES IN STUDENT VIEW',
         'TIMEOUT FOR EXCESSIVE ATTEMPTS'
     ],
+
+    //none at this time
+    featureNamesAdmin: [],
 
     qtiImports: {
         'quiz1': 'Assessment QTI Export Research',
