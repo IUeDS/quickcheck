@@ -197,7 +197,7 @@ var EditQcPage = function(browserRef) {
     function save() {
         page.saveBtn.click();
         page.browser.waitForAngular();
-        page.browser.sleep(1000); //1/08/17: recent protractor issues require workarounds
+        page.browser.sleep(1500); //1/08/17: recent protractor issues require workarounds
     }
 }
 

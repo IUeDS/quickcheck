@@ -221,6 +221,7 @@ class LtiContext {
     {
         $secret = env('LTI_SECRET');
         $context = new BLTI();
+        $this->validateLaunch($request); //ensure all LTI params are present before trying to initialize
         $context->init($secret, $request, $this->requiredParams);
         $this->initUserContext($request);
         $this->initCourseContext($request);

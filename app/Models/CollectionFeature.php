@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use App\Exceptions\DeletedCollectionException;
 
 class CollectionFeature extends Eloquent {
     protected $table = 'collection_features';
@@ -116,15 +117,20 @@ class CollectionFeature extends Eloquent {
 
     private function isFeatureEnabled($assessmentId, $name) {
         $assessment = Assessment::find($assessmentId);
-        $collectionId = $assessment->assessmentGroup->collection->id;
         $feature = Feature::where('name', '=', $name)->first();
+        $collection = $assessment->assessmentGroup->collection;
 
         //in cases were features are optional (such as attempt timeout), feature may not be present
         if (!$feature) {
             return false;
         }
 
-        $collectionFeature = CollectionFeature::where('collection_id', '=', $collectionId)
+        //if collection was previously deleted, return a 404
+        if (!$collection) {
+            throw new DeletedCollectionException;
+        }
+
+        $collectionFeature = CollectionFeature::where('collection_id', '=', $collection->id)
             ->where('feature_id', '=', $feature->id)
             ->first();
 

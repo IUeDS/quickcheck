@@ -13,17 +13,17 @@ var NavComponent = function(browserRef) {
 
     function goToHome() {
         component.homeLink.click();
-        component.browser.sleep(1000); //added on 1/4/18, angular started having issues with redirects
+        component.browser.sleep(1500); //added on 1/4/18, angular started having issues with redirects
     }
 
     function goToResults() {
         component.resultsLink.click();
-        component.browser.sleep(1000);
+        component.browser.sleep(1500);
     }
 
     function goToSets() {
         component.setsLink.click();
-        component.browser.sleep(1000);
+        component.browser.sleep(1500);
     }
 };
 

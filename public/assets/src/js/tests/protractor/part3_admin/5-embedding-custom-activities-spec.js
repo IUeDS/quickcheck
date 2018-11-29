@@ -109,11 +109,13 @@ describe('Embedding and taking a custom activity', function() {
     });
 
     it('should show a custom icon next to the activity in the embed window', function() {
-        var quickcheck = embedPage.getQuickChecks().get(0);
+        var qcName = data.sets.featuresAllOn.quickchecks.custom,
+            quickcheck = embedPage.getQuickChecks().get(0);
         expect(quickcheck.getText()).toContain('Custom');
 
         //embed
-        embedPage.selectQuickCheckByIndex(0);
+        embedPage.search(qcName);
+        embedPage.selectSearchedQuickCheckByIndex(0);
         common.switchToCanvas().then(function() {
             canvasAssignmentsPage.saveEmbed();
             common.switchToLtiTool();

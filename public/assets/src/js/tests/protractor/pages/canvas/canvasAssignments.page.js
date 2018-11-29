@@ -8,12 +8,9 @@ var CanvasAssignmentsPage = function(browserRef) {
     page.maxWait = 10000;
 
     //elements
-    page.assignmentsLink = page.browser.element(by.css('#section-tabs .assignments'));
     page.dueDate = page.browser.element(by.css('.DueDateInput'));
     page.embedBtn = page.browser.element(by.css('.ui-dialog-buttonset .add_item_button'));
     page.findExternalToolBtn = page.browser.element(by.css('#assignment_external_tool_tag_attributes_url_find'));
-    page.ltiContent = page.browser.element(by.css('.tool_content_wrapper'));
-    page.modulesLink = page.browser.element(by.css('#section-tabs .modules'));
     page.nameInput = page.browser.element(by.css('#assignment_name'));
     page.navSettingsLink = page.browser.element(by.css('#section-tabs .settings'));
     page.newAssignmentBtn = page.browser.element(by.css('.new_assignment'));
@@ -22,6 +19,11 @@ var CanvasAssignmentsPage = function(browserRef) {
     page.studentViewBtn = page.browser.element(by.css('.student_view_button'));
     page.submissionType = page.browser.element(by.css('#assignment_submission_type'));
     page.toolLink = page.browser.element(by.css('#context_external_tools_select')).element(by.partialLinkText(page.common.toolEmbedName));
+
+    //substring selectors
+    page.assignmentsLink = '#section-tabs .assignments';
+    page.ltiContent = '.tool_content_wrapper';
+    page.modulesLink = '#section-tabs .modules';
 
     //functions
     page.createAssignment = createAssignment;
@@ -71,13 +73,16 @@ var CanvasAssignmentsPage = function(browserRef) {
     }
 
     function goToAssignments() {
-        page.browser.wait(EC.elementToBeClickable(page.assignmentsLink));
-        page.assignmentsLink.click();
+        var link = page.browser.element(by.css(page.assignmentsLink));
+        page.browser.wait(EC.elementToBeClickable(link));
+        link.click();
+        page.browser.sleep(2000); //was running into stale element errors without this
     }
 
     function goToModules() {
-        page.browser.wait(EC.presenceOf(page.modulesLink), page.maxWait);
-        page.modulesLink.click();
+        var link = page.browser.element(by.css(page.modulesLink));
+        page.browser.wait(EC.presenceOf(link), page.maxWait);
+        link.click();
     }
 
     function goToSettings() {
@@ -92,10 +97,12 @@ var CanvasAssignmentsPage = function(browserRef) {
     }
 
     function openAssignment(assignmentName) {
-        var link = page.getAssignmentLink(assignmentName);
+        var link = page.getAssignmentLink(assignmentName),
+            ltiContent;
         page.browser.wait(EC.elementToBeClickable(link));
         link.click();
-        page.browser.wait(EC.presenceOf(page.ltiContent));
+        ltiContent = page.browser.element(by.css(page.ltiContent));
+        page.browser.wait(EC.presenceOf(ltiContent));
     }
 
     function saveEmbed() {

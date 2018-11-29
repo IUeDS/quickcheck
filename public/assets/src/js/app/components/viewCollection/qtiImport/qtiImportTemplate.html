@@ -50,7 +50,7 @@
             </div>
 
             <!-- minor notices, to inform user of data that may not be 100% the same -->
-            <div ng-if="vm.notices" class="qc-qti-import-notices form-group">
+            <div ng-if="vm.notices.length" class="qc-qti-import-notices form-group">
                 <h4>QTI package imported. The following content was incompatible:</h4>
                 <div class="alert alert-warning" role="alert" ng-repeat="notice in vm.notices">
                     <h5><span class="fa fa-exclamation" aria-hidden="true"></span> Notice:</h5>
@@ -59,7 +59,7 @@
             </div>
 
             <!-- if no problems encountered whatsoever -->
-            <div ng-if="!vm.error && !vm.notices" class="qc-qti-import-success form-group">
+            <div ng-if="!vm.error && !vm.notices.length" class="qc-qti-import-success form-group">
                 <div class="alert alert-success" role="alert">
                     <h4><span class="fa fa-thumbs-up" aria-hidden="true"></span> Woohoo!</h4>
                     <p>Your QTI package was imported successfully.</p>

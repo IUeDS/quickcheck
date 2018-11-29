@@ -782,6 +782,7 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         setPage.openFeaturesAccordion();
         setPage.featurePanel.toggleFeatureByIndex(0);
         setPage.featurePanel.toggleFeatureByIndex(2);
+        setPage.featurePanel.toggleFeatureByIndex(3);
 
         //add the last quick check and edit it
         subset.addAndSaveQuickCheck(qc4Name);

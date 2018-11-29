@@ -54,8 +54,8 @@ describe('Taking an assessment with the timeout feature turned on', function() {
     });
 
     it('should show a restart button after the timeout completes', function() {
-        //timeout length set as 20 seconds in env
-        browser.sleep(20000);
+        //timeout length set as 15 seconds in env
+        browser.sleep(15000);
         expect(qcPage.getTimeoutRestartBtn().isDisplayed()).toBe(true);
     });
 

@@ -72,6 +72,7 @@
                     <a href="#automatic-grade" target="_self" class="list-group-item">Automatic grade passback</a>
                     <a href="#hide-empty-attempts" target="_self" class="list-group-item">Hide Empty Attempts</a>
                     <a href="#show-responses" target="_self" class="list-group-item">Show responses in student view</a>
+                    <a href="#timeout" target="_self" class="list-group-item">Timeout for excessive attempts</a>
                 </div>
             </div>
         </div>
@@ -373,6 +374,9 @@
         <hr>
         <h3 id="show-responses">Show responses in student view</h3>
         <p>This feature is turned on by default. After an instructor releases quick check results to students, students will be able to see their responses to individual questions, along with the answer key, if this feature is enabled. If this feature is disabled, students will only be able to see information associated with their attempt, such as score, count correct, count incorrect, etc.</p>
+        <hr>
+        <h3 id="timeout">Timeout for excessive attempts</h3>
+        <p>This feature is turned on by default. When the system detects excessive attempts made by a student (more than 2 attempts in 1 minute, where at least one question has been answered per attempt, and on a graded assignment before the due date), the student will receive a 2 minute timeout, to deter random guessing of answers. An instructor previewing a quick check will not see a timeout message (unless in student view).</p>
         <hr>
     </div>
 </div>

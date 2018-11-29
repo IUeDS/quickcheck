@@ -20,22 +20,22 @@ describe('Viewing set features as an admin', function() {
         setPage.openFeaturesAccordion();
         features = setPage.featurePanel.getFeatures();
         expect(features.count()).toBe(featureCount);
-    });
-
-    it('should show the correct name for admin-only features', function() {
-        //timeout feature only for now
-        feature = features.get(featureCount - 1);
-        expect(setPage.featurePanel.getFeatureTitle(feature)).toContain(adminFeatures[0]);
-    });
-
-    it('should default the attempt timeout feature to off', function() {
-        expect(setPage.featurePanel.isFeatureOn(feature)).toBeFalsy();
-    });
-
-    it('should allow an admin to toggle an admin-only feature', function() {
-        //keep this on for timeout testing
-        setPage.featurePanel.toggleFeature(feature);
-        expect(setPage.featurePanel.isFeatureOn(feature)).toBeTruthy();
         setPage.nav.goToSets();
     });
+
+    // MM, 11/21/18: the timeout feature is no longer admin-only, but we may need this test
+    // again if we add additional admin only features in the future.
+    // it('should show the correct name for admin-only features', function() {
+    //     //timeout feature only for now
+    //     feature = features.get(featureCount - 1);
+    //     expect(setPage.featurePanel.getFeatureTitle(feature)).toContain(adminFeatures[0]);
+    // });
+
+    // it('should allow an admin to toggle a feature', function() {
+    //     //keep this on for timeout testing
+    //     feature = features.get(featureCount - 1);
+    //     setPage.featurePanel.toggleFeature(feature);
+    //     expect(setPage.featurePanel.isFeatureOn(feature)).toBeTruthy();
+    //     setPage.nav.goToSets();
+    // });
 });
