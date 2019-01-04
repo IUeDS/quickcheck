@@ -15,10 +15,6 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 
-<FilesMatch "\.php$">
-AddHandler x-httpd-php7.1 .php
-</FilesMatch>
-
 <IfModule mod_deflate.c>
 # Compress HTML, CSS, JavaScript, Text, XML and fonts
 AddOutputFilterByType DEFLATE application/javascript
