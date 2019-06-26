@@ -48,6 +48,10 @@ class McOptionFeedback extends Eloquent {
             //pass array of all options selected
             $selectedIds = $studentAnswer['mcorrect_answer_ids'];
             $unsortedFeedback = $this->whereIn('mc_answer_id', $selectedIds)->get()->all();
+            if (!count($unsortedFeedback)) { //if no feedback found, prevents NULL values in array map below
+                return $feedback;
+            }
+
             //make sure feedback is retrieved in same order as it was sent in, for shuffled answers
             $feedback = array_map(function($selectedId) use ($unsortedFeedback) {
                 foreach($unsortedFeedback as $feedback) {
