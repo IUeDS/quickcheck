@@ -178,8 +178,7 @@ var SubsetPanelComponent = function(browserRef, subsetElement) {
     function submitEditedSubset(name) {
         var input = this.getEditSubsetInput();
         input.sendKeys(name);
-        var enter = browser.actions().sendKeys(protractor.Key.ENTER);
-        enter.perform();
+        input.sendKeys(protractor.Key.ENTER);
     }
 
     function toggleAccordion() {
