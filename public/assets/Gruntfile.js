@@ -4,7 +4,7 @@ var dependenciesDir = 'node_modules/',
     srcCssFontsDir = 'src/css/fonts',
     config = {
         jsDependencies: [
-            dependenciesDir + 'jquery/dist/jquery.min.js',
+            dependenciesDir + 'jquery/dist/jquery.js',
             dependenciesDir + 'angular/angular.min.js',
             dependenciesDir + 'angular-sanitize/angular-sanitize.min.js',
             dependenciesDir + 'angular-aria/angular-aria.min.js',
@@ -21,7 +21,7 @@ var dependenciesDir = 'node_modules/',
             'src/js/app/**/*.js',
             'config/env.js',
             '!config/*.example.js',
-            dependenciesDir + 'mathquill/build/mathquill.min.js'
+            dependenciesDir + 'mathquill/build/mathquill.js'
         ],
         cssDependencies: [
             dependenciesDir + 'bootstrap/dist/css/bootstrap.min.css',
