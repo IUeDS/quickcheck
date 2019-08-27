@@ -88,8 +88,8 @@ var AnalyticsComponent = function(browserRef) {
         return component.getQuestions().get(index).all(by.css(component.matrixRows));
     }
 
-    function getMedianScore() {
-        return component.medianScore.getText();
+    async function getMedianScore() {
+        return await component.medianScore.getText();
     }
 
     function getMcOptions(index) {
@@ -112,12 +112,12 @@ var AnalyticsComponent = function(browserRef) {
         return component.questions;
     }
 
-    function getQuestionPercentCorrect(index) {
-        return component.getQuestions().get(index).element(by.css(component.questionPercentCorrect)).getText();
+    async function getQuestionPercentCorrect(index) {
+        return await component.getQuestions().get(index).element(by.css(component.questionPercentCorrect)).getText();
     }
 
-    function getQuestionText(index) {
-        return component.getQuestions().get(index).element(by.css(component.questionText)).getText();
+    async function getQuestionText(index) {
+        return await component.getQuestions().get(index).element(by.css(component.questionText)).getText();
     }
 
     function getResponsesCsvBtn() {
@@ -128,16 +128,16 @@ var AnalyticsComponent = function(browserRef) {
         return component.getQuestions().get(index).all(by.css(component.textmatchAnswers));
     }
 
-    function getTotalAttempts() {
-        return component.totalAttempts.getText();
+    async function getTotalAttempts() {
+        return await component.totalAttempts.getText();
     }
 
-    function goBack() {
-        component.backBtn.click();
+    async function goBack() {
+        await component.backBtn.click();
     }
 
-    function toggleOtherResponses(index) {
-        component.getQuestions().get(index).element(by.css(component.otherResponsesBtn)).click();
+    async function toggleOtherResponses(index) {
+        await component.getQuestions().get(index).element(by.css(component.otherResponsesBtn)).click();
     }
 }
 

@@ -8,8 +8,8 @@ describe('Adding a subset to a set', function () {
         name,
         subset;
 
-    it('should show the necessary form when the button is clicked', function () {
-        setPage.addSubset();
+    it('should show the necessary form when the button is clicked', async function () {
+        await setPage.addSubset();
         subsetInput = setPage.getNewSubsetInput();
         expect(subsetInput.isDisplayed()).toBe(true);
     });

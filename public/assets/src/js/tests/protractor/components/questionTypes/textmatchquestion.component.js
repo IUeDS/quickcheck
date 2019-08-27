@@ -14,12 +14,12 @@ var TextmatchQuestionComponent = function(browserRef, question) {
     component.enterTextMatchOption = enterTextMatchOption;
     component.getOptionInput = getOptionInput;
 
-    function addTextmatchAnswer() {
-        component.addTextmatchAnswerBtn.click();
+    async function addTextmatchAnswer() {
+        await component.addTextmatchAnswerBtn.click();
     }
 
-    function enterTextMatchOption(option, text) {
-        option.element(by.css(component.inputElement)).sendKeys(text);
+    async function enterTextMatchOption(option, text) {
+        await option.element(by.css(component.inputElement)).sendKeys(text);
     }
 
     function getOptionInput(option) {

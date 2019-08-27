@@ -89,12 +89,12 @@ var EditQuestionComponent = function(browserRef, question, questionType) {
         component = Object.assign(component, questionTypeComponent);
     }
 
-    function deleteOption(option) {
-        option.element(by.css(component.deleteOptionBtn)).click();
+    async function deleteOption(option) {
+        await option.element(by.css(component.deleteOptionBtn)).click();
     }
 
-    function deleteQuestion() {
-        component.deleteBtn.click();
+    async function deleteQuestion() {
+        await component.deleteBtn.click();
     }
 
     function getDeleteBtn() {
@@ -105,10 +105,9 @@ var EditQuestionComponent = function(browserRef, question, questionType) {
         return component.browser.element.all(by.css(component.deleteOptionBtn));
     }
 
-    function getHeaderText() {
-        return component.headerText.getText().then(function(text) {
-            return text.toLowerCase();
-        });
+    async function getHeaderText() {
+        const text = await component.headerText.getText();
+        return text.toLowerCase();
     }
 
     function getOptions() {
@@ -119,8 +118,8 @@ var EditQuestionComponent = function(browserRef, question, questionType) {
         return component.questionTypeDropdown;
     }
 
-    function getQuestionType() {
-        return component.questionTypeDropdown.element(by.css('option:checked')).getText();
+    async function getQuestionType() {
+        return await component.questionTypeDropdown.element(by.css('option:checked')).getText();
     }
 
     function getRandomizedCheckbox() {
@@ -139,25 +138,25 @@ var EditQuestionComponent = function(browserRef, question, questionType) {
         return component.richContentToggle;
     }
 
-    function isRandomized() {
-        return component.randomizedCheckbox.getAttribute('checked');
+    async function isRandomized() {
+        return await component.randomizedCheckbox.getAttribute('checked');
     }
 
     function setCurrentQuestion(question) {
         component.question = question;
     }
 
-    function setQuestionType(questionType) {
-        component.questionTypeDropdown.sendKeys(questionType);
-        component.browser.sleep(1000); //Protractor doesn't always catch up right away...
+    async function setQuestionType(questionType) {
+        await component.questionTypeDropdown.sendKeys(questionType);
+        await component.browser.sleep(1000); //Protractor doesn't always catch up right away...
     }
 
-    function toggleRandomized() {
-        component.randomizedCheckbox.click();
+    async function toggleRandomized() {
+        await component.randomizedCheckbox.click();
     }
 
-    function toggleRichContent() {
-        component.richContentToggle.click();
+    async function toggleRichContent() {
+        await component.richContentToggle.click();
     }
 }
 

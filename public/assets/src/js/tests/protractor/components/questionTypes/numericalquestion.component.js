@@ -24,18 +24,18 @@ var NumericalQuestionComponent = function(browserRef, question) {
     component.setOptionAsExactAnswer = setOptionAsExactAnswer;
     component.setOptionAsRange = setOptionAsRange;
 
-    function addNumericalAnswer() {
-        component.addNumericalAnswerBtn.click();
+    async function addNumericalAnswer() {
+        await component.addNumericalAnswerBtn.click();
     }
 
-    function enterNumericalExactOption(option, answer, marginOfError) {
-        option.element(by.model(component.exactAnswerElement)).sendKeys(answer);
-        option.element(by.model(component.marginOfErrorElement)).sendKeys(marginOfError);
+    async function enterNumericalExactOption(option, answer, marginOfError) {
+        await option.element(by.model(component.exactAnswerElement)).sendKeys(answer);
+        await option.element(by.model(component.marginOfErrorElement)).sendKeys(marginOfError);
     }
 
-    function enterNumericalRangeOption(option, rangeMin, rangeMax) {
-        option.element(by.model(component.rangeMinElement)).sendKeys(rangeMin);
-        option.element(by.model(component.rangeMaxElement)).sendKeys(rangeMax);
+    async function enterNumericalRangeOption(option, rangeMin, rangeMax) {
+        await option.element(by.model(component.rangeMinElement)).sendKeys(rangeMin);
+        await option.element(by.model(component.rangeMaxElement)).sendKeys(rangeMax);
     }
 
     function getExactAnswerInput(option) {
@@ -54,12 +54,12 @@ var NumericalQuestionComponent = function(browserRef, question) {
         return option.element(by.model(component.rangeMaxElement));
     }
 
-    function setOptionAsExactAnswer(option) {
-        option.element(by.model(component.answerTypeElement)).sendKeys('Exact');
+    async function setOptionAsExactAnswer(option) {
+        await option.element(by.model(component.answerTypeElement)).sendKeys('Exact');
     }
 
-    function setOptionAsRange(option) {
-        option.element(by.model(component.answerTypeElement)).sendKeys('Answer in the range');
+    async function setOptionAsRange(option) {
+        await option.element(by.model(component.answerTypeElement)).sendKeys('Answer in the range');
     }
 }
 

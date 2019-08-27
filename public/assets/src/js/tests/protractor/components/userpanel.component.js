@@ -38,24 +38,24 @@ var UserPanelComponent = function(browserRef) {
     component.submitNewUser = submitNewUser;
     component.toggleReadOnlyBox = toggleReadOnlyBox;
 
-    function addAnotherUser() {
-        component.addAnotherUserBtn.click();
+    async function addAnotherUser() {
+        await component.addAnotherUserBtn.click();
     }
 
-    function addUser() {
-        component.addUserBtn.click();
+    async function addUser() {
+        await component.addUserBtn.click();
     }
 
-    function cancelAddUser() {
-        component.cancelBtn.click();
+    async function cancelAddUser() {
+        await component.cancelBtn.click();
     }
 
-    function deleteUser(membershipItem) {
-        membershipItem.element(by.css(component.deleteBtn)).click()
+    async function deleteUser(membershipItem) {
+        await membershipItem.element(by.css(component.deleteBtn)).click()
     }
 
-    function editMembership() {
-        component.editMembershipBtn.click();
+    async function editMembership() {
+        await component.editMembershipBtn.click();
     }
 
     function getEditMembershipList() {
@@ -78,29 +78,30 @@ var UserPanelComponent = function(browserRef) {
         return component.successMessage;
     }
 
-    function isReadOnlyBoxChecked(membershipItem) {
-        return membershipItem.element(by.model(component.readOnlyModel)).getAttribute('checked');
+    async function isReadOnlyBoxChecked(membershipItem) {
+        return await membershipItem.element(by.model(component.readOnlyModel)).getAttribute('checked');
     }
 
-    function isUserStagedForDeletion(membershipItem) {
-        return membershipItem.getAttribute('class').then(function(classString) {
-            if (classString.indexOf(component.deletedClass) < 0) {
-                return false;
-            }
-            return true;
-        });
+    async function isUserStagedForDeletion(membershipItem) {
+        const classString = await membershipItem.getAttribute('class');
+
+        if (classString.indexOf(component.deletedClass) < 0) {
+            return false;
+        }
+
+        return true;
     }
 
-    function saveUserEdits() {
-        component.saveEditsBtn.click();
+    async function saveUserEdits() {
+        await component.saveEditsBtn.click();
     }
 
-    function submitNewUser() {
-        component.submitUserBtn.click();
+    async function submitNewUser() {
+        await component.submitUserBtn.click();
     }
 
-    function toggleReadOnlyBox(membershipItem) {
-        membershipItem.element(by.model(component.readOnlyModel)).click();
+    async function toggleReadOnlyBox(membershipItem) {
+        await membershipItem.element(by.model(component.readOnlyModel)).click();
     }
 };
 

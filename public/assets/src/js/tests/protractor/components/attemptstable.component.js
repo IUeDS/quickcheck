@@ -43,24 +43,24 @@ var AttemptsTableComponent = function(browserRef) {
         return component.attempts;
     }
 
-    function getAttemptsVisible() {
-        return component.attempts.filter(function(attempt) {
-            return attempt.isDisplayed();
+    async function getAttemptsVisible() {
+        return component.attempts.filter(async function(attempt) {
+            return await attempt.isDisplayed();
         });
     }
 
-    function getCorrect(index) {
-        return component.attempts.get(index).element(by.css(component.correct)).getText();
+    async function getCorrect(index) {
+        return await component.attempts.get(index).element(by.css(component.correct)).getText();
     }
 
     function getDisplayedGrade(attempt) {
         return attempt.element(by.css(component.displayedGrade));
     }
 
-    function getEditGradeLink(index) {
+    async function getEditGradeLink(index) {
         var gradeLink = component.attempts.get(index).element(by.css(component.editGradeLink));
-        component.browser.wait(EC.presenceOf(gradeLink), 10000);
-        component.browser.wait(EC.elementToBeClickable(gradeLink), 10000);
+        await component.browser.wait(EC.presenceOf(gradeLink), 10000);
+        await component.browser.wait(EC.elementToBeClickable(gradeLink), 10000);
         return gradeLink;
     }
 
@@ -76,40 +76,40 @@ var AttemptsTableComponent = function(browserRef) {
         return component.attempts.get(index).element(by.css(component.gradeInput));
     }
 
-    function getIncorrect(index) {
-        return component.attempts.get(index).element(by.css(component.incorrect)).getText();
+    async function getIncorrect(index) {
+        return await component.attempts.get(index).element(by.css(component.incorrect)).getText();
     }
 
-    function getName(index) {
-        return component.attempts.get(index).element(by.css(component.name)).getText();
+    async function getName(index) {
+        return await component.attempts.get(index).element(by.css(component.name)).getText();
     }
 
     function getResponsesBtn(index) {
         return component.attempts.get(index).element(by.css(component.responsesBtn));
     }
 
-    function getScore(index) {
-        return component.attempts.get(index).element(by.css(component.score)).getText();
+    async function getScore(index) {
+        return await component.attempts.get(index).element(by.css(component.score)).getText();
     }
 
-    function goBack() {
-        component.backBtn.click();
+    async function goBack() {
+        await component.backBtn.click();
     }
 
-    function isCompleted(index) {
-        return component.attempts.get(index).element(by.css(component.completed)).isPresent();
+    async function isCompleted(index) {
+        return await component.attempts.get(index).element(by.css(component.completed)).isPresent();
     }
 
-    function isEditGradePresent(index) {
-        return component.attempts.get(index).element(by.css(component.editGradeLink)).isPresent();
+    async function isEditGradePresent(index) {
+        return await component.attempts.get(index).element(by.css(component.editGradeLink)).isPresent();
     }
 
-    function isPastDue(index) {
-        return component.attempts.get(index).element(by.css(component.pastDue)).isPresent();
+    async function isPastDue(index) {
+        return await component.attempts.get(index).element(by.css(component.pastDue)).isPresent();
     }
 
-    function submitGrade(index) {
-        component.attempts.get(index).element(by.partialButtonText(component.submitGradeBtn)).click();
+    async function submitGrade(index) {
+        await component.attempts.get(index).element(by.partialButtonText(component.submitGradeBtn)).click();
     }
 }
 

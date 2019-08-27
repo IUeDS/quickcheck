@@ -56,12 +56,12 @@ var EditQcPage = function(browserRef) {
     page.isReadOnly = isReadOnly;
     page.save = save;
 
-    function addQuestion(questionType) {
+    async function addQuestion(questionType) {
         var newQuestion,
             questionCount,
             questionObject;
 
-        page.addQuestionBtn.click();
+        await page.addQuestionBtn.click();
         //fetches by index, thus current length = new last index
         questionCount = page.questions.length;
         newQuestion = page.getQuestions().get(questionCount);
@@ -74,28 +74,28 @@ var EditQcPage = function(browserRef) {
         page.questions.push(questionObject);
     }
 
-    function areInputsDisabled() {
+    async function areInputsDisabled() {
         var inputsDisabled = true;
 
-        return page.browser.element.all(by.css('input')).each(function(input) {
-            if (!input.getAttribute('disabled')) {
+        await page.browser.element.all(by.css('input')).each(async function(input) {
+            if (!await input.getAttribute('disabled')) {
                 inputsDisabled = false;
             }
-        }).then(function() {
-            return inputsDisabled;
         });
+
+        return inputsDisabled;
     }
 
-    function deleteCustom() {
-        page.deleteCustomBtn.click();
+    async function deleteCustom() {
+        await page.deleteCustomBtn.click();
     }
 
-    function getAssessmentName() {
-        return page.nameInput.getAttribute('value');
+    async function getAssessmentName() {
+        return await page.nameInput.getAttribute('value');
     }
 
-    function getCurrentSubset() {
-        return page.subsetInput.element(by.css('option:checked')).getText();
+    async function getCurrentSubset() {
+        return await page.subsetInput.element(by.css('option:checked')).getText();
     }
 
     function getCustomActivities() {
@@ -114,8 +114,8 @@ var EditQcPage = function(browserRef) {
         return page.customDropdown;
     }
 
-    function getCustomName() {
-        return page.customName.getText();
+    async function getCustomName() {
+        return await page.customName.getText();
     }
 
     function getDescriptionInput() {
@@ -158,14 +158,14 @@ var EditQcPage = function(browserRef) {
         return page.titleInput;
     }
 
-    function goBack() {
-        page.backBtn.click();
-        page.browser.sleep(1000);
+    async function goBack() {
+        await page.backBtn.click();
+        await page.browser.sleep(1000);
     }
 
-    function goBackToSet() {
-        page.goBackToSetLink.click();
-        page.browser.sleep(1000);
+    async function goBackToSet() {
+        await page.goBackToSetLink.click();
+        await page.browser.sleep(1000);
     }
 
     function initQuestions() {
@@ -190,14 +190,14 @@ var EditQcPage = function(browserRef) {
         });
     }
 
-    function isReadOnly() {
-        return page.readOnlyNotice.isPresent();
+    async function isReadOnly() {
+        return await page.readOnlyNotice.isPresent();
     }
 
-    function save() {
-        page.saveBtn.click();
-        page.browser.waitForAngular();
-        page.browser.sleep(1500); //1/08/17: recent protractor issues require workarounds
+    async function save() {
+        await page.saveBtn.click();
+        await page.browser.waitForAngular();
+        await page.browser.sleep(1500); //1/08/17: recent protractor issues require workarounds
     }
 }
 

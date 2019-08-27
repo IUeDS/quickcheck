@@ -20,32 +20,32 @@ var CustomResponsesComponent = function(browserRef) {
     component.isCorrect = isCorrect;
     component.isResponseTable = isResponseTable;
 
-    function getAnswer(responseIndex) {
+    async function getAnswer(responseIndex) {
         var response = component.responses.get(responseIndex);
-        return response.element(by.css(component.answer)).getText();
+        return await response.element(by.css(component.answer)).getText();
     }
 
-    function getAnswerKey(responseIndex) {
+    async function getAnswerKey(responseIndex) {
         var response = component.responses.get(responseIndex);
-        return response.element(by.css(component.answerKey)).getText();
+        return await response.element(by.css(component.answerKey)).getText();
     }
 
-    function getQuestion(responseIndex) {
+    async function getQuestion(responseIndex) {
         var response = component.responses.get(responseIndex);
-        return response.element(by.css(component.question)).getText();
+        return await response.element(by.css(component.question)).getText();
     }
 
     function getResponses() {
         return component.responses;
     }
 
-    function isCorrect(responseIndex) {
+    async function isCorrect(responseIndex) {
         var response = component.responses.get(responseIndex);
-        return response.element(by.css(component.correctIcon)).isPresent();
+        return await response.element(by.css(component.correctIcon)).isPresent();
     }
 
-    function isResponseTable() {
-        return component.responsesTable.isPresent();
+    async function isResponseTable() {
+        return await component.responsesTable.isPresent();
     }
 
 };

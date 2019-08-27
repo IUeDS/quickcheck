@@ -17,13 +17,13 @@ var StudentHomePage = function(browserRef) {
     page.getReleases = getReleases;
     page.search = search;
 
-    function clearSearch() {
-        page.searchBox.clear();
+    async function clearSearch() {
+        await page.searchBox.clear();
     }
 
-    function getDisplayedReleases() {
-        return page.releases.filter(function(release) {
-            return release.isDisplayed();
+    async function getDisplayedReleases() {
+        return page.releases.filter(async function(release) {
+            return await release.isDisplayed();
         });
     }
 
@@ -31,8 +31,8 @@ var StudentHomePage = function(browserRef) {
         return page.releases;
     }
 
-    function search(text) {
-        page.searchBox.sendKeys(text);
+    async function search(text) {
+        await page.searchBox.sendKeys(text);
     }
 };
 

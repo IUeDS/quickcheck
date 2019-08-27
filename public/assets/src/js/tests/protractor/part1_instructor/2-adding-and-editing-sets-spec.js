@@ -6,24 +6,25 @@ var includes = require('../common/includes.js'),
     viewSetsPage = new includes.ViewSetsPage(browser);
 
 describe('Adding a set', function () {
-    it('should show the necessary form when the add set button is clicked', function () {
-        viewSetsPage.clickAddSetBtn();
-        expect(viewSetsPage.getAddSetNameField().isDisplayed()).toBeTruthy();
+    it('should show the necessary form when the add set button is clicked', async function () {
+        await viewSetsPage.clickAddSetBtn();
+        expect(await viewSetsPage.getAddSetNameField().isDisplayed()).toBeTruthy();
     });
 
-    it('should add the set to the user\’s list after being created', function () {
-        viewSetsPage.getAddSetNameField().sendKeys(sets.toBeDeleted.name);
-        viewSetsPage.getAddDescriptionNameField().sendKeys(sets.toBeDeleted.description);
-        viewSetsPage.saveNewSet();
-        expect(viewSetsPage.getMembershipTiles().count()).toBe(1);
+    it('should add the set to the user\’s list after being created', async function () {
+        await viewSetsPage.getAddSetNameField().sendKeys(sets.toBeDeleted.name);
+        await viewSetsPage.getAddDescriptionNameField().sendKeys(sets.toBeDeleted.description);
+        await viewSetsPage.saveNewSet();
+        browser.sleep(500); //ugh, kept on failing here for NO REASON on some runs, worked fine on others
+        expect(await viewSetsPage.getMembershipTiles().count()).toBe(1);
     });
 
-    it('should hide the add new set form after it was created', function() {
-        expect(viewSetsPage.getAddSetNameField().isPresent()).toBe(false);
+    it('should hide the add new set form after it was created', async function() {
+        expect(await viewSetsPage.getAddSetNameField().isPresent()).toBe(false);
     });
 
-    it('should hide instructions for how to add a set after one was created', function() {
-        expect(viewSetsPage.getInitialInstructions().isPresent()).toBe(false);
+    it('should hide instructions for how to add a set after one was created', async function() {
+        expect(await viewSetsPage.getInitialInstructions().isPresent()).toBe(false);
     });
 });
 
@@ -32,46 +33,46 @@ describe('Editing a set', function () {
         nameInput,
         setElement;
 
-    it('should show the necessary form when the button is clicked', function () {
+    it('should show the necessary form when the button is clicked', async function () {
         setElement = viewSetsPage.getMembershipTiles().first();
-        viewSetsPage.editSet(setElement);
+        await viewSetsPage.editSet(setElement);
         nameInput = viewSetsPage.getEditedNameInput(setElement);
         descriptionInput = viewSetsPage.getEditedDescriptionInput(setElement);
-        expect(nameInput.isPresent()).toBe(true);
+        expect(await nameInput.isPresent()).toBe(true);
     });
 
-    it('should have the correct set name in the editing form', function() {
-        expect(nameInput.getAttribute('value')).toEqual(sets.toBeDeleted.name);
+    it('should have the correct set name in the editing form', async function() {
+        expect(await nameInput.getAttribute('value')).toEqual(sets.toBeDeleted.name);
     });
 
-    it('should have the correct set description in the editing form', function() {
-        expect(descriptionInput.getAttribute('value')).toEqual(sets.toBeDeleted.description);
+    it('should have the correct set description in the editing form', async function() {
+        expect(await descriptionInput.getAttribute('value')).toEqual(sets.toBeDeleted.description);
     });
 
-    it('should change the set name in the user\'s list after being saved', function () {
-        nameInput.clear();
+    it('should change the set name in the user\'s list after being saved', async function () {
+        await nameInput.clear();
         sets.toBeDeleted.name = 'Edited name';
-        nameInput.sendKeys(sets.toBeDeleted.name);
-        descriptionInput.clear();
+        await nameInput.sendKeys(sets.toBeDeleted.name);
+        await descriptionInput.clear();
         sets.toBeDeleted.description = 'Edited description';
-        descriptionInput.sendKeys(sets.toBeDeleted.description);
-        viewSetsPage.updateSet(setElement);
-        expect(viewSetsPage.getSetName(setElement)).toBe(sets.toBeDeleted.name.toUpperCase());
+        await descriptionInput.sendKeys(sets.toBeDeleted.description);
+        await viewSetsPage.updateSet(setElement);
+        expect(await viewSetsPage.getSetName(setElement)).toBe(sets.toBeDeleted.name.toUpperCase());
     });
 
-    it('should hide the editing form after saving', function() {
-        expect(nameInput.isPresent()).toBe(false);
+    it('should hide the editing form after saving', async function() {
+        expect(await nameInput.isPresent()).toBe(false);
     });
 
-    it('should change the set description in the user\'s list after being saved', function() {
+    it('should change the set description in the user\'s list after being saved', async function() {
         //note: description is not shown on the tile, so have to open up editing interface to check
-        viewSetsPage.editSet(setElement);
-        expect(descriptionInput.getAttribute('value')).toEqual(sets.toBeDeleted.description);
+        await viewSetsPage.editSet(setElement);
+        expect(await descriptionInput.getAttribute('value')).toEqual(sets.toBeDeleted.description);
     });
 
-    it('should hide the form when canceling an edit', function() {
-        viewSetsPage.cancelSetEdit(setElement);
-        expect(nameInput.isPresent()).toBe(false);
+    it('should hide the form when canceling an edit', async function() {
+        await viewSetsPage.cancelSetEdit(setElement);
+        expect(await nameInput.isPresent()).toBe(false);
     });
 });
 
@@ -84,12 +85,12 @@ describe('Editing a set', function () {
 //the Canvas iframe.
 
 describe('Viewing a set', function () {
-    it('should initially show instructions for adding a subset', function () {
+    it('should initially show instructions for adding a subset', async function () {
         var membershipTile = viewSetsPage.getMembershipTiles().first(),
             newTabBtn = viewSetsPage.getGoToSetNewTabBtn(membershipTile);
 
-        newTabBtn.click();
-        common.switchTab(1);
-        expect(setPage.getInitialInstructions().isDisplayed()).toBe(true);
+        await newTabBtn.click();
+        await common.switchTab(1);
+        expect(await setPage.getInitialInstructions().isDisplayed()).toBe(true);
     });
 });

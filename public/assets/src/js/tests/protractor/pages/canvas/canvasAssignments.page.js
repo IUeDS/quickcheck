@@ -40,72 +40,72 @@ var CanvasAssignmentsPage = function(browserRef) {
     page.selectExternalTool = selectExternalTool;
     page.setDueDate = setDueDate;
 
-    function createAssignment() {
-        page.browser.wait(EC.presenceOf(page.newAssignmentBtn), page.maxWait);
-        page.newAssignmentBtn.click();
+    async function createAssignment() {
+        await page.browser.wait(EC.presenceOf(page.newAssignmentBtn), page.maxWait);
+        await page.newAssignmentBtn.click();
     }
 
-    function createAssignmentAndOpenEmbed(assignmentName, assignmentPoints, dueDate) {
-        page.goToAssignments();
-        page.createAssignment();
-        page.enterAssignmentName(assignmentName);
-        page.enterPointsPossible(assignmentPoints);
-        page.setDueDate(dueDate);
-        return page.selectExternalTool();
+    async function createAssignmentAndOpenEmbed(assignmentName, assignmentPoints, dueDate) {
+        await page.goToAssignments();
+        await page.createAssignment();
+        await page.enterAssignmentName(assignmentName);
+        await page.enterPointsPossible(assignmentPoints);
+        await page.setDueDate(dueDate);
+        await page.selectExternalTool();
     }
 
-    function enterAssignmentName(assignmentName) {
-        page.browser.wait(EC.presenceOf(page.nameInput), page.maxWait);
-        page.nameInput.sendKeys(assignmentName);
+    async function enterAssignmentName(assignmentName) {
+        await page.browser.wait(EC.presenceOf(page.nameInput), page.maxWait);
+        await page.nameInput.sendKeys(assignmentName);
     }
 
-    function enterPointsPossible(assignmentPoints) {
-        page.pointsPossible.clear();
-        page.pointsPossible.sendKeys(assignmentPoints);
+    async function enterPointsPossible(assignmentPoints) {
+        await page.pointsPossible.clear();
+        await page.pointsPossible.sendKeys(assignmentPoints);
     }
 
-    function getAssignmentLink(assignmentName) {
+    async function getAssignmentLink(assignmentName) {
         //assuming there won't be multiple links with the assignment name; could add
         //additional selectors in the future beyond just the link text if necessary
         var link = page.browser.element(by.partialLinkText(assignmentName));
-        page.browser.wait(EC.presenceOf(link), page.maxWait);
+        await page.browser.wait(EC.presenceOf(link), page.maxWait);
         return link;
     }
 
-    function goToAssignments() {
+    async function goToAssignments() {
         var link = page.browser.element(by.css(page.assignmentsLink));
-        page.browser.wait(EC.elementToBeClickable(link));
-        link.click();
-        page.browser.sleep(2000); //was running into stale element errors without this
+        await page.browser.wait(EC.elementToBeClickable(link));
+        await link.click();
+        await page.browser.sleep(2000); //was running into stale element errors without this
     }
 
-    function goToModules() {
+    async function goToModules() {
         var link = page.browser.element(by.css(page.modulesLink));
-        page.browser.wait(EC.presenceOf(link), page.maxWait);
-        link.click();
+        await page.browser.wait(EC.presenceOf(link), page.maxWait);
+        await link.click();
     }
 
-    function goToSettings() {
-        page.browser.wait(EC.elementToBeClickable(page.navSettingsLink));
-        page.navSettingsLink.click();
+    async function goToSettings() {
+        await page.browser.wait(EC.elementToBeClickable(page.navSettingsLink));
+        await page.navSettingsLink.click();
     }
 
-    function goToStudentView() {
-        page.goToSettings();
-        page.browser.wait(EC.elementToBeClickable(page.studentViewBtn));
-        page.studentViewBtn.click();
+    async function goToStudentView() {
+        await page.goToSettings();
+        await page.browser.wait(EC.elementToBeClickable(page.studentViewBtn));
+        await page.studentViewBtn.click();
     }
 
-    function openAssignment(assignmentName) {
-        var link = page.getAssignmentLink(assignmentName),
+    async function openAssignment(assignmentName) {
+        var link = await page.getAssignmentLink(assignmentName),
             ltiContent;
-        page.browser.wait(EC.elementToBeClickable(link));
-        link.click();
+        await page.browser.wait(EC.elementToBeClickable(link));
+        await link.click();
         ltiContent = page.browser.element(by.css(page.ltiContent));
-        page.browser.wait(EC.presenceOf(ltiContent));
+        await page.browser.wait(EC.presenceOf(ltiContent));
     }
 
-    function saveEmbed() {
+    async function saveEmbed() {
         //LET ME TELL YOU about this. Please, have a seat. Get comfortable. Words cannot describe the
         //buffoonery of this. Why have a switchToCanvas() function when that was already called in the
         //wrapper? To quote Pee-Wee Herman: "I DON'T KNOW!" Wouldn't it suffice just to have a single
@@ -115,31 +115,29 @@ var CanvasAssignmentsPage = function(browserRef) {
         //the switchToCanvas() function to turn off browser synchronization and prevent such errors. You
         //want to know the best part? IT WORKS ON THE FIRST ASSIGNMENT, BUT NOT ON ASSIGNMENTS 3 AND 4.
         //Protractor apparently is a quantum testing framework, the results always change! GAHHHHH
-        page.common.switchToCanvas().then(function() {
-            page.browser.sleep(1000); //and to top it all off, some sleep time due to inconsistencies
-            page.embedBtn.click();
-            page.saveBtn.click();
-            page.browser.wait(EC.stalenessOf(page.saveBtn), page.maxWait); //wait until we're redirected
-        });
+        await page.common.switchToCanvas();
+        await page.browser.sleep(1000); //and to top it all off, some sleep time due to inconsistencies
+        await page.embedBtn.click();
+        await page.saveBtn.click();
+        await page.browser.wait(EC.stalenessOf(page.saveBtn), page.maxWait); //wait until we're redirected
     }
 
-    function selectExternalTool() {
-        page.submissionType.sendKeys('External');
-        page.findExternalToolBtn.click();
-        page.browser.wait(EC.presenceOf(page.toolLink), page.maxWait);
+    async function selectExternalTool() {
+        await page.submissionType.sendKeys('External');
+        await page.findExternalToolBtn.click();
+        await page.browser.wait(EC.presenceOf(page.toolLink), page.maxWait);
         //argh, sometimes the link is visible but when clicked, nothing opens, probably because
         //Canvas is still loading up components somewhere; so wait a couple extra seconds to
         //prevent tests inconsistently failing from time to time.
-        page.browser.sleep(2000);
-        return page.toolLink.click().then(function() { //I have no idea why, but would not work without then()
-            return page.common.switchToLtiToolEmbed();
-        });
+        await page.browser.sleep(2000);
+        await page.toolLink.click();
+        await page.common.switchToLtiToolEmbed();
     }
 
-    function setDueDate(dueDate) {
-        page.dueDate.clear();
+    async function setDueDate(dueDate) {
+        await page.dueDate.clear();
         if (dueDate) {
-            page.dueDate.sendKeys(dueDate);
+            await page.dueDate.sendKeys(dueDate);
         }
     }
 }

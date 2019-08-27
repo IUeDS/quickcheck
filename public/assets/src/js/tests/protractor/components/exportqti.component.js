@@ -17,12 +17,12 @@ var QtiExportComponent = function(browserRef) {
         return component.checkboxes;
     }
 
-    function isQcSelected(item) {
-        return item.element(by.css(component.selectQcInput)).getAttribute('checked');
+    async function isQcSelected(item) {
+        return await item.element(by.css(component.selectQcInput)).getAttribute('checked');
     }
 
-    function toggleAllSelected() {
-        component.checkboxes.get(0).element(by.css(component.selectQcInput)).click();
+    async function toggleAllSelected() {
+        await component.checkboxes.get(0).element(by.css(component.selectQcInput)).click();
     }
 }
 

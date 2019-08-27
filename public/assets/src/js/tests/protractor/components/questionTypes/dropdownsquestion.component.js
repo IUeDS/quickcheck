@@ -22,16 +22,16 @@ var DropdownsQuestionComponent = function(browserRef, question) {
     component.getDropdownPrompts = getDropdownPrompts;
     component.getDropdownTextInputs = getDropdownTextInputs;
 
-    function addDistractor() {
-        component.addDistractorBtn.click();
+    async function addDistractor() {
+        await component.addDistractorBtn.click();
     }
 
-    function addDropdownPair() {
-        component.addDropdownPairBtn.click();
+    async function addDropdownPair() {
+        await component.addDropdownPairBtn.click();
     }
 
-    function enterDistractor(distractor, text) {
-        distractor.element(by.css('input[type="text"]')).sendKeys(text);
+    async function enterDistractor(distractor, text) {
+        await distractor.element(by.css('input[type="text"]')).sendKeys(text);
     }
 
     function getDistractors() {

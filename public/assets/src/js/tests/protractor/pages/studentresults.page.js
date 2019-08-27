@@ -47,72 +47,72 @@ var StudentResultsPage = function(browserRef) {
     page.toggleResults = toggleResults;
     page.viewAnalytics = viewAnalytics;
 
-    function clearSearch() {
-        page.searchBox.clear();
+    async function clearSearch() {
+        await page.searchBox.clear();
     }
 
     function getAttemptTable() {
         return page.attemptTable;
     }
 
-    function getAverageRetries() {
-        return page.averageRetries.getText();
+    async function getAverageRetries() {
+        return await page.averageRetries.getText();
     }
 
-    function getAverageScore() {
-        return page.averageScore.getText();
+    async function getAverageScore() {
+        return await page.averageScore.getText();
     }
 
-    function getAverageTimeAfterDueDate() {
-        return page.averageTimeAfterDueDate.getText();
+    async function getAverageTimeAfterDueDate() {
+        return await page.averageTimeAfterDueDate.getText();
     }
 
-    function getAverageTimeBeforeDueDate() {
-        return page.averageTimeBeforeDueDate.getText();
+    async function getAverageTimeBeforeDueDate() {
+        return await page.averageTimeBeforeDueDate.getText();
     }
 
-    function getAverageTimeOverall() {
-        return page.averageTimeOverall.getText();
+    async function getAverageTimeOverall() {
+        return await page.averageTimeOverall.getText();
     }
 
     function getDueDate(index) {
         return page.getQuickChecks().get(index).element(by.css(page.dueDate));
     }
 
-    function getQuestionsAnswered() {
-        return page.questionsAnswered.getText();
+    async function getQuestionsAnswered() {
+        return await page.questionsAnswered.getText();
     }
 
     function getQuickChecks() {
         return page.quickChecks;
     }
 
-    function getTotalAttempts() {
-        return page.totalAttempts.getText();
+    async function getTotalAttempts() {
+        return await page.totalAttempts.getText();
     }
 
-    function getTotalTimeAfterDueDate() {
-        return page.totalTimeAfterDueDate.getText();
+    async function getTotalTimeAfterDueDate() {
+        return await page.totalTimeAfterDueDate.getText();
     }
 
-    function getTotalTimeBeforeDueDate() {
-        return page.totalTimeBeforeDueDate.getText();
+    async function getTotalTimeBeforeDueDate() {
+        return await page.totalTimeBeforeDueDate.getText();
     }
 
-    function getTotalTimeOverall() {
-        return page.totalTimeOverall.getText();
+    async function getTotalTimeOverall() {
+        return await page.totalTimeOverall.getText();
     }
 
-    function search(text) {
-        page.searchBox.sendKeys(text);
+    async function search(text) {
+        await page.searchBox.sendKeys(text);
     }
 
-    function toggleResults(index) {
-        page.quickChecks.get(index).element(by.css(page.resultsAccordionHeaderClass)).click();
+    async function toggleResults(index) {
+        await page.quickChecks.get(index).element(by.css(page.resultsAccordionHeaderClass)).click();
     }
 
-    function viewAnalytics() {
-        page.analyticsBtn.click();
+    async function viewAnalytics() {
+        await page.analyticsBtn.click();
     }
 }
 

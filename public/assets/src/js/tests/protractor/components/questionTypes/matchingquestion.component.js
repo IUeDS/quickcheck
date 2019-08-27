@@ -22,16 +22,16 @@ var MatchingQuestionComponent = function(browserRef, question) {
     component.getMatchingPairInputs = getMatchingPairInputs;
     component.getMatchingPrompts = getMatchingPrompts;
 
-    function addDistractor() {
-        component.addDistractorBtn.click();
+    async function addDistractor() {
+        await component.addDistractorBtn.click();
     }
 
-    function addMatchingPair() {
-        component.addMatchingPairBtn.click();
+    async function addMatchingPair() {
+        await component.addMatchingPairBtn.click();
     }
 
-    function enterDistractor(distractor, text) {
-        distractor.element(by.css(component.distractorInputElement)).sendKeys(text);
+    async function enterDistractor(distractor, text) {
+        await distractor.element(by.css(component.distractorInputElement)).sendKeys(text);
     }
 
     function getDistractors() {

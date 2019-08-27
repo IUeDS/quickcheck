@@ -52,21 +52,21 @@ var SetPage = function(browserRef) {
     page.saveNewSubset = saveNewSubset;
     page.toggleUsersAccordion = toggleUsersAccordion;
 
-    function addSubset() {
-        page.addSubsetBtn.click();
+    async function addSubset() {
+        await page.addSubsetBtn.click();
     }
 
-    function clickExportQtiBtn() {
-        page.exportQtiBtn.click();
+    async function clickExportQtiBtn() {
+        await page.exportQtiBtn.click();
     }
 
-    function clickImportQtiBtn() {
-        page.importQtiBtn.click();
+    async function clickImportQtiBtn() {
+        await page.importQtiBtn.click();
     }
 
-    function closeFeaturesAccordion() {
-        page.featuresAccordion.click();
-        page.browser.sleep(1000); //wait for animation to finish so other elements still clickable
+    async function closeFeaturesAccordion() {
+        await page.featuresAccordion.click();
+        await page.browser.sleep(1000); //wait for animation to finish so other elements still clickable
     }
 
     function getAddSubsetBtn() {
@@ -77,9 +77,9 @@ var SetPage = function(browserRef) {
         return page.initialInstructions;
     }
 
-    function getNewSubsetInput() {
+    async function getNewSubsetInput() {
         //for some reason, this would occasionally throw an error, saying it was not present?
-        page.browser.wait(EC.presenceOf(page.newSubsetInput), 5000);
+        await page.browser.wait(EC.presenceOf(page.newSubsetInput), 5000);
         return page.newSubsetInput;
     }
 
@@ -95,8 +95,8 @@ var SetPage = function(browserRef) {
         return page.searchQuestionResults;
     }
 
-    function getSetName() {
-        return page.setName.getText();
+    async function getSetName() {
+        return await page.setName.getText();
     }
 
     function getSubset(index) {
@@ -125,30 +125,31 @@ var SetPage = function(browserRef) {
         });
     }
 
-    function isReadOnly() {
-        return page.readOnlyNotice.isPresent();
+    async function isReadOnly() {
+        return await page.readOnlyNotice.isPresent();
     }
 
-    function openFeaturesAccordion() {
+    async function openFeaturesAccordion() {
         //I hate to do this, but sometimes the bootstrap js has not properly loaded and the tests fail,
         //so adding in a brief sleep to make sure that js has initialized from what's in the DOM;
-        page.browser.sleep(1000);
-        page.featuresAccordion.click();
+        //page.browser.sleep(1000);
+        await page.featuresAccordion.click();
         //wait for animation to finish; for now, at least, 3 features, so wait for the last to be visible
-        page.browser.wait(EC.visibilityOf(this.featurePanel.getFeatures().get(2)), 5000);
+        await page.browser.wait(EC.visibilityOf(this.featurePanel.getFeatures().get(2)), 5000);
     }
 
-    function saveNewSubset() {
+    async function saveNewSubset() {
         var subsetCount,
             newSubset,
             subsetObject;
 
-        page.saveNewSubsetBtn.click();
+        await page.saveNewSubsetBtn.click();
         return page.initSubsets();
     }
 
-    function toggleUsersAccordion() {
-        page.usersAccordion.click();
+    async function toggleUsersAccordion() {
+        await page.usersAccordion.click();
+        await page.browser.sleep(1000); //wait for animation to finish
     }
 };
 

@@ -39,18 +39,18 @@ var EditFeedbackComponent = function(browserRef, question) {
     component.togglePerResponseFeedback = togglePerResponseFeedback;
     component.toggleRichContent = toggleRichContent;
 
-    function addCustomFeedback() {
-        component.customFeedbackBtn.click();
+    async function addCustomFeedback() {
+        await component.customFeedbackBtn.click();
     }
 
-    function deleteFeedback() {
-        component.browser.sleep(500); //1/08/17: recent protractor issues require workarounds
-        component.deleteFeedbackBtn.click();
-        component.browser.sleep(500); //was throwing an error without this
+    async function deleteFeedback() {
+        await component.browser.sleep(500); //1/08/17: recent protractor issues require workarounds
+        await component.deleteFeedbackBtn.click();
+        await component.browser.sleep(500); //was throwing an error without this
     }
 
-    function enterResponseFeedback(option, text) {
-        option.element(by.model(component.perResponseFeedbackInput)).sendKeys(text);
+    async function enterResponseFeedback(option, text) {
+        await option.element(by.model(component.perResponseFeedbackInput)).sendKeys(text);
     }
 
     function getCorrectFeedback() {
@@ -82,8 +82,8 @@ var EditFeedbackComponent = function(browserRef, question) {
         return component.perResponseFeedbackOptions;
     }
 
-    function getPerResponseFeedbackText(responseFeedback) {
-        return responseFeedback.element(by.model(component.perResponseFeedbackInput)).getAttribute('value');
+    async function getPerResponseFeedbackText(responseFeedback) {
+        return await responseFeedback.element(by.model(component.perResponseFeedbackInput)).getAttribute('value');
     }
 
     function getQuestionLevelFeedbackContainer() {
@@ -94,21 +94,21 @@ var EditFeedbackComponent = function(browserRef, question) {
         return component.richContentToggle;
     }
 
-    function isFeedbackOptionMarkedCorrect(option) {
-        return option.getAttribute('class').then(function(val) {
-            if (val.indexOf(component.perResponseFeedbackCorrectClass) > -1) {
-                return true;
-            }
-            return false;
-        });
+    async function isFeedbackOptionMarkedCorrect(option) {
+        const value = await option.getAttribute('class');
+
+        if (val.indexOf(component.perResponseFeedbackCorrectClass) > -1) {
+            return true;
+        }
+        return false;
     }
 
-    function togglePerResponseFeedback() {
-        component.perResponseFeedbackCheckbox.click();
+    async function togglePerResponseFeedback() {
+        await component.perResponseFeedbackCheckbox.click();
     }
 
-    function toggleRichContent() {
-        component.richContentToggle.click();
+    async function toggleRichContent() {
+        await component.richContentToggle.click();
     }
 }
 

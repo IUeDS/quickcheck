@@ -39,67 +39,63 @@ var AttemptsPage = function(browserRef) {
     page.toggleUngraded = toggleUngraded;
     page.viewAnalytics = viewAnalytics;
 
-    function autoGrade() {
-        page.autoGradeBtn.click();
+    async function autoGrade() {
+        await page.autoGradeBtn.click();
     }
 
-    function clearSearch() {
-        page.searchBox.clear();
+    async function clearSearch() {
+        await page.searchBox.clear();
     }
 
     function getDueDate() {
         return page.dueDate;
     }
 
-    function getGradingMessage() {
-        return page.gradingMessage.getText();
+    async function getGradingMessage() {
+        return await page.gradingMessage.getText();
     }
 
     function getReleaseSuccess() {
         return page.releaseSuccess;
     }
 
-    function goBack() {
-        page.goBackLink.click();
-        page.browser.sleep(1000);
+    async function goBack() {
+        await page.goBackLink.click();
+        await page.browser.sleep(1000);
     }
 
-    function isReleaseBtnDisplayed() {
-        return page.releaseBtn.getText().then(function(text) {
-            if (text.indexOf(page.releaseText) > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+    async function isReleaseBtnDisplayed() {
+        const text = await page.releaseBtn.getText();
+        if (text.indexOf(page.releaseText) > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function isRollbackBtnDisplayed() {
-        return page.releaseBtn.getText().then(function(text) {
-            if (text.indexOf(page.rollbackText) > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+    async function isRollbackBtnDisplayed() {
+        const text = await page.releaseBtn.getText();
+        if (text.indexOf(page.rollbackText) > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function search(text) {
-        page.searchBox.sendKeys(text);
+    async function search(text) {
+        await page.searchBox.sendKeys(text);
     }
 
-    function toggleRelease() {
-        page.releaseBtn.click();
+    async function toggleRelease() {
+        await page.releaseBtn.click();
     }
 
-    function toggleUngraded() {
-        page.toggleUngradedCheckbox.click();
+    async function toggleUngraded() {
+        await page.toggleUngradedCheckbox.click();
     }
 
-    function viewAnalytics() {
-        page.analyticsBtn.click();
+    async function viewAnalytics() {
+        await page.analyticsBtn.click();
     }
 }
 

@@ -61,16 +61,16 @@ var QtiImportComponent = function(browserRef) {
         return component.success;
     }
 
-    function isImportFinished() {
-        return component.finishedPanel.isPresent();
+    async function isImportFinished() {
+        return await component.finishedPanel.isPresent();
     }
 
-    function submit() {
-        component.submitBtn.click();
+    async function submit() {
+        await component.submitBtn.click();
     }
 
-    function uploadFile(absolutePath) {
-        component.panel.element(by.css(component.fileUpload)).sendKeys(absolutePath);
+    async function uploadFile(absolutePath) {
+        await component.panel.element(by.css(component.fileUpload)).sendKeys(absolutePath);
     }
 }
 

@@ -96,25 +96,25 @@ var QcPage = function(browserRef) {
     page.submit = submit;
     page.waitForModalClose = waitForModalClose;
 
-    function clickContinue() {
-        page.browser.wait(EC.visibilityOf(page.continueBtn), page.maxWait);
-        page.continueBtn.click();
+    async function clickContinue() {
+        await page.browser.wait(EC.visibilityOf(page.continueBtn), page.maxWait);
+        await page.continueBtn.click();
     }
 
-    function clickRowContinue() {
-        page.rowFeedbackContinueBtn.click();
+    async function clickRowContinue() {
+        await page.rowFeedbackContinueBtn.click();
     }
 
-    function enterNumericalAnswer(answer) {
+    async function enterNumericalAnswer(answer) {
         var input = page.getNumericalInput();
-        page.waitForModalClose(input);
-        input.sendKeys(answer);
+        await page.waitForModalClose(input);
+        await input.sendKeys(answer);
     }
 
-    function enterTextmatchAnswer(answer) {
+    async function enterTextmatchAnswer(answer) {
         var input = page.getTextmatchInput();
-        page.waitForModalClose(input);
-        input.sendKeys(answer);
+        await page.waitForModalClose(input);
+        await input.sendKeys(answer);
     }
 
     function getDescription() {
@@ -125,10 +125,9 @@ var QcPage = function(browserRef) {
         return page.dropdownPrompts;
     }
 
-    function getFinalScore() {
-        return page.finalScore.getText().then(function(text) {
-            return text.toLowerCase();
-        })
+    async function getFinalScore() {
+        const text = await page.finalScore.getText();
+        return text.toLowerCase();
     }
 
     function getIncorrectRows() {
@@ -163,14 +162,13 @@ var QcPage = function(browserRef) {
         return page.perResponseFeedback;
     }
 
-    function getQuestionProgress() {
-        return page.questionProgress.getText().then(function(text) {
-            return text.toLowerCase();
-        });
+    async function getQuestionProgress() {
+        const text = await page.questionProgress.getText();
+        return text.toLowerCase();
     }
 
-    function getQuestionText() {
-        return page.questionText.getText();
+    async function getQuestionText() {
+        return await page.questionText.getText();
     }
 
     function getRowFeedback() {
@@ -185,10 +183,9 @@ var QcPage = function(browserRef) {
         return page.selects;
     }
 
-    function getScore() {
-        return page.score.getText().then(function(text) {
-            return text.toLowerCase();
-        })
+    async function getScore() {
+        const text = await page.score.getText();
+        return text.toLowerCase();
     }
 
     function getTextmatchInput() {
@@ -211,160 +208,153 @@ var QcPage = function(browserRef) {
         return page.title;
     }
 
-    function isCompletionModalVisible() {
-        page.browser.wait(EC.visibilityOf(page.modalCompletion));
+    async function isCompletionModalVisible() {
+        await page.browser.wait(EC.visibilityOf(page.modalCompletion));
         return true;
     }
 
-    function isCorrectModal() {
-        page.browser.wait(EC.visibilityOf(page.modalFeedback));
-        return page.modalFeedbackHeader.getText().then(function(text) {
-            if (text.indexOf(page.correctHeader) > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+    async function isCorrectModal() {
+        await page.browser.wait(EC.visibilityOf(page.modalFeedback));
+        const text = await page.modalFeedbackHeader.getText();
+
+        if (text.indexOf(page.correctHeader) > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function isIncorrectModal() {
-        page.browser.wait(EC.visibilityOf(page.modalFeedback));
-        return page.modalFeedbackHeader.getText().then(function(text) {
-            if (text.indexOf(page.incorrectHeader) > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+    async function isIncorrectModal() {
+        await page.browser.wait(EC.visibilityOf(page.modalFeedback));
+        const text = await page.modalFeedbackHeader.getText();
+
+        if (text.indexOf(page.incorrectHeader) > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function isCorrectRowFeedback() {
+    async function isCorrectRowFeedback() {
         var feedback = page.getRowFeedback();
-        return feedback.getText().then(function(text) {
-            if (text.indexOf(page.correctHeader.toUpperCase()) > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+        const text = await feedback.getText();
+
+        if (text.indexOf(page.correctHeader.toUpperCase()) > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function isIncorrectRowFeedback() {
+    async function isIncorrectRowFeedback() {
         var feedback = page.getRowFeedback();
-        return feedback.getText().then(function(text) {
-            if (text.indexOf(page.incorrectHeader.toUpperCase()) > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+        const text = await feedback.getText();
+
+        if (text.indexOf(page.incorrectHeader.toUpperCase()) > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function isModuleMessagePresent() {
-        return page.moduleMessage.isPresent();
+    async function isModuleMessagePresent() {
+        return await page.moduleMessage.isPresent();
     }
 
-    function isQcFinished() {
-        page.browser.wait(EC.visibilityOf(page.finishedMessage), page.maxWait);
-        return page.finishedMessage.isDisplayed();
+    async function isQcFinished() {
+        await page.browser.wait(EC.visibilityOf(page.finishedMessage), page.maxWait);
+        return await page.finishedMessage.isDisplayed();
     }
 
-    function isQcGraded() {
-        page.browser.wait(EC.visibilityOf(page.modalCompletion));
-        return page.finishedGradedMessage.isDisplayed();
+    async function isQcGraded() {
+        await page.browser.wait(EC.visibilityOf(page.modalCompletion));
+        return await page.finishedGradedMessage.isDisplayed();
     }
 
-    function isQcPendingGrade() {
-        page.browser.wait(EC.visibilityOf(page.modalCompletion));
-        return page.finishedGradePendingMessage.isDisplayed();
+    async function isQcPendingGrade() {
+        await page.browser.wait(EC.visibilityOf(page.modalCompletion));
+        return await page.finishedGradePendingMessage.isDisplayed();
     }
 
-    function isQcUngraded() {
-        page.browser.wait(EC.visibilityOf(page.modalCompletion));
-        return page.finishedUngradedMessage.isDisplayed();
+    async function isQcUngraded() {
+        await page.browser.wait(EC.visibilityOf(page.modalCompletion));
+        return await page.finishedUngradedMessage.isDisplayed();
     }
 
-    function isSelectablePicked(index) {
+    async function isSelectablePicked(index) {
         var selectable = page.getSelectables().get(index);
-        return selectable.getAttribute('class').then(function(classString) {
-            if (classString.indexOf(page.selectablePicked) > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+        const classString = await selectable.getAttribute('class');
+
+        if (classString.indexOf(page.selectablePicked) > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function isSubmitBtnDisabled() {
-        return page.submitBtn.getAttribute('disabled').then(function(attr) {
-            if (attr == 'true') {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+    async function isSubmitBtnDisabled() {
+        const attr = await page.submitBtn.getAttribute('disabled');
+
+        if (attr == 'true') {
+            return true;
+        }
+
+        return false;
     }
 
-    function restart() {
-        page.browser.wait(EC.visibilityOf(page.modalCompletion));
-        page.browser.sleep(1000); //make sure modal animation is fully complete
-        page.restartBtn.click();
-        page.browser.sleep(1000);
+    async function restart() {
+        await page.browser.wait(EC.visibilityOf(page.modalCompletion));
+        await page.browser.sleep(1000); //make sure modal animation is fully complete
+        await page.restartBtn.click();
+        await page.browser.sleep(1000);
     }
 
-    function selectIncorrectRandomMcOption(correctOption) {
+    async function selectIncorrectRandomMcOption(correctOption) {
         var answerSelected = false;
-        page.getMcOptions().each(function(option) {
-            option.getText().then(function(text) {
-                if (text !== correctOption && !answerSelected) {
-                    option.element(by.css(page.mcInput)).click();
-                    answerSelected = true; //can't break out of .each() loop
-                }
-            });
+        page.getMcOptions().each(async function(option) {
+            const text = await option.getText();
+            if (text !== correctOption && !answerSelected) {
+                await option.element(by.css(page.mcInput)).click();
+                answerSelected = true; //can't break out of .each() loop
+            }
         });
     }
 
-    function selectMatrixCheckboxByIndex(index) {
+    async function selectMatrixCheckboxByIndex(index) {
         var checkboxes = page.getMatrixCheckboxes(),
             option = checkboxes.get(index);
-        page.waitForModalClose(option);
-        option.click();
+        await page.waitForModalClose(option);
+        await option.click();
     }
 
-    function selectMcOptionByIndex(index) {
+    async function selectMcOptionByIndex(index) {
         var option = page.mcOptions.get(index).element(by.css(page.mcInput));
-        page.waitForModalClose(option);
-        option.click();
+        await page.waitForModalClose(option);
+        await option.click();
     }
 
-    function selectOption(selectIndex, text) {
+    async function selectOption(selectIndex, text) {
         var select = page.getSelects().get(selectIndex);
-        page.waitForModalClose(select);
-        select.sendKeys(text);
+        await page.waitForModalClose(select);
+        await select.sendKeys(text);
     }
 
-    function startOver() {
-        page.startOverBtn.click();
-        page.browser.sleep(1000);
+    async function startOver() {
+        await page.startOverBtn.click();
+        await page.browser.sleep(1000);
     }
 
-    function submit() {
-        page.browser.wait(EC.elementToBeClickable(page.submitBtn));
-        page.submitBtn.click();
+    async function submit() {
+        await page.browser.wait(EC.elementToBeClickable(page.submitBtn));
+        await page.submitBtn.click();
     }
 
     //keep an eye on this github issue for a possible better solution for this in
     //the future: https://github.com/angular/protractor/issues/2313
-    function waitForModalClose(nextElement) {
+    async function waitForModalClose(nextElement) {
         var clickable = EC.elementToBeClickable(nextElement),
             invisible = EC.invisibilityOf(page.modalFade);
-        page.browser.wait(EC.and(clickable, invisible), page.maxWait);
+        await page.browser.wait(EC.and(clickable, invisible), page.maxWait);
     }
 }
 

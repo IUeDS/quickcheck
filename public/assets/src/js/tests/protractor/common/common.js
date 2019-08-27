@@ -31,11 +31,11 @@ function Common(browserRef) {
     common.switchToCanvas = switchToCanvas;
     common.switchToLtiTool = switchToLtiTool;
     common.switchToLtiToolEmbed = switchToLtiToolEmbed;
+    common.waitForAngular = waitForAngular;
 
-    function acceptAlert() {
-        common.browser.driver.switchTo().alert().then(function (alert) {
-            alert.accept();
-        });
+    async function acceptAlert() {
+        const alert = await common.browser.driver.switchTo().alert();
+        await alert.accept();
     }
 
     //this is specifically tied to the one randomized question we have, multiple choice, and its 4 options, so it
@@ -59,58 +59,58 @@ function Common(browserRef) {
         return randomized;
     }
 
-    function closeTab() {
-        common.browser.close();
+    async function closeTab() {
+        await common.browser.close();
     }
 
-    function enterAngularPage() {
-        common.browser.driver.sleep(2000);
+    async function enterAngularPage() {
+        await common.browser.driver.sleep(2000);
         common.browser.ignoreSynchronization = false;
-        common.browser.waitForAngularEnabled(true);
+        await common.browser.waitForAngularEnabled(true);
     }
 
-    function enterNonAngularPage() {
+    async function enterNonAngularPage() {
         common.browser.ignoreSynchronization = true;
-        common.browser.waitForAngularEnabled(false);
+        await common.browser.waitForAngularEnabled(false);
     }
 
-    function enterTinyMceIframeInElement(elem) {
+    async function enterTinyMceIframeInElement(elem) {
         var frame = common.getTinyMceIframeFromElement(elem);
-        common.browser.driver.switchTo().frame(frame.getWebElement());
-        common.enterNonAngularPage();
+        await common.browser.driver.switchTo().frame(frame.getWebElement());
+        await common.enterNonAngularPage();
     }
 
-    function enterTinyMceText(text) {
-        common.browser.driver.findElement(by.css(common.tinyMce)).sendKeys(text);
+    async function enterTinyMceText(text) {
+        await common.browser.driver.findElement(by.css(common.tinyMce)).sendKeys(text);
     }
 
-    function getSelectedText(select) {
-        return select.element(by.css('option:checked')).getText();
+    async function getSelectedText(select) {
+        return await select.element(by.css('option:checked')).getText();
     }
 
     function getTinyMceIframeFromElement(elem) {
         return elem.all(by.css('.mce-edit-area iframe')).first();
     }
 
-    function getTinyMceText() {
-        return common.browser.driver.findElement(by.css(common.tinyMce)).getText();
+    async function getTinyMceText() {
+        return await common.browser.driver.findElement(by.css(common.tinyMce)).getText();
     }
 
-    function goToQuickCheck() {
-        common.browser.driver.findElement(by.linkText(common.toolName)).click();
-        return common.switchToLtiTool();
+    async function goToQuickCheck() {
+        await common.browser.driver.findElement(by.linkText(common.toolName)).click();
+        return await common.switchToLtiTool();
     }
 
-    function leaveStudentView() {
-        common.browser.driver.findElement(by.css('.leave_student_view')).click();
+    async function leaveStudentView() {
+        await common.browser.driver.findElement(by.css('.leave_student_view')).click();
     }
 
-    function leaveTinyMceIframe() {
-        common.browser.driver.switchTo().defaultContent();
+    async function leaveTinyMceIframe() {
+        await common.browser.driver.switchTo().defaultContent();
     }
 
-    function refresh() {
-        return common.browser.refresh();
+    async function refresh() {
+        return await common.browser.refresh();
     }
 
     function saveOptionList(options) {
@@ -133,27 +133,32 @@ function Common(browserRef) {
         common.browser.driver.manage().window().setSize(width, height);
     }
 
-    function switchTab(tabIndex) {
-        common.browser.getAllWindowHandles().then(function (handles) {
-            common.browser.switchTo().window(handles[tabIndex]);
-        });
+    async function switchTab(tabIndex) {
+        const handles = await common.browser.getAllWindowHandles();
+        await common.browser.switchTo().window(handles[tabIndex]);
     }
 
-    function switchToCanvas() {
-        common.enterNonAngularPage();
-        return common.browser.driver.switchTo().defaultContent();
+    async function switchToCanvas() {
+        await common.enterNonAngularPage();
+        return await common.browser.driver.switchTo().defaultContent();
     }
 
-    function switchToLtiTool() {
-        return common.browser.driver.switchTo().frame(common.browser.driver.findElement(by.css('#tool_content')));
+    async function switchToLtiTool() {
+        return await common.browser.driver.switchTo().frame(common.browser.driver.findElement(by.css('#tool_content')));
     }
 
-    function switchToLtiToolEmbed() {
+    async function switchToLtiToolEmbed() {
         var iframe = '#resource_selection_iframe';
         //I really hate to use sleep(), but inconsistent errors with the iframe not showing up, and also was
         //getting errors with not finding bindings using EC since we are outside of an angular context
-        common.browser.driver.sleep(2000);
-        return common.browser.driver.switchTo().frame(common.browser.driver.findElement(by.css(iframe)));
+        await common.browser.driver.sleep(2000);
+        return await common.browser.driver.switchTo().frame(common.browser.driver.findElement(by.css(iframe)));
+    }
+
+    async function waitForAngular() {
+        await common.browser.wait(function () {
+            return browser.executeScript('return !!window.angular');
+        }, 10000, 'Timed out waiting for angular');
     }
 }
 

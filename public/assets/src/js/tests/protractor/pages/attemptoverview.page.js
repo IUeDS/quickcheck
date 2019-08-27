@@ -21,12 +21,12 @@ var AttemptOverviewPage = function(browserRef) {
     page.isStudentToggleEnabled = isStudentToggleEnabled;
     page.search = search;
 
-    function clearSearch() {
-        page.searchBox.clear();
+    async function clearSearch() {
+        await page.searchBox.clear();
     }
 
-    function clickStudentToggle() {
-        page.studentResultsToggle.click();
+    async function clickStudentToggle() {
+        await page.studentResultsToggle.click();
     }
 
     function getAssessmentByName(nameText) {
@@ -45,12 +45,12 @@ var AttemptOverviewPage = function(browserRef) {
         return page.students;
     }
 
-    function isStudentToggleEnabled() {
-        return page.studentResultsToggleInput.getAttribute('checked');
+    async function isStudentToggleEnabled() {
+        return await page.studentResultsToggleInput.getAttribute('checked');
     }
 
-    function search(text) {
-        page.searchBox.sendKeys(text);
+    async function search(text) {
+        await page.searchBox.sendKeys(text);
     }
 }
 

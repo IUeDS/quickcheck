@@ -18,28 +18,28 @@ var McQuestionComponent = function(browserRef, question) {
     component.isMcOptionMarkedCorrect = isMcOptionMarkedCorrect;
     component.toggleMcOptionCorrect = toggleMcOptionCorrect;
 
-    function addMcOption() {
-        component.addMcOptionBtn.click();
+    async function addMcOption() {
+        await component.addMcOptionBtn.click();
     }
 
-    function enterMcTextOption(option, text) {
-        option.element(by.css(component.inputElement)).sendKeys(text);
+    async function enterMcTextOption(option, text) {
+        await option.element(by.css(component.inputElement)).sendKeys(text);
     }
 
-    function getMcOptionInputValue(option) {
-        return option.element(by.css(component.inputElement)).getAttribute('value');
+    async function getMcOptionInputValue(option) {
+        return await option.element(by.css(component.inputElement)).getAttribute('value');
     }
 
     function getOptionInput(option) {
         return option.element(by.css(component.inputElement));
     }
 
-    function isMcOptionMarkedCorrect(option) {
-        return option.element(by.css(component.mcIsCorrectClass)).isPresent();
+    async function isMcOptionMarkedCorrect(option) {
+        return await option.element(by.css(component.mcIsCorrectClass)).isPresent();
     }
 
-    function toggleMcOptionCorrect(option) {
-        option.element(by.css(component.mcMarkCorrectClass)).click();
+    async function toggleMcOptionCorrect(option) {
+        await option.element(by.css(component.mcMarkCorrectClass)).click();
     }
 }
 

@@ -64,39 +64,39 @@ var SubsetPanelComponent = function(browserRef, subsetElement) {
     component.submitEditedSubset = submitEditedSubset;
     component.toggleAccordion = toggleAccordion;
 
-    function addQuickCheck() {
-        component.addQcBtn.click();
+    async function addQuickCheck() {
+        await component.addQcBtn.click();
     }
 
-    function addAndSaveQuickCheck(quickcheckName) {
-        component.addQcBtn.click();
-        component.getNewQcInput().sendKeys(quickcheckName);
-        component.saveQuickCheck();
+    async function addAndSaveQuickCheck(quickcheckName) {
+        await component.addQcBtn.click();
+        await component.getNewQcInput().sendKeys(quickcheckName);
+        await component.saveQuickCheck();
     }
 
-    function areSubsetInstructionsVisible() {
-        return component.subsetInstructions.isDisplayed();
+    async function areSubsetInstructionsVisible() {
+        return await component.subsetInstructions.isDisplayed();
     }
 
-    function copyQuickCheck(quickcheck) {
-        quickcheck.element(by.css(component.copyQcBtn)).click();
+    async function copyQuickCheck(quickcheck) {
+        await quickcheck.element(by.css(component.copyQcBtn)).click();
     }
 
-    function deleteQuickCheck(quickCheck) {
-        quickCheck.element(by.css(component.deleteQcBtn)).click();
+    async function deleteQuickCheck(quickCheck) {
+        await quickCheck.element(by.css(component.deleteQcBtn)).click();
     }
 
-    function deleteSubset() {
-        component.deleteSubsetBtn.click();
+    async function deleteSubset() {
+        await component.deleteSubsetBtn.click();
     }
 
-    function editQuickCheck(quickCheck) {
-        quickCheck.element(by.css(component.editQcBtn)).click();
-        component.browser.sleep(1000);
+    async function editQuickCheck(quickCheck) {
+        await quickCheck.element(by.css(component.editQcBtn)).click();
+        await component.browser.sleep(1000);
     }
 
-    function editSubset() {
-        component.editSubsetBtn.click();
+    async function editSubset() {
+        await component.editSubsetBtn.click();
     }
 
     function getAddQcBtn() {
@@ -111,24 +111,24 @@ var SubsetPanelComponent = function(browserRef, subsetElement) {
         return quickcheck.element(by.css(component.copyQcPanel));
     }
 
-    function getCopyQuickCheckName(quickcheck) {
-        return quickcheck.element(by.css(component.copyQcName)).getAttribute('value');
+    async function getCopyQuickCheckName(quickcheck) {
+        return await quickcheck.element(by.css(component.copyQcName)).getAttribute('value');
     }
 
     function getCopySelectSetDropdownOptions(quickcheck) {
         return quickcheck.element(by.css(component.copyQcSetSelect)).all(by.css('option'));
     }
 
-    function getCopySelectSetDropdownValue(quickcheck) {
-        return quickcheck.element(by.css(component.copyQcSetSelect)).element(by.css('option:checked')).getText();
+    async function getCopySelectSetDropdownValue(quickcheck) {
+        return await quickcheck.element(by.css(component.copyQcSetSelect)).element(by.css('option:checked')).getText();
     }
 
     function getCopySelectSubsetDropdownOptions(quickcheck) {
         return quickcheck.element(by.css(component.copyQcSubsetSelect)).all(by.css('option'));
     }
 
-    function getCopySelectSubsetDropdownValue(quickcheck) {
-        return quickcheck.element(by.css(component.copyQcSubsetSelect)).element(by.css('option:checked')).getText();
+    async function getCopySelectSubsetDropdownValue(quickcheck) {
+        return await quickcheck.element(by.css(component.copyQcSubsetSelect)).element(by.css('option:checked')).getText();
     }
 
     function getDeleteQcBtn(quickcheck) {
@@ -159,32 +159,31 @@ var SubsetPanelComponent = function(browserRef, subsetElement) {
         return component.quickChecks;
     }
 
-    function previewQuickCheck(quickCheck) {
-        quickCheck.element(by.css(component.previewQcBtn)).click();
+    async function previewQuickCheck(quickCheck) {
+        await quickCheck.element(by.css(component.previewQcBtn)).click();
     }
 
-    function saveQuickCheck() {
-        component.saveQcBtn.click();
+    async function saveQuickCheck() {
+        await component.saveQcBtn.click();
     }
 
     function setSubset(subset) {
         component.subset = subset;
     }
 
-    function submitCopy(quickcheck) {
-        quickcheck.element(by.css(component.copyQcSubmitBtn)).click();
+    async function submitCopy(quickcheck) {
+        await quickcheck.element(by.css(component.copyQcSubmitBtn)).click();
     }
 
-    function submitEditedSubset(name) {
+    async function submitEditedSubset(name) {
         var input = this.getEditSubsetInput();
-        input.sendKeys(name);
-        input.sendKeys(protractor.Key.ENTER);
+        await input.sendKeys(name);
+        await input.sendKeys(protractor.Key.ENTER);
     }
 
-    function toggleAccordion() {
-        //subset.element(by.css(page.subsetHeader)).click();
-        component.header.click();
-        component.browser.sleep(1000); //wait for animation to finish
+    async function toggleAccordion() {
+        await component.header.click();
+        await component.browser.sleep(1000); //wait for animation to finish
     }
 }
 

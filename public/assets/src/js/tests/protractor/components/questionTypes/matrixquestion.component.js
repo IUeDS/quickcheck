@@ -21,12 +21,12 @@ var MatrixQuestionComponent = function(browserRef, question) {
     component.getMatrixRows = getMatrixRows;
     component.getMatrixTextInputs = getMatrixTextInputs;
 
-    function addMatrixColumn() {
-        component.matrixAddColumnBtn.click();
+    async function addMatrixColumn() {
+        await component.matrixAddColumnBtn.click();
     }
 
-    function addMatrixRow() {
-        component.matrixAddRowBtn.click();
+    async function addMatrixRow() {
+        await component.matrixAddRowBtn.click();
     }
 
     function getMatrixCheckboxes() {

@@ -57,36 +57,36 @@ var CustomActivitiesComponent = function(browserRef) {
     component.submitEdited = submitEdited
     component.submitNew = submitNew;
 
-    function addActivity() {
-        component.addActivityBtn.click();
+    async function addActivity() {
+        await component.addActivityBtn.click();
     }
 
-    function areNoneCreated() {
-        return component.noneCreated.isPresent();
+    async function areNoneCreated() {
+        return await component.noneCreated.isPresent();
     }
 
-    function close() {
-        component.closeBtn.click();
+    async function close() {
+        await component.closeBtn.click();
     }
 
-    function deleteActivity(activity) {
-        activity.element(by.css(component.deleteBtn)).click();
+    async function deleteActivity(activity) {
+        await activity.element(by.css(component.deleteBtn)).click();
     }
 
-    function editActivity(activity) {
-        activity.element(by.css(component.editBtn)).click();
+    async function editActivity(activity) {
+        await activity.element(by.css(component.editBtn)).click();
     }
 
     function getActivities() {
         return component.activities;
     }
 
-    function getDescription(activity) {
-        return activity.element(by.exactBinding(component.descriptionBinding)).getText();
+    async function getDescription(activity) {
+        return await activity.element(by.exactBinding(component.descriptionBinding)).getText();
     }
 
-    function getDev(activity) {
-        return activity.element(by.exactBinding(component.devBinding)).getText();
+    async function getDev(activity) {
+        return await activity.element(by.exactBinding(component.devBinding)).getText();
     }
 
     function getEditedDescriptionInput(activity) {
@@ -109,8 +109,8 @@ var CustomActivitiesComponent = function(browserRef) {
         return activity.element(by.css(component.editUrlInput));
     }
 
-    function getName(activity) {
-        return activity.element(by.exactBinding(component.nameBinding)).getText();
+    async function getName(activity) {
+        return await activity.element(by.exactBinding(component.nameBinding)).getText();
     }
 
     function getNewDescriptionInput() {
@@ -133,36 +133,35 @@ var CustomActivitiesComponent = function(browserRef) {
         return component.successMsg;
     }
 
-    function getUrl(activity) {
-        return activity.element(by.exactBinding(component.urlBinding)).getText();
+    async function getUrl(activity) {
+        return await activity.element(by.exactBinding(component.urlBinding)).getText();
     }
 
-    function isGroupRequired(activity) {
+    async function isGroupRequired(activity) {
         //there's a label showing group required that is only present if group required box checked
-        return activity.getText().then(function(text) {
-            if (text.indexOf('Group required') > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+        const text = await activity.getText();
+
+        if (text.indexOf('Group required') > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function isOpen() {
-        return component.panel.isPresent();
+    async function isOpen() {
+        return await component.panel.isPresent();
     }
 
-    function open() {
-        component.openBtn.click();
+    async function open() {
+        await component.openBtn.click();
     }
 
-    function submitEdited(activity) {
-        activity.element(by.css(component.submitEditBtn)).click();
+    async function submitEdited(activity) {
+        await activity.element(by.css(component.submitEditBtn)).click();
     }
 
-    function submitNew() {
-        component.saveNewBtn.click();
+    async function submitNew() {
+        await component.saveNewBtn.click();
     }
 }
 

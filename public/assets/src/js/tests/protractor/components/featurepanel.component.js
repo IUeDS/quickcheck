@@ -21,20 +21,20 @@ var FeaturePanelComponent = function(browserRef) {
         return component.features;
     }
 
-    function getFeatureTitle(feature) {
-        return feature.element(by.css(component.featureTitle)).getText();
+    async function getFeatureTitle(feature) {
+        return await feature.element(by.css(component.featureTitle)).getText();
     }
 
-    function isFeatureOn(feature) {
-        return feature.element(by.css('input')).getAttribute('checked');
+    async function isFeatureOn(feature) {
+        return await feature.element(by.css('input')).getAttribute('checked');
     }
 
-    function isFeatureToggleable(feature) {
-        return feature.element(by.css('input')).isPresent();
+    async function isFeatureToggleable(feature) {
+        return await feature.element(by.css('input')).isPresent();
     }
 
-    function toggleFeature(feature) {
-        feature.element(by.css(component.clickableToggle)).click();
+    async function toggleFeature(feature) {
+        await feature.element(by.css(component.clickableToggle)).click();
     }
 
     function toggleFeatureByIndex(index) {

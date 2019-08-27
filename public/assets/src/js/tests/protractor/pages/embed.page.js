@@ -33,16 +33,16 @@ var EmbedPage = function(browserRef) {
     page.selectSearchedQuickCheckByIndex = selectSearchedQuickCheckByIndex;
     page.toggleAdminViewAll = toggleAdminViewAll;
 
-    function clearSearch() {
-        page.clearSearchBtn.click();
+    async function clearSearch() {
+        await page.clearSearchBtn.click();
     }
 
     //protractor was throwing bugs where it never had before when entering the embed iframe;
     //focus seems to be off and what seems to be happening is that clicking a button will
     //remove the focus that is set but it won't actually click the button we want clicked.
     //so calling this function to click on nothing in particular before we click buttons on this page.
-    function focus() {
-        page.browser.element(by.css('body')).click();
+    async function focus() {
+        await page.browser.element(by.css('body')).click();
     }
 
     function getAdminSets() {
@@ -65,32 +65,32 @@ var EmbedPage = function(browserRef) {
         return page.subsets;
     }
 
-    function previewQuickCheckByIndex(index) {
+    async function previewQuickCheckByIndex(index) {
         var btn = page.getQuickChecks().get(index).element(by.css(page.previewBtn));
-        page.focus();
-        btn.click();
+        await page.focus();
+        await btn.click();
     }
 
-    function search(searchTerm) {
-        page.searchBox.sendKeys(searchTerm);
+    async function search(searchTerm) {
+        await page.searchBox.sendKeys(searchTerm);
     }
 
-    function selectQuickCheckByIndex(index) {
+    async function selectQuickCheckByIndex(index) {
         var btn = page.getQuickChecks().get(index).element(by.css(page.selectBtn));
-        page.focus();
-        btn.click();
+        await page.focus();
+        await btn.click();
     }
 
-    function selectSearchedQuickCheckByIndex(index) {
+    async function selectSearchedQuickCheckByIndex(index) {
         var btn = page.getSearchResults().get(index).element(by.css(page.selectBtn));
-        page.focus();
-        btn.click();
-        page.browser.sleep(1000);
+        await page.focus();
+        await btn.click();
+        await page.browser.sleep(1000);
     }
 
-    function toggleAdminViewAll() {
-        page.focus();
-        page.adminToggleViewAll.click();
+    async function toggleAdminViewAll() {
+        await page.focus();
+        await page.adminToggleViewAll.click();
     }
 }
 

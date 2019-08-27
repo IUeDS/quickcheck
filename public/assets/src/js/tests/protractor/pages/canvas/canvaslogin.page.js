@@ -12,7 +12,7 @@ var CanvasLogin = function(browserRef) {
     //on each of these pages, it just makes more sense to keep it in one, even if a touch clunkier)
     page.canvasNav = '#section-tabs';
     page.casPasswordField = '#password';
-    page.casSubmitBtn = '.button--submit';
+    page.casSubmitBtn = '#login-button';
     page.casUserNameField = '#username';
     page.iFrame = '#tool_content';
     page.loginBtn = 'Log-in';
@@ -21,17 +21,17 @@ var CanvasLogin = function(browserRef) {
     page.getNavItems = getNavItems;
     page.login = login;
 
-    function getNavItems() {
-        page.browser.driver.wait(EC.presenceOf(page.browser.element(by.css(page.canvasNav))));
-        return page.browser.driver.findElement(by.css(page.canvasNav)).getText();
+    async function getNavItems() {
+        await page.browser.driver.wait(EC.presenceOf(page.browser.element(by.css(page.canvasNav))));
+        return await page.browser.driver.findElement(by.css(page.canvasNav)).getText();
     }
 
-    function login(username, password) {
-        page.browser.driver.get(page.rootUrl);
-        page.browser.driver.findElement(by.linkText(page.loginBtn)).click();
-        page.browser.driver.findElement(by.css(page.casUserNameField)).sendKeys(username);
-        page.browser.driver.findElement(by.css(page.casPasswordField)).sendKeys(password);
-        page.browser.driver.findElement(by.css(page.casSubmitBtn)).click();
+    async function login(username, password) {
+        await page.browser.driver.get(page.rootUrl);
+        await page.browser.driver.findElement(by.linkText(page.loginBtn)).click();
+        await page.browser.driver.findElement(by.css(page.casUserNameField)).sendKeys(username);
+        await page.browser.driver.findElement(by.css(page.casPasswordField)).sendKeys(password);
+        await page.browser.driver.findElement(by.css(page.casSubmitBtn)).click();
     }
 };
 

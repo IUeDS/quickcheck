@@ -21,8 +21,8 @@ var NavComponent = function(browserRef) {
         component.browser.sleep(1500);
     }
 
-    function goToSets() {
-        component.setsLink.click();
+    async function goToSets() {
+        await component.setsLink.click();
         component.browser.sleep(1500);
     }
 };

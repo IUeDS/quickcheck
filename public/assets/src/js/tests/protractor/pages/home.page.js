@@ -35,12 +35,12 @@ var HomePage = function(browserRef) {
     page.selectSet = selectSet;
     page.selectSubset = selectSubset;
 
-    function addQuickCheck() {
-        page.addQcBtn.click();
+    async function addQuickCheck() {
+        await page.addQcBtn.click();
     }
 
-    function getHeader() {
-        return page.pageHeader.getText();
+    async function getHeader() {
+        return await page.pageHeader.getText();
     }
 
     function getNewSetInput() {
@@ -59,26 +59,26 @@ var HomePage = function(browserRef) {
         return page.subsetOptions;
     }
 
-    function saveNewQuickCheck(quickCheckName) {
-        page.newQuickCheckInput.sendKeys(quickCheckName);
-        page.saveBtn.click();
-        page.browser.sleep(2000);
+    async function saveNewQuickCheck(quickCheckName) {
+        await page.newQuickCheckInput.sendKeys(quickCheckName);
+        await page.saveBtn.click();
+        await page.browser.sleep(2000);
     }
 
-    function selectNewSet() {
-        page.setSelect.sendKeys(page.newSetText);
+    async function selectNewSet() {
+        await page.setSelect.sendKeys(page.newSetText);
     }
 
-    function selectNewSubset() {
-        page.subsetSelect.sendKeys(page.newSubsetText);
+    async function selectNewSubset() {
+        await page.subsetSelect.sendKeys(page.newSubsetText);
     }
 
-    function selectSet(setName) {
-        page.setSelect.sendKeys(setName);
+    async function selectSet(setName) {
+        await page.setSelect.sendKeys(setName);
     }
 
-    function selectSubset(subsetName) {
-        page.subsetSelect.sendKeys(subsetName);
+    async function selectSubset(subsetName) {
+        await page.subsetSelect.sendKeys(subsetName);
     }
 };
 

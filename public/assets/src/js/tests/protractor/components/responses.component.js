@@ -68,8 +68,8 @@ var ResponsesComponent = function(browserRef) {
     component.isResponseIncorrect = isResponseIncorrect;
     component.isTextmatchAnswerCorrect = isTextmatchAnswerCorrect;
 
-    function getCountCorrect() {
-        return component.countCorrect.getText();
+    async function getCountCorrect() {
+        return await component.countCorrect.getText();
     }
 
     function getDropdownCorrectAnswerArea(questionIndex) {
@@ -127,9 +127,9 @@ var ResponsesComponent = function(browserRef) {
         return question.all(by.repeater(component.mcOptions));
     }
 
-    function getNumericalAnswer(questionIndex) {
+    async function getNumericalAnswer(questionIndex) {
         var question = component.getQuestions().get(questionIndex);
-        return question.element(by.css(component.numericalAnswer)).getAttribute('value');
+        return await question.element(by.css(component.numericalAnswer)).getAttribute('value');
     }
 
     function getNumericalAnswers(questionIndex) {
@@ -141,16 +141,16 @@ var ResponsesComponent = function(browserRef) {
         return component.questions;
     }
 
-    function getQuestionText(questionIndex) {
-        return component.getQuestions().get(questionIndex).element(by.css(component.questionText)).getText();
+    async function getQuestionText(questionIndex) {
+        return await component.getQuestions().get(questionIndex).element(by.css(component.questionText)).getText();
     }
 
     function getResponseErrors() {
         return component.responseErrors;
     }
 
-    function getSelectedOptionFromDropdown(select) {
-        return select.element(by.css(component.selectedOption)).getText();
+    async function getSelectedOptionFromDropdown(select) {
+        return await select.element(by.css(component.selectedOption)).getText();
     }
 
     function getSelects(questionIndex) {
@@ -158,13 +158,13 @@ var ResponsesComponent = function(browserRef) {
         return question.all(by.css('select'));
     }
 
-    function getScore() {
-        return component.score.getText();
+    async function getScore() {
+        return await component.score.getText();
     }
 
-    function getTextmatchAnswer(questionIndex) {
+    async function getTextmatchAnswer(questionIndex) {
         var question = component.getQuestions().get(questionIndex);
-        return question.element(by.css(component.textmatchAnswer)).getAttribute('value');
+        return await question.element(by.css(component.textmatchAnswer)).getAttribute('value');
     }
 
     function getTextMatchAnswers(questionIndex) {
@@ -172,65 +172,59 @@ var ResponsesComponent = function(browserRef) {
         return question.all(by.repeater(component.textmatchCorrectAnswers));
     }
 
-    function goBack() {
-        component.backLink.click();
+    async function goBack() {
+        await component.backLink.click();
     }
 
-    function isInputMarkedIncorrect(questionIndex) {
+    async function isInputMarkedIncorrect(questionIndex) {
         var question = component.getQuestions().get(questionIndex);
+        const className = await question.element(by.css('input')).getAttribute('class');
 
-        return question.element(by.css('input')).getAttribute('class').then(function(className) {
-            if (className.indexOf(component.incorrectInputClass) > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+        if (className.indexOf(component.incorrectInputClass) > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function isMatrixOptionMarkedCorrect(tableCell) {
-        return tableCell.element(by.css(component.correctMatrixClass)).isPresent();
+    async function isMatrixOptionMarkedCorrect(tableCell) {
+        return await tableCell.element(by.css(component.correctMatrixClass)).isPresent();
     }
 
-    function isOptionChecked(option) {
-        return option.element(by.css('input')).getAttribute('checked').then(function(checked) {
-            if (checked) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+    async function isOptionChecked(option) {
+        const checked = await option.element(by.css('input')).getAttribute('checked');
+        if (checked) {
+            return true;
+        }
+
+        return false;
     }
 
-    function isMcOptionMarkedCorrect(option) {
-        return option.getAttribute('class').then(function(className) {
-            if (className.indexOf(component.correctOptionClass) > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+    async function isMcOptionMarkedCorrect(option) {
+        const className = await option.getAttribute('class');
+        if (className.indexOf(component.correctOptionClass) > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function isNumericalAnswerCorrect(questionIndex) {
+    async function isNumericalAnswerCorrect(questionIndex) {
         var question = component.getQuestions().get(questionIndex);
-        return question.element(by.css(component.numericalCorrect)).isPresent();
+        return await question.element(by.css(component.numericalCorrect)).isPresent();
     }
 
-    function isResponseCorrect(question) {
-        return question.element(by.css(component.correctQuestionClass)).isPresent();
+    async function isResponseCorrect(question) {
+        return await question.element(by.css(component.correctQuestionClass)).isPresent();
     }
 
-    function isResponseIncorrect(question) {
-        return question.element(by.css(component.incorrectQuestionClass)).isPresent();
+    async function isResponseIncorrect(question) {
+        return await question.element(by.css(component.incorrectQuestionClass)).isPresent();
     }
 
-    function isTextmatchAnswerCorrect(questionIndex) {
+    async function isTextmatchAnswerCorrect(questionIndex) {
         var question = component.getQuestions().get(questionIndex);
-        return question.element(by.css(component.textmatchCorrect)).isPresent();
+        return await question.element(by.css(component.textmatchCorrect)).isPresent();
     }
 }
 

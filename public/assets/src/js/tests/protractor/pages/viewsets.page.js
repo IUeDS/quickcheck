@@ -72,24 +72,24 @@ var ViewSetsPage = function(browserRef) {
     page.togglePublicSets = togglePublicSets;
     page.updateSet = updateSet;
 
-    function addAdminUser() {
-        page.addAdminUserBtn.click();
+    async function addAdminUser() {
+        await page.addAdminUserBtn.click();
     }
 
-    function cancelSetEdit(setElement) {
-        setElement.element(by.partialButtonText(page.cancelSetEditText)).click();
+    async function cancelSetEdit(setElement) {
+        await setElement.element(by.partialButtonText(page.cancelSetEditText)).click();
     }
 
-    function clickAddSetBtn() {
-        page.addSetBtn.click();
+    async function clickAddSetBtn() {
+        await page.addSetBtn.click();
     }
 
-    function deleteSet(setElement) {
-        setElement.element(by.css(page.deleteSetBtn)).click();
+    async function deleteSet(setElement) {
+        await setElement.element(by.css(page.deleteSetBtn)).click();
     }
 
-    function editSet(setElement) {
-        setElement.element(by.css(page.editSetBtn)).click();
+    async function editSet(setElement) {
+        await setElement.element(by.css(page.editSetBtn)).click();
     }
 
     function getAddDescriptionNameField() {
@@ -164,39 +164,37 @@ var ViewSetsPage = function(browserRef) {
         return page.searchBox;
     }
 
-    function getSetName(setElement) {
-        return setElement.element(by.css(page.setName)).getText();
+    async function getSetName(setElement) {
+        return await setElement.element(by.css(page.setName)).getText();
     }
 
-    function isSetPublic(set) {
-        return set.getText().then(function(text) {
-            if (text.indexOf('Public') > -1) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
+    async function isSetPublic(set) {
+        const text = await set.getText();
+        if (text.indexOf('Public') > -1) {
+            return true;
+        }
+
+        return false;
     }
 
-    function saveNewSet() {
-        page.saveNewSetBtn.click();
+    async function saveNewSet() {
+        await page.saveNewSetBtn.click();
     }
 
-    function submitAdminUser() {
-        page.submitAdminUserBtn.click();
+    async function submitAdminUser() {
+        await page.submitAdminUserBtn.click();
     }
 
-    function toggleAdminViewAllSets() {
-        page.adminViewAllToggle.click();
+    async function toggleAdminViewAllSets() {
+        await page.adminViewAllToggle.click();
     }
 
-    function togglePublicSets() {
-        page.togglePublicSetsBtn.click();
+    async function togglePublicSets() {
+        await page.togglePublicSetsBtn.click();
     }
 
-    function updateSet(setElement) {
-        setElement.element(by.partialButtonText(page.saveUpdatedSetText)).click();
+    async function updateSet(setElement) {
+        await setElement.element(by.partialButtonText(page.saveUpdatedSetText)).click();
     }
 };
 

@@ -27,53 +27,53 @@ var CanvasModulesPage = function(browserRef) {
     page.selectItemByLinkText = selectItemByLinkText;
     page.setExternalToolTitle = setExternalToolTitle;
 
-    function addExternalToolLink() {
+    async function addExternalToolLink() {
         var optionText = 'External Tool';
-        page.addModuleItemBtn.click();
-        page.browser.wait(EC.presenceOf(page.moduleItemTypeInput), page.maxWait);
-        page.browser.wait(EC.textToBePresentInElement(page.moduleItemTypeInput, optionText), page.maxWait);
-        page.moduleItemTypeInput.sendKeys(optionText);
-        page.browser.wait(EC.elementToBeClickable(page.toolLink), page.maxWait);
-        page.toolLink.click();
+        await page.addModuleItemBtn.click();
+        await page.browser.wait(EC.presenceOf(page.moduleItemTypeInput), page.maxWait);
+        await page.browser.wait(EC.textToBePresentInElement(page.moduleItemTypeInput, optionText), page.maxWait);
+        await page.moduleItemTypeInput.sendKeys(optionText);
+        await page.browser.wait(EC.elementToBeClickable(page.toolLink), page.maxWait);
+        await page.toolLink.click();
     }
 
-    function addModule(moduleName) {
-        page.browser.wait(EC.elementToBeClickable(page.addModuleBtn), page.maxWait);
+    async function addModule(moduleName) {
+        await page.browser.wait(EC.elementToBeClickable(page.addModuleBtn), page.maxWait);
         //I reeeeeeally hate to do this, but even though it was clickable, the button would not respond,
         //guess Canvas was still loading something up. frustrating... sleep for just a sec
-        page.browser.sleep(1000);
-        page.addModuleBtn.click();
-        page.browser.wait(EC.visibilityOf(page.moduleNameInput), page.maxWait);
-        page.moduleNameInput.sendKeys(moduleName);
-        page.saveModuleBtn.click();
-        page.browser.wait(EC.invisibilityOf(page.saveModuleBtn), page.maxWait);
+        await page.browser.sleep(1000);
+        await page.addModuleBtn.click();
+        await page.browser.wait(EC.visibilityOf(page.moduleNameInput), page.maxWait);
+        await page.moduleNameInput.sendKeys(moduleName);
+        await page.saveModuleBtn.click();
+        await page.browser.wait(EC.invisibilityOf(page.saveModuleBtn), page.maxWait);
         //once again: errors with some other element receiving the click, even when I was waiting for
         //the condition that the publish button be clickable. real helpful, that function is...
-        page.browser.sleep(1000);
-        page.modulePublishBtn.click();
+        await page.browser.sleep(1000);
+        await page.modulePublishBtn.click();
     }
 
-    function publishModuleItem() {
-        page.browser.wait(EC.elementToBeClickable(page.moduleItemPublishBtn), page.maxWait);
-        page.moduleItemPublishBtn.click();
+    async function publishModuleItem() {
+        await page.browser.wait(EC.elementToBeClickable(page.moduleItemPublishBtn), page.maxWait);
+        await page.moduleItemPublishBtn.click();
     }
 
-    function saveExternalTool() {
-        page.browser.sleep(1000);
-        page.saveModuleItemBtn.click();
-        page.browser.sleep(1000);
+    async function saveExternalTool() {
+        await page.browser.sleep(1000);
+        await page.saveModuleItemBtn.click();
+        await page.browser.sleep(1000);
     }
 
-    function selectItemByLinkText(text) {
+    async function selectItemByLinkText(text) {
         var link = page.browser.element(by.partialLinkText(text));
-        page.browser.wait(EC.elementToBeClickable(link), page.maxWait);
-        link.click();
+        await page.browser.wait(EC.elementToBeClickable(link), page.maxWait);
+        await link.click();
     }
 
-    function setExternalToolTitle(title) {
-        page.browser.sleep(1000);
-        page.moduleItemTitleInput.clear();
-        page.moduleItemTitleInput.sendKeys(title);
+    async function setExternalToolTitle(title) {
+        await page.browser.sleep(1000);
+        await page.moduleItemTitleInput.clear();
+        await page.moduleItemTitleInput.sendKeys(title);
     }
 };
 
