@@ -11,19 +11,19 @@ var NavComponent = function(browserRef) {
     component.goToResults = goToResults;
     component.goToSets = goToSets;
 
-    function goToHome() {
-        component.homeLink.click();
-        component.browser.sleep(1500); //added on 1/4/18, angular started having issues with redirects
+    async function goToHome() {
+        await component.homeLink.click();
+        await component.browser.sleep(1500); //added on 1/4/18, angular started having issues with redirects
     }
 
-    function goToResults() {
-        component.resultsLink.click();
-        component.browser.sleep(1500);
+    async function goToResults() {
+        await component.resultsLink.click();
+        await component.browser.sleep(1500);
     }
 
     async function goToSets() {
         await component.setsLink.click();
-        component.browser.sleep(1500);
+        await component.browser.sleep(1500);
     }
 };
 

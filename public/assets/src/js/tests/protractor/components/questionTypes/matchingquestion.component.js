@@ -34,16 +34,16 @@ var MatchingQuestionComponent = function(browserRef, question) {
         await distractor.element(by.css(component.distractorInputElement)).sendKeys(text);
     }
 
-    function getDistractors() {
-        return component.distractors;
+    async function getDistractors() {
+        return await component.distractors;
     }
 
     function getDistractorInput(distractor) {
         return distractor.element(by.css(component.distractorInputElement));
     }
 
-    function getMatchingPairInputs() {
-        return component.matchingPairInputs;
+    async function getMatchingPairInputs() {
+        return await component.matchingPairInputs;
     }
 
     function getMatchingPrompts() {

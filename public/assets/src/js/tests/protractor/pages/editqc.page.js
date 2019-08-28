@@ -55,21 +55,32 @@ var EditQcPage = function(browserRef) {
     page.initQuestions = initQuestions;
     page.isReadOnly = isReadOnly;
     page.save = save;
+    page.saveWithError = saveWithError;
+    page.saveWithoutSuccess = saveWithoutSuccess;
+    page.waitForSaveFailure = waitForSaveFailure;
+    page.waitForSaveSuccess = waitForSaveSuccess;
 
     async function addQuestion(questionType) {
         var newQuestion,
+            updatedQuestionCount,
             questionCount,
             questionObject;
 
+        questionCount = await page.getQuestions().count();
         await page.addQuestionBtn.click();
-        //fetches by index, thus current length = new last index
-        questionCount = page.questions.length;
+        updatedQuestionCount = await page.getQuestions().count();
+
+        //intermittent issues with clicking the button and a new question not showing up? UGH, PROTRACTOR.
+        if (questionCount === updatedQuestionCount) {
+            await page.addQuestionBtn.click();
+        }
+
         newQuestion = page.getQuestions().get(questionCount);
         questionObject = new page.includes.EditQuestionComponent(page.browser, newQuestion, questionType);
         //set the question type in the dropdown, but not multiple choice, since that's the default, and
         //changing the question type removes current options, requiring us to re-add what's already there
         if (questionType && questionType !== page.includes.data.questionTypes.mc) {
-            questionObject.setQuestionType(questionType);
+            await questionObject.setQuestionType(questionType);
         }
         page.questions.push(questionObject);
     }
@@ -164,6 +175,7 @@ var EditQcPage = function(browserRef) {
     }
 
     async function goBackToSet() {
+        await page.waitForSaveSuccess();
         await page.goBackToSetLink.click();
         await page.browser.sleep(1000);
     }
@@ -188,7 +200,33 @@ var EditQcPage = function(browserRef) {
     async function save() {
         await page.saveBtn.click();
         await page.browser.waitForAngular();
-        await page.browser.sleep(1500); //1/08/17: recent protractor issues require workarounds
+        const saveSuccess = await page.getSaveSuccess().isPresent();
+        //8/28/19: intermittently tests would fail, button is clicked but nothing happens, and
+        //requires clicking the button a second time to actually send the request. argh.
+        if (!saveSuccess) {
+            await page.saveBtn.click();
+            await page.browser.waitForAngular();
+        }
+    }
+
+    async function saveWithError() {
+        await page.saveBtn.click();
+        await page.browser.waitForAngular();
+        await page.waitForSaveFailure();
+    }
+
+    //used when we don't wait for anything, such as when a required field is missing and no round-trip
+    async function saveWithoutSuccess() {
+        await page.saveBtn.click();
+        await page.browser.waitForAngular();
+    }
+
+    async function waitForSaveFailure() {
+        await page.browser.wait(EC.visibilityOf(page.saveErrorMsg), 10000);
+    }
+
+    async function waitForSaveSuccess() {
+        await page.browser.wait(EC.elementToBeClickable(page.goBackToSetLink), 10000);
     }
 }
 

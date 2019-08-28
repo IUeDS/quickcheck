@@ -97,9 +97,10 @@ var EditFeedbackComponent = function(browserRef, question) {
     async function isFeedbackOptionMarkedCorrect(option) {
         const value = await option.getAttribute('class');
 
-        if (val.indexOf(component.perResponseFeedbackCorrectClass) > -1) {
+        if (value.indexOf(component.perResponseFeedbackCorrectClass) > -1) {
             return true;
         }
+
         return false;
     }
 

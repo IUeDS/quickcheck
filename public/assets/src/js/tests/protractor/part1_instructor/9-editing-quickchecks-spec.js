@@ -7,9 +7,9 @@ var includes = require('../common/includes.js'),
     setPage = new includes.SetPage(browser);
 
 describe('Adding a question', function() {
-    it('should label the question as question #1', function() {
-        editQcPage.addQuestion(data.questionTypes.mc);
-        expect(editQcPage.getQuestion(0).getHeaderText()).toBe('question #1');
+    it('should label the question as question #1', async function() {
+        await editQcPage.addQuestion(data.questionTypes.mc);
+        expect(await editQcPage.getQuestion(0).getHeaderText()).toBe('question #1');
     });
 });
 
@@ -22,109 +22,109 @@ describe('Adding a multiple choice question', function() {
         questionData = data.quizData.quiz1.question1;
     });
 
-    it('should accept question text', function() {
+    it('should accept question text', async function() {
         var questionText = data.quizData.quiz1.question1.questionText;
 
-        common.enterTinyMceIframeInElement(question.question);
-        common.enterTinyMceText(questionText);
-        expect(common.getTinyMceText()).toBe(questionText);
-        common.leaveTinyMceIframe();
-        common.switchToLtiTool();
-        common.enterAngularPage();
+        await common.enterTinyMceIframeInElement(question.question);
+        await common.enterTinyMceText(questionText);
+        expect(await common.getTinyMceText()).toBe(questionText);
+        await common.leaveTinyMceIframe();
+        await common.switchToLtiTool();
+        await common.enterAngularPage();
     });
 
-    it('should default to randomizing answer option order', function() {
-        expect(question.isRandomized()).toBeTruthy();
+    it('should default to randomizing answer option order', async function() {
+        expect(await question.isRandomized()).toBeTruthy();
     });
 
-    it('should allow unchecking the box for randomizing answer option order', function() {
-        question.toggleRandomized();
-        expect(question.isRandomized()).toBeFalsy();
-        question.toggleRandomized(); //reset so this one is randomized
+    it('should allow unchecking the box for randomizing answer option order', async function() {
+        await question.toggleRandomized();
+        expect(await question.isRandomized()).toBeFalsy();
+        await question.toggleRandomized(); //reset so this one is randomized
     });
 
-    it('should throw a validation error if an option does not contain text', function() {
-        editQcPage.save();
-        expect(editQcPage.getSaveSuccess().isPresent()).toBe(false);
+    it('should throw a validation error if an option does not contain text', async function() {
+        await editQcPage.saveWithoutSuccess();
+        expect(await editQcPage.getSaveSuccess().isPresent()).toBe(false);
     });
 
-    it('should throw a validation error if no correct answer is specified when trying to save', function() {
+    it('should throw a validation error if no correct answer is specified when trying to save', async function() {
         //add all option text to remove that validation error, but don't select a correct answer
         var options = question.getOptions();
-        question.enterMcTextOption(options.get(0), questionData.option1);
-        question.enterMcTextOption(options.get(1), questionData.option2);
-        question.enterMcTextOption(options.get(2), questionData.option3);
-        question.enterMcTextOption(options.get(3), questionData.option4);
-        editQcPage.save();
-        expect(editQcPage.getSaveError().getText()).toContain(data.validateNoCorrectMessage);
+        await question.enterMcTextOption(options.get(0), questionData.option1);
+        await question.enterMcTextOption(options.get(1), questionData.option2);
+        await question.enterMcTextOption(options.get(2), questionData.option3);
+        await question.enterMcTextOption(options.get(3), questionData.option4);
+        await editQcPage.saveWithError();
+        expect(await editQcPage.getSaveError().getText()).toContain(data.validateNoCorrectMessage);
     });
 
-    it('should allow an option to be marked as correct', function() {
+    it('should allow an option to be marked as correct', async function() {
         var option = question.getOptions().get(0);
-        question.toggleMcOptionCorrect(option);
-        expect(question.isMcOptionMarkedCorrect(option)).toBe(true);
+        await question.toggleMcOptionCorrect(option);
+        expect(await question.isMcOptionMarkedCorrect(option)).toBe(true);
     });
 
-    it('should default to only one answer being allowed as correct', function() {
+    it('should default to only one answer being allowed as correct', async function() {
         var options = question.getOptions(),
             option1 = options.get(0),
             option2 = options.get(1);
 
-        question.toggleMcOptionCorrect(option2);
-        expect(question.isMcOptionMarkedCorrect(option2)).toBe(true);
-        expect(question.isMcOptionMarkedCorrect(option1)).toBe(false);
+        await question.toggleMcOptionCorrect(option2);
+        expect(await question.isMcOptionMarkedCorrect(option2)).toBe(true);
+        expect(await question.isMcOptionMarkedCorrect(option1)).toBe(false);
     });
 
-    it('should allow adding a question option', function() {
-        question.addMcOption();
-        expect(question.getOptions().count()).toBe(5);
+    it('should allow adding a question option', async function() {
+        await question.addMcOption();
+        expect(await question.getOptions().count()).toBe(5);
     });
 
-    it('should allow removing a question option', function() {
+    it('should allow removing a question option', async function() {
         var lastOption = question.getOptions().get(4);
-        question.deleteOption(lastOption);
-        expect(question.getOptions().count()).toBe(4);
+        await question.deleteOption(lastOption);
+        expect(await question.getOptions().count()).toBe(4);
     });
 
-    it('should show an option for per-response feedback', function() {
-        question.feedback.addCustomFeedback();
-        expect(question.feedback.getPerResponseFeedbackCheckbox().isDisplayed()).toBe(true);
+    it('should show an option for per-response feedback', async function() {
+        await question.feedback.addCustomFeedback();
+        expect(await question.feedback.getPerResponseFeedbackCheckbox().isDisplayed()).toBe(true);
     });
 
-    it('should hide question-level feedback when per-response feedback is selected', function() {
-        question.feedback.togglePerResponseFeedback();
-        expect(question.feedback.getQuestionLevelFeedbackContainer().isPresent()).toBe(false);
+    it('should hide question-level feedback when per-response feedback is selected', async function() {
+        await question.feedback.togglePerResponseFeedback();
+        expect(await question.feedback.getQuestionLevelFeedbackContainer().isPresent()).toBe(false);
     });
 
-    it('should show question-level feedback again if per-response feedback is un-selected', function() {
-        question.feedback.togglePerResponseFeedback();
-        expect(question.feedback.getQuestionLevelFeedbackContainer().isPresent()).toBe(true);
+    it('should show question-level feedback again if per-response feedback is un-selected', async function() {
+        await question.feedback.togglePerResponseFeedback();
+        expect(await question.feedback.getQuestionLevelFeedbackContainer().isPresent()).toBe(true);
     });
 
-    it('should show each of the options when per-response feedback is added', function() {
-        question.feedback.togglePerResponseFeedback();
-        expect(question.feedback.getPerResponseFeedbackOptions().count()).toBe(4);
+    it('should show each of the options when per-response feedback is added', async function() {
+        await question.feedback.togglePerResponseFeedback();
+        expect(await question.feedback.getPerResponseFeedbackOptions().count()).toBe(4);
     });
 
-    it('should show which option is correct in the per-response feedback options', function() {
+    it('should show which option is correct in the per-response feedback options', async function() {
         var feedbackOptions = question.feedback.getPerResponseFeedbackOptions();
-        expect(question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(0))).toBe(false);
-        expect(question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(1))).toBe(true);
-        expect(question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(2))).toBe(false);
-        expect(question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(3))).toBe(false);
+        expect(await question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(0))).toBe(false);
+        expect(await question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(1))).toBe(true);
+        expect(await question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(2))).toBe(false);
+        expect(await question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(3))).toBe(false);
     });
 
-    it('should throw a validation error if one of the per-response feedback inputs is left blank', function() {
+    it('should throw a validation error if one of the per-response feedback inputs is left blank', async function() {
         var feedbackOptions = question.feedback.getPerResponseFeedbackOptions();
-        question.feedback.enterResponseFeedback(feedbackOptions.get(0), questionData.feedbackOption1);
-        question.feedback.enterResponseFeedback(feedbackOptions.get(1), questionData.feedbackOption2);
-        question.feedback.enterResponseFeedback(feedbackOptions.get(2), questionData.feedbackOption3);
+        await question.feedback.enterResponseFeedback(feedbackOptions.get(0), questionData.feedbackOption1);
+        await question.feedback.enterResponseFeedback(feedbackOptions.get(1), questionData.feedbackOption2);
+        await question.feedback.enterResponseFeedback(feedbackOptions.get(2), questionData.feedbackOption3);
         //leave last feedback input blank
-        editQcPage.save();
-        expect(editQcPage.getSaveError().isDisplayed()).toBe(true);
+        await editQcPage.saveWithError();
+        expect(await editQcPage.getSaveError().isDisplayed()).toBe(true);
         //now fill in the last feedback input; also add the next question, so the next test can fetch it without problems
-        question.feedback.enterResponseFeedback(feedbackOptions.get(3), questionData.feedbackOption4);
-        editQcPage.addQuestion(data.questionTypes.mcorrect);
+        await question.feedback.enterResponseFeedback(feedbackOptions.get(3), questionData.feedbackOption4);
+        await editQcPage.addQuestion(data.questionTypes.mcorrect);
     });
     //NOTE: not testing for allowing multiple correct answers in multiple choice, because that feature will most
     //likely fall under the umbrella of creating survey questions in the future
@@ -139,83 +139,83 @@ describe('Adding a multiple correct question', function() {
         questionData = data.quizData.quiz1.question2;
     });
 
-    it('should label the question as question #2', function() {
-        expect(question.getHeaderText()).toBe('question #2');
+    it('should label the question as question #2', async function() {
+        expect(await question.getHeaderText()).toBe('question #2');
     });
 
-    it('should default to randomizing answer option order', function() {
-        expect(question.isRandomized()).toBeTruthy();
-        question.toggleRandomized(); //unrandomize so we can easily grab proper inputs in student view
+    it('should default to randomizing answer option order', async function() {
+        expect(await question.isRandomized()).toBeTruthy();
+        await question.toggleRandomized(); //unrandomize so we can easily grab proper inputs in student view
     });
 
-    it('should allow adding a question option', function() {
-        question.addMcOption();
-        expect(question.getOptions().count()).toBe(5);
+    it('should allow adding a question option', async function() {
+        await question.addMcOption();
+        expect(await question.getOptions().count()).toBe(5);
     });
 
-    it('should allow removing a question option', function() {
-        question.deleteOption(question.getOptions().get(0));
-        expect(question.getOptions().count()).toBe(4);
+    it('should allow removing a question option', async function() {
+        await question.deleteOption(question.getOptions().get(0));
+        expect(await question.getOptions().count()).toBe(4);
     });
 
-    it('should throw a validation error if an option does not contain text', function() {
-        editQcPage.save();
-        expect(editQcPage.getSaveError().isDisplayed()).toBe(true);
+    it('should throw a validation error if an option does not contain text', async function() {
+        await editQcPage.saveWithError();
+        expect(await editQcPage.getSaveError().isDisplayed()).toBe(true);
     });
 
-    it('should throw a validation error if no correct answer is specified when trying to save', function() {
+    it('should throw a validation error if no correct answer is specified when trying to save', async function() {
         //fill in the 4 options
         var options = question.getOptions();
-        question.enterMcTextOption(options.get(0), questionData.option1);
-        question.enterMcTextOption(options.get(1), questionData.option2);
-        question.enterMcTextOption(options.get(2), questionData.option3);
-        question.enterMcTextOption(options.get(3), questionData.option4);
-        editQcPage.save();
-        expect(editQcPage.getSaveError().getText()).toContain(data.validateNoCorrectMessage);
+        await question.enterMcTextOption(options.get(0), questionData.option1);
+        await question.enterMcTextOption(options.get(1), questionData.option2);
+        await question.enterMcTextOption(options.get(2), questionData.option3);
+        await question.enterMcTextOption(options.get(3), questionData.option4);
+        await editQcPage.saveWithError();
+        expect(await editQcPage.getSaveError().getText()).toContain(data.validateNoCorrectMessage);
     });
 
-    it('should allow marking multiple options as correct', function() {
+    it('should allow marking multiple options as correct', async function() {
         var options = question.getOptions();
-        question.toggleMcOptionCorrect(options.get(0));
-        question.toggleMcOptionCorrect(options.get(1));
-        expect(question.isMcOptionMarkedCorrect(options.get(0))).toBe(true);
-        expect(question.isMcOptionMarkedCorrect(options.get(1))).toBe(true);
+        await question.toggleMcOptionCorrect(options.get(0));
+        await question.toggleMcOptionCorrect(options.get(1));
+        expect(await question.isMcOptionMarkedCorrect(options.get(0))).toBe(true);
+        expect(await question.isMcOptionMarkedCorrect(options.get(1))).toBe(true);
     });
 
-    it('should allow toggling a correct answer to incorrect', function() {
+    it('should allow toggling a correct answer to incorrect', async function() {
         var option = question.getOptions().get(1);
-        question.toggleMcOptionCorrect(option);
-        expect(question.isMcOptionMarkedCorrect(option)).toBe(false);
+        await question.toggleMcOptionCorrect(option);
+        expect(await question.isMcOptionMarkedCorrect(option)).toBe(false);
     });
 
-    it('should allow toggling an incorrect answer to correct', function() {
+    it('should allow toggling an incorrect answer to correct', async function() {
         var option = question.getOptions().get(1);
-        question.toggleMcOptionCorrect(option);
-        expect(question.isMcOptionMarkedCorrect(option)).toBe(true);
+        await question.toggleMcOptionCorrect(option);
+        expect(await question.isMcOptionMarkedCorrect(option)).toBe(true);
     });
 
-    it('should show an option for per-response feedback', function() {
-        question.feedback.addCustomFeedback();
-        expect(question.feedback.getPerResponseFeedbackCheckbox().isDisplayed()).toBe(true);
+    it('should show an option for per-response feedback', async function() {
+        await question.feedback.addCustomFeedback();
+        expect(await question.feedback.getPerResponseFeedbackCheckbox().isDisplayed()).toBe(true);
     });
 
-    it('should show each of the options when per-response feedback is added', function() {
-        question.feedback.togglePerResponseFeedback();
-        expect(question.feedback.getPerResponseFeedbackOptions().count()).toBe(4);
+    it('should show each of the options when per-response feedback is added', async function() {
+        await question.feedback.togglePerResponseFeedback();
+        expect(await question.feedback.getPerResponseFeedbackOptions().count()).toBe(4);
     });
 
-    it('should show an indication of correctness when per-response feedback is added', function() {
+    it('should show an indication of correctness when per-response feedback is added', async function() {
         var feedbackOptions = question.feedback.getPerResponseFeedbackOptions();
-        expect(question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(0))).toBe(true);
-        expect(question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(1))).toBe(true);
-        expect(question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(2))).toBe(false);
-        expect(question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(3))).toBe(false);
+        expect(await question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(0))).toBe(true);
+        expect(await question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(1))).toBe(true);
+        expect(await question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(2))).toBe(false);
+        expect(await question.feedback.isFeedbackOptionMarkedCorrect(feedbackOptions.get(3))).toBe(false);
         //enter in feedback for these guys
-        question.feedback.enterResponseFeedback(feedbackOptions.get(0), questionData.feedbackOption1);
-        question.feedback.enterResponseFeedback(feedbackOptions.get(1), questionData.feedbackOption2);
-        question.feedback.enterResponseFeedback(feedbackOptions.get(2), questionData.feedbackOption3);
-        question.feedback.enterResponseFeedback(feedbackOptions.get(3), questionData.feedbackOption4);
-        editQcPage.addQuestion(data.questionTypes.matrix);
+        await question.feedback.enterResponseFeedback(feedbackOptions.get(0), questionData.feedbackOption1);
+        await question.feedback.enterResponseFeedback(feedbackOptions.get(1), questionData.feedbackOption2);
+        await question.feedback.enterResponseFeedback(feedbackOptions.get(2), questionData.feedbackOption3);
+        await question.feedback.enterResponseFeedback(feedbackOptions.get(3), questionData.feedbackOption4);
+        await editQcPage.addQuestion(data.questionTypes.matrix);
     });
 });
 
@@ -229,86 +229,86 @@ describe('Adding a matrix question', function() {
         questionData = data.quizData.quiz1.question3;
     });
 
-    it('should default to randomizing answer option order', function() {
-        expect(question.isRandomized()).toBeTruthy();
-        question.toggleRandomized(); //unrandomize so we can easily grab proper inputs in student view
+    it('should default to randomizing answer option order', async function() {
+        expect(await question.isRandomized()).toBeTruthy();
+        await question.toggleRandomized(); //unrandomize so we can easily grab proper inputs in student view
     });
 
-    it('should allow adding columns', function() {
-        question.addMatrixColumn();
-        question.addMatrixColumn();
-        expect(question.getMatrixColumns().count()).toBe(2);
+    it('should allow adding columns', async function() {
+        await question.addMatrixColumn();
+        await question.addMatrixColumn();
+        expect(await question.getMatrixColumns().count()).toBe(2);
     });
 
-    it('should allow deleting columns', function() {
-        question.deleteOption(question.getMatrixColumns().get(1));
-        expect(question.getMatrixColumns().count()).toBe(1);
+    it('should allow deleting columns', async function() {
+        await question.deleteOption(question.getMatrixColumns().get(1));
+        expect(await question.getMatrixColumns().count()).toBe(1);
     });
 
-    it('should allow adding rows', function() {
-        question.addMatrixRow();
-        question.addMatrixRow();
-        expect(question.getMatrixRows().count()).toBe(2);
+    it('should allow adding rows', async function() {
+        await question.addMatrixRow();
+        await question.addMatrixRow();
+        expect(await question.getMatrixRows().count()).toBe(2);
     });
 
-    it('should show the appropriate number of text inputs', function() {
-        expect(question.getMatrixTextInputs().count()).toBe(3);
+    it('should show the appropriate number of text inputs', async function() {
+        expect(await question.getMatrixTextInputs().count()).toBe(3);
     });
 
-    it('should show the appropriate number of checkboxes', function() {
-        expect(question.getMatrixCheckboxes().count()).toBe(2);
+    it('should show the appropriate number of checkboxes', async function() {
+        expect(await question.getMatrixCheckboxes().count()).toBe(2);
     });
 
-    it('should allow deleting rows', function() {
-        question.deleteOption(question.getMatrixRows().get(1));
-        expect(question.getMatrixRows().count()).toBe(1);
+    it('should allow deleting rows', async function() {
+        await question.deleteOption(question.getMatrixRows().get(1));
+        expect(await question.getMatrixRows().count()).toBe(1);
     });
 
-    it('should throw a validation error if the labels are not filled in for rows and columns', function() {
-        editQcPage.save();
-        expect(editQcPage.getSaveSuccess().isPresent()).toBe(false);
+    it('should throw a validation error if the labels are not filled in for rows and columns', async function() {
+        await editQcPage.saveWithoutSuccess();
+        expect(await editQcPage.getSaveSuccess().isPresent()).toBe(false);
     });
 
-    it('should throw a validation error if a correct answer isn\'t marked', function() {
+    it('should throw a validation error if a correct answer isn\'t marked', async function() {
         //fill in all of the options now
         var textInputs;
-        question.addMatrixRow();
-        question.addMatrixColumn();
+        await question.addMatrixRow();
+        await question.addMatrixColumn();
         textInputs = question.getMatrixTextInputs();
-        textInputs.get(0).sendKeys(questionData.column1);
-        textInputs.get(1).sendKeys(questionData.column2);
-        textInputs.get(2).sendKeys(questionData.row1);
-        textInputs.get(3).sendKeys(questionData.row2);
+        await textInputs.get(0).sendKeys(questionData.column1);
+        await textInputs.get(1).sendKeys(questionData.column2);
+        await textInputs.get(2).sendKeys(questionData.row1);
+        await textInputs.get(3).sendKeys(questionData.row2);
 
-        editQcPage.save();
-        expect(editQcPage.getSaveError().getText()).toContain(data.validateNoCorrectMessage);
+        await editQcPage.saveWithError();
+        expect(await editQcPage.getSaveError().getText()).toContain(data.validateNoCorrectMessage);
     });
 
-    it('should allow checking an answer', function() {
+    it('should allow checking an answer', async function() {
         var checkboxes = question.getMatrixCheckboxes();
-        checkboxes.get(0).click();
-        expect(checkboxes.get(0).getAttribute('checked')).toBeTruthy();
+        await checkboxes.get(0).click();
+        expect(await checkboxes.get(0).getAttribute('checked')).toBeTruthy();
     });
 
-    it('should only allow one answer per row', function() {
+    it('should only allow one answer per row', async function() {
         var checkboxes = question.getMatrixCheckboxes();
-        checkboxes.get(1).click();
-        expect(checkboxes.get(0).getAttribute('checked')).toBeFalsy();
-        expect(checkboxes.get(1).getAttribute('checked')).toBeTruthy();
+        await checkboxes.get(1).click();
+        expect(await checkboxes.get(0).getAttribute('checked')).toBeFalsy();
+        expect(await checkboxes.get(1).getAttribute('checked')).toBeTruthy();
 
         //now add in the actual answers
-        checkboxes.get(0).click();
-        checkboxes.get(3).click();
+        await checkboxes.get(0).click();
+        await checkboxes.get(3).click();
     });
 
-    it('should not show an option for per-response feedback', function() {
-        question.feedback.addCustomFeedback();
-        expect(question.feedback.getPerResponseFeedbackCheckbox().isPresent()).toBe(false);
+    it('should not show an option for per-response feedback', async function() {
+        await question.feedback.addCustomFeedback();
+        expect(await question.feedback.getPerResponseFeedbackCheckbox().isPresent()).toBe(false);
         //enter in feedback
-        question.feedback.getCorrectFeedback().sendKeys(questionData.feedbackCorrect);
-        question.feedback.getIncorrectFeedback().sendKeys(questionData.feedbackIncorrect);
+        await question.feedback.getCorrectFeedback().sendKeys(questionData.feedbackCorrect);
+        await question.feedback.getIncorrectFeedback().sendKeys(questionData.feedbackIncorrect);
         //prep for next text
-        editQcPage.addQuestion(data.questionTypes.matching);
+        await editQcPage.addQuestion(data.questionTypes.matching);
     });
 });
 
@@ -322,68 +322,67 @@ describe('Adding a matching question', function() {
         questionData = data.quizData.quiz1.question4;
     });
 
-    it('should default to randomizing answer option order', function() {
-        expect(question.isRandomized()).toBeTruthy();
-        question.toggleRandomized(); //unrandomize so we can easily grab proper inputs in student view
+    it('should default to randomizing answer option order', async function() {
+        expect(await question.isRandomized()).toBeTruthy();
+        await question.toggleRandomized(); //unrandomize so we can easily grab proper inputs in student view
     });
 
-    it('should allow adding matching pairs', function() {
-        question.addMatchingPair();
-        expect(question.getMatchingPrompts().count()).toBe(1);
+    it('should allow adding matching pairs', async function() {
+        await question.addMatchingPair();
+        expect(await question.getMatchingPrompts().count()).toBe(1);
     });
 
-    it('should throw a validation error if a matching pair field isn\'t filled', function() {
-        editQcPage.save();
-        expect(editQcPage.getSaveSuccess().isPresent()).toBe(false);
+    it('should throw a validation error if a matching pair field isn\'t filled', async function() {
+        await editQcPage.saveWithoutSuccess();
+        expect(await editQcPage.getSaveSuccess().isPresent()).toBe(false);
     });
 
-    it('should allow deleting matching pairs', function() {
+    it('should allow deleting matching pairs', async function() {
         var optionToDelete;
         //Add in another row, then fill in all of the new text inputs to make it valid
-        question.addMatchingPair();
-        question.getMatchingPairInputs().then(function(textInputs) {
-            textInputs[0].sendKeys(questionData.prompt1);
-            textInputs[1].sendKeys(questionData.answer1);
-            textInputs[2].sendKeys(questionData.prompt2);
-            textInputs[3].sendKeys(questionData.answer2);
-        });
+        await question.addMatchingPair();
+        const textInputs = await question.getMatchingPairInputs();
+        await textInputs[0].sendKeys(questionData.prompt1);
+        await textInputs[1].sendKeys(questionData.answer1);
+        await textInputs[2].sendKeys(questionData.prompt2);
+        await textInputs[3].sendKeys(questionData.answer2);
 
         //add a third row, then delete it
-        question.addMatchingPair();
+        await question.addMatchingPair();
         optionToDelete = question.getMatchingPrompts().get(2);
-        question.deleteOption(optionToDelete);
-        expect(question.getMatchingPrompts().count()).toBe(2);
+        await question.deleteOption(optionToDelete);
+        expect(await question.getMatchingPrompts().count()).toBe(2);
     });
 
-    it('should allow adding distractors', function() {
-        question.addDistractor();
-        expect(question.getDistractors().count()).toBe(1);
+    it('should allow adding distractors', async function() {
+        await question.addDistractor();
+        const distractors = await question.getDistractors();
+        expect(distractors.length).toBe(1);
     });
 
-    it('should throw a validation error if a distractor field isn\'t filled', function() {
-        question.getDistractors().then(function(distractors) {
-            question.enterDistractor(distractors[0], questionData.distractor);
-            question.addDistractor();
-            editQcPage.save();
-            expect(editQcPage.getSaveSuccess().isPresent()).toBe(false);
-        });
+    it('should throw a validation error if a distractor field isn\'t filled', async function() {
+        const distractors = await question.getDistractors();
+        await question.enterDistractor(distractors[0], questionData.distractor);
+        await question.addDistractor();
+        await editQcPage.saveWithoutSuccess();
+        expect(await editQcPage.getSaveSuccess().isPresent()).toBe(false);
     });
 
-    it('should allow deleting distractors', function() {
-        question.getDistractors().then(function(distractors) {
-            question.deleteOption(question.getDistractors().get(1));
-            expect(question.getDistractors().count()).toBe(1);
-        });
+    it('should allow deleting distractors', async function() {
+        const distractors = await question.getDistractors();
+        await question.deleteOption(distractors[1]);
+        const updatedDistractors = await question.getDistractors();
+        await expect(updatedDistractors.length).toBe(1);
     });
 
-    it('should not show an option for per-response feedback', function() {
+    it('should not show an option for per-response feedback', async function() {
         //NOTE: adding custom feedback to this question so we can test that it gets deleted later when we edit
-        question.feedback.addCustomFeedback();
-        question.feedback.getCorrectFeedback().sendKeys('Does not matter');
-        question.feedback.getIncorrectFeedback().sendKeys('Also does not matter');
-        expect(question.feedback.getPerResponseFeedbackCheckbox().isPresent()).toBe(false);
+        await question.feedback.addCustomFeedback();
+        await question.feedback.getCorrectFeedback().sendKeys('Does not matter');
+        await question.feedback.getIncorrectFeedback().sendKeys('Also does not matter');
+        expect(await question.feedback.getPerResponseFeedbackCheckbox().isPresent()).toBe(false);
         //set up for next test
-        editQcPage.addQuestion(data.questionTypes.dropdowns);
+        await editQcPage.addQuestion(data.questionTypes.dropdowns);
     });
 });
 
@@ -396,65 +395,64 @@ describe('Adding a multiple dropdowns question', function() {
         questionData = data.quizData.quiz1.question5;
     });
 
-    it('should not feature a randomize options checkbox', function() {
+    it('should not feature a randomize options checkbox', async function() {
         //should be no randomizing checkbox for multiple dropdowns, since order matters
-        expect(question.getRandomizedCheckbox().isPresent()).toBe(false);
+        expect(await question.getRandomizedCheckbox().isPresent()).toBe(false);
     });
 
-    it('should allow adding dropdown pairs', function() {
-        question.addDropdownPair();
-        expect(question.getDropdownPrompts().count()).toBe(1);
+    it('should allow adding dropdown pairs', async function() {
+        await question.addDropdownPair();
+        expect(await question.getDropdownPrompts().count()).toBe(1);
     });
 
-    it('should throw a validation error if a dropdown pair field isn\'t filled', function() {
-        editQcPage.save();
-        expect(editQcPage.getSaveSuccess().isPresent()).toBe(false);
+    it('should throw a validation error if a dropdown pair field isn\'t filled', async function() {
+        await editQcPage.saveWithoutSuccess();
+        expect(await editQcPage.getSaveSuccess().isPresent()).toBe(false);
     });
 
-    it('should allow deleting dropdown pairs', function() {
+    it('should allow deleting dropdown pairs', async function() {
         //add in the valid data
-        question.addDropdownPair();
-        question.getDropdownTextInputs().then(function(textInputs) {
-            textInputs[0].sendKeys(questionData.prompt1);
-            textInputs[1].sendKeys(questionData.answer1);
-            textInputs[2].sendKeys(questionData.prompt2);
-            textInputs[3].sendKeys(questionData.answer2);
+        await question.addDropdownPair();
+        question.getDropdownTextInputs().then(async function(textInputs) {
+            await textInputs[0].sendKeys(questionData.prompt1);
+            await textInputs[1].sendKeys(questionData.answer1);
+            await textInputs[2].sendKeys(questionData.prompt2);
+            await textInputs[3].sendKeys(questionData.answer2);
         });
 
-        question.addDropdownPair();
-        question.deleteOption(question.getDropdownPrompts().get(2));
-        expect(question.getDropdownPrompts().count()).toBe(2);
+        await question.addDropdownPair();
+        await question.deleteOption(question.getDropdownPrompts().get(2));
+        expect(await question.getDropdownPrompts().count()).toBe(2);
     });
 
-    it('should allow adding distractors', function() {
-        question.addDistractor();
-        expect(question.getDistractors().count()).toBe(1);
+    it('should allow adding distractors', async function() {
+        await question.addDistractor();
+        expect(await question.getDistractors().count()).toBe(1);
     });
 
-    it('should throw a validation error if a distractor field isn\'t filled', function() {
-        editQcPage.save();
-        expect(editQcPage.getSaveSuccess().isPresent()).toBe(false);
+    it('should throw a validation error if a distractor field isn\'t filled', async function() {
+        await editQcPage.saveWithoutSuccess();
+        expect(await editQcPage.getSaveSuccess().isPresent()).toBe(false);
     });
 
     it('should allow deleting distractors', function() {
-        question.getDistractors().then(function(distractors) {
+        question.getDistractors().then(async function(distractors) {
             //fill in text for the first distractor
-            question.enterDistractor(distractors[0], questionData.distractor);
-            question.addDistractor();
-            question.deleteOption(question.getDistractors().get(1));
-            expect(question.getDistractors().count()).toBe(1);
+            await question.enterDistractor(distractors[0], questionData.distractor);
+            await question.addDistractor();
+            await question.deleteOption(question.getDistractors().get(1));
+            expect(await question.getDistractors().count()).toBe(1);
         });
     });
 
-    it('should not show an option for per-response feedback', function() {
-        question.feedback.addCustomFeedback();
-        expect(question.feedback.getPerResponseFeedbackCheckbox().isPresent()).toBe(false);
-        question.feedback.deleteFeedback();
+    it('should not show an option for per-response feedback', async function() {
+        await question.feedback.addCustomFeedback();
+        expect(await question.feedback.getPerResponseFeedbackCheckbox().isPresent()).toBe(false);
+        await question.feedback.deleteFeedback();
         //set up for next test
-        editQcPage.addQuestion(data.questionTypes.textmatch);
+        await editQcPage.addQuestion(data.questionTypes.textmatch);
     });
 });
-
 
 describe('Adding a textmatch question', function() {
     var question,
@@ -465,39 +463,38 @@ describe('Adding a textmatch question', function() {
         questionData = data.quizData.quiz1.question6;
     });
 
-    it('should not feature a randomize options checkbox', function() {
+    it('should not feature a randomize options checkbox', async function() {
         //should be no randomizing checkbox for textmatch, since there is nothing to randomize
-        expect(question.getRandomizedCheckbox().isPresent()).toBe(false);
+        expect(await question.getRandomizedCheckbox().isPresent()).toBe(false);
     });
 
-    it('should allow adding a possible answer', function() {
-        question.addTextmatchAnswer();
-        expect(question.getOptions().count()).toBe(1);
+    it('should allow adding a possible answer', async function() {
+        await question.addTextmatchAnswer();
+        expect(await question.getOptions().count()).toBe(1);
     });
 
-    it('should throw a validation error if the textmatch answer field isn\'t filled', function() {
-        editQcPage.save();
-        expect(editQcPage.getSaveSuccess().isPresent()).toBe(false);
+    it('should throw a validation error if the textmatch answer field isn\'t filled', async function() {
+        await editQcPage.saveWithoutSuccess();
+        expect(await editQcPage.getSaveSuccess().isPresent()).toBe(false);
     });
 
-    it('should allow deleting a possible answer', function() {
-        question.addTextmatchAnswer();
-        question.deleteOption(question.getOptions().get(1));
-        expect(question.getOptions().count()).toBe(1);
+    it('should allow deleting a possible answer', async function() {
+        await question.addTextmatchAnswer();
+        await question.deleteOption(question.getOptions().get(1));
+        expect(await question.getOptions().count()).toBe(1);
     });
 
-    it('should not show an option for per-response feedback', function() {
+    it('should not show an option for per-response feedback', async function() {
         //while we're here, add in the actual answer
-        question.enterTextMatchOption(question.getOptions().get(0), questionData.option1);
+        await question.enterTextMatchOption(question.getOptions().get(0), questionData.option1);
 
-        question.feedback.addCustomFeedback();
-        expect(question.feedback.getPerResponseFeedbackCheckbox().isPresent()).toBe(false);
-        question.feedback.deleteFeedback();
+        await question.feedback.addCustomFeedback();
+        expect(await question.feedback.getPerResponseFeedbackCheckbox().isPresent()).toBe(false);
+        await question.feedback.deleteFeedback();
         //set up for next test
-        editQcPage.addQuestion(data.questionTypes.numerical);
+        await editQcPage.addQuestion(data.questionTypes.numerical);
     });
 });
-
 
 describe('Adding a numerical question', function() {
     var question,
@@ -508,71 +505,71 @@ describe('Adding a numerical question', function() {
         questionData = data.quizData.quiz1.question7;
     });
 
-    it('should not feature a randomize options checkbox', function() {
-        expect(question.getRandomizedCheckbox().isPresent()).toBe(false);
+    it('should not feature a randomize options checkbox', async function() {
+        await expect(question.getRandomizedCheckbox().isPresent()).toBe(false);
     });
 
-    it('should allow adding a possible answer', function() {
-        question.addNumericalAnswer();
-        expect(question.getOptions().count()).toBe(1);
+    it('should allow adding a possible answer', async function() {
+        await question.addNumericalAnswer();
+        expect(await question.getOptions().count()).toBe(1);
     });
 
-    it('should throw a validation error if the numeric answer field isn\'t filled', function() {
-        editQcPage.save();
-        expect(editQcPage.getSaveSuccess().isPresent()).toBe(false);
+    it('should throw a validation error if the numeric answer field isn\'t filled', async function() {
+        await editQcPage.saveWithoutSuccess();
+        expect(await editQcPage.getSaveSuccess().isPresent()).toBe(false);
     });
 
-    it('should show exact answer and margin of error as the default', function() {
+    it('should show exact answer and margin of error as the default', async function() {
         var option;
 
-        question.addNumericalAnswer();
+        await question.addNumericalAnswer();
         option = question.getOptions().get(1);
-        expect(question.getExactAnswerInput(option).isDisplayed()).toBe(true);
-        expect(question.getMarginOfErrorInput(option).isDisplayed()).toBe(true);
-        expect(question.getRangeMinInput(option).isPresent()).toBe(false);
-        expect(question.getRangeMaxInput(option).isPresent()).toBe(false);
+        expect(await question.getExactAnswerInput(option).isDisplayed()).toBe(true);
+        expect(await question.getMarginOfErrorInput(option).isDisplayed()).toBe(true);
+        expect(await question.getRangeMinInput(option).isPresent()).toBe(false);
+        expect(await question.getRangeMaxInput(option).isPresent()).toBe(false);
     });
 
-    it('should show the range options when answer type is changed', function() {
+    it('should show the range options when answer type is changed', async function() {
         var option = question.getOptions().get(1);
-        question.setOptionAsRange(option);
-        expect(question.getExactAnswerInput(option).isPresent()).toBe(false);
-        expect(question.getMarginOfErrorInput(option).isPresent()).toBe(false);
-        expect(question.getRangeMinInput(option).isDisplayed()).toBe(true);
-        expect(question.getRangeMaxInput(option).isDisplayed()).toBe(true);
+        await question.setOptionAsRange(option);
+        expect(await question.getExactAnswerInput(option).isPresent()).toBe(false);
+        expect(await question.getMarginOfErrorInput(option).isPresent()).toBe(false);
+        expect(await question.getRangeMinInput(option).isDisplayed()).toBe(true);
+        expect(await question.getRangeMaxInput(option).isDisplayed()).toBe(true);
     });
 
-    it('should allow deleting a possible answer', function() {
-        question.deleteOption(question.getOptions().get(1));
-        expect(question.getOptions().count()).toBe(1);
+    it('should allow deleting a possible answer', async function() {
+        await question.deleteOption(question.getOptions().get(1));
+        expect(await question.getOptions().count()).toBe(1);
     });
 
-    it('should not show an option for per-response feedback', function() {
-        question.feedback.addCustomFeedback();
-        expect(question.feedback.getPerResponseFeedbackCheckbox().isPresent()).toBe(false);
-        question.feedback.deleteFeedback();
+    it('should not show an option for per-response feedback', async function() {
+        await question.feedback.addCustomFeedback();
+        expect(await question.feedback.getPerResponseFeedbackCheckbox().isPresent()).toBe(false);
+        await question.feedback.deleteFeedback();
     });
 
-    it('should accept an exact numerical answer', function() {
+    it('should accept an exact numerical answer', async function() {
         var option = question.getOptions().get(0);
-        question.enterNumericalExactOption(option, questionData.option1, '0');
+        await question.enterNumericalExactOption(option, questionData.option1, '0');
     })
 });
 
 describe('Saving an assessment', function() {
-    it('should show a success message if there are no errors', function() {
-        editQcPage.save();
-        expect(editQcPage.getSaveSuccess().isDisplayed()).toBe(true);
+    it('should show a success message if there are no errors', async function() {
+        await editQcPage.save();
+        expect(await editQcPage.getSaveSuccess().isDisplayed()).toBe(true);
     });
 
-    it('should allow deleting previously saved custom feedback', function() {
-        editQcPage.getQuestion(3).feedback.deleteFeedback();
-        editQcPage.save();
-        expect(editQcPage.getQuestion(3).feedback.getFeedbackPanel().isPresent()).toBe(false);
+    it('should allow deleting previously saved custom feedback', async function() {
+        await editQcPage.getQuestion(3).feedback.deleteFeedback();
+        await editQcPage.save();
+        expect(await editQcPage.getQuestion(3).feedback.getFeedbackPanel().isPresent()).toBe(false);
     });
 });
 
-//OK, this isn't really a test. Just setting up for a later test, and nowhere else to put it.
+// //OK, this isn't really a test. Just setting up for a later test, and nowhere else to put it.
 describe('Adding another subset for testing purposes to later move the quick check', function() {
     var assessmentName,
         set,
@@ -586,23 +583,26 @@ describe('Adding another subset for testing purposes to later move the quick che
         assessmentName = set.quickchecks.featuresAllOn;
     });
 
-    it('should not raise a fuss', function() {
+    it('should not raise a fuss', async function() {
         var subset,
+            subsetInput,
             quickcheck;
 
-        editQcPage.goBackToSet();
-        setPage.addSubset();
-        setPage.getNewSubsetInput().sendKeys(subsetName);
-        setPage.saveNewSubset().then(function() {
-            subset = setPage.getSubset(0);
-            quickcheck = subset.getQuickChecks().get(0);
-            subset.editQuickCheck(quickcheck);
-        });
+        await editQcPage.goBackToSet();
+        await setPage.addSubset();
+        subsetInput = await setPage.getNewSubsetInput();
+        await subsetInput.sendKeys(subsetName);
+        await setPage.saveNewSubset();
+        subset = setPage.getSubset(0);
+        quickcheck = subset.getQuickChecks().get(0);
+        await subset.editQuickCheck(quickcheck);
     });
 });
 
 describe('Editing a previously saved assessment should show the correct information', function() {
-    allQuestionTypesData.verify(editQcPage, data);
+    it('should verify the data', async function() {
+        await allQuestionTypesData.verify(editQcPage, data);
+    })
 });
 
 describe('Changing the subset a quick check belongs to', function() {
@@ -614,25 +614,25 @@ describe('Changing the subset a quick check belongs to', function() {
         newSubsetName = data.sets.featuresAllOn.subsets.group2;
     });
 
-    it('should show all subsets available in the dropdown', function() {
-        expect(editQcPage.getSubsetOptions().get(0).getText()).toBe(formerSubsetName);
-        expect(editQcPage.getSubsetOptions().get(1).getText()).toBe(newSubsetName);
-        editQcPage.getSubsetSelect().sendKeys(newSubsetName);
+    it('should show all subsets available in the dropdown', async function() {
+        expect(await editQcPage.getSubsetOptions().get(0).getText()).toBe(formerSubsetName);
+        expect(await editQcPage.getSubsetOptions().get(1).getText()).toBe(newSubsetName);
+        await editQcPage.getSubsetSelect().sendKeys(newSubsetName);
     });
 
-    it('should keep the integrity of the data after saving', function() {
-        editQcPage.save();
-        expect(editQcPage.getCurrentSubset()).toBe(newSubsetName);
+    it('should keep the integrity of the data after saving', async function() {
+        await editQcPage.save();
+        expect(await editQcPage.getCurrentSubset()).toBe(newSubsetName);
      });
 
-    it('should show this quickcheck in the subset it was moved to on the set page', function() {
+    it('should show this quickcheck in the subset it was moved to on the set page', async function() {
         var subset,
             quickchecks;
 
-        editQcPage.goBack();
+        await editQcPage.goBackToSet();
         subset = setPage.getSubset(1);
         quickchecks = subset.getQuickChecks();
-        expect(quickchecks.count()).toBe(1);
+        expect(await quickchecks.count()).toBe(1);
     });
 });
 
@@ -662,64 +662,64 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         qc4Name = set.quickchecks.resultsNotReleased;
     });
 
-    it('should add a new set/subset and quick check #2 without any fuss', function() {
+    it('should add a new set/subset and quick check #2 without any fuss', async function() {
         var currentQuestion,
             i = 0,
             quizData = data.quizData.quiz2;
 
         //for this set, where all features are on, toggle the one that is off
-        setPage.openFeaturesAccordion();
-        setPage.featurePanel.toggleFeatureByIndex(1);
-        setPage.nav.goToHome();
+        await setPage.openFeaturesAccordion();
+        await setPage.featurePanel.toggleFeatureByIndex(1);
+        await setPage.nav.goToHome();
 
         //add new set and subset from home page
-        homePage.addQuickCheck();
-        homePage.selectNewSet();
-        homePage.getNewSetInput().sendKeys(setName);
-        homePage.selectNewSubset();
-        homePage.getNewSubsetInput().sendKeys(subsetName);
-        homePage.saveNewQuickCheck(qc2Name);
+        await homePage.addQuickCheck();
+        await homePage.selectNewSet();
+        await homePage.getNewSetInput().sendKeys(setName);
+        await homePage.selectNewSubset();
+        await homePage.getNewSubsetInput().sendKeys(subsetName);
+        await homePage.saveNewQuickCheck(qc2Name);
 
         //set title and description so we can test later that it appears
-        editQcPage.initQuestions();
+        await editQcPage.initQuestions();
         //editQcPage = new includes.EditQcPage(browser);
-        editQcPage.getTitleInput().sendKeys(qc2Name);
-        editQcPage.getDescriptionInput().sendKeys('Description');
+        await editQcPage.getTitleInput().sendKeys(qc2Name);
+        await editQcPage.getDescriptionInput().sendKeys('Description');
 
         //add matrix question
-        editQcPage.addQuestion(data.questionTypes.matrix);
+        await editQcPage.addQuestion(data.questionTypes.matrix);
         currentQuestion = editQcPage.getQuestion(0);
-        currentQuestion.toggleRandomized(); //note: toggling all of these as un-randomized so it's easier to test
+        await currentQuestion.toggleRandomized(); //note: toggling all of these as un-randomized so it's easier to test
         for(i = 0; i < 2; i++) {
-            currentQuestion.addMatrixRow();
-            currentQuestion.addMatrixColumn();
+            await currentQuestion.addMatrixRow();
+            await currentQuestion.addMatrixColumn();
         }
-        currentQuestion.getMatrixTextInputs().get(0).sendKeys(quizData.question1.column1);
-        currentQuestion.getMatrixTextInputs().get(1).sendKeys(quizData.question1.column2);
-        currentQuestion.getMatrixTextInputs().get(2).sendKeys(quizData.question1.row1);
-        currentQuestion.getMatrixTextInputs().get(3).sendKeys(quizData.question1.row2);
-        currentQuestion.getMatrixCheckboxes().get(1).click();
-        currentQuestion.getMatrixCheckboxes().get(2).click();
+        await currentQuestion.getMatrixTextInputs().get(0).sendKeys(quizData.question1.column1);
+        await currentQuestion.getMatrixTextInputs().get(1).sendKeys(quizData.question1.column2);
+        await currentQuestion.getMatrixTextInputs().get(2).sendKeys(quizData.question1.row1);
+        await currentQuestion.getMatrixTextInputs().get(3).sendKeys(quizData.question1.row2);
+        await currentQuestion.getMatrixCheckboxes().get(1).click();
+        await currentQuestion.getMatrixCheckboxes().get(2).click();
 
         //add matching question, then save
-        editQcPage.addQuestion(data.questionTypes.matching);
+        await editQcPage.addQuestion(data.questionTypes.matching);
         currentQuestion = editQcPage.getQuestion(1);
-        currentQuestion.toggleRandomized();
+        await currentQuestion.toggleRandomized();
         for(i = 0; i < 2; i++) {
-            currentQuestion.addMatchingPair();
+            await currentQuestion.addMatchingPair();
         }
-        currentQuestion.getMatchingPairInputs().get(0).sendKeys(quizData.question2.prompt1);
-        currentQuestion.getMatchingPairInputs().get(1).sendKeys(quizData.question2.answer1);
-        currentQuestion.getMatchingPairInputs().get(2).sendKeys(quizData.question2.prompt2);
-        currentQuestion.getMatchingPairInputs().get(3).sendKeys(quizData.question2.answer2);
+        await currentQuestion.getMatchingPairInputs().get(0).sendKeys(quizData.question2.prompt1);
+        await currentQuestion.getMatchingPairInputs().get(1).sendKeys(quizData.question2.answer1);
+        await currentQuestion.getMatchingPairInputs().get(2).sendKeys(quizData.question2.prompt2);
+        await currentQuestion.getMatchingPairInputs().get(3).sendKeys(quizData.question2.answer2);
 
-        editQcPage.save();
+        await editQcPage.save();
         //had to click the link at the bottom because the one at the top was unclickable for some
         //reason, even though it wasn't before...gotta love Protractor! -he says as he rips his hair out
-        editQcPage.goBackToSet();
+        await editQcPage.goBackToSet();
     });
 
-    it('should successfully add quick check #3 to an existing set/subset from the home page', function() {
+    it('should successfully add quick check #3 to an existing set/subset from the home page', async function() {
         var correctOption,
             currentQuestion,
             option1,
@@ -729,45 +729,44 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
             subset;
 
         //go back to home page to add the quick check
-        setPage.nav.goToHome();
-        homePage.addQuickCheck();
-        homePage.selectSet(setName);
-        homePage.selectSubset(subsetName);
-        homePage.saveNewQuickCheck(qc3Name);
+        await setPage.nav.goToHome();
+        await homePage.addQuickCheck();
+        await homePage.selectSet(setName);
+        await homePage.selectSubset(subsetName);
+        await homePage.saveNewQuickCheck(qc3Name);
 
-        editQcPage.initQuestions();
-        editQcPage.addQuestion(data.questionTypes.numerical);
+        await editQcPage.initQuestions();
+        await editQcPage.addQuestion(data.questionTypes.numerical);
         currentQuestion = editQcPage.getQuestion(0);
 
         //3 options:
         //1. exact answer with 0 as margin of error; note that the answer itself is 0 in this case,
         //so we can also ensure that 0 is accepted as an answer (previous bug fix)
-        currentQuestion.addNumericalAnswer();
+        await currentQuestion.addNumericalAnswer();
         option1 = currentQuestion.getOptions().get(0);
-        currentQuestion.enterNumericalExactOption(option1, questionData.option1.exact, questionData.option1.margin);
+        await currentQuestion.enterNumericalExactOption(option1, questionData.option1.exact, questionData.option1.margin);
 
         //2. exact answer with margin of error
-        currentQuestion.addNumericalAnswer();
+        await currentQuestion.addNumericalAnswer();
         option2 = currentQuestion.getOptions().get(1);
-        currentQuestion.enterNumericalExactOption(option2, questionData.option2.exact, questionData.option2.margin);
+        await currentQuestion.enterNumericalExactOption(option2, questionData.option2.exact, questionData.option2.margin);
 
         //3. range answer
-        currentQuestion.addNumericalAnswer();
+        await currentQuestion.addNumericalAnswer();
         option3 = currentQuestion.getOptions().get(2);
-        currentQuestion.setOptionAsRange(option3);
-        currentQuestion.enterNumericalRangeOption(option3, questionData.option3.rangeMin, questionData.option3.rangeMax);
+        await currentQuestion.setOptionAsRange(option3);
+        await currentQuestion.enterNumericalRangeOption(option3, questionData.option3.rangeMin, questionData.option3.rangeMax);
 
         //save, go back to set page, and double check that the subset and quick check were properly added
-        editQcPage.save();
-        editQcPage.goBackToSet();
-        setPage.initSubsets().then(function() {
-            subset = setPage.getSubset(0);
-            expect(subset.getName()).toBe(subsetName.toUpperCase());
-            expect(subset.getQuickChecks().count()).toBe(2);
-        });
+        await editQcPage.save();
+        await editQcPage.goBackToSet();
+        await setPage.initSubsets();
+        subset = setPage.getSubset(0);
+        expect(await subset.getName()).toBe(subsetName.toUpperCase());
+        expect(await subset.getQuickChecks().count()).toBe(2);
     });
 
-    it('should successfully add quick check #4', function() {
+    it('should successfully add quick check #4', async function() {
         var correctOption,
             currentQuestion,
             option1,
@@ -779,33 +778,33 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
             subset = setPage.getSubset(0);
 
         //while we're here, turn all features off for this set
-        setPage.openFeaturesAccordion();
-        setPage.featurePanel.toggleFeatureByIndex(0);
-        setPage.featurePanel.toggleFeatureByIndex(2);
-        setPage.featurePanel.toggleFeatureByIndex(3);
+        await setPage.openFeaturesAccordion();
+        await setPage.featurePanel.toggleFeatureByIndex(0);
+        await setPage.featurePanel.toggleFeatureByIndex(2);
+        await setPage.featurePanel.toggleFeatureByIndex(3);
 
         //add the last quick check and edit it
-        subset.addAndSaveQuickCheck(qc4Name);
-        subset.editQuickCheck(subset.getQuickChecks().last());
+        await subset.addAndSaveQuickCheck(qc4Name);
+        await subset.editQuickCheck(subset.getQuickChecks().last());
 
         //add a single multiple choice question and save
-        editQcPage.initQuestions();
-        editQcPage.addQuestion(data.questionTypes.mc);
+        await editQcPage.initQuestions();
+        await editQcPage.addQuestion(data.questionTypes.mc);
         currentQuestion = editQcPage.getQuestion(0);
-        currentQuestion.toggleRandomized();
+        await currentQuestion.toggleRandomized();
         option1 = currentQuestion.getOptions().get(0);
         option2 = currentQuestion.getOptions().get(1);
         option3 = currentQuestion.getOptions().get(2);
         option4 = currentQuestion.getOptions().get(3);
         correctOption = currentQuestion.getOptions().get(questionData.answerIndex);
 
-        currentQuestion.enterMcTextOption(option1, questionData.option1);
-        currentQuestion.enterMcTextOption(option2, questionData.option2);
-        currentQuestion.enterMcTextOption(option3, questionData.option3);
-        currentQuestion.enterMcTextOption(option4, questionData.option4);
-        currentQuestion.toggleMcOptionCorrect(correctOption);
-        editQcPage.save();
+        await currentQuestion.enterMcTextOption(option1, questionData.option1);
+        await currentQuestion.enterMcTextOption(option2, questionData.option2);
+        await currentQuestion.enterMcTextOption(option3, questionData.option3);
+        await currentQuestion.enterMcTextOption(option4, questionData.option4);
+        await currentQuestion.toggleMcOptionCorrect(correctOption);
+        await editQcPage.save();
 
-        editQcPage.goBackToSet();
+        await editQcPage.goBackToSet();
     });
 });

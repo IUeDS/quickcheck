@@ -1,11 +1,11 @@
 function AllQuestionTypesData() {
     this.verify = verify;
 
-    function verify(editQcPage, data) {
+    async function verify(editQcPage, data) {
         describe('with top-level data', function() {
-            it('should show the correct number of questions', function() {
-                editQcPage.initQuestions();
-                expect(editQcPage.getQuestions().count()).toBe(7);
+            it('should show the correct number of questions', async function() {
+                await editQcPage.initQuestions();
+                expect(await editQcPage.getQuestions().count()).toBe(7);
             });
         });
 
@@ -38,29 +38,29 @@ function AllQuestionTypesData() {
                 option4 = options.get(3);
             });
 
-            it('should show the correct answer options', function() {
-                expect(question.getMcOptionInputValue(option1)).toBe(questionData.option1);
-                expect(question.getMcOptionInputValue(option2)).toBe(questionData.option2);
-                expect(question.getMcOptionInputValue(option3)).toBe(questionData.option3);
-                expect(question.getMcOptionInputValue(option4)).toBe(questionData.option4);
+            it('should show the correct answer options', async function() {
+                expect(await question.getMcOptionInputValue(option1)).toBe(questionData.option1);
+                expect(await question.getMcOptionInputValue(option2)).toBe(questionData.option2);
+                expect(await question.getMcOptionInputValue(option3)).toBe(questionData.option3);
+                expect(await question.getMcOptionInputValue(option4)).toBe(questionData.option4);
             });
 
-            it('should show the proper correct answer', function() {
-                expect(question.isMcOptionMarkedCorrect(option1)).toBe(false);
-                expect(question.isMcOptionMarkedCorrect(option2)).toBe(true);
-                expect(question.isMcOptionMarkedCorrect(option3)).toBe(false);
-                expect(question.isMcOptionMarkedCorrect(option4)).toBe(false);
+            it('should show the proper correct answer', async function() {
+                expect(await question.isMcOptionMarkedCorrect(option1)).toBe(false);
+                expect(await question.isMcOptionMarkedCorrect(option2)).toBe(true);
+                expect(await question.isMcOptionMarkedCorrect(option3)).toBe(false);
+                expect(await question.isMcOptionMarkedCorrect(option4)).toBe(false);
             });
 
-            it('should have the randomized option set if it was set before', function() {
-                expect(question.isRandomized()).toBeTruthy();
+            it('should have the randomized option set if it was set before', async function() {
+                expect(await question.isRandomized()).toBeTruthy();
             });
 
-            it('should show the proper feedback', function() {
-                expect(question.feedback.getPerResponseFeedbackText(questionFeedback1)).toBe(questionData.feedbackOption1);
-                expect(question.feedback.getPerResponseFeedbackText(questionFeedback2)).toBe(questionData.feedbackOption2);
-                expect(question.feedback.getPerResponseFeedbackText(questionFeedback3)).toBe(questionData.feedbackOption3);
-                expect(question.feedback.getPerResponseFeedbackText(questionFeedback4)).toBe(questionData.feedbackOption4);
+            it('should show the proper feedback', async function() {
+                expect(await question.feedback.getPerResponseFeedbackText(questionFeedback1)).toBe(questionData.feedbackOption1);
+                expect(await question.feedback.getPerResponseFeedbackText(questionFeedback2)).toBe(questionData.feedbackOption2);
+                expect(await question.feedback.getPerResponseFeedbackText(questionFeedback3)).toBe(questionData.feedbackOption3);
+                expect(await question.feedback.getPerResponseFeedbackText(questionFeedback4)).toBe(questionData.feedbackOption4);
             });
         });
 
@@ -93,29 +93,29 @@ function AllQuestionTypesData() {
                 option4 = options.get(3);
             });
 
-            it('should show the correct answer options', function() {
-                expect(question.getMcOptionInputValue(option1)).toBe(questionData.option1);
-                expect(question.getMcOptionInputValue(option2)).toBe(questionData.option2);
-                expect(question.getMcOptionInputValue(option3)).toBe(questionData.option3);
-                expect(question.getMcOptionInputValue(option4)).toBe(questionData.option4);
+            it('should show the correct answer options', async function() {
+                expect(await question.getMcOptionInputValue(option1)).toBe(questionData.option1);
+                expect(await question.getMcOptionInputValue(option2)).toBe(questionData.option2);
+                expect(await question.getMcOptionInputValue(option3)).toBe(questionData.option3);
+                expect(await question.getMcOptionInputValue(option4)).toBe(questionData.option4);
             });
 
-            it('should show the proper correct answer', function() {
-                expect(question.isMcOptionMarkedCorrect(option1)).toBe(true);
-                expect(question.isMcOptionMarkedCorrect(option2)).toBe(true);
-                expect(question.isMcOptionMarkedCorrect(option3)).toBe(false);
-                expect(question.isMcOptionMarkedCorrect(option4)).toBe(false);
+            it('should show the proper correct answer', async function() {
+                expect(await question.isMcOptionMarkedCorrect(option1)).toBe(true);
+                expect(await question.isMcOptionMarkedCorrect(option2)).toBe(true);
+                expect(await question.isMcOptionMarkedCorrect(option3)).toBe(false);
+                expect(await question.isMcOptionMarkedCorrect(option4)).toBe(false);
             });
 
-            it('should have the randomized option not set if it was not before', function() {
-                expect(question.isRandomized()).toBeFalsy();
+            it('should have the randomized option not set if it was not before', async function() {
+                expect(await question.isRandomized()).toBeFalsy();
             });
 
-            it('should show the proper feedback', function() {
-                expect(question.feedback.getPerResponseFeedbackText(questionFeedback1)).toBe(questionData.feedbackOption1);
-                expect(question.feedback.getPerResponseFeedbackText(questionFeedback2)).toBe(questionData.feedbackOption2);
-                expect(question.feedback.getPerResponseFeedbackText(questionFeedback3)).toBe(questionData.feedbackOption3);
-                expect(question.feedback.getPerResponseFeedbackText(questionFeedback4)).toBe(questionData.feedbackOption4);
+            it('should show the proper feedback', async function() {
+                expect(await question.feedback.getPerResponseFeedbackText(questionFeedback1)).toBe(questionData.feedbackOption1);
+                expect(await question.feedback.getPerResponseFeedbackText(questionFeedback2)).toBe(questionData.feedbackOption2);
+                expect(await question.feedback.getPerResponseFeedbackText(questionFeedback3)).toBe(questionData.feedbackOption3);
+                expect(await question.feedback.getPerResponseFeedbackText(questionFeedback4)).toBe(questionData.feedbackOption4);
             });
         });
 
@@ -136,23 +136,23 @@ function AllQuestionTypesData() {
                 incorrectFeedback = question.feedback.getIncorrectFeedback();
             });
 
-            it('should show the correct answer options', function() {
-                expect(textInputs.get(0).getAttribute('value')).toBe(questionData.column1);
-                expect(textInputs.get(1).getAttribute('value')).toBe(questionData.column2);
-                expect(textInputs.get(2).getAttribute('value')).toBe(questionData.row1);
-                expect(textInputs.get(3).getAttribute('value')).toBe(questionData.row2);
+            it('should show the correct answer options', async function() {
+                expect(await textInputs.get(0).getAttribute('value')).toBe(questionData.column1);
+                expect(await textInputs.get(1).getAttribute('value')).toBe(questionData.column2);
+                expect(await textInputs.get(2).getAttribute('value')).toBe(questionData.row1);
+                expect(await textInputs.get(3).getAttribute('value')).toBe(questionData.row2);
             });
 
-            it('should show the proper correct answers', function() {
-                expect(checkboxes.get(0).getAttribute('checked')).toBeTruthy();
-                expect(checkboxes.get(1).getAttribute('checked')).toBeFalsy();
-                expect(checkboxes.get(2).getAttribute('checked')).toBeFalsy();
-                expect(checkboxes.get(3).getAttribute('checked')).toBeTruthy();
+            it('should show the proper correct answers', async function() {
+                expect(await checkboxes.get(0).getAttribute('checked')).toBeTruthy();
+                expect(await checkboxes.get(1).getAttribute('checked')).toBeFalsy();
+                expect(await checkboxes.get(2).getAttribute('checked')).toBeFalsy();
+                expect(await checkboxes.get(3).getAttribute('checked')).toBeTruthy();
             });
 
-            it('should show correct and incorrect feedback when it is present', function() {
-                expect(correctFeedback.getAttribute('value')).toBe(questionData.feedbackCorrect);
-                expect(incorrectFeedback.getAttribute('value')).toBe(questionData.feedbackIncorrect);
+            it('should show correct and incorrect feedback when it is present', async function() {
+                expect(await correctFeedback.getAttribute('value')).toBe(questionData.feedbackCorrect);
+                expect(await incorrectFeedback.getAttribute('value')).toBe(questionData.feedbackIncorrect);
             });
         });
 
@@ -173,25 +173,25 @@ function AllQuestionTypesData() {
                 feedbackPanel = question.feedback.getFeedbackPanel();
             });
 
-            it('should show the correct answer options', function() {
-                expect(matchingPrompts.count()).toBe(2);
-                expect(matchingPairInputs.get(0).getAttribute('value')).toBe(questionData.prompt1);
-                expect(matchingPairInputs.get(1).getAttribute('value')).toBe(questionData.answer1);
-                expect(matchingPairInputs.get(2).getAttribute('value')).toBe(questionData.prompt2);
-                expect(matchingPairInputs.get(3).getAttribute('value')).toBe(questionData.answer2);
+            it('should show the correct answer options', async function() {
+                expect(await matchingPrompts.count()).toBe(2);
+                expect(await matchingPairInputs.get(0).getAttribute('value')).toBe(questionData.prompt1);
+                expect(await matchingPairInputs.get(1).getAttribute('value')).toBe(questionData.answer1);
+                expect(await matchingPairInputs.get(2).getAttribute('value')).toBe(questionData.prompt2);
+                expect(await matchingPairInputs.get(3).getAttribute('value')).toBe(questionData.answer2);
             });
 
-            it('should show the correct distractors', function() {
-                expect(distractors.count()).toBe(1);
-                expect(question.getDistractorInput(distractors.get(0)).getAttribute('value')).toBe(questionData.distractor);
+            it('should show the correct distractors', async function() {
+                expect(await distractors.count()).toBe(1);
+                expect(await question.getDistractorInput(distractors.get(0)).getAttribute('value')).toBe(questionData.distractor);
             });
 
-            it('should not be randomized if not previously set', function() {
-                expect(question.isRandomized()).toBeFalsy();
+            it('should not be randomized if not previously set', async function() {
+                expect(await question.isRandomized()).toBeFalsy();
             });
 
-            it('should not have feedback if not previously set', function() {
-                expect(feedbackPanel.isPresent()).toBe(false);
+            it('should not have feedback if not previously set', async function() {
+                expect(await feedbackPanel.isPresent()).toBe(false);
             });
         });
 
@@ -212,21 +212,21 @@ function AllQuestionTypesData() {
                 feedbackPanel = question.feedback.getFeedbackPanel();
             });
 
-            it('should show the correct answer options', function() {
-                expect(dropdownPrompts.count()).toBe(2);
-                expect(dropdownInputs.get(0).getAttribute('value')).toBe(questionData.prompt1);
-                expect(dropdownInputs.get(1).getAttribute('value')).toBe(questionData.answer1);
-                expect(dropdownInputs.get(2).getAttribute('value')).toBe(questionData.prompt2);
-                expect(dropdownInputs.get(3).getAttribute('value')).toBe(questionData.answer2);
+            it('should show the correct answer options', async function() {
+                expect(await dropdownPrompts.count()).toBe(2);
+                expect(await dropdownInputs.get(0).getAttribute('value')).toBe(questionData.prompt1);
+                expect(await dropdownInputs.get(1).getAttribute('value')).toBe(questionData.answer1);
+                expect(await dropdownInputs.get(2).getAttribute('value')).toBe(questionData.prompt2);
+                expect(await dropdownInputs.get(3).getAttribute('value')).toBe(questionData.answer2);
             });
 
-            it('should show the correct distractors', function() {
-                expect(distractors.count()).toBe(1);
-                expect(question.getDistractorInput(distractors.get(0)).getAttribute('value')).toBe(questionData.distractor);
+            it('should show the correct distractors', async function() {
+                expect(await distractors.count()).toBe(1);
+                expect(await question.getDistractorInput(distractors.get(0)).getAttribute('value')).toBe(questionData.distractor);
             });
 
-            it('should not have feedback if not previously set', function() {
-                expect(feedbackPanel.isPresent()).toBe(false);
+            it('should not have feedback if not previously set', async function() {
+                expect(await feedbackPanel.isPresent()).toBe(false);
             });
         });
 
@@ -243,13 +243,13 @@ function AllQuestionTypesData() {
                 feedbackPanel = question.feedback.getFeedbackPanel();
             });
 
-            it('should show the correct answer options', function() {
-                expect(options.count()).toBe(1);
-                expect(question.getOptionInput(options.get(0)).getAttribute('value')).toBe(questionData.option1);
+            it('should show the correct answer options', async function() {
+                expect(await options.count()).toBe(1);
+                expect(await question.getOptionInput(options.get(0)).getAttribute('value')).toBe(questionData.option1);
             });
 
-            it('should not have feedback if not previously set', function() {
-                expect(feedbackPanel.isPresent()).toBe(false);
+            it('should not have feedback if not previously set', async function() {
+                expect(await feedbackPanel.isPresent()).toBe(false);
             });
         });
 
@@ -266,15 +266,15 @@ function AllQuestionTypesData() {
                 feedbackPanel = question.feedback.getFeedbackPanel();
             });
 
-            it('should show the correct answer options', function() {
+            it('should show the correct answer options', async function() {
                 var option = options.get(0);
-                expect(options.count()).toBe(1);
-                expect(question.getExactAnswerInput(option).getAttribute('value')).toBe(questionData.option1);
-                expect(question.getMarginOfErrorInput(option).getAttribute('value')).toBe('0');
+                expect(await options.count()).toBe(1);
+                expect(await question.getExactAnswerInput(option).getAttribute('value')).toBe(questionData.option1);
+                expect(await question.getMarginOfErrorInput(option).getAttribute('value')).toBe('0');
             });
 
-            it('should not have feedback if not previously set', function() {
-                expect(feedbackPanel.isPresent()).toBe(false);
+            it('should not have feedback if not previously set', async function() {
+                expect(await feedbackPanel.isPresent()).toBe(false);
             });
         });
     }
