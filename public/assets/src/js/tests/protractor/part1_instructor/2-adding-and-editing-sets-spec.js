@@ -3,7 +3,8 @@ var includes = require('../common/includes.js'),
     data = includes.data,
     setPage = new includes.SetPage(browser),
     sets = data.sets,
-    viewSetsPage = new includes.ViewSetsPage(browser);
+    viewSetsPage = new includes.ViewSetsPage(browser),
+    EC = protractor.ExpectedConditions;
 
 describe('Adding a set', function () {
     it('should show the necessary form when the add set button is clicked', async function () {
@@ -14,9 +15,13 @@ describe('Adding a set', function () {
     it('should add the set to the user\’s list after being created', async function () {
         await viewSetsPage.getAddSetNameField().sendKeys(sets.toBeDeleted.name);
         await viewSetsPage.getAddDescriptionNameField().sendKeys(sets.toBeDeleted.description);
+        browser.sleep(1000); //ugh, kept on failing here for NO REASON on some runs, worked fine on others
         await viewSetsPage.saveNewSet();
-        browser.sleep(500); //ugh, kept on failing here for NO REASON on some runs, worked fine on others
-        expect(await viewSetsPage.getMembershipTiles().count()).toBe(1);
+        const membershipTiles = viewSetsPage.getMembershipTiles();
+        const newSet = membershipTiles.get(0);
+        await browser.wait(EC.visibilityOf(newSet, 10000));
+
+        expect(await membershipTiles.count()).toBe(1);
     });
 
     it('should hide the add new set form after it was created', async function() {

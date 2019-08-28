@@ -115,14 +115,13 @@ var SetPage = function(browserRef) {
         return page.usersAccordion;
     }
 
-    function initSubsets() {
+    async function initSubsets() {
         page.subsets = []; //remove previous
-        return page.getSubsets().then(function(subsets) {
-            subsets.forEach(function(subset, index) {
-                var thisSubset = page.getSubsets().get(index);
-                page.subsets.push(new page.includes.SubsetPanelComponent(page.browser, thisSubset));
-            });
-        });
+        const subsets = await page.getSubsets();
+        for (const [index, subset] of subsets.entries()) {
+            var thisSubset = page.getSubsets().get(index);
+            page.subsets.push(new page.includes.SubsetPanelComponent(page.browser, thisSubset));
+        }
     }
 
     async function isReadOnly() {
@@ -144,7 +143,7 @@ var SetPage = function(browserRef) {
             subsetObject;
 
         await page.saveNewSubsetBtn.click();
-        return page.initSubsets();
+        return await page.initSubsets();
     }
 
     async function toggleUsersAccordion() {

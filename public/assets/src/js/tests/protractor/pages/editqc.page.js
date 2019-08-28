@@ -127,7 +127,7 @@ var EditQcPage = function(browserRef) {
     }
 
     function getQuestion(index) {
-        return this.questions[index];
+        return page.questions[index];
     }
 
     function getQuestions() {
@@ -168,26 +168,17 @@ var EditQcPage = function(browserRef) {
         await page.browser.sleep(1000);
     }
 
-    function initQuestions() {
+    async function initQuestions() {
         page.questions = []; //clear if any were previously saved
-        //this. this right here. took me most of a day. constructing the question objects with composable
-        //question type behavior is much more difficult to set up when editing a previously saved quick check.
-        //we have to reverse-engineer the question type based on what is in the select element, and compose
-        //based on that. protractor was ridiculously meticulous about how to set this up so that the element
-        //saved in each constructed class was the element itself, rather than some sort of iterator that only
-        //gave me the most recently found element rather than what was originally found. also, this may look
-        //a little funny, getting all questions, then only getting one based on index, but the count() method
-        //also returns a promise, so a plain for loop using count as a stopping point also requires a closure.
-        return page.getQuestions().then(function(questions) {
-            questions.forEach(function(question, index) {
-                var question = page.getQuestions().get(index),
-                    questionObject = new page.includes.EditQuestionComponent(page.browser, question);
-                questionObject.getQuestionType().then(function(questionType) {
-                    questionObject.composeQuestionType(questionType);
-                    page.questions.push(questionObject);
-                });
-            });
-        });
+        const questions = await page.getQuestions();
+        for (const [index, question] of questions.entries()) {
+            var questionElement = page.getQuestions().get(index),
+                questionObject = new page.includes.EditQuestionComponent(page.browser, questionElement),
+                questionType = await questionObject.getQuestionType();
+
+            questionObject.composeQuestionType(questionType);
+            page.questions.push(questionObject);
+        }
     }
 
     async function isReadOnly() {
