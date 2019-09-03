@@ -1,5 +1,6 @@
 var HomePage = function(browserRef) {
-    var page = this;
+    var page = this,
+        EC = protractor.ExpectedConditions;
     page.browser = browserRef;
     page.includes = require('../common/includes.js');
 
@@ -36,6 +37,7 @@ var HomePage = function(browserRef) {
     page.selectSubset = selectSubset;
 
     async function addQuickCheck() {
+        await page.browser.wait(EC.elementToBeClickable(page.addQcBtn), 10000);
         await page.addQcBtn.click();
     }
 

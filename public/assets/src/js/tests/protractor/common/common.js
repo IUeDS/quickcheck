@@ -113,13 +113,14 @@ function Common(browserRef) {
         return await common.browser.refresh();
     }
 
-    function saveOptionList(options) {
+    async function saveOptionList(options) {
         var optionList = [];
-        options.each(function(mcOption) {
-            mcOption.getText().then(function(text) {
-                optionList.push(text);
-            });
+
+        options.each(async function(mcOption) {
+            const text = await mcOption.getText();
+            optionList.push(text);
         });
+
         common.randomizedOptionOrder.push(optionList);
     }
 

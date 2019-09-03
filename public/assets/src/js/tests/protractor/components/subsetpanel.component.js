@@ -1,5 +1,6 @@
 var SubsetPanelComponent = function(browserRef, subsetElement) {
-    var component = this;
+    var component = this,
+        EC = protractor.ExpectedConditions;
     component.browser = browserRef;
     //default to first subset; can be set manually as well
     if (subsetElement) {
@@ -70,6 +71,7 @@ var SubsetPanelComponent = function(browserRef, subsetElement) {
 
     async function addAndSaveQuickCheck(quickcheckName) {
         await component.addQcBtn.click();
+        await component.browser.wait(EC.presenceOf(component.getNewQcInput()), 10000);
         await component.getNewQcInput().sendKeys(quickcheckName);
         await component.saveQuickCheck();
     }

@@ -15,14 +15,14 @@ describe('Navigating to the quick check', function() {
         qcName = data.sets.featuresAllOn.quickchecks.featuresAllOn;
     });
 
-    it('should log in to Canvas and find the assignment', function() {
-        common.enterNonAngularPage();
-        canvasLoginPage.login(creds.student.username, creds.student.password);
-        canvasAssignmentsPage.goToAssignments();
-        canvasAssignmentsPage.openAssignment(qcName);
+    it('should log in to Canvas and find the assignment', async function() {
+        await common.enterNonAngularPage();
+        await canvasLoginPage.login(creds.student.username, creds.student.password);
+        await canvasAssignmentsPage.goToAssignments();
+        await canvasAssignmentsPage.openAssignment(qcName);
     });
 
-    it('should show the embedded quiz', function() {
+    it('should show the embedded quiz', async function() {
         //navigate to page and refresh, to test feature functionality of hiding empty attempts;
         //also, save the order of the options in the first multiple choice question, so we can make
         //sure that questions are being randomized, by comparing 1st, 2nd, and 3rd attempts; a bit
@@ -30,16 +30,14 @@ describe('Navigating to the quick check', function() {
         //so by comparing across three different attempts, I'm hoping it will be an infinitesimal chance.
         //note that we have to refresh the Canvas page, if we refresh inside the iframe, then protractor
         //will refresh it AS the browser window and take us out of Canvas, rather than just refreshing the frame
-        common.switchToLtiTool();
-        common.enterAngularPage();
-        common.saveOptionList(qcPage.getMcOptions());
-        common.switchToCanvas().then(function() {
-            browser2.refresh().then(function() {
-                common.switchToLtiTool();
-                common.enterAngularPage();
-                common.saveOptionList(qcPage.getMcOptions());
-            });
-        });
+        await common.switchToLtiTool();
+        await common.enterAngularPage();
+        await common.saveOptionList(qcPage.getMcOptions());
+        await common.switchToCanvas();
+        await browser2.refresh();
+        await common.switchToLtiTool();
+        await common.enterAngularPage();
+        await common.saveOptionList(qcPage.getMcOptions());
     });
 });
 
@@ -47,30 +45,30 @@ describe('Navigating to the quick check', function() {
 describe('Taking a graded quickcheck and getting all questions incorrect', function() {
     var quizData = data.quizData.quiz1;
 
-    it('should not show a title if it is not present', function() {
-        expect(qcPage.getTitle().isPresent()).toBe(false);
+    it('should not show a title if it is not present', async function() {
+        expect(await qcPage.getTitle().isPresent()).toBe(false);
     });
 
-    it('should not show a description if it is not present', function() {
-        expect(qcPage.getDescription().isPresent()).toBe(false);
+    it('should not show a description if it is not present', async function() {
+        expect(await qcPage.getDescription().isPresent()).toBe(false);
     });
 
-    it('should show the correct number of questions in the quiz', function() {
-        expect(qcPage.getQuestionProgress()).toBe('question 1 out of 7');
+    it('should show the correct number of questions in the quiz', async function() {
+        expect(await qcPage.getQuestionProgress()).toBe('question 1 out of 7');
     });
 
-    it('should begin with a score of 0', function() {
-        expect(qcPage.getScore()).toBe('0 / 7 questions correct');
+    it('should begin with a score of 0', async function() {
+        expect(await qcPage.getScore()).toBe('0 / 7 questions correct');
     });
 
     describe('when on a multiple choice question', function() {
         var questionData = quizData.question1;
 
-        it('should show the proper question text', function() {
-            expect(qcPage.getQuestionText()).toBe(questionData.questionText);
+        it('should show the proper question text', async function() {
+            expect(await qcPage.getQuestionText()).toBe(questionData.questionText);
         });
 
-        it('should show the options correctly', function() {
+        it('should show the options correctly', async function() {
             //it's a bit tricky to check the exact question text for each option when the order is randomized,
             //so things look a little gnarly below. have to run through each possible option to see if it is there.
             var options = qcPage.getMcOptions(),
@@ -80,129 +78,128 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
                     questionData.option3,
                     questionData.option4
                 ];
-            options.each(function(option) {
+            options.each(async function(option) {
                 var optionFound = false;
-                option.getText().then(function(text) {
-                    textOptions.forEach(function(textOption) {
-                        if (textOption == text) {
-                            optionFound = true;
-                        }
-                    });
-                    expect(optionFound).toBe(true);
+                const text = await option.getText();
+                textOptions.forEach(function(textOption) {
+                    if (textOption == text) {
+                        optionFound = true;
+                    }
                 });
+                expect(optionFound).toBe(true);
             });
         });
 
-        it('should disable the submit button until a multiple choice answer is selected', function() {
-            expect(qcPage.isSubmitBtnDisabled()).toBe(true);
+        it('should disable the submit button until a multiple choice answer is selected', async function() {
+            expect(await qcPage.isSubmitBtnDisabled()).toBe(true);
         });
 
-        it('should mark the multiple choice question as incorrect when answered incorrectly', function() {
+        it('should mark the multiple choice question as incorrect when answered incorrectly', async function() {
             //since it's randomized, we have to be sure that we're not clicking the correct answer
-            qcPage.selectIncorrectRandomMcOption(questionData.answer);
-            qcPage.submit();
-            expect(qcPage.isIncorrectModal()).toBe(true);
+            await qcPage.selectIncorrectRandomMcOption(questionData.answer);
+            await qcPage.submit();
+            expect(await qcPage.isIncorrectModal()).toBe(true);
         });
 
-        it('should show per-response incorrect feedback for a multiple choice question if supplied', function() {
-            expect(qcPage.getPerResponseFeedback().count()).toBe(1);
-            qcPage.clickContinue();
+        it('should show per-response incorrect feedback for a multiple choice question if supplied', async function() {
+            expect(await qcPage.getPerResponseFeedback().count()).toBe(1);
+            await qcPage.clickContinue();
         });
 
-        it('should not increment the score when the question was answered incorrectly', function() {
-            expect(qcPage.getScore()).toBe('0 / 7 questions correct');
+        it('should not increment the score when the question was answered incorrectly', async function() {
+            expect(await qcPage.getScore()).toBe('0 / 7 questions correct');
         });
     });
 
     describe('when on a multiple correct question', function() {
         var questionData = quizData.question2;
 
-        it('should increment the question number after the first question', function() {
-            expect(qcPage.getQuestionProgress()).toBe('question 2 out of 7');
+        it('should increment the question number after the first question', async function() {
+            expect(await qcPage.getQuestionProgress()).toBe('question 2 out of 7');
         });
 
-        it('should properly show the question and options', function() {
-            expect(qcPage.getQuestionText()).toBe(''); //no question text here
-            expect(qcPage.getMcOptions().count()).toBe(4);
+        it('should properly show the question and options', async function() {
+            expect(await qcPage.getQuestionText()).toBe(''); //no question text here
+            expect(await qcPage.getMcOptions().count()).toBe(4);
         });
 
-        it('should show the options in the order saved when the question is not randomized', function() {
+        it('should show the options in the order saved when the question is not randomized', async function() {
             var options = qcPage.getMcOptions();
-            expect(options.get(0).getText()).toBe(questionData.option1);
-            expect(options.get(1).getText()).toBe(questionData.option2);
-            expect(options.get(2).getText()).toBe(questionData.option3);
-            expect(options.get(3).getText()).toBe(questionData.option4);
+            expect(await options.get(0).getText()).toBe(questionData.option1);
+            expect(await options.get(1).getText()).toBe(questionData.option2);
+            expect(await options.get(2).getText()).toBe(questionData.option3);
+            expect(await options.get(3).getText()).toBe(questionData.option4);
         });
 
-        it('should disable the submit button until an answer is selected', function() {
-            expect(qcPage.isSubmitBtnDisabled()).toBe(true);
+        it('should disable the submit button until an answer is selected', async function() {
+            expect(await qcPage.isSubmitBtnDisabled()).toBe(true);
         });
 
-        it('should mark the question as incorrect when answered incorrectly', function() {
-            qcPage.selectMcOptionByIndex(0);
-            qcPage.submit();
-            expect(qcPage.isIncorrectModal()).toBe(true);
+        it('should mark the question as incorrect when answered incorrectly', async function() {
+            await qcPage.selectMcOptionByIndex(0);
+            await qcPage.submit();
+            expect(await qcPage.isIncorrectModal()).toBe(true);
         });
 
-        it('should show per-response incorrect feedback if supplied', function() {
+        it('should show per-response incorrect feedback if supplied', async function() {
             var feedback = qcPage.getPerResponseFeedback();
-            expect(feedback.count()).toBe(1);
-            expect(feedback.get(0).getText()).toBe(questionData.feedbackOption1);
-            qcPage.clickContinue();
+            expect(await feedback.count()).toBe(1);
+            expect(await feedback.get(0).getText()).toBe(questionData.feedbackOption1);
+            await qcPage.clickContinue();
         });
     });
 
     describe('when on a matrix question', function() {
         var questionData = quizData.question3;
 
-        it('should properly show the question', function() {
-            expect(qcPage.getQuestionText()).toBe(''); //no question text here
+        it('should properly show the question', async function() {
+            expect(await qcPage.getQuestionText()).toBe(''); //no question text here
         });
 
-        it('should properly show the column text', function() {
+        it('should properly show the column text', async function() {
             var columnCells = qcPage.getMatrixColumnCells();
-            expect(columnCells.get(1).getText()).toBe(questionData.column1);
-            expect(columnCells.get(2).getText()).toBe(questionData.column2);
+            expect(await columnCells.get(1).getText()).toBe(questionData.column1);
+            expect(await columnCells.get(2).getText()).toBe(questionData.column2);
         });
 
-        it('should properly show the row text', function() {
+        it('should properly show the row text', async function() {
             var rowCells = qcPage.getMatrixRowCells();
-            expect(rowCells.get(0).getText()).toBe(questionData.row1);
-            expect(rowCells.get(1).getText()).toBe(questionData.row2);
+            expect(await rowCells.get(0).getText()).toBe(questionData.row1);
+            expect(await rowCells.get(1).getText()).toBe(questionData.row2);
         });
 
-        it('should have the correct number of checkboxes', function() {
+        it('should have the correct number of checkboxes', async function() {
             var checkboxes = qcPage.getMatrixCheckboxes();
-            expect(checkboxes.count()).toBe(4);
+            expect(await checkboxes.count()).toBe(4);
         });
 
-        it('should disable the submit button until all answers are selected', function() {
-            expect(qcPage.isSubmitBtnDisabled()).toBe(true);
+        it('should disable the submit button until all answers are selected', async function() {
+            expect(await qcPage.isSubmitBtnDisabled()).toBe(true);
         });
 
-        it('should only allow one selection per row', function() {
+        it('should only allow one selection per row', async function() {
             var checkboxes = qcPage.getMatrixCheckboxes();
-            qcPage.selectMatrixCheckboxByIndex(0);
-            expect(checkboxes.get(0).getAttribute('checked')).toBeTruthy();
-            expect(checkboxes.get(1).getAttribute('checked')).toBeFalsy();
-            qcPage.selectMatrixCheckboxByIndex(1);
-            expect(checkboxes.get(0).getAttribute('checked')).toBeFalsy();
-            expect(checkboxes.get(1).getAttribute('checked')).toBeTruthy();
-            qcPage.selectMatrixCheckboxByIndex(2);
+            await qcPage.selectMatrixCheckboxByIndex(0);
+            expect(await checkboxes.get(0).getAttribute('checked')).toBeTruthy();
+            expect(await checkboxes.get(1).getAttribute('checked')).toBeFalsy();
+            await qcPage.selectMatrixCheckboxByIndex(1);
+            expect(await checkboxes.get(0).getAttribute('checked')).toBeFalsy();
+            expect(await checkboxes.get(1).getAttribute('checked')).toBeTruthy();
+            await qcPage.selectMatrixCheckboxByIndex(2);
         });
 
-        it('should show incorrect feedback', function() {
-            qcPage.submit();
-            expect(qcPage.isIncorrectRowFeedback()).toBe(true);
+        it('should show incorrect feedback', async function() {
+            await qcPage.submit();
+            expect(await qcPage.isIncorrectRowFeedback()).toBe(true);
         });
 
-        it('should show incorrect rows', function() {
-            expect(qcPage.getIncorrectRows().count()).toBe(2);
+        it('should show incorrect rows', async function() {
+            expect(await qcPage.getIncorrectRows().count()).toBe(2);
         })
 
-        it('should show incorrect feedback if supplied', function() {
-            expect(qcPage.getRowFeedback().getText()).toContain(questionData.feedbackIncorrect);
-            qcPage.clickRowContinue();
+        it('should show incorrect feedback if supplied', async function() {
+            expect(await qcPage.getRowFeedback().getText()).toContain(questionData.feedbackIncorrect);
+            await qcPage.clickRowContinue();
         });
     });
 
@@ -210,125 +207,123 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
         var questionData = quizData.question4,
             matchingDistractorFirst = false;
 
-        it('should properly show the question', function() {
-            expect(qcPage.getQuestionText()).toBe(''); //no question text here
+        it('should properly show the question', async function() {
+            expect(await qcPage.getQuestionText()).toBe(''); //no question text here
         });
 
-        it('should show the prompts', function() {
+        it('should show the prompts', async function() {
             var prompts = qcPage.getMatchingPrompts();
-            expect(prompts.get(0).getText()).toBe(questionData.prompt1);
-            expect(prompts.get(1).getText()).toBe(questionData.prompt2);
+            expect(await prompts.get(0).getText()).toBe(questionData.prompt1);
+            expect(await prompts.get(1).getText()).toBe(questionData.prompt2);
         });
 
-        it('should show the answer options in the dropdowns', function() {
+        it('should show the answer options in the dropdowns', async function() {
             //ugh. so laravel will sometimes return the distractor first, sometimes last. it's sorting by a field that
             //is null for distractors. couldn't tell you why it does one, then the other. couldn't find a way to make it
             //do one or the other in the code, since we don't have a 'distractor' column. so we have to check here for
             //whether the distractor is first or last, and adjust tests accordingly. otherwise we get false negatives.
-            qcPage.getSelects().get(0).getText(function(text) {
-                if (text === questionData.distractor) {
-                    matchingDistractorFirst = true;
-                }
-            });
+            const text = await qcPage.getSelects().get(0).getText();
+            if (text === questionData.distractor) {
+                matchingDistractorFirst = true;
+            }
 
-            qcPage.getSelects().each(function(select) {
+            qcPage.getSelects().each(async function(select) {
                 var options = select.all(by.css('option'));
-                expect(options.get(0).getText()).toBe(''); //blank first option for answer-switching
+                expect(await options.get(0).getText()).toBe(''); //blank first option for answer-switching
                 if (matchingDistractorFirst) {
-                    expect(options.get(1).getText()).toBe(questionData.distractor);
-                    expect(options.get(2).getText()).toBe(questionData.answer1);
-                    expect(options.get(3).getText()).toBe(questionData.answer2);
+                    expect(await options.get(1).getText()).toBe(questionData.distractor);
+                    expect(await options.get(2).getText()).toBe(questionData.answer1);
+                    expect(await options.get(3).getText()).toBe(questionData.answer2);
                 }
                 else {
-                    expect(options.get(1).getText()).toBe(questionData.answer1);
-                    expect(options.get(2).getText()).toBe(questionData.answer2);
-                    expect(options.get(3).getText()).toBe(questionData.distractor);
+                    expect(await options.get(1).getText()).toBe(questionData.answer1);
+                    expect(await options.get(2).getText()).toBe(questionData.answer2);
+                    expect(await options.get(3).getText()).toBe(questionData.distractor);
                 }
             });
         });
 
-        it('should show the answer options in a row above the table', function() {
+        it('should show the answer options in a row above the table', async function() {
             var selectables = qcPage.getSelectables();
             if (matchingDistractorFirst) {
-                expect(selectables.get(0).getText()).toBe(questionData.distractor);
-                expect(selectables.get(1).getText()).toBe(questionData.answer1);
-                expect(selectables.get(2).getText()).toBe(questionData.answer2);
+                expect(await selectables.get(0).getText()).toBe(questionData.distractor);
+                expect(await selectables.get(1).getText()).toBe(questionData.answer1);
+                expect(await selectables.get(2).getText()).toBe(questionData.answer2);
             }
             else {
-                expect(selectables.get(0).getText()).toBe(questionData.answer1);
-                expect(selectables.get(1).getText()).toBe(questionData.answer2);
-                expect(selectables.get(2).getText()).toBe(questionData.distractor);
+                expect(await selectables.get(0).getText()).toBe(questionData.answer1);
+                expect(await selectables.get(1).getText()).toBe(questionData.answer2);
+                expect(await selectables.get(2).getText()).toBe(questionData.distractor);
             }
         });
 
-        it('should disable the submit button until all matching answers are selected', function() {
-            expect(qcPage.isSubmitBtnDisabled()).toBe(true);
+        it('should disable the submit button until all matching answers are selected', async function() {
+            expect(await qcPage.isSubmitBtnDisabled()).toBe(true);
         });
 
-        it('should gray out a matching option box after it has been selected but not the others', function() {
+        it('should gray out a matching option box after it has been selected but not the others', async function() {
             var selectables = qcPage.getSelectables();
-            qcPage.selectOption(0, questionData.answer2);
+            await qcPage.selectOption(0, questionData.answer2);
             //we selected the second option
             if (matchingDistractorFirst) {
-                expect(qcPage.isSelectablePicked(0)).toBe(false);
-                expect(qcPage.isSelectablePicked(1)).toBe(false);
-                expect(qcPage.isSelectablePicked(2)).toBe(true);
+                expect(await qcPage.isSelectablePicked(0)).toBe(false);
+                expect(await qcPage.isSelectablePicked(1)).toBe(false);
+                expect(await qcPage.isSelectablePicked(2)).toBe(true);
             }
             else {
-                expect(qcPage.isSelectablePicked(0)).toBe(false);
-                expect(qcPage.isSelectablePicked(1)).toBe(true);
-                expect(qcPage.isSelectablePicked(2)).toBe(false);
+                expect(await qcPage.isSelectablePicked(0)).toBe(false);
+                expect(await qcPage.isSelectablePicked(1)).toBe(true);
+                expect(await qcPage.isSelectablePicked(2)).toBe(false);
             }
         });
 
-        it('should hide a matching option from future rows when the option has already been selected', function() {
-            qcPage.getSelects().get(1).all(by.css('option')).each(function(option) {
-                option.getText().then(function(text) {
-                    if (text.indexOf(questionData.answer2) > -1) {
-                        //for some reason isDisplayed() was being funny with me, so had to check that ng-hide was activated on it
-                        expect(option.getAttribute('class')).toContain('ng-hide');
-                    }
-                });
+        it('should hide a matching option from future rows when the option has already been selected', async function() {
+            qcPage.getSelects().get(1).all(by.css('option')).each(async function(option) {
+                const text = await option.getText();
+                if (text.indexOf(questionData.answer2) > -1) {
+                    //for some reason isDisplayed() was being funny with me, so had to check that ng-hide was activated on it
+                    expect(await option.getAttribute('class')).toContain('ng-hide');
+                }
             });
         });
 
-        it('should show incorrect feedback', function() {
-            qcPage.selectOption(1, questionData.distractor);
-            qcPage.submit();
-            expect(qcPage.isIncorrectRowFeedback()).toBe(true);
+        it('should show incorrect feedback', async function() {
+            await qcPage.selectOption(1, questionData.distractor);
+            await qcPage.submit();
+            expect(await qcPage.isIncorrectRowFeedback()).toBe(true);
         });
 
-        it('should show incorrect rows', function() {
-            expect(qcPage.getIncorrectRows().count()).toBe(2);
-            qcPage.clickRowContinue();
+        it('should show incorrect rows', async function() {
+            expect(await qcPage.getIncorrectRows().count()).toBe(2);
+            await qcPage.clickRowContinue();
         });
     });
 
     describe('when on a multiple dropdowns question', function() {
         var questionData = quizData.question5;
 
-        it('should properly show the question', function() {
-            expect(qcPage.getQuestionText()).toBe(''); //no question text here
+        it('should properly show the question', async function() {
+            expect(await qcPage.getQuestionText()).toBe(''); //no question text here
         });
 
-        it('should properly display prompts', function() {
+        it('should properly display prompts', async function() {
             var prompts = qcPage.getDropdownPrompts(),
                 promptLabels = [ questionData.prompt1, questionData.prompt2 ];
 
-            prompts.each(function(prompt, index) {
-                expect(prompt.getText()).toBe(promptLabels[index]);
+            prompts.each(async function(prompt, index) {
+                expect(await prompt.getText()).toBe(promptLabels[index]);
             });
         });
 
-        it('should properly display answer options, including distractors', function() {
+        it('should properly display answer options, including distractors', async function() {
             var selects = qcPage.getSelects(),
                 answers = [ questionData.answer1, questionData.answer2, questionData.distractor ];
 
             //this is a spot where the order may change for apparently no reason from Laravel, so
             //just making sure each answer is represented somewhere, rather than a specific order
-            selects.each(function(select) {
-                answers.forEach(function(answer) {
-                    expect(select.getText()).toContain(answer);
+            selects.each(async function(select) {
+                answers.forEach(async function(answer) {
+                    expect(await select.getText()).toContain(answer);
                 });
             });
         });

@@ -7,18 +7,16 @@ var includes = require('../common/includes.js'),
     qcPage = new includes.QcPage(browser);
 
 describe('Embedding assessments', function() {
-    it('should show all collections in the modal window', function() {
+    it('should show all collections in the modal window', async function() {
         var qcName = data.sets.featuresAllOn.quickchecks.featuresAllOn,
             setNames = [ data.sets.featuresAllOn.name, data.sets.featuresAllOff.name ];
 
-        common.switchToCanvas().then(function() {
-            //set due date to last day of year (if we just specify a string date that's month-specific, Canvas will assume this year)
-            canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '7', 'Dec 30').then(function() {
-                common.enterAngularPage();
-                setNames.forEach(function(setName, index) {
-                    expect(embedPage.getSets().get(index).getText()).toContain(setName);
-                });
-            });
+        await common.switchToCanvas();
+        //set due date to last day of year (if we just specify a string date that's month-specific, Canvas will assume this year)
+        await canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '7', 'Dec 30');
+        await common.enterAngularPage();
+        setNames.forEach(async function(setName, index) {
+            expect(await embedPage.getSets().get(index).getText()).toContain(setName);
         });
     });
 
@@ -30,8 +28,8 @@ describe('Embedding assessments', function() {
         ],
             subsets = embedPage.getSubsets();
 
-        subsetNames.forEach(function(subsetName, index) {
-            expect(subsets.get(index).getText()).toContain(subsetName);
+        subsetNames.forEach(async function(subsetName, index) {
+            expect(await subsets.get(index).getText()).toContain(subsetName);
         });
     });
 
@@ -48,113 +46,102 @@ describe('Embedding assessments', function() {
             ],
             quickchecks = embedPage.getQuickChecks();
 
-        qcNames.forEach(function(qcName, index) {
-            expect(quickchecks.get(index).getText()).toContain(qcName);
+        qcNames.forEach(async function(qcName, index) {
+            expect(await quickchecks.get(index).getText()).toContain(qcName);
         });
     });
 
-    it('should show search results when text is typed into the searchbar', function() {
+    it('should show search results when text is typed into the searchbar', async function() {
         var quizName = data.sets.featuresAllOn.quickchecks.featuresAllOn;
 
-        embedPage.search(quizName);
-        expect(embedPage.getSearchResults().count()).toBe(1);
-        expect(embedPage.getSearchResults().get(0).isDisplayed()).toBe(true);
-        expect(embedPage.getSearchResults().get(0).getText()).toContain(quizName);
+        await embedPage.search(quizName);
+        expect(await embedPage.getSearchResults().count()).toBe(1);
+        expect(await embedPage.getSearchResults().get(0).isDisplayed()).toBe(true);
+        expect(await embedPage.getSearchResults().get(0).getText()).toContain(quizName);
     });
 
-    it('should reset the search bar and results when clear search is clicked', function() {
-        embedPage.clearSearch();
-        expect(embedPage.getSearchResults().count()).toBe(0);
+    it('should reset the search bar and results when clear search is clicked', async function() {
+        await embedPage.clearSearch();
+        expect(await embedPage.getSearchResults().count()).toBe(0);
     });
 
-    it('should allow previewing the assessment in a new tab', function() {
+    it('should allow previewing the assessment in a new tab', async function() {
         var questionText = data.quizData.quiz1.question1.questionText;
 
-        embedPage.previewQuickCheckByIndex(0);
-        common.switchTab(1);
-        browser.sleep(1000);
-        expect(qcPage.getQuestionText()).toBe(questionText);
+        await embedPage.previewQuickCheckByIndex(0);
+        await common.switchTab(1);
+        await browser.sleep(1000);
+        expect(await qcPage.getQuestionText()).toBe(questionText);
 
         //return to QC
-        browser.close();
-        common.switchTab(0);
-        common.switchToLtiToolEmbed().then(function() {
-            common.enterAngularPage();
-        });
+        await browser.close();
+        await common.switchTab(0);
+        await common.switchToLtiToolEmbed();
+        await common.enterAngularPage();
     });
 
     //the default view and search results view use separate markup, so make sure we are
     //testing both; previously had a bug where embedding from search results was broken
-    it('should correctly embed the assessment when retrieved as a search result', function() {
+    it('should correctly embed the assessment when retrieved as a search result', async function() {
         var quizName = data.sets.featuresAllOn.quickchecks.featuresAllOn;
 
-        embedPage.search(quizName);
-        embedPage.selectSearchedQuickCheckByIndex(0);
-        common.switchToCanvas().then(function() {
-            canvasAssignmentsPage.saveEmbed();
-        });
+        await embedPage.search(quizName);
+        await embedPage.selectSearchedQuickCheckByIndex(0);
+        await common.switchToCanvas();
+        await canvasAssignmentsPage.saveEmbed();
     });
 
-    it('should allow for embedding a quiz as an external tool URL', function() {
+    it('should allow for embedding a quiz as an external tool URL', async function() {
         var qcName = data.sets.featuresAllOff.quickchecks.urlEmbed;
 
-        canvasAssignmentsPage.goToModules();
-        canvasModulesPage.addModule('Test');
-        canvasModulesPage.addExternalToolLink();
-        return common.switchToLtiToolEmbed().then(function() {
-            common.enterAngularPage();
-            embedPage.search(qcName);
-            embedPage.selectSearchedQuickCheckByIndex(0);
-            common.switchToCanvas().then(function() {
-                canvasModulesPage.setExternalToolTitle(qcName);
-                canvasModulesPage.saveExternalTool();
-                canvasModulesPage.publishModuleItem();
-                //click on the link, so we can log an instructor attempt, allowing us to view, then release results
-                browser.element(by.partialLinkText(qcName)).click();
-            });
-        });
+        await canvasAssignmentsPage.goToModules();
+        await canvasModulesPage.addModule('Test');
+        await canvasModulesPage.addExternalToolLink();
+        await  common.switchToLtiToolEmbed();
+        await common.enterAngularPage();
+        await embedPage.search(qcName);
+        await embedPage.selectSearchedQuickCheckByIndex(0);
+        await common.switchToCanvas();
+        await canvasModulesPage.setExternalToolTitle(qcName);
+        await canvasModulesPage.saveExternalTool();
+        await canvasModulesPage.publishModuleItem();
+        //click on the link, so we can log an instructor attempt, allowing us to view, then release results
+        await browser.element(by.partialLinkText(qcName)).click();
 
     });
 
     //next, embed 2 more quizzes, just single questions, to test other functionality
     //(4 total quizzes for student to take--one with automatic grade passback, a second as an external url link,
     //a third to test manual grading, and a fourth to test auto-grade functionality)
-    it('should embed the third quiz', function() {
+    it('should embed the third quiz', async function() {
         var qcName = data.sets.featuresAllOff.quickchecks.featuresAllOffPastDue;
-        canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '1', 'Jan 1').then(function() {
-            common.enterAngularPage();
-            embedPage.search(qcName);
-            embedPage.selectSearchedQuickCheckByIndex(0);
-            common.switchToCanvas().then(function() {
-                canvasAssignmentsPage.saveEmbed();
-            });
-        });
+        await canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '1', 'Jan 1');
+        await common.enterAngularPage();
+        await embedPage.search(qcName);
+        await embedPage.selectSearchedQuickCheckByIndex(0);
+        await common.switchToCanvas();
+        await canvasAssignmentsPage.saveEmbed();
     });
 
-    it('should embed the fourth quiz', function() {
+    it('should embed the fourth quiz', async function() {
         var qcName = data.sets.featuresAllOff.quickchecks.resultsNotReleased;
-        canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '1').then(function() {
-            common.enterAngularPage();
-            embedPage.search(qcName);
-            embedPage.selectSearchedQuickCheckByIndex(0);
-            common.switchToCanvas().then(function() {
-                canvasAssignmentsPage.saveEmbed();
-            });
-        });
-
+        await canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '1');
+        await common.enterAngularPage();
+        await embedPage.search(qcName);
+        await embedPage.selectSearchedQuickCheckByIndex(0);
+        await common.switchToCanvas();
+        await canvasAssignmentsPage.saveEmbed();
     });
 
     //needed to add a second automatic grade passback quiz since there was a bug with this functionality; using the QTI import quiz
     //since it was already available
-    it('should embed the QTI import quiz', function() {
+    it('should embed the QTI import quiz', async function() {
         var qcName = data.sets.featuresAllOn.quickchecks.qtiImportGraded;
-        canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '1').then(function() {
-            common.enterAngularPage();
-            embedPage.search(qcName);
-            embedPage.selectSearchedQuickCheckByIndex(0);
-            common.switchToCanvas().then(function() {
-                canvasAssignmentsPage.saveEmbed();
-            });
-        });
+        await canvasAssignmentsPage.createAssignmentAndOpenEmbed(qcName, '1');
+        await common.enterAngularPage();
+        await embedPage.search(qcName);
+        await embedPage.selectSearchedQuickCheckByIndex(0);
+        await common.switchToCanvas();
+        await canvasAssignmentsPage.saveEmbed();
     });
 });

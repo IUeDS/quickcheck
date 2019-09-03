@@ -15,14 +15,12 @@ describe('Adding a new set, subset, and quick checkfrom the home page', function
         var setInput;
 
         //NOTE: close the new tab and go back to Canvas for this portion, now that we're done testing confirm messages/alerts
-        //TEMP: commenting out for expediency
-        // await common.closeTab();
-        // await common.switchTab(0);
-        // await common.enterNonAngularPage();
-        // await common.refresh();
-        // await common.switchToLtiTool();
-        // await common.enterAngularPage();
-        //END TEMP
+        await common.closeTab();
+        await common.switchTab(0);
+        await common.enterNonAngularPage();
+        await common.refresh();
+        await common.switchToLtiTool();
+        await common.enterAngularPage();
         await homePage.addQuickCheck();
         await homePage.selectNewSet();
         setInput = homePage.getNewSetInput();

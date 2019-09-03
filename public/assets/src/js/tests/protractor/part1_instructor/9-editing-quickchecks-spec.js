@@ -670,7 +670,9 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         //for this set, where all features are on, toggle the one that is off
         await setPage.openFeaturesAccordion();
         await setPage.featurePanel.toggleFeatureByIndex(1);
+        setPage = new includes.SetPage(browser);
         await setPage.nav.goToHome();
+        //await browser.waitForAngular(true);
 
         //add new set and subset from home page
         await homePage.addQuickCheck();
@@ -708,10 +710,11 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         for(i = 0; i < 2; i++) {
             await currentQuestion.addMatchingPair();
         }
-        await currentQuestion.getMatchingPairInputs().get(0).sendKeys(quizData.question2.prompt1);
-        await currentQuestion.getMatchingPairInputs().get(1).sendKeys(quizData.question2.answer1);
-        await currentQuestion.getMatchingPairInputs().get(2).sendKeys(quizData.question2.prompt2);
-        await currentQuestion.getMatchingPairInputs().get(3).sendKeys(quizData.question2.answer2);
+        const matchingPairInputs = await currentQuestion.getMatchingPairInputs();
+        await matchingPairInputs[0].sendKeys(quizData.question2.prompt1);
+        await matchingPairInputs[1].sendKeys(quizData.question2.answer1);
+        await matchingPairInputs[2].sendKeys(quizData.question2.prompt2);
+        await matchingPairInputs[3].sendKeys(quizData.question2.answer2);
 
         await editQcPage.save();
         //had to click the link at the bottom because the one at the top was unclickable for some
@@ -784,6 +787,8 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         await setPage.featurePanel.toggleFeatureByIndex(3);
 
         //add the last quick check and edit it
+        //TESTING: reset focus?
+        await browser.element(by.css('body')).click();
         await subset.addAndSaveQuickCheck(qc4Name);
         await subset.editQuickCheck(subset.getQuickChecks().last());
 

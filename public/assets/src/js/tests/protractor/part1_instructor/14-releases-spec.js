@@ -11,57 +11,57 @@ describe('Releasing results', function() {
     //hidden in student view when not released, and also be sure that student can see results right
     //off the bat for the 2 released ones, so we don't need to run back and forth between browsers
 
-    it('should show all assessments in the results view, because attempts were made by an instructor viewing the quiz', function() {
+    it('should show all assessments in the results view, because attempts were made by an instructor viewing the quiz', async function() {
         var assessmentName = data.sets.featuresAllOn.quickchecks.featuresAllOn;
-        common.goToQuickCheck();
-        common.enterAngularPage();
-        homePage.nav.goToResults();
-        expect(attemptOverviewPage.getAttempts().count()).toBe(5);
-        attemptOverviewPage.getAssessmentByName(assessmentName).click();
-        browser.sleep(1000);
+        await common.goToQuickCheck();
+        await common.enterAngularPage();
+        await homePage.nav.goToResults();
+        expect(await attemptOverviewPage.getAttempts().count()).toBe(5);
+        await attemptOverviewPage.getAssessmentByName(assessmentName).click();
+        await browser.sleep(1000);
     });
 
-    it('should initially have a button to release results, since they have not been released yet', function() {
-        expect(attemptsPage.isReleaseBtnDisplayed()).toBe(true);
+    it('should initially have a button to release results, since they have not been released yet', async function() {
+        expect(await attemptsPage.isReleaseBtnDisplayed()).toBe(true);
     });
 
-    it('should show a success message when releasing results', function() {
-        attemptsPage.toggleRelease();
-        expect(attemptsPage.getReleaseSuccess().isDisplayed()).toBe(true);
+    it('should show a success message when releasing results', async function() {
+        await attemptsPage.toggleRelease();
+        expect(await attemptsPage.getReleaseSuccess().isDisplayed()).toBe(true);
     });
 
-    it('should change the release button to a rollback button after releasing', function() {
-        expect(attemptsPage.isRollbackBtnDisplayed()).toBe(true);
+    it('should change the release button to a rollback button after releasing', async function() {
+        expect(await attemptsPage.isRollbackBtnDisplayed()).toBe(true);
     })
 
-    it('should show a success message when rolling back results', function() {
-        attemptsPage.toggleRelease();
-        expect(attemptsPage.getReleaseSuccess().isDisplayed()).toBe(true);
+    it('should show a success message when rolling back results', async function() {
+        await attemptsPage.toggleRelease();
+        expect(await attemptsPage.getReleaseSuccess().isDisplayed()).toBe(true);
     });
 
-    it('should change the rollback button to a release button after rolling back', function() {
-        expect(attemptsPage.isReleaseBtnDisplayed()).toBe(true);
+    it('should change the rollback button to a release button after rolling back', async function() {
+        expect(await attemptsPage.isReleaseBtnDisplayed()).toBe(true);
         //re-release these results, we want them visible to students
-        attemptsPage.toggleRelease();
+        await attemptsPage.toggleRelease();
     });
 
-    it('should release the second quiz\'s attempt results', function() {
+    it('should release the second quiz\'s attempt results', async function() {
         var assessmentName = data.sets.featuresAllOff.quickchecks.urlEmbed;
-        attemptsPage.goBack();
-        attemptOverviewPage.getAssessmentByName(assessmentName).click();
-        browser.sleep(1000);
-        attemptsPage.toggleRelease();
-        expect(attemptsPage.isRollbackBtnDisplayed()).toBe(true);
-        attemptsPage.goBack();
+        await attemptsPage.goBack();
+        await attemptOverviewPage.getAssessmentByName(assessmentName).click();
+        await browser.sleep(1000);
+        await attemptsPage.toggleRelease();
+        expect(await attemptsPage.isRollbackBtnDisplayed()).toBe(true);
+        await attemptsPage.goBack();
     });
 
-    it('should release the third quiz\'s attempt results', function() {
+    it('should release the third quiz\'s attempt results', async function() {
         var assessmentName = data.sets.featuresAllOff.quickchecks.featuresAllOffPastDue;
-        attemptOverviewPage.getAssessmentByName(assessmentName).click();
-        browser.sleep(1000);
-        attemptsPage.toggleRelease();
-        expect(attemptsPage.isRollbackBtnDisplayed()).toBe(true);
+        await attemptOverviewPage.getAssessmentByName(assessmentName).click();
+        await browser.sleep(1000);
+        await attemptsPage.toggleRelease();
+        expect(await attemptsPage.isRollbackBtnDisplayed()).toBe(true);
         //set up for when we next come back as instructor
-        attemptsPage.nav.goToSets();
+        await attemptsPage.nav.goToSets();
     });
 });
