@@ -14,6 +14,14 @@
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
         </script>
         <!-- app js -->
-        <script src="/assets/dist/polyfills-es5.js" nomodule defer></script><script src="/assets/dist/polyfills-es2015.js" type="module"></script><script src="/assets/dist/styles-es2015.js" type="module"></script><script src="/assets/dist/styles-es5.js" nomodule defer></script><script src="/assets/dist/runtime-es2015.js" type="module"></script><script src="/assets/dist/vendor-es2015.js" type="module"></script><script src="/assets/dist/main-es2015.js" type="module"></script><script src="/assets/dist/runtime-es5.js" nomodule defer></script><script src="/assets/dist/vendor-es5.js" nomodule defer></script><script src="/assets/dist/main-es5.js" nomodule defer></script>
+        <!-- running angular build in watch mode locally outputs different files, so check for local vs. prod, regression, etc.  -->
+        <?php
+            if (env('APP_ENV') === 'local') {
+                echo '<script src="/assets/dist/runtime.js" type="module"></script><script src="/assets/dist/polyfills.js" type="module"></script><script src="/assets/dist/styles.js" type="module"></script><script src="/assets/dist/vendor.js" type="module"></script><script src="/assets/dist/main.js" type="module"></script>';
+            }
+            else {
+                echo '<script src="/assets/dist/polyfills-es5.js" nomodule defer></script><script src="/assets/dist/polyfills-es2015.js" type="module"></script><script src="/assets/dist/styles-es2015.js" type="module"></script><script src="/assets/dist/styles-es5.js" nomodule defer></script><script src="/assets/dist/runtime-es2015.js" type="module"></script><script src="/assets/dist/vendor-es2015.js" type="module"></script><script src="/assets/dist/main-es2015.js" type="module"></script><script src="/assets/dist/runtime-es5.js" nomodule defer></script><script src="/assets/dist/vendor-es5.js" nomodule defer></script><script src="/assets/dist/main-es5.js" nomodule defer></script>';
+            }
+        ?>
     </body>
 </html>
