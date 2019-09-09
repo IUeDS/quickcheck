@@ -1,0 +1,42 @@
+<div class="card qc-home-add-panel">
+    <div *ngIf="this.loading">
+        <p class="text-center" aria-live="polite"><span class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></span><span class="sr-only">Data loading, please wait.</span></p>
+    </div>
+    <form (ngSubmit)="this.saveAssessment()" [hidden]="this.loading">
+        <h2>Add quick check</h2>
+        <div class="form-group">
+            <div class="form-group">
+                <label for="collection-select">Set:</label>
+                <select class="form-control" [(ngModel)]="this.assessment.collection.id" (ngModelChange)="this.collectionSelected()" id="collection-select" name="set" required>
+                    <option *ngFor="let membership of this.memberships" [ngValue]="membership.collection.id">{{membership.collection.name}}</option>
+                    <option value="new">[Add new set]</option>
+                </select>
+            </div>
+            <div class="form-group card card-body bg-light qc-add-indent" *ngIf="this.newCollectionAdded">
+                <label for="collection-name">New set name:</label>
+                <input type="text" class="form-control" [(ngModel)]="this.assessment.collection.name" id="collection-name" name="set-name" required placeholder="Example: Psychology 101">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-group" *ngIf="!this.newCollectionAdded">
+                <label for="assessment-group-select">Subset:</label>
+                <select class="form-control" [(ngModel)]="this.assessment.assessmentGroup.id" (ngModelChange)="this.groupSelected()" id="assessment-group-select" name="subset" required>
+                    <option *ngFor="let assessmentGroup of this.selectedCollection.assessment_groups" [ngValue]="assessmentGroup.id">{{assessmentGroup.name}}</option>
+                    <option value="new">[Add new subset]</option>
+                </select>
+            </div>
+            <div class="form-group card card-body bg-light qc-add-indent" *ngIf="this.newAssessmentGroupAdded || this.newCollectionAdded">
+                <label for="assessment-group-name">New subset name:</label>
+                <input type="text" class="form-control" [(ngModel)]="this.assessment.assessmentGroup.name" id="assessment-group-name" required placeholder="Example: Module 1" name="subset">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="assessment-name">Quick Check Name:</label>
+            <input type="text" class="form-control" [(ngModel)]="this.assessment.name" required id="assessment-name" name="assessment">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-success qc-btn" type="submit">Save</button>
+            <button class="btn btn-light qc-btn" type="button" (click)="this.cancelAdd()">Cancel</button>
+        </div>
+    </form>
+</div>

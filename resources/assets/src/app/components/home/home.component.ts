@@ -7,6 +7,7 @@ import { UtilitiesService } from '../../services/utilities.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  currentPage = 'home';
   isAddingAssessment = false;
   sessionExpired = false;
 

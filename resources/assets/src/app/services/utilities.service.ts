@@ -213,7 +213,7 @@ export class UtilitiesService {
   //let's keep that logic in one place, so it's not duplicated in hundreds
   //of returned promises, so it will be easy to change the structure in the future if needed
   getResponseData(resp) {
-    return resp.data.data;
+    return resp.data;
   }
 
   //look for module item id in query string to determine if presently in a module
@@ -242,6 +242,10 @@ export class UtilitiesService {
     else {
       return true;
     }
+  }
+
+  isLtiContext() {
+    return this.isLti;
   }
 
   isRegressionEnv() {
@@ -338,13 +342,19 @@ export class UtilitiesService {
   }
 
   showError(resp) {
-    var errors = resp.data.errorList;
-    if (errors) {
-      this.errorList = errors;
+    const data = resp.error;
+    const defaultMessage = 'There was an error processing your request.';
+
+    if (!data) {
+      this.errorList = [defaultMessage];
+    }
+    else if (data.errorList) {
+      this.errorList = data.errorList;
     }
     else {
-      this.errorList = ['There was an error processing your request.'];
+      this.errorList = [defaultMessage];
     }
+
     this.errorFound = true;
     this.loadingFinished();
     this.focusToElement('.error-message');
