@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReleaseComponent implements OnInit {
 
+  error = false;
+  success = false;
+
   constructor() { }
 
   ngOnInit() {

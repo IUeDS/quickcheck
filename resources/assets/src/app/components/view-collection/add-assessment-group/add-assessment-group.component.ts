@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddAssessmentGroupComponent implements OnInit {
 
+  formOpen = false;
+  newAssessmentGroup = null;
+
   constructor() { }
 
   ngOnInit() {

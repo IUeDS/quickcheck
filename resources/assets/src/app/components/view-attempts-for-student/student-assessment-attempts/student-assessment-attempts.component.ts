@@ -7,6 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StudentAssessmentAttemptsComponent implements OnInit {
 
+  attempts = [];
+  accordionClosed = true;
+  dueAt = false;
+  gradesLoading = true;
+  pointsPossible = null;
+  questions = [];
+  responseAttempt = null;
+  responseViewVisible = false;
+  studentResponses = [];
+  submission = null;
+  timezone = null;
+
   constructor() { }
 
   ngOnInit() {

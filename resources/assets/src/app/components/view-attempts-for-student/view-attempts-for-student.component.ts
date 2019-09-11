@@ -7,6 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewAttemptsForStudentComponent implements OnInit {
 
+  analyticsViewVisible = false;
+  assessmentsWithAttempts = [];
+  courseContext = null;
+  currentPage = 'results';
+  displayedAssessments = []; //those shown to user (after filters, etc.)
+  studentId = null;
+  studentName = null;
+  user = null;
+
   constructor() { }
 
   ngOnInit() {

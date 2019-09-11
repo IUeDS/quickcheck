@@ -7,6 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssessmentGroupComponent implements OnInit {
 
+  editingData = {};
+  isAddingAssessment = null;
+  isEditing = false;
+  memberships = null;
+  newAssessment = null;
+
   constructor() { }
 
   ngOnInit() {

@@ -6,6 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./attempts-overview.component.scss']
 })
 export class AttemptsOverviewComponent implements OnInit {
+  attempts = [];
+  currentPage = 'results';
+  isResultsByStudentToggled = false;
+  sessionStorageKey = 'iu-eds-quickcheck-student-results-toggle';
+  search = {
+      'assessmentName': '',
+      'studentName': ''
+  };
+  students = [];
 
   constructor() { }
 

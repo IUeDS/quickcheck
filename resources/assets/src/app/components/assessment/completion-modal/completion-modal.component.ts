@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./completion-modal.component.scss']
 })
 export class CompletionModalComponent implements OnInit {
+  error = false;
+  graded = false;
+  isInModule = false;
+  loading = false;
 
   constructor() { }
 

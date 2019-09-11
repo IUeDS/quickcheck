@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./public-collections.component.scss']
 })
 export class PublicCollectionsComponent implements OnInit {
+  publicCollections = false;
 
   constructor() { }
 

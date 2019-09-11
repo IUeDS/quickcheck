@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-collection.component.scss']
 })
 export class AddCollectionComponent implements OnInit {
+  isAddingCollection = false;
+  newCollection = {};
 
   constructor() { }
 

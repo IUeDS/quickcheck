@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./custom-activity.component.scss']
 })
 export class CustomActivityComponent implements OnInit {
+  editingData = {}; //copy to separate object so if user cancels edit, data is intact
+  isEditing = false;
 
   constructor() { }
 

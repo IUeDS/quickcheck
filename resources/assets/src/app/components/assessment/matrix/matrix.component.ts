@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./matrix.component.scss']
 })
 export class MatrixComponent implements OnInit {
+  columns = [];
+  rows = [];
 
   constructor() { }
 

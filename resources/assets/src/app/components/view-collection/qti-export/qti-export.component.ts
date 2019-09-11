@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QtiExportComponent implements OnInit {
 
+  assessmentList = null;
+  assessments = null;
+  checkAll = false;
+
   constructor() { }
 
   ngOnInit() {

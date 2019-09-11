@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResponsesComponent implements OnInit {
 
+  showTableView = false;
+  correctIconClass = 'fa-long-arrow-right'; //so we can easily swap out the correct icon
+
   constructor() { }
 
   ngOnInit() {

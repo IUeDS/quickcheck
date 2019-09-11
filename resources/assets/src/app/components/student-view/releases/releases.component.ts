@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./releases.component.scss']
 })
 export class ReleasesComponent implements OnInit {
+  releases = [];
+  search = {'assessmentName': ''}; //for searching through attempts
 
   constructor() { }
 

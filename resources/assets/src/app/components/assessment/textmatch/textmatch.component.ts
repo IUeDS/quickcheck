@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TextmatchComponent implements OnInit {
 
+  answer = null;
+
   constructor() { }
 
   ngOnInit() {

@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeaturesComponent implements OnInit {
 
+  collectionFeatures = [];
+  showFeatures = false;
+
   constructor() { }
 
   ngOnInit() {

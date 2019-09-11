@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
 
 @Component({
   selector: 'qc-toggle-correct-btn',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToggleCorrectBtnComponent implements OnInit {
 
-  constructor() { }
+  questionTypes = {};
+
+  constructor(private editAssessmentConfig: EditAssessmentConfigService) {
+    this.questionTypes = editAssessmentConfig.getQuestionTypes();
+  }
 
   ngOnInit() {
   }

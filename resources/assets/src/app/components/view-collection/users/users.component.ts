@@ -7,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsersComponent implements OnInit {
 
+  collectionUsers = [];
+  isAddingUser = {};
+  isEditingUsers = {};
+  showUsers = false;
+
   constructor() { }
 
   ngOnInit() {

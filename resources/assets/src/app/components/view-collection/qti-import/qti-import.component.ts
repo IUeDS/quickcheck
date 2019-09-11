@@ -7,6 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QtiImportComponent implements OnInit {
 
+  assessment_group_id = null;
+  criticalNotices = null;
+  done = false;
+  error = false;
+  notices = null;
+  quizzes = null;
+  uploading = false;
+  utils = null;
+  zipFile = null;
+
   constructor() { }
 
   ngOnInit() {

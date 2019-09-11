@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dropdowns.component.scss']
 })
 export class DropdownsComponent implements OnInit {
+  prompts = [];
+  selectableAnswers = [];
 
   constructor() { }
 

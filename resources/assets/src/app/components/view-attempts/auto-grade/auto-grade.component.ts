@@ -7,6 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AutoGradeComponent implements OnInit {
 
+  error = false;
+  graded = false;
+  loading = false;
+  paginationSize = 50;
+  success = false;
+  successfulSubmissions = [];
+  ungradedAssessment = false;
+
   constructor() { }
 
   ngOnInit() {

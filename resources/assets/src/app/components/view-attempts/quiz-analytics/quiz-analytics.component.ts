@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./quiz-analytics.component.scss']
 })
 export class QuizAnalyticsComponent implements OnInit {
+  analytics = null;
 
   constructor() { }
 

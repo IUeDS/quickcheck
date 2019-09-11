@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-custom-activity.component.scss']
 })
 export class AddCustomActivityComponent implements OnInit {
+  customActivityData = {};
+  isOpen = false;
 
   constructor() { }
 

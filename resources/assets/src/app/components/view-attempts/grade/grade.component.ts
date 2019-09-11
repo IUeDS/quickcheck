@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GradeComponent implements OnInit {
 
+  editedGradeValue = '';
+  editingGrade = false;
+  error = false;
+  gradeLoading = false;
+  isUserInCourse = true;
+  submission = null;
+
   constructor() { }
 
   ngOnInit() {

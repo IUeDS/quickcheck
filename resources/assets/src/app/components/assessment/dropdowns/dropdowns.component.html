@@ -11,7 +11,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <!-- TODO: replace orderBy for angular 2, original: <span ng-repeat="prompt in vm.prompts | orderBy: 'answer_order'" class="qc-dropdown-section"> -->
+            <!-- TODO: replace orderBy for angular 2, original: <span ng-repeat="prompt in prompts | orderBy: 'answer_order'" class="qc-dropdown-section"> -->
             <span *ngFor="let prompt of this.prompts" class="qc-dropdown-section">
                 <label ng-bind-html="prompt.answer_text" for="{{'select-' + prompt.id}}"></label>
                 <select [(ngModel)]="prompt.selected_answer"

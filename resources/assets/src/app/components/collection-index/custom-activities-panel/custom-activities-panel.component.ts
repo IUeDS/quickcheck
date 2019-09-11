@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./custom-activities-panel.component.scss']
 })
 export class CustomActivitiesPanelComponent implements OnInit {
+  customActivities = [];
+  isOpen = false;
+  loading = false;
 
   constructor() { }
 

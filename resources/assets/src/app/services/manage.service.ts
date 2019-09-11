@@ -48,7 +48,7 @@ export class ManageService {
 
   async getAttemptSubmissions(id, contextId) {
     const timeoutLength = this.httpService.getCrazyLongTimeout();
-    const path = this.httpService.getApiRoute() + '/assessment/' + id + '/attempts/' + contextId + '/submissions;
+    const path = this.httpService.getApiRoute() + '/assessment/' + id + '/attempts/' + contextId + '/submissions';
 
     return await this.httpClient.get(path)
       .pipe(timeout(timeoutLength))
@@ -102,7 +102,7 @@ export class ManageService {
 
   async getStudentAttempts(assessmentId, contextId) {
     const timeoutLength = this.httpService.getMediumTimeout();
-    const path = this.httpService.getApiRoute() + '/assessment/' + id + '/attempt/' + contextId;
+    const path = this.httpService.getApiRoute() + '/assessment/' + assessmentId + '/attempt/' + contextId;
 
     return await this.httpClient.get(path)
       .pipe(timeout(timeoutLength))

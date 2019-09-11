@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./numerical.component.scss']
 })
 export class NumericalComponent implements OnInit {
+  answer = null;
 
   constructor() { }
 
