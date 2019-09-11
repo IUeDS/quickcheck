@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CollectionService } from '../../../services/collection.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'qc-users',
@@ -12,7 +14,7 @@ export class UsersComponent implements OnInit {
   isEditingUsers = {};
   showUsers = false;
 
-  constructor() { }
+  constructor(private collectionService: CollectionService, private userService: UserService) { }
 
   ngOnInit() {
   }

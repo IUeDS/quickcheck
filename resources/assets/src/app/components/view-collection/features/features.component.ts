@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CollectionService } from '../../../services/collection.service';
 
 @Component({
   selector: 'qc-features',
@@ -10,7 +11,7 @@ export class FeaturesComponent implements OnInit {
   collectionFeatures = [];
   showFeatures = false;
 
-  constructor() { }
+  constructor(private collectionService: CollectionService) { }
 
   ngOnInit() {
   }

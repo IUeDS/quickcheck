@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'qc-custom-feedback',
@@ -12,7 +13,7 @@ export class CustomFeedbackComponent implements OnInit {
   perResponseFeedback = false;
   tinymceOptions = {};
 
-  constructor(private editAssessmentConfig: EditAssessmentConfigService) {
+  constructor(private editAssessmentConfig: EditAssessmentConfigService, private utilitiesService: UtilitiesService) {
     this.tinymceOptions = this.editAssessmentConfig.getTinyMceConfig();
   }
 

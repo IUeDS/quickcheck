@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CollectionService } from '../../../services/collection.service';
 
 @Component({
   selector: 'qc-toggle-public-collection',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TogglePublicCollectionComponent implements OnInit {
 
-  constructor() { }
+  constructor(private collectionService: CollectionService) { }
 
   ngOnInit() {
   }

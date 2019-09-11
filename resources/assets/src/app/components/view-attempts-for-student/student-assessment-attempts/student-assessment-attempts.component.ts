@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ManageService } from '../../../services/manage.service';
 
 @Component({
   selector: 'qc-student-assessment-attempts',
@@ -19,7 +20,7 @@ export class StudentAssessmentAttemptsComponent implements OnInit {
   submission = null;
   timezone = null;
 
-  constructor() { }
+  constructor(private manageService: ManageService) { }
 
   ngOnInit() {
   }

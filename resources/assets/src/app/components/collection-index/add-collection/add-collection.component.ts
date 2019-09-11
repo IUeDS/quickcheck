@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CollectionService } from '../../../services/collection.service';
 
 @Component({
   selector: 'qc-add-collection',
@@ -9,7 +10,7 @@ export class AddCollectionComponent implements OnInit {
   isAddingCollection = false;
   newCollection = {};
 
-  constructor() { }
+  constructor(private collectionService: CollectionService) { }
 
   ngOnInit() {
   }

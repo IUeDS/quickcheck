@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CustomActivityService } from '../../../services/custom-activity.service';
 
 @Component({
   selector: 'qc-custom-activity',
@@ -9,7 +10,7 @@ export class CustomActivityComponent implements OnInit {
   editingData = {}; //copy to separate object so if user cancels edit, data is intact
   isEditing = false;
 
-  constructor() { }
+  constructor(private customActivityService: CustomActivityService) { }
 
   ngOnInit() {
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
+import { HttpService } from '../../../services/http.service';
 
 @Component({
   selector: 'qc-edit-question',
@@ -10,7 +11,7 @@ export class EditQuestionComponent implements OnInit {
   questionTypes = {};
   tinymceOptions = {};
 
-  constructor(private editAssessmentConfig: EditAssessmentConfigService) {
+  constructor(private editAssessmentConfig: EditAssessmentConfigService, private httpService: HttpService) {
     this.questionTypes = editAssessmentConfig.getQuestionTypes();
     this.tinymceOptions = editAssessmentConfig.getTinyMceConfig();
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'qc-textmatch',
@@ -9,7 +10,7 @@ export class TextmatchComponent implements OnInit {
 
   answer = null;
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

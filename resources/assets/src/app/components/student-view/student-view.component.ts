@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../services/utilities.service';
+import { ManageService } from '../../services/manage.service';
 
 @Component({
   selector: 'qc-student-view',
@@ -15,7 +17,7 @@ export class StudentViewComponent implements OnInit {
   showResponses = false; //set by feature toggling on collection, by instructor preference
   view = 'releases';
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   ngOnInit() {
   }

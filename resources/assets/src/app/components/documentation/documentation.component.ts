@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../services/user.service';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'qc-documentation',
@@ -13,7 +15,7 @@ export class DocumentationComponent implements OnInit {
   showOverviewVideo = false;
   supportCenterLink = false;
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService, private userService: UserService) { }
 
   ngOnInit() {
   }

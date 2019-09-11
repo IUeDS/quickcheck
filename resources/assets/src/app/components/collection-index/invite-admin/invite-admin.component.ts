@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'qc-invite-admin',
@@ -16,7 +17,7 @@ export class InviteAdminComponent implements OnInit {
   userValidated = false;
   validatedUser = null;
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
   }

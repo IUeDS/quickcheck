@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CustomActivityService } from '../../../services/custom-activity.service';
 
 @Component({
   selector: 'qc-custom-activity-selection',
@@ -9,7 +10,7 @@ export class CustomActivitySelectionComponent implements OnInit {
 
   customActivities = [];
 
-  constructor() { }
+  constructor(private customActivityService: CustomActivityService) { }
 
   ngOnInit() {
   }

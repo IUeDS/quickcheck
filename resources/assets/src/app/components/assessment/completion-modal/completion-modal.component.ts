@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../../services/utilities.service';
+import { AssessmentService } from '../../../services/assessment.service';
 
 @Component({
   selector: 'qc-completion-modal',
@@ -11,7 +13,7 @@ export class CompletionModalComponent implements OnInit {
   isInModule = false;
   loading = false;
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService, private assessmentService: AssessmentService) { }
 
   ngOnInit() {
   }

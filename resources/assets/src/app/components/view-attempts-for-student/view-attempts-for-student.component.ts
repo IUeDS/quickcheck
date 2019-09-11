@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../services/utilities.service';
+import { ManageService } from '../../services/manage.service';
+import { Submission } from '../../classes/submission';
 
 @Component({
   selector: 'qc-view-attempts-for-student',
@@ -16,7 +19,7 @@ export class ViewAttemptsForStudentComponent implements OnInit {
   studentName = null;
   user = null;
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   ngOnInit() {
   }

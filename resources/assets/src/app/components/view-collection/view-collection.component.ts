@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CollectionService } from '../../services/collection.service';
+import { UserService } from '../../services/user.service';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'qc-view-collection',
@@ -19,7 +22,11 @@ export class ViewCollectionComponent implements OnInit {
   searchResults = null;
   searchTerm = '';
 
-  constructor() { }
+  constructor(
+    private utilitiesService: UtilitiesService,
+    private userService: UserService,
+    private collectionService: CollectionService
+  ) { }
 
   ngOnInit() {
   }

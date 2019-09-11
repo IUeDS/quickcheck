@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ManageService } from '../../../services/manage.service';
 
 @Component({
   selector: 'qc-auto-grade',
@@ -15,7 +16,7 @@ export class AutoGradeComponent implements OnInit {
   successfulSubmissions = [];
   ungradedAssessment = false;
 
-  constructor() { }
+  constructor(private manageService: ManageService) { }
 
   ngOnInit() {
   }

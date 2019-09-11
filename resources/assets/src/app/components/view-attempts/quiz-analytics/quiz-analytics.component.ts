@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../../services/utilities.service';
+import { ManageService } from '../../../services/manage.service';
 
 @Component({
   selector: 'qc-quiz-analytics',
@@ -8,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class QuizAnalyticsComponent implements OnInit {
   analytics = null;
 
-  constructor() { }
+  constructor(private manageService: ManageService, private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'qc-numerical',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class NumericalComponent implements OnInit {
   answer = null;
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../services/utilities.service';
+import { ManageService } from '../../services/manage.service';
+import { Submission } from '../../classes/submission';
 
 @Component({
   selector: 'qc-view-attempts',
@@ -30,7 +33,7 @@ export class ViewAttemptsComponent implements OnInit {
   ungradedAttempts = [];
   users = [];
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   ngOnInit() {
   }

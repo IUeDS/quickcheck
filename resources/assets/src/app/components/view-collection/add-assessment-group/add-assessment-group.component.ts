@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CollectionService } from '../../../services/collection.service';
 
 @Component({
   selector: 'qc-add-assessment-group',
@@ -10,7 +11,7 @@ export class AddAssessmentGroupComponent implements OnInit {
   formOpen = false;
   newAssessmentGroup = null;
 
-  constructor() { }
+  constructor(private collectionService: CollectionService) { }
 
   ngOnInit() {
   }

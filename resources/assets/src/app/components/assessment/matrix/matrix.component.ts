@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'qc-matrix',
@@ -9,7 +10,7 @@ export class MatrixComponent implements OnInit {
   columns = [];
   rows = [];
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AssessmentEditService } from '../../services/assessment-edit.service';
+import { UserService } from '../../services/user.service';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'qc-edit-assessment',
@@ -22,7 +25,11 @@ export class EditAssessmentComponent implements OnInit {
   validationError = false; //if validation errors, show a warning
   validationErrorList = [];
 
-  constructor() { }
+  constructor(
+    private utilitiesService: UtilitiesService,
+    private userService: UserService,
+    private assessmentEditService: AssessmentEditService
+  ) { }
 
   ngOnInit() {
   }

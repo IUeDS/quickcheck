@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'qc-attempts-overview',
@@ -16,7 +17,7 @@ export class AttemptsOverviewComponent implements OnInit {
   };
   students = [];
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CollectionService } from '../../../services/collection.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'qc-public-collections',
@@ -8,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class PublicCollectionsComponent implements OnInit {
   publicCollections = false;
 
-  constructor() { }
+  constructor(private collectionService: CollectionService, private userService: UserService) { }
 
   ngOnInit() {
   }

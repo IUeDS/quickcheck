@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AssessmentEditService } from '../../../services/assessment-edit.service';
+import { CollectionService } from '../../../services/collection.service';
+import { HttpService } from '../../../services/http.service';
 
 @Component({
   selector: 'qc-assessment-group',
@@ -13,7 +16,11 @@ export class AssessmentGroupComponent implements OnInit {
   memberships = null;
   newAssessment = null;
 
-  constructor() { }
+  constructor(
+    private httpService: HttpService,
+    private collectionService: CollectionService,
+    private assessmentEditService: AssessmentEditService
+  ) { }
 
   ngOnInit() {
   }

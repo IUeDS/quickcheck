@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'qc-responses',
@@ -10,7 +11,7 @@ export class ResponsesComponent implements OnInit {
   showTableView = false;
   correctIconClass = 'fa-long-arrow-right'; //so we can easily swap out the correct icon
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

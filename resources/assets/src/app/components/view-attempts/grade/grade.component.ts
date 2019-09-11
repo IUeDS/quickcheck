@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ManageService } from '../../../services/manage.service';
+import { Submission } from '../../../classes/submission';
 
 @Component({
   selector: 'qc-grade',
@@ -14,7 +16,7 @@ export class GradeComponent implements OnInit {
   isUserInCourse = true;
   submission = null;
 
-  constructor() { }
+  constructor(private manageService: ManageService) { }
 
   ngOnInit() {
   }

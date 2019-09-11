@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'qc-multiple-choice',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MultipleChoiceComponent implements OnInit {
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

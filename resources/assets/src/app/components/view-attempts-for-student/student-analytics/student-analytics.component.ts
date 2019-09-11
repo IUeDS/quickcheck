@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ManageService } from '../../../services/manage.service';
 
 @Component({
   selector: 'qc-student-analytics',
@@ -19,7 +20,7 @@ export class StudentAnalyticsComponent implements OnInit {
   totalTimeBeforeDueDate = 0;
   totalTimeAfterDueDate = 0;
 
-  constructor() { }
+  constructor(private manageService: ManageService) { }
 
   ngOnInit() {
   }

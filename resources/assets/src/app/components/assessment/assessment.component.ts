@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../services/utilities.service';
+import { AssessmentService } from '../../services/assessment.service';
+import { CaliperService } from '../../services/caliper.service';
 
 @Component({
   selector: 'qc-assessment',
@@ -31,7 +34,7 @@ export class AssessmentComponent implements OnInit {
   studentAnswer = null;
   timeoutSecondsRemaining = null; //seconds of timeout remaining, if feature enabled
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService, private assessmentService: AssessmentService, private caliperService: CaliperService) { }
 
   ngOnInit() {
   }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../../services/utilities.service';
+import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
 
 @Component({
   selector: 'qc-edit-multiple-correct',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditMultipleCorrectComponent implements OnInit {
 
-  constructor() { }
+  constructor(private editAssessmentConfig: EditAssessmentConfigService, private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

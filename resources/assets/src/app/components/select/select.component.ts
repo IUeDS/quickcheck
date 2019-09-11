@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CollectionService } from '../../services/collection.service';
+import { UserService } from '../../services/user.service';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'qc-select',
@@ -25,7 +28,11 @@ export class SelectComponent implements OnInit {
   };
 
 
-  constructor() { }
+  constructor(
+    private utilitiesService: UtilitiesService,
+    private userService: UserService,
+    private collectionService: CollectionService
+  ) { }
 
   ngOnInit() {
   }
