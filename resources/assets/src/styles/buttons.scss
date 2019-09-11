@@ -135,6 +135,10 @@
             border-radius: 50%;
         }
     }
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .qc-copy-btn {
@@ -220,5 +224,52 @@
         svg {
             border: solid $seafoam-green 3px;
         }
+    }
+}
+
+.qc-view-set-btn,
+.qc-view-new-tab-btn,
+.qc-join-btn,
+.qc-opt-out-btn {
+    border-radius: 25px;
+    font-family: 'BentonSansCompBook';
+    font-size: 1.2em;
+    padding: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.qc-view-set-btn {
+    background-color: $crimson-red;
+    color: $white;
+
+    &:hover {
+        background-color: $crimson-red-darker;
+        color: $white;
+    }
+}
+
+.qc-view-new-tab-btn {
+    background-color: transparent;
+    border: solid $black 1px;
+    color: $black;
+
+    &:hover {
+        background-color: $thirty-percent-opaque-white;
+        color: $black;
+    }
+}
+
+.qc-public-collections-list {
+    .qc-view-set-btn,
+    .qc-join-btn,
+    .qc-opt-out-btn {
+        margin-top: 0;
+    }
+
+    .qc-opt-out-btn {
+        background-color: $iron-gray-lighter;
+        color: $white;
     }
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
-import { SetService } from '../../../services/set.service';
+import { CollectionService } from '../../../services/collection.service';
 
 @Component({
   selector: 'qc-quick-add',
@@ -17,7 +17,7 @@ export class QuickAddComponent implements OnInit {
   newAssessmentGroupAdded = false; //if adding a new assessment group on the fly
   selectedCollection = {}; //if adding, collection selected, from which we can draw assessment groups to select
 
-  constructor(private setService: SetService) { }
+  constructor(private collectionService: CollectionService) { }
 
   async ngOnInit() {
     await this.getSets();
@@ -59,7 +59,7 @@ export class QuickAddComponent implements OnInit {
     let data;
 
     try {
-      const resp = await this.setService.getMembershipsWithAssessments();
+      const resp = await this.collectionService.getMembershipsWithAssessments();
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
@@ -82,7 +82,7 @@ export class QuickAddComponent implements OnInit {
     let data;
 
     try {
-      const resp = await this.setService.quickAdd({'assessment': this.assessment});
+      const resp = await this.collectionService.quickAdd({'assessment': this.assessment});
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {

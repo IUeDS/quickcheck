@@ -28,6 +28,7 @@
     "bootstrap": "^4.3.1",
     "components-font-awesome": "~4.6.3",
     "jquery": "~3.4.0",
+    "lodash": "^4.17.15",
     "mathquill": "^0.10.1-a",
     "moment-timezone": "^0.5.13",
     "rxjs": "~6.4.0",

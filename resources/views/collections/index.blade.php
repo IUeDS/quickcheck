@@ -4,6 +4,6 @@
 
 @section('content')
 <main class="container-fluid qc-index-page">
-    <qc-collection-index></qc-collection-index>
+    <app-root></app-root>
 </main>
 @stop

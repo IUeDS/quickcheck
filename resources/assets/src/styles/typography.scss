@@ -16,7 +16,7 @@ a {
 
 body {
     font-family: 'Arial', sans-serif;
-    font-size: 1.5em;
+    font-size: 1em;
     font-weight: 400;
     line-height: 2;
 }
@@ -32,6 +32,7 @@ h1,
     font-style: normal;
     font-weight: 700;
     margin-bottom: 30px;
+    margin-top: 20px;
     text-transform: uppercase;
 }
 
@@ -51,6 +52,7 @@ h3 {
     color: $black;
     font-family: 'BentonSansCompBook';
     font-weight: 400;
+    margin-top: 20px;
 }
 
 h4 {
