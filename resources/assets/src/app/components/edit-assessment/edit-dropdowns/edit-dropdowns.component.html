@@ -1,6 +1,6 @@
 <div>
     <p class="lead qc-edit-instructions">Enter the desired text and the accompanying answer that follows for each part of the question. The question will be displayed inline, as a single block of text, with dropdowns of all answer options displayed inline after each prompt.</p>
-    <table class="table table-bordered table-striped" ng-if="vm.question.prompts.length">
+    <table class="table table-bordered table-striped" *ngIf="this.question.prompts.length">
         <thead class="sr-only">
             <tr>
                 <th>Prompt</th>
@@ -9,82 +9,82 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="prompt in vm.question.prompts track by $index">
+            <tr *ngFor="let prompt of this.question.prompts; index as $index;">
                 <td class="qc-edit-dropdowns-inline">
-                    <label for="dropdown-prompt-{{vm.question.id}}-{{prompt.id}}">
+                    <label for="dropdown-prompt-{{this.question.id}}-{{prompt.id}}">
                         Prompt
-                        <span class="sr-only"> for question #{{ vm.question.question_order }}, dropdown pair #{{ $index+1 }}</span>:
+                        <span class="sr-only"> for question #{{ this.question.question_order }}, dropdown pair #{{ $index+1 }}</span>:
                     </label>
-                    <input type="text" id="dropdown-prompt-{{vm.question.id}}-{{prompt.id}}"
+                    <input type="text" id="dropdown-prompt-{{this.question.id}}-{{prompt.id}}"
                         class="form-control"
-                        ng-model="prompt.answer_text"
-                        ng-change="vm.onEdited()"
+                        [(ngModel)]="prompt.answer_text"
+                        (ngModelChange)="this.onEdited()"
                         required
-                        ng-disabled="vm.readOnly">
+                        [disabled]="this.readOnly">
                 </td>
                 <td class="qc-edit-dropdowns-inline">
-                    <label for="dropdown-answer-{{vm.question.id}}-{{prompt.id}}">
+                    <label for="dropdown-answer-{{this.question.id}}-{{prompt.id}}">
                         Answer
-                        <span class="sr-only"> for question #{{ vm.question.question_order }}, dropdown pair #{{ $index+1 }}</span>:
+                        <span class="sr-only"> for question #{{ this.question.question_order }}, dropdown pair #{{ $index+1 }}</span>:
                     </label>
-                    <input type="text" id="dropdown-answer-{{vm.question.id}}-{{prompt.id}}"
+                    <input type="text" id="dropdown-answer-{{this.question.id}}-{{prompt.id}}"
                         class="form-control"
-                        ng-model="prompt.dropdown_answer_text"
-                        ng-change="vm.onEdited();"
+                        [(ngModel)]="prompt.dropdown_answer_text"
+                        (ngModelChange)="this.onEdited();"
                         required
-                        ng-disabled="vm.readOnly">
+                        [disabled]="this.readOnly">
                 </td>
                 <td>
                     <qc-delete-option-btn
                         qc-index="$index"
-                        qc-on-delete="vm.deletePrompt($event)"
+                        qc-on-delete="this.deletePrompt($event)"
                         qc-option="prompt"
                         qc-option-type-text="'dropdown pair'"
-                        qc-question="vm.question"
-                        ng-if="!vm.readOnly">
+                        qc-question="this.question"
+                        *ngIf="!this.readOnly">
                     </qc-delete-option-btn>
                 </td>
             </tr>
         </tbody>
     </table>
     <hr>
-    <button class="btn btn-sm btn-primary qc-btn" ng-click="vm.addPrompt()" type="button" ng-if="!vm.readOnly">
+    <button class="btn btn-sm btn-primary qc-btn" (click)="this.addPrompt()" type="button" *ngIf="!this.readOnly">
         <span class="fa fa-plus" aria-hidden="true"></span> Add dropdown pair (text and its accompanying answer)
-        <span class="sr-only">for question #{{ vm.question.question_order }}</span>
+        <span class="sr-only">for question #{{ this.question.question_order }}</span>
     </button>
     <hr>
-    <div ng-if="vm.question.distractors.length">
-        <h3>Distractor answer options <span class="sr-only">for question #{{ vm.question.question_order }}</span></h3>
+    <div *ngIf="this.question.distractors.length">
+        <h3>Distractor answer options <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
         <p>These will appear as available answer options to the student, even though they are not correct answers.</p>
     </div>
-    <div ng-repeat="distractor in vm.question.distractors track by $index" class="row form-group qc-edit-assessment-inline">
-        <div class="col-xs-12">
-            <label for="dropdown-distractor-{{vm.question.id}}-{{distractor.id}}">
+    <div *ngFor="let distractor of this.question.distractors; index as $index;" class="row form-group qc-edit-assessment-inline">
+        <div class="col-12">
+            <label for="dropdown-distractor-{{this.question.id}}-{{distractor.id}}">
                 Distractor
-                <span class="sr-only"> #{{ $index+1 }} for question #{{ vm.question.question_order }}</span>:
+                <span class="sr-only"> #{{ $index+1 }} for question #{{ this.question.question_order }}</span>:
             </label>
-            <input type="text" id="dropdown-distractor-{{vm.question.id}}-{{distractor.id}}"
-                ng-model="distractor.answer_text"
-                ng-change="vm.onEdited()"
+            <input type="text" id="dropdown-distractor-{{this.question.id}}-{{distractor.id}}"
+                [(ngModel)]="distractor.answer_text"
+                (ngModelChange)="this.onEdited()"
                 class="form-control"
                 required
-                ng-disabled="vm.readOnly">
+                [disabled]="this.readOnly">
             <qc-delete-option-btn
                 qc-index="$index"
-                qc-on-delete="vm.deleteDistractor($event)"
+                qc-on-delete="this.deleteDistractor($event)"
                 qc-option="distractor"
                 qc-option-type-text="'dropdown distractor'"
-                qc-question="vm.question"
-                ng-if="!vm.readOnly">
+                qc-question="this.question"
+                *ngIf="!this.readOnly">
             </qc-delete-option-btn>
         </div>
     </div>
-    <button class="btn btn-sm qc-btn qc-distractor-btn" ng-click="vm.addDistractor()" type="button" ng-if="!vm.readOnly">
+    <button class="btn btn-sm qc-btn qc-distractor-btn" (click)="this.addDistractor()" type="button" *ngIf="!this.readOnly">
         <span class="fa fa-plus" aria-hidden="true"></span> Add distractor
-        <span class="sr-only">for question #{{ vm.question.question_order }}</span>
+        <span class="sr-only">for question #{{ this.question.question_order }}</span>
     </button>
-    <qc-custom-feedback ng-if="!vm.readOnly"
-        qc-on-question-edited="vm.onSubComponentEdited($event)"
-        qc-question="vm.question">
+    <qc-custom-feedback *ngIf="!this.readOnly"
+        qc-on-question-edited="this.onSubComponentEdited($event)"
+        qc-question="this.question">
     </qc-custom-feedback>
 </div>

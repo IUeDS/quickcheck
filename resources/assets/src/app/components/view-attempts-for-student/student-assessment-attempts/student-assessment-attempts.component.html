@@ -1,52 +1,52 @@
 <div class="panel panel-default qc-accordion-panel qc-student-attempts-panel">
     <div class="panel-heading qc-student-attempts-panel-heading"
         role="tab" role="button"
-        id="heading-group-{{vm.assessment.id}}"
+        id="heading-group-{{this.assessment.id}}"
         data-toggle="collapse"
-        href="#collapse-group-{{vm.assessment.id}}"
-        aria-expanded="{{ vm.isAccordionClosed() ? 'false' : 'true'}}"
-        aria-controls="collapse-group-{{vm.assessment.id}}"
-        ng-click="vm.toggleAccordion()">
-        <span class="fa fa-lg qc-accordion-arrow" ng-class="vm.isAccordionClosed() ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true"></span>
-        <h3>{{ vm.assessment.name }}</h3>
+        [attr.href]="'#collapse-group-' + this.assessment.id"
+        [attr.aria-expanded]="this.isAccordionClosed() ? 'false' : 'true'"
+        [attr.aria-controls]="'collapse-group-' + this.assessment.id"
+        (click)="this.toggleAccordion()">
+        <span class="fa fa-lg qc-accordion-arrow" [ngClass]="this.isAccordionClosed() ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true"></span>
+        <h3>{{ this.assessment.name }}</h3>
     </div>
-    <div id="collapse-group-{{vm.assessment.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-group-{{vm.assessment.id}}">
+    <div id="collapse-group-{{this.assessment.id}}" class="panel-collapse collapse" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.assessment.id">
         <div class="panel-body">
-            <div ng-if="!vm.responseViewVisible">
-                <p ng-if="vm.dueAt" class="qc-due-at">Due at: {{ vm.dueAt }}</p>
+            <div *ngIf="!this.responseViewVisible">
+                <p *ngIf="this.dueAt" class="qc-due-at">Due at: {{ this.dueAt }}</p>
                 <qc-attempt-data
-                    ng-if="!vm.isAccordionClosed()"
-                    qc-attempts="vm.attempts"
-                    qc-course-context="vm.courseContext"
-                    qc-grades-loading="vm.gradesLoading"
+                    *ngIf="!this.isAccordionClosed()"
+                    qc-attempts="this.attempts"
+                    qc-course-context="this.courseContext"
+                    qc-grades-loading="this.gradesLoading"
                     qc-is-student="false"
                     qc-is-visible="false"
                     qc-large-class-size="false"
-                    qc-points-possible="vm.pointsPossible"
+                    qc-points-possible="this.pointsPossible"
                     qc-show-responses="true"
-                    qc-submissions="vm.submission"
-                    qc-users="vm.user"
-                    qc-utils="vm.utils"
-                    qc-view-responses="vm.viewResponses($event)">
+                    qc-submissions="this.submission"
+                    qc-users="this.user"
+                    qc-utilitiesService="this.utilitiesService"
+                    qc-view-responses="this.viewResponses($event)">
                 </qc-attempt-data>
             </div>
-            <div ng-if="vm.responseViewVisible">
-                <a href='#' ng-click="vm.hideResponses()">
+            <div *ngIf="this.responseViewVisible">
+                <a href='#' (click)="this.hideResponses()">
                     <span class="fa fa-angle-double-left" aria-hidden="true"></span>
                     Back to attempts
                 </a>
-                <h1 id="response-header" tabindex="-1">Responses for {{ ::vm.responseAttempt.student.lis_person_name_given }} {{ ::vm.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
-                <p class="lead">Starting at {{ ::vm.utils.formatTimeWithTimeZone(vm.responseAttempt.created_at, vm.courseContext.time_zone) }}</p>
+                <h1 id="response-header" tabindex="-1">Responses for {{ this.responseAttempt.student.lis_person_name_given }} {{ this.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
+                <p class="lead">Starting at {{ this.utilitiesService.formatTimeWithTimeZone(this.responseAttempt.created_at, this.courseContext.time_zone) }}</p>
                 <qc-responses
-                    qc-attempt="vm.responseAttempt"
-                    qc-course-context="vm.courseContext"
+                    qc-attempt="this.responseAttempt"
+                    qc-course-context="this.courseContext"
                     qc-is-student="false"
-                    qc-questions="vm.questions"
-                    qc-responses="vm.studentResponses">
+                    qc-questions="this.questions"
+                    qc-responses="this.studentResponses">
                 </qc-responses>
                 <span class="sr-only">
                     <!-- screenreader user will be moving down the page, so easier for the back button to be down here -->
-                    <a href='#' ng-click="vm.hideResponses()">Back to attempts</a>
+                    <a href='#' (click)="this.hideResponses()">Back to attempts</a>
                 </span>
             </div>
         </div>

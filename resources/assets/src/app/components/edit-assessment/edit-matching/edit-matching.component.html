@@ -1,5 +1,5 @@
 <div>
-    <h3 ng-if="vm.question.prompts.length">Matching pairs <span class="sr-only">for question #{{ vm.question.question_order }}</span></h3>
+    <h3 *ngIf="this.question.prompts.length">Matching pairs <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
     <table class="table table-bordered table-striped">
         <thead class="sr-only">
                 <tr>
@@ -9,86 +9,86 @@
                 </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="prompt in vm.question.prompts track by $index">
+            <tr *ngFor="let prompt of this.question.prompts; index as $index;">
                 <td class="qc-edit-matching-inline">
-                    <label for="matching-prompt-{{vm.question.id}}-{{prompt.id}}">
+                    <label for="matching-prompt-{{this.question.id}}-{{prompt.id}}">
                         Prompt
-                        <span class="sr-only"> for question #{{ vm.question.question_order }}, matching pair #{{ $index + 1 }}</span>:
+                        <span class="sr-only"> for question #{{ this.question.question_order }}, matching pair #{{ $index + 1 }}</span>:
                     </label>
-                    <input type="text" id="matching-prompt-{{vm.question.id}}-{{prompt.id}}"
-                        ng-model="prompt.option_text"
-                        ng-change="vm.onEdited()"
+                    <input type="text" id="matching-prompt-{{this.question.id}}-{{prompt.id}}"
+                        [(ngModel)]="prompt.option_text"
+                        (ngModelChange)="this.onEdited()"
                         class="form-control"
                         required
-                        ng-disabled="vm.readOnly">
+                        [disabled]="this.readOnly">
                 </td>
                 <td class="qc-edit-matching-inline">
-                    <label for="matching-answer-{{vm.question.id}}-{{prompt.id}}">
+                    <label for="matching-answer-{{this.question.id}}-{{prompt.id}}">
                         Answer
-                        <span class="sr-only"> for question #{{ vm.question.question_order }}, matching pair #{{ $index + 1 }}</span>: </label>
-                    <input type="text" id="matching-answer-{{vm.question.id}}-{{prompt.id}}"
+                        <span class="sr-only"> for question #{{ this.question.question_order }}, matching pair #{{ $index + 1 }}</span>: </label>
+                    <input type="text" id="matching-answer-{{this.question.id}}-{{prompt.id}}"
                         class="form-control"
-                        ng-model="prompt.matching_answer_text"
-                        ng-change="vm.onEdited()"
+                        [(ngModel)]="prompt.matching_answer_text"
+                        (ngModelChange)="this.onEdited()"
                         required
-                        ng-disabled="vm.readOnly">
+                        [disabled]="this.readOnly">
                 </td>
                 <td>
                     <qc-delete-option-btn
                         qc-index="$index"
-                        qc-on-delete="vm.deletePrompt($event)"
+                        qc-on-delete="this.deletePrompt($event)"
                         qc-option="prompt"
                         qc-option-type-text="'matching pair'"
-                        qc-question="vm.question"
-                        ng-if="!vm.readOnly">
+                        qc-question="this.question"
+                        *ngIf="!this.readOnly">
                     </qc-delete-option-btn>
                 </td>
             </tr>
         </tbody>
     </table>
     <hr>
-    <button class="btn btn-sm btn-primary qc-btn" ng-click="vm.addPrompt()" type="button" ng-if="!vm.readOnly">
+    <button class="btn btn-sm btn-primary qc-btn" (click)="this.addPrompt()" type="button" *ngIf="!this.readOnly">
         <span class="fa fa-plus" aria-hidden="true"></span> Add matching pair
-        <span class="sr-only">to question #{{ vm.question.question_order }}</span>
+        <span class="sr-only">to question #{{ this.question.question_order }}</span>
     </button>
-    <div ng-if="vm.question.distractors.length">
-        <h3>Distractor answer options <span class="sr-only">for question #{{ vm.question.question_order }}</span></h3>
+    <div *ngIf="this.question.distractors.length">
+        <h3>Distractor answer options <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
         <p>These will appear as available answer options to the student, even though they are not correct answers.</p>
     </div>
-    <div ng-repeat="distractor in vm.question.distractors track by $index" class="row qc-edit-assessment-inline">
-        <div class="form-group col-xs-12">
-            <label for="matching-distractor-{{vm.question.id}}-{{distractor.id}}">
+    <div *ngFor="let distractor of this.question.distractors; index as $index;" class="row qc-edit-assessment-inline">
+        <div class="form-group col-12">
+            <label for="matching-distractor-{{this.question.id}}-{{distractor.id}}">
                 Distractor
-                <span class="sr-only">#{{ $index + 1 }} for question #{{vm.question.question_order}}</span>:
+                <span class="sr-only">#{{ $index + 1 }} for question #{{this.question.question_order}}</span>:
             </label>
-            <input type="text" id="matching-distractor-{{vm.question.id}}-{{distractor.id}}"
-                ng-model="distractor.option_text"
-                ng-change="vm.onEdited()"
+            <input type="text" id="matching-distractor-{{this.question.id}}-{{distractor.id}}"
+                [(ngModel)]="distractor.option_text"
+                (ngModelChange)="this.onEdited()"
                 class="form-control"
                 required
-                ng-disabled="vm.readOnly">
+                [disabled]="this.readOnly">
             <qc-delete-option-btn
                 qc-index="$index"
-                qc-on-delete="vm.deleteDistractor($event)"
+                qc-on-delete="this.deleteDistractor($event)"
                 qc-option="distractor"
                 qc-option-type-text="'matching distractor'"
-                qc-question="vm.question"
-                ng-if="!vm.readOnly">
+                qc-question="this.question"
+                *ngIf="!this.readOnly">
             </qc-delete-option-btn>
         </div>
     </div>
     <hr>
-    <button class="btn btn-sm qc-btn qc-distractor-btn" ng-click="vm.addDistractor()" type="button" ng-if="!vm.readOnly">
+    <button class="btn btn-sm qc-btn qc-distractor-btn" (click)="this.addDistractor()" type="button" *ngIf="!this.readOnly">
         <span class="fa fa-plus" aria-hidden="true"></span> Add distractor
-        <span class="sr-only">for question #{{ vm.question.question_order }}</span>
+        <span class="sr-only">for question #{{ this.question.question_order }}</span>
     </button>
-    <qc-custom-feedback ng-if="!vm.readOnly"
-        qc-on-question-edited="vm.onSubComponentEdited($event)"
-        qc-question="vm.question">
+    <qc-custom-feedback *ngIf="!this.readOnly"
+        qc-on-question-edited="this.onSubComponentEdited($event)"
+        qc-question="this.question">
     </qc-custom-feedback>
     <qc-randomize-checkbox
-        qc-on-question-edited="vm.onSubComponentEdited($event)"
-        qc-question="vm.question"
-        qc-read-only="vm.readOnly">
+        qc-on-question-edited="this.onSubComponentEdited($event)"
+        qc-question="this.question"
+        qc-read-only="this.readOnly">
     </qc-randomize-checkbox>
 </div>

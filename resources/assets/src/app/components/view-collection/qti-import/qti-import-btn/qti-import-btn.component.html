@@ -1,6 +1,6 @@
 <button class="btn btn-default qc-btn-qti-import" type="button"
-    ng-click="vm.initQtiImport()"
-    ng-disabled="vm.isImportingQti">
+    (click)="this.initQtiImport()"
+    [disabled]="this.isImportingQti">
     <span class="fa fa-cloud-upload fa-2x" aria-hidden="true"></span>
     <span> Import <strong>QTI Package</strong></span>
 </button>

@@ -1,113 +1,113 @@
-<qc-nav qc-current-page="vm.currentPage"></qc-nav>
-<qc-loading ng-show="vm.utils.loading"></qc-loading>
+<qc-nav qc-current-page="this.currentPage"></qc-nav>
+<qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
 <div class="row section-white">
-    <div class="col-xs-12">
-        <div class="row" ng-if="vm.isAttemptsView()">
-            <div class="col-xs-12">
-                <a href="../../manage?context={{::vm.utils.contextId}}" target="_self" ng-cloak><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to all course results</a>
+    <div class="col-12">
+        <div class="row" *ngIf="this.isAttemptsView()">
+            <div class="col-12">
+                <a href="../../manage?context={{this.utilitiesService.contextId}}" target="_self" ><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to all course results</a>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-6">
-                <h1 ng-show="vm.isAttemptsView()">Attempts</h1>
+            <div class="col-6">
+                <h1 [hidden]="!this.isAttemptsView()">Attempts</h1>
             </div>
-            <div class="col-xs-6 text-right" ng-hide="vm.utils.loading || !vm.isAttemptsView()">
-                <button class="btn btn-default qc-btn qc-btn-analytics" type="button" ng-click="vm.toggleAnalytics()">
+            <div class="col-6 text-right" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()">
+                <button class="btn btn-default qc-btn qc-btn-analytics" type="button" (click)="this.toggleAnalytics()">
                     <span class="fa fa-bar-chart fa-2x" aria-hidden="true"></span>
                     <span>View <strong>Analytics</strong></span>
                 </button>
             </div>
         </div>
-        <qc-error-message ng-if="vm.utils.errorFound" qc-utils="vm.utils"></qc-error-message>
-        <div class="row" ng-if="vm.largeClassSize" ng-hide="!vm.isAttemptsView()">
-            <div class="col-xs-12">
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" qc-utilitiesService="this.utilitiesService"></qc-error-message>
+        <div class="row" *ngIf="this.largeClassSize" [hidden]="!this.isAttemptsView()">
+            <div class="col-12">
                 <div class="well">
                     <p class="lead">Notice: large class size detected</p>
                     <p>In classes with more than 1000 students, slowness from the Canvas gradebook results in connection timeouts and other not very fun issues when reviewing attempts in Quick Check. For this reason, grading functionality is disabled for large courses when reviewing attempts in Quick Check.</p>
                 </div>
             </div>
         </div>
-        <h2 ng-hide="vm.utils.loading" ng-if="vm.isAttemptsView()" class="qc-results-quiz-name" ng-cloak>{{ ::vm.assessment.name }}</h2>
-        <p ng-if="vm.dueAt && vm.isAttemptsView()" class="qc-due-at">Due at: {{ vm.dueAt }}</p>
-        <div ng-hide="vm.utils.loading || !vm.isAttemptsView()" ng-cloak>
+        <h2 [hidden]="this.utilitiesService.loading" *ngIf="this.isAttemptsView()" class="qc-results-quiz-name" >{{ this.assessment.name }}</h2>
+        <p *ngIf="this.dueAt && this.isAttemptsView()" class="qc-due-at">Due at: {{ this.dueAt }}</p>
+        <div [hidden]="this.utilitiesService.loading || !this.isAttemptsView()" >
             <div class="row">
-                <div class="col-xs-6 col-md-4">
-                    <label for="search-name" ng-if="vm.attempts.length" class="sr-only">Search by last name: </label>
-                    <input type="text" class="form-control qc-search-box" id="search-name" ng-model="vm.search.studentLastName" ng-change="vm.searchStudentLastName()" ng-model-options="{ debounce: 500}" ng-if="vm.attempts.length" placeholder="Search by last name">
+                <div class="col-6 col-md-4">
+                    <label for="search-name" *ngIf="this.attempts.length" class="sr-only">Search by last name: </label>
+                    <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.studentLastName" (ngModelChange)="this.searchStudentLastName()" [(ngModel)]-options="{ debounce: 500}" *ngIf="this.attempts.length" placeholder="Search by last name">
                 </div>
-                <div class="col-xs-6 col-md-4">
-                    <qc-autograde ng-if="!vm.gradesLoading" ng-hide="vm.largeClassSize"
-                        qc-on-success="vm.onAutoGradeSuccess($event)"
-                        qc-points-possible="vm.pointsPossible"
-                        qc-submissions="vm.submissions"
-                        qc-ungraded-attempts="vm.ungradedAttempts"
-                        qc-utils="vm.utils">
-                    </qc-autograde>
+                <div class="col-6 col-md-4">
+                    <qc-auto-grade *ngIf="!this.gradesLoading" [hidden]="this.largeClassSize"
+                        qc-on-success="this.onAutoGradeSuccess($event)"
+                        qc-points-possible="this.pointsPossible"
+                        qc-submissions="this.submissions"
+                        qc-ungraded-attempts="this.ungradedAttempts"
+                        qc-utilitiesService="this.utilitiesService">
+                    </qc-auto-grade>
                 </div>
-                <div class="col-xs-6 col-md-4 form-group">
+                <div class="col-6 col-md-4 form-group">
                     <qc-release
-                        qc-assessment-id="vm.assessmentId"
-                        qc-existing-release="vm.release"
-                        qc-utils="vm.utils" >
+                        qc-assessment-id="this.assessmentId"
+                        qc-existing-release="this.release"
+                        qc-utilitiesService="this.utilitiesService" >
                     </qc-release>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-6 col-md-4">
+                <div class="col-6 col-md-4">
                     <!-- show ungraded -->
-                    <div class="checkbox uppercase" ng-hide="vm.gradesLoading || vm.largeClassSize">
+                    <div class="checkbox uppercase" [hidden]="this.gradesLoading || this.largeClassSize">
                         <label>
-                            <input type="checkbox" ng-click="vm.toggleUngraded()" class="ungraded-checkbox"> View ungraded assignments only
+                            <input type="checkbox" (click)="this.toggleUngraded()" class="ungraded-checkbox"> View ungraded assignments only
                         </label>
                     </div>
                 </div>
             </div>
-            <qc-attempt-data ng-if="vm.displayedAttempts.length"
-                qc-attempts="vm.displayedAttempts"
-                qc-course-context="vm.courseContext"
-                qc-grades-loading="vm.gradesLoading"
+            <qc-attempt-data *ngIf="this.displayedAttempts.length"
+                qc-attempts="this.displayedAttempts"
+                qc-course-context="this.courseContext"
+                qc-grades-loading="this.gradesLoading"
                 qc-is-student="false"
-                qc-is-visible="vm.isAttemptsView()"
-                qc-large-class-size="vm.largeClassSize"
-                qc-points-possible="vm.pointsPossible"
+                qc-is-visible="this.isAttemptsView()"
+                qc-large-class-size="this.largeClassSize"
+                qc-points-possible="this.pointsPossible"
                 qc-show-responses="true"
-                qc-submissions="vm.submissions"
-                qc-users="vm.users"
-                qc-utils="vm.utils"
-                qc-view-responses="vm.viewResponses($event)">
+                qc-submissions="this.submissions"
+                qc-users="this.users"
+                qc-utilitiesService="this.utilitiesService"
+                qc-view-responses="this.viewResponses($event)">
             </qc-attempt-data>
-            <div class="well text-center" ng-if="!vm.displayedAttempts.length">
+            <div class="well text-center" *ngIf="!this.displayedAttempts.length">
                 <h3 class="uppercase">No attempts found</h3>
             </div>
         </div>
-        <div ng-if="vm.responseViewVisible" ng-cloak>
-            <a href='#' ng-click="vm.hideResponses()">
+        <div *ngIf="this.responseViewVisible" >
+            <a href='#' (click)="this.hideResponses()">
                 <span class="fa fa-angle-double-left" aria-hidden="true"></span>
                 Back to attempts
             </a>
-            <h1 id="response-header" tabindex="-1">Responses for {{ ::vm.responseAttempt.student.lis_person_name_given }} {{ ::vm.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
-            <p class="lead">Starting at {{ ::vm.utils.formatTimeWithTimeZone(vm.responseAttempt.created_at, vm.courseContext.time_zone) }}</p>
+            <h1 id="response-header" tabindex="-1">Responses for {{ this.responseAttempt.student.lis_person_name_given }} {{ this.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
+            <p class="lead">Starting at {{ this.utilitiesService.formatTimeWithTimeZone(this.responseAttempt.created_at, this.courseContext.time_zone) }}</p>
             <qc-responses
-                qc-attempt="vm.responseAttempt"
-                qc-course-context="vm.courseContext"
+                qc-attempt="this.responseAttempt"
+                qc-course-context="this.courseContext"
                 qc-is-student="false"
-                qc-questions="vm.questions"
-                qc-responses="vm.studentResponses">
+                qc-questions="this.questions"
+                qc-responses="this.studentResponses">
             </qc-responses>
             <span class="sr-only">
                 <!-- screenreader user will be moving down the page, so easier for the back button to be down here -->
-                <a href='#' ng-click="vm.hideResponses()">Back to attempts</a>
+                <a href='#' (click)="this.hideResponses()">Back to attempts</a>
             </span>
         </div>
     </div>
 </div>
-<div ng-if="vm.analyticsViewVisible">
-    <a href='#' ng-click="vm.toggleAnalytics()">
+<div *ngIf="this.analyticsViewVisible">
+    <a href='#' (click)="this.toggleAnalytics()">
         <span class="fa fa-angle-double-left" aria-hidden="true"></span>
         Back to attempts
     </a>
     <qc-quiz-analytics
-        qc-assessment="vm.assessment"
-        qc-utils="vm.utils">
+        qc-assessment="this.assessment"
+        qc-utilitiesService="this.utilitiesService">
     </qc-quiz-analytics>
 </div>

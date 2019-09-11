@@ -1,30 +1,30 @@
 <div class="qc-matrix-options">
-    <p class="lead qc-assessment-question" ng-bind-html="vm.currentQuestion.question_text"></p>
+    <p class="lead qc-assessment-question" ng-bind-html="this.currentQuestion.question_text"></p>
     <table class="table table-striped">
         <caption class="sr-only">Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.</caption>
         <thead>
             <th><span class="sr-only">Row name</span></th>
-            <th ng-repeat="column in vm.columns">
+            <th *ngFor="let column of this.columns">
                 <span ng-bind-html="column.answer_text"></span>
             </th>
         </thead>
         <tbody>
-            <tr ng-repeat="row in vm.rows" ng-class="{'danger': !vm.checkRowCorrectness(row)}">
+            <tr *ngFor="let row of this.rows" [ngClass]="{'danger': !this.checkRowCorrectness(row)}">
                 <td>
-                    <span ng-if="!vm.checkRowCorrectness(row)">
+                    <span *ngIf="!this.checkRowCorrectness(row)">
                         <span class="fa fa-remove fa-2x" aria-hidden="true"></span>
                         <span class="sr-only">This selection is incorrect</span>
                     </span>
                     <span ng-bind-html="row.answer_text"></span>
                 </td>
-                <td ng-repeat="column in row.columns">
+                <td *ngFor="let column of row.columns">
                     <div class="checkbox">
                         <label class="sr-only" for="matrixrow-{{row.id}}-column-{{column.id}}">Check this box to match {{row.answer_text}} to {{column.answer_text}}</label>
                         <input type="checkbox" name="{{row.id}}" value="{{column.answer_text}}"
                             ng-checked="false"
-                            ng-model="column.selected"
-                            ng-click='vm.onAnswerSelected(row, column)'
-                            ng-attr-aria-invalid="{{ !vm.checkRowCorrectness(row) ? 'true' : 'false' }}"
+                            [(ngModel)]="column.selected"
+                            (click)='this.onAnswerSelected(row, column)'
+                            [attr.aria-invalid]="!this.checkRowCorrectness(row) ? 'true' : 'false'"
                             id="matrixrow-{{row.id}}-column-{{column.id}}">
                     </div>
                 </td>

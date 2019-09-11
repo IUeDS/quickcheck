@@ -10,22 +10,24 @@
                 <li>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-click="vm.toggleQtiExportCheckAll()" ng-checked="vm.checkAll">
+                            <input type="checkbox" (click)="this.toggleQtiExportCheckAll()" ng-checked="this.checkAll">
                             All quick checks in this set
                         </label>
                     </div>
                     <ul>
-                        <li ng-repeat="exportAssessmentGroup in vm.assessmentGroups">
+                        <li *ngFor="let exportAssessmentGroup of this.assessmentGroups">
                             {{exportAssessmentGroup.name}}:
                             <ul>
-                                <li ng-repeat="assessment in exportAssessmentGroup.assessments" ng-if="!assessment.custom_activity_id">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" ng-click="vm.toggleAssessmentExport(assessment.id.toString())" ng-checked="vm.assessmentList[assessment.id.toString()]">
-                                            {{assessment.name}}
-                                        </label>
-                                    </div>
-                                </li>
+                                <ng-container *ngFor="let assessment of exportAssessmentGroup.assessments">
+                                    <li *ngIf="!assessment.custom_activity_id">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" (click)="this.toggleAssessmentExport(assessment.id.toString())" ng-checked="this.assessmentList[assessment.id.toString()]">
+                                                {{assessment.name}}
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ng-container>
                             </ul>
                         </li>
                     </ul>
@@ -33,9 +35,9 @@
             </ul>
         </div>
         <form method="POST" action="/index.php/exportQTI" target="_blank">
-            <input type="hidden" ng-repeat="assessment in vm.assessments track by $index" name="assessments[{{$index}}]" ng-value="assessment">
-            <button type="submit" class="btn btn-primary qc-btn" ng-disabled="!vm.assessments.length">Export QTI package</button>
-            <button type="button" class="btn btn-default qc-btn" ng-click="vm.cancelQtiExport()">Close <span class="sr-only">QTI export panel</span></button>
+            <input type="hidden" *ngFor="let assessment of this.assessments; index as $index;" name="assessments[{{$index}}]" [value]="assessment">
+            <button type="submit" class="btn btn-primary qc-btn" [disabled]="!this.assessments.length">Export QTI package</button>
+            <button type="button" class="btn btn-default qc-btn" (click)="this.cancelQtiExport()">Close <span class="sr-only">QTI export panel</span></button>
         </form>
     </div>
 </div>

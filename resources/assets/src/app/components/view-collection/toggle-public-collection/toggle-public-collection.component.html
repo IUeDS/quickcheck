@@ -1,10 +1,10 @@
 <div class="form-group">
     <button class="btn qc-btn qc-toggle-public-btn"
-        ng-class="vm.isPublicCollection() ? 'btn-danger' : 'btn-primary'" ng-click="vm.togglePublicCollection()">
-        <span ng-if="vm.isPublicCollection()">
+        [ngClass]="this.isPublicCollection() ? 'btn-danger' : 'btn-primary'" (click)="this.togglePublicCollection()">
+        <span *ngIf="this.isPublicCollection()">
             <span class="fa fa-remove"></span> Make set private
         </span>
-        <span ng-if="!vm.isPublicCollection()">
+        <span *ngIf="!this.isPublicCollection()">
             <span class="fa fa-users"></span> Make set public
         </span>
         <span>(admin-only)</span>

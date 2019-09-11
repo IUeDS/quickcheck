@@ -1,6 +1,6 @@
 <table class="table table-condensed table-striped qc-attempts-table">
     <thead>
-        <th ng-if="!vm.isStudent">Name</th>
+        <th *ngIf="!this.isStudent">Name</th>
         <th>Last Milestone</th>
         <th class="success text-center">Correct</th>
         <th class="danger text-center">Incorrect</th>
@@ -9,50 +9,50 @@
         <th class="text-center">Past Due</th>
         <th>Start Time</th>
         <th>Elapsed Time</th>
-        <th ng-if="vm.showResponses">Responses</th>
-        <th ng-if="!vm.isStudent && !vm.largeClassSize">Grade</th>
+        <th *ngIf="this.showResponses">Responses</th>
+        <th *ngIf="!this.isStudent && !this.largeClassSize">Grade</th>
     </thead>
-    <tbody infinite-scroll='vm.loadMoreAttempts()'>
-        <tr ng-repeat="attempt in vm.attempts | limitTo: vm.numAttemptsDisplayed track by $index"
-            ng-class="{'qc-no-top-border': !attempt.firstRowForStudent}">
-            <td class="qc-attempt-name" ng-if="!vm.isStudent">
-                <span ng-if="attempt.firstRowForStudent">{{ attempt.student.lis_person_name_family }}, {{ attempt.student.lis_person_name_given }}</span>
+    <tbody infinite-scroll='this.loadMoreAttempts()'>
+        <tr *ngFor="let attempt of this.attempts | slice:0:this.numAttemptsDisplayed; index as $index;"
+            [ngClass]="{'qc-no-top-border': !attempt.firstRowForStudent}">
+            <td class="qc-attempt-name" *ngIf="!this.isStudent">
+                <span *ngIf="attempt.firstRowForStudent">{{ attempt.student.lis_person_name_family }}, {{ attempt.student.lis_person_name_given }}</span>
             </td>
             <td>{{ attempt.last_milestone }}</td>
-            <td class="success text-center qc-attempt-count-correct">{{ vm.getCountCorrect(attempt) }}</td>
-            <td class="danger text-center qc-attempt-count-incorrect">{{ vm.getCountIncorrect(attempt) }}</td>
-            <td class="qc-attempt-calculated-score">{{ vm.getCalculatedScore(attempt) | number : 0 }}%</td>
+            <td class="success text-center qc-attempt-count-correct">{{ this.getCountCorrect(attempt) }}</td>
+            <td class="danger text-center qc-attempt-count-incorrect">{{ this.getCountIncorrect(attempt) }}</td>
+            <td class="qc-attempt-calculated-score">{{ this.getCalculatedScore(attempt) | number : 0 }}%</td>
             <td class="text-center qc-attempt-complete">
-                <span ng-if="attempt.complete == 1">
+                <span *ngIf="attempt.complete == 1">
                     <span class="fa fa-check qc-attempt-completed" aria-hidden="true"></span>
                     <span class="sr-only">Complete</span></span>
             </td>
             <td class="text-center qc-attempt-late-cell">
-                <span ng-if="attempt.isLate">
+                <span *ngIf="attempt.isLate">
                     <span class="fa fa-clock-o qc-attempt-late" aria-hidden="true"></span>
                     <span class="sr-only">Late Submission</span>
                 </span>
             </td>
-            <td>{{ vm.utils.formatTimeWithTimeZone(attempt.created_at, vm.courseContext.time_zone) }}</td>
-            <td class="qc-attempt-elapsed-time">{{ vm.dateDiff(attempt.created_at, attempt.updated_at) }}</td>
-            <td ng-if="vm.showResponses">
-                <a class="btn btn-primary btn-xs qc-btn qc-btn-view-responses" role="button" type="button" ng-click="vm.viewResponses(attempt)" ng-if="vm.responsesAvailable(attempt)">
+            <td>{{ this.utilitiesService.formatTimeWithTimeZone(attempt.created_at, this.courseContext.time_zone) }}</td>
+            <td class="qc-attempt-elapsed-time">{{ this.dateDiff(attempt.created_at, attempt.updated_at) }}</td>
+            <td *ngIf="this.showResponses">
+                <a class="btn btn-primary btn-xs qc-btn qc-btn-view-responses" role="button" type="button" (click)="this.viewResponses(attempt)" *ngIf="this.responsesAvailable(attempt)">
                     View Responses
-                    <span class="sr-only">for <span ng-if="!vm.isStudent">{{ attempt.student.lis_person_name_given }} {{ attempt.student.lis_person_name_family }}'s </span>attempt beginning at {{ vm.utils.formatTimeWithTimeZone(attempt.created_at, vm.courseContext.time_zone) }}</span>
+                    <span class="sr-only">for <span *ngIf="!this.isStudent">{{ attempt.student.lis_person_name_given }} {{ attempt.student.lis_person_name_family }}'s </span>attempt beginning at {{ this.utilitiesService.formatTimeWithTimeZone(attempt.created_at, this.courseContext.time_zone) }}</span>
                 </a>
             </td>
-            <td class="qc-attempt-grade" ng-if="!vm.isStudent && !vm.largeClassSize">
-                <span ng-if="attempt.firstRowForStudent">
-                    <span ng-if="vm.gradesLoading">
+            <td class="qc-attempt-grade" *ngIf="!this.isStudent && !this.largeClassSize">
+                <span *ngIf="attempt.firstRowForStudent">
+                    <span *ngIf="this.gradesLoading">
                         <span class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></span>
                         <span class="sr-only">Grades loading, please wait.</span>
                     </span>
-                    <qc-grade ng-if="!vm.gradesLoading"
+                    <qc-grade *ngIf="!this.gradesLoading"
                         qc-attempt="attempt"
-                        qc-points-possible="vm.pointsPossible"
-                        qc-submissions="vm.submissions"
-                        qc-users="vm.users"
-                        qc-utils="vm.utils">
+                        qc-points-possible="this.pointsPossible"
+                        qc-submissions="this.submissions"
+                        qc-users="this.users"
+                        qc-utilitiesService="this.utilitiesService">
                     </qc-grade>
                 </span>
             </td>

@@ -1,45 +1,45 @@
 <div class="form-group">
     <button class="btn btn-primary qc-btn" type="button"
-        ng-disabled="vm.formOpen"
-        ng-click="vm.openForm()">
+        [disabled]="this.formOpen"
+        (click)="this.openForm()">
         <span class="fa fa-plus" aria-hidden="true"></span> Add admin user
     </button>
 </div>
-<div ng-if="vm.formOpen">
+<div *ngIf="this.formOpen">
     <h3>Invite Admin User</h3>
-    <div ng-if="vm.isEnteringUsername">
-        <form ng-submit="vm.validateUser()">
+    <div *ngIf="this.isEnteringUsername">
+        <form (ngSubmit)="this.validateUser()">
             <label for="username">IU Username</label>
-            <input type="text" id="username" ng-model="vm.username">
+            <input type="text" id="username" [(ngModel)]="this.username">
             <button class="btn btn-sm btn-primary qc-btn" type="submit">Validate username and save</button>
-            <div class="alert alert-danger" role="alert" ng-if="vm.validationError">
+            <div class="alert alert-danger" role="alert" *ngIf="this.validationError">
                 <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>
                 <p>User cannot be found. Please try again.</p>
             </div>
         </form>
     </div>
-    <div ng-if="vm.userValidated">
+    <div *ngIf="this.userValidated">
         <div class="alert alert-success qc-admin-add-user-success" role="alert">
             <h4><span class="fa fa-thumbs-o-up" aria-hidden="true"></span> User validated</h4>
-            <h5>Name: {{ vm.validatedUser.name }}</h5>
+            <h5>Name: {{ this.validatedUser.name }}</h5>
         </div>
-        <div ng-if="!vm.userAdded">
-            <div ng-if="!vm.saveError">
+        <div *ngIf="!this.userAdded">
+            <div *ngIf="!this.saveError">
                 <h4>Saving...</h4>
                 <p><span class="fa fa-circle-o-notch fa-spin fa-2x" aria-hidden="true"></span></p>
             </div>
-            <div class="alert alert-danger" role="alert" ng-if="vm.saveError">
+            <div class="alert alert-danger" role="alert" *ngIf="this.saveError">
                 <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>
-                <p>{{ vm.saveErrorReason }}</p>
+                <p>{{ this.saveErrorReason }}</p>
             </div>
         </div>
     </div>
-    <div ng-if="vm.userAdded">
-        <h4>User <strong>{{ vm.username }}</strong> added as an admin user</h4>
-        <button class="btn btn-primary btn-sm qc-btn" ng-click="vm.reset()" type="button">Add another user</button>
+    <div *ngIf="this.userAdded">
+        <h4>User <strong>{{ this.username }}</strong> added as an admin user</h4>
+        <button class="btn btn-primary btn-sm qc-btn" (click)="this.reset()" type="button">Add another user</button>
     </div>
     <hr>
     <div class="form-group">
-        <button class="btn btn-default qc-btn" type="button" ng-click="vm.close()">Cancel</button>
+        <button class="btn btn-default qc-btn" type="button" (click)="this.close()">Cancel</button>
     </div>
 </div>

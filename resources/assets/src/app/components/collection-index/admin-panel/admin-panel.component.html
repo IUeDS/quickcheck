@@ -4,10 +4,10 @@
     </div>
     <div class="panel-body">
         <qc-view-all-collections-toggle
-            qc-collection-data="vm.collectionData"
-            qc-utils="vm.utils">
+            qc-collection-data="this.collectionData"
+            qc-utilitiesService="this.utilitiesService">
         </qc-view-all-collections-toggle>
-        <qc-invite-admin qc-utils="vm.utils"></qc-invite-admin>
-        <qc-custom-activities-panel qc-utils="vm.utils"></qc-custom-activities-panel>
+        <qc-invite-admin qc-utilitiesService="this.utilitiesService"></qc-invite-admin>
+        <qc-custom-activities-panel qc-utilitiesService="this.utilitiesService"></qc-custom-activities-panel>
     </div>
 </div>

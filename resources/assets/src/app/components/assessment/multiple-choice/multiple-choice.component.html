@@ -1,13 +1,13 @@
 <div class="qc-mc-options">
     <fieldset>
-        <legend class="lead qc-assessment-question" ng-bind-html="vm.currentQuestion.question_text"></legend>
-        <div class="radio" ng-repeat="answerOption in vm.currentQuestion.options">
-            <input type="radio" name="{{vm.currentQuestion.id}}"
+        <legend class="lead qc-assessment-question" ng-bind-html="this.currentQuestion.question_text"></legend>
+        <div class="radio" *ngFor="let answerOption of this.currentQuestion.options">
+            <input type="radio" name="{{this.currentQuestion.id}}"
                     value="{{answerOption.answer_text}}"
                     id="{{answerOption.id}}"
                     ng-checked="false"
-                    ng-model="answerOption.selected"
-                    ng-click="vm.onAnswerSelected(answerOption)">
+                    [(ngModel)]="answerOption.selected"
+                    (click)="this.onAnswerSelected(answerOption)">
             <label ng-bind-html="answerOption.answer_text" for="{{answerOption.id}}"></label>
         </div>
     </fieldset>

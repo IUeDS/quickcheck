@@ -71,7 +71,7 @@ import { StudentAnalyticsComponent } from './components/view-attempts-for-studen
 import { StudentAssessmentAttemptsComponent } from './components/view-attempts-for-student/student-assessment-attempts/student-assessment-attempts.component';
 import { ViewCollectionComponent } from './components/view-collection/view-collection.component';
 import { AddAssessmentGroupComponent } from './components/view-collection/add-assessment-group/add-assessment-group.component';
-import { AssessmentGroupsComponent } from './components/view-collection/assessment-groups/assessment-groups.component';
+import { AssessmentGroupComponent } from './components/view-collection/assessment-group/assessment-group.component';
 import { FeaturesComponent } from './components/view-collection/features/features.component';
 import { QtiExportComponent } from './components/view-collection/qti-export/qti-export.component';
 import { QtiExportBtnComponent } from './components/view-collection/qti-export/qti-export-btn/qti-export-btn.component';
@@ -149,7 +149,7 @@ import { UsersComponent } from './components/view-collection/users/users.compone
     StudentAssessmentAttemptsComponent,
     ViewCollectionComponent,
     AddAssessmentGroupComponent,
-    AssessmentGroupsComponent,
+    AssessmentGroupComponent,
     FeaturesComponent,
     QtiExportComponent,
     QtiExportBtnComponent,

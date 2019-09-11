@@ -1,72 +1,72 @@
-<div class="panel panel-default qc-accordion-panel qc-user-panel" ng-click="vm.toggleShowUsers()" ng-if="!vm.readOnly">
-    <div class="panel-heading" role="button" data-toggle="collapse" data-target="#qc-user-list" aria-expanded="false" aria-controls="qc-user-list">
-        <span class="qc-accordion-arrow fa fa-lg" ng-class="vm.showUsers ? 'fa-caret-down' : 'fa-caret-right'" aria-hidden="true"></span>
+<div class="panel panel-default qc-accordion-panel qc-user-panel" (click)="this.toggleShowUsers()" *ngIf="!this.readOnly">
+    <div class="panel-heading" role="button" data-toggle="collapse" data-target="#qc-user-list" [attr.aria-expanded]="false" [attr.aria-controls]="qc-user-list">
+        <span class="qc-accordion-arrow fa fa-lg" [ngClass]="this.showUsers ? 'fa-caret-down' : 'fa-caret-right'" aria-hidden="true"></span>
         <h3 class="panel-title">Show users in this set</h3>
     </div>
     <div class="panel-body collapse" id="qc-user-list">
-        <ul ng-hide="vm.isEditingUsers.init">
-            <li ng-repeat="user in vm.collectionUsers"><strong>{{user.username}}</strong> <span class="label label-default" ng-if="user.readOnly">Read-only</span></li>
+        <ul [hidden]="this.isEditingUsers.init">
+            <li *ngFor="let user of this.collectionUsers"><strong>{{user.username}}</strong> <span class="label label-default" *ngIf="user.readOnly">Read-only</span></li>
         </ul>
         <button type="button" class="btn btn-lg qc-btn-add qc-btn-user-add qc-btn"
-                ng-click="vm.isAddingUserInit()"
-                ng-disabled="vm.isAddingUser.init || vm.isEditingUsers.init">
+                (click)="this.isAddingUserInit()"
+                [disabled]="this.isAddingUser.init || this.isEditingUsers.init">
             <span class="fa fa-plus" aria-hidden="true"></span> <span>Add a user to this set</span>
         </button>
-        <span class="qc-edit-btn qc-users-edit-btn" role="button" ng-click="vm.isEditingUsersInit()" ng-disabled="vm.isEditingUsers.init || vm.isAddingUser.init">
+        <span class="qc-edit-btn qc-users-edit-btn" role="button" (click)="this.isEditingUsersInit()" [attr.disabled]="this.isEditingUsers.init || this.isAddingUser.init">
             <span ng-include="$root.iconEditPath" aria-hidden="true"></span>
-            <span class="sr-only">Edit users in {{ vm.collection.name }}</span>
+            <span class="sr-only">Edit users in {{ this.collection.name }}</span>
         </span>
-        <div ng-if="vm.isAddingUser.init">
+        <div *ngIf="this.isAddingUser.init">
             <h3 id="invite-user-header" tabindex="-1">Invite User</h3>
-            <div ng-if="vm.isAddingUser.checkUser">
-                <form ng-submit="vm.validateUser()">
+            <div *ngIf="this.isAddingUser.checkUser">
+                <form (ngSubmit)="this.validateUser()">
                     <div class="form-group">
                         <label for="username">IU Username</label>
-                        <input type="text" id="username" ng-model="vm.isAddingUser.username">
+                        <input type="text" id="username" [(ngModel)]="this.isAddingUser.username">
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="vm.isAddingUser.readOnly"> Read-only permissions
+                            <input type="checkbox" [(ngModel)]="this.isAddingUser.readOnly"> Read-only permissions
                         </label>
                     </div>
                     <button class="btn btn-sm btn-primary qc-btn" type="submit">Validate and add user</button>
-                    <button type="button" class="btn btn-default qc-btn" ng-click="vm.addUserCancel()">Cancel</button>
-                    <div class="alert alert-danger alert-dismissible" role="alert" ng-if="vm.isAddingUser.validationError">
+                    <button type="button" class="btn btn-default qc-btn" (click)="this.addUserCancel()">Cancel</button>
+                    <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="this.isAddingUser.validationError">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>
                         <p>User cannot be found. Please try again.</p>
                     </div>
                 </form>
             </div>
-            <div ng-if="vm.isAddingUser.userValidated">
+            <div *ngIf="this.isAddingUser.userValidated">
                 <div class="alert alert-success" role="alert">
                     <h4><span class="fa fa-thumbs-o-up" aria-hidden="true"></span> User validated</h4>
-                    <h5>Name: {{ vm.isAddingUser.validatedUser.name }}</h5>
+                    <h5>Name: {{ this.isAddingUser.validatedUser.name }}</h5>
                 </div>
-                <div ng-if="!vm.isAddingUser.userAdded">
-                    <div ng-if="!vm.isAddingUser.saveError">
+                <div *ngIf="!this.isAddingUser.userAdded">
+                    <div *ngIf="!this.isAddingUser.saveError">
                         <h4>Saving...</h4>
                         <p><span class="fa fa-circle-o-notch fa-spin fa-2x" aria-hidden="true"></span></p>
                     </div>
-                    <div class="alert alert-danger alert-dismissible" role="alert" ng-if="vm.isAddingUser.saveError">
+                    <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="this.isAddingUser.saveError">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>
-                        <p>{{ vm.isAddingUser.saveErrorReason }}</p>
-                        <button class="btn btn-primary btn-sm qc-btn" ng-click="vm.isAddingUserInit()" type="button">Add another user</button>
-                        <button type="button" class="btn btn-default qc-btn" ng-click="vm.addUserCancel()">Close</button>
+                        <p>{{ this.isAddingUser.saveErrorReason }}</p>
+                        <button class="btn btn-primary btn-sm qc-btn" (click)="this.isAddingUserInit()" type="button">Add another user</button>
+                        <button type="button" class="btn btn-default qc-btn" (click)="this.addUserCancel()">Close</button>
                     </div>
                 </div>
             </div>
-            <div ng-if="vm.isAddingUser.userAdded">
-                <h4>User <strong>{{ vm.isAddingUser.username }}</strong> has been added to this set</h4>
-                <button class="btn btn-primary btn-sm qc-btn" ng-click="vm.isAddingUserInit()" type="button">Add another user</button>
-                <button type="button" class="btn btn-default qc-btn" ng-click="vm.addUserCancel()">Close</button>
+            <div *ngIf="this.isAddingUser.userAdded">
+                <h4>User <strong>{{ this.isAddingUser.username }}</strong> has been added to this set</h4>
+                <button class="btn btn-primary btn-sm qc-btn" (click)="this.isAddingUserInit()" type="button">Add another user</button>
+                <button type="button" class="btn btn-default qc-btn" (click)="this.addUserCancel()">Close</button>
             </div>
         </div>
-        <div ng-if="vm.isEditingUsers.init">
-            <h3 id="edit-users-header" tabindex="-1" ng-hide="vm.isEditingUsers.loading">Edit User Memberships</h3>
-            <p ng-if="vm.isEditingUsers.users.length == 1">Woops, looks like you're the only user in this set right now.</p>
-            <table class="table table-bordered table-striped" ng-hide="vm.isEditingUsers.loading || vm.isEditingUsers.users.length == 1">
+        <div *ngIf="this.isEditingUsers.init">
+            <h3 id="edit-users-header" tabindex="-1" [hidden]="this.isEditingUsers.loading">Edit User Memberships</h3>
+            <p *ngIf="this.isEditingUsers.users.length == 1">Woops, looks like you're the only user in this set right now.</p>
+            <table class="table table-bordered table-striped" [hidden]="this.isEditingUsers.loading || this.isEditingUsers.users.length == 1">
                 <thead>
                     <tr>
                         <th>User</th>
@@ -75,39 +75,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="user in vm.isEditingUsers.users" ng-class="{'danger': user.deleted}" class="form-inline"
-                        ng-hide="user.username == vm.currentUser.username">
-                        <td ng-class="{'strike-through': user.deleted}">{{ user.username }}</td>
+                    <tr *ngFor="let user of this.isEditingUsers.users" [ngClass]="{'danger': user.deleted}" class="form-inline"
+                        [hidden]="user.username == this.currentUser.username">
+                        <td [ngClass]="{'strike-through': user.deleted}">{{ user.username }}</td>
                         <td>
                             <div class="checkbox">
-                                <label ng-class="{'strike-through': user.deleted}">
-                                    <input type="checkbox" ng-model="user.readOnly" ng-checked="user.readOnly == 'true'" ng-disabled="user.deleted" ng-click="vm.toggleReadOnly(user)"> Read-only permissions <span class="sr-only">for user {{user.username}}</span>
+                                <label [ngClass]="{'strike-through': user.deleted}">
+                                    <input type="checkbox" [(ngModel)]="user.readOnly" ng-checked="user.readOnly == 'true'" [disabled]="user.deleted" (click)="this.toggleReadOnly(user)"> Read-only permissions <span class="sr-only">for user {{user.username}}</span>
                                 </label>
                             </div>
                         </td>
                         <td>
-                            <span class="qc-delete-btn qc-delete-user-btn" role="button" ng-click="vm.deleteMembership(user)" ng-hide="user.deleted">
+                            <span class="qc-delete-btn qc-delete-user-btn" role="button" (click)="this.deleteMembership(user)" [hidden]="user.deleted">
                                 <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
                                 <span class="sr-only">Delete set membership for user {{user.username}}</span>
                             </span>
-                            <span ng-show="user.deleted">Click save button to confirm deletion</span>
+                            <span [hidden]="!user.deleted">Click save button to confirm deletion</span>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div ng-if="vm.isEditingUsers.error">
+            <div *ngIf="this.isEditingUsers.error">
                 <div class="alert alert-danger" role="alert">
                     <h4>Error</h4>
                     <p>There was an error updating the membership for this set. Please try again.</p>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-sm qc-btn" ng-click="vm.saveUserEdits()" ng-hide="vm.isEditingUsers.loading || vm.isEditingUsers.users.length == 1">Save User Edits</button>
-            <button type="button" class="btn btn-default btn-sm qc-btn" ng-click="vm.editUsersCancel()" ng-hide="vm.isEditingUsers.loading">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm qc-btn" (click)="this.saveUserEdits()" [hidden]="this.isEditingUsers.loading || this.isEditingUsers.users.length == 1">Save User Edits</button>
+            <button type="button" class="btn btn-default btn-sm qc-btn" (click)="this.editUsersCancel()" [hidden]="this.isEditingUsers.loading">Cancel</button>
         </div>
-        <div ng-if="vm.isEditingUsers.loading" class="text-center" aria-live="polite">
+        <div *ngIf="this.isEditingUsers.loading" class="text-center" aria-live="polite">
             <span class="fa fa-refresh fa-spin fa-3x" aria-hidden="true"></span><span class="sr-only">Saving user membership edits, please wait.</span>
         </div>
-        <div ng-if="vm.isEditingUsers.success">
+        <div *ngIf="this.isEditingUsers.success">
             <div class="alert alert-success" role="alert">
                 <h4><span class="fa fa-thumbs-up" aria-hidden="true"></span> Success</h4>
                 <p>User membership has been successfully updated.</p>

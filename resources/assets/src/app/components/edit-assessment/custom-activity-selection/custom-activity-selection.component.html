@@ -1,31 +1,31 @@
 <div class="well custom-activity-panel">
-    <button class="btn btn-default qc-btn" type="button" ng-click="vm.addCustomActivity()"
-        ng-if="!vm.customActivityAdded && vm.admin">
+    <button class="btn btn-default qc-btn" type="button" (click)="this.addCustomActivity()"
+        *ngIf="!this.customActivityAdded && this.admin">
         <span class="fa fa-cog" aria-hidden="true"></span> Make this a custom activity
     </button>
-    <div ng-if="vm.customActivityAdded">
+    <div *ngIf="this.customActivityAdded">
         <h2>Custom Activity</h2>
-        <p class="lead" ng-if="!vm.admin && !vm.readOnly">If you would like to change the custom activity for this assessment, please contact a system admin.</p>
-        <div ng-if="vm.assessment.custom_activity_id">
-            <p><strong>Custom Activity Name: </strong>{{ vm.customActivity.name }}</p>
-            <p ng-if="vm.customActivity.description"><strong>Description: </strong> {{ vm.customActivity.description }}</p>
-            <p><strong>Developer: </strong> {{ vm.customActivity.developer }}</p>
-            <p ng-if="admin"><strong>Url: </strong> {{ vm.customActivity.url }}</p>
+        <p class="lead" *ngIf="!this.admin && !this.readOnly">If you would like to change the custom activity for this assessment, please contact a system admin.</p>
+        <div *ngIf="this.assessment.custom_activity_id">
+            <p><strong>Custom Activity Name: </strong>{{ this.customActivity.name }}</p>
+            <p *ngIf="this.customActivity.description"><strong>Description: </strong> {{ this.customActivity.description }}</p>
+            <p><strong>Developer: </strong> {{ this.customActivity.developer }}</p>
+            <p *ngIf="admin"><strong>Url: </strong> {{ this.customActivity.url }}</p>
         </div>
-        <div ng-if="vm.admin">
-            <div ng-if="!vm.customActivities.length">
+        <div *ngIf="this.admin">
+            <div *ngIf="!this.customActivities.length">
                 <p>Looks like there are no custom activities defined. Create a custom activity on the home page first.</p>
             </div>
-            <div class="form-group" ng-if="vm.customActivities.length">
+            <div class="form-group" *ngIf="this.customActivities.length">
                 <label for="custom-activity">Custom Activity</label>
                 <select id="custom-activity" class="form-control" required
-                    ng-model="vm.assessment.custom_activity_id"
-                    ng-change="vm.selectCustomActivity(vm.assessment.custom_activity_id)">
-                    <option ng-repeat="customActivity in vm.customActivities" value="{{customActivity.id}}">{{ customActivity.name }}</option>
+                    [(ngModel)]="this.assessment.custom_activity_id"
+                    (ngModelChange)="this.selectCustomActivity(this.assessment.custom_activity_id)">
+                    <option *ngFor="let customActivity of this.customActivities" value="{{customActivity.id}}">{{ customActivity.name }}</option>
                 </select>
             </div>
-            <div class="form-group" ng-if="vm.assessment.custom_activity_id">
-                <button class="btn btn-danger qc-btn" type="button" ng-click="vm.removeCustomActivity()">Remove custom activity</button>
+            <div class="form-group" *ngIf="this.assessment.custom_activity_id">
+                <button class="btn btn-danger qc-btn" type="button" (click)="this.removeCustomActivity()">Remove custom activity</button>
             </div>
         </div>
     </div>

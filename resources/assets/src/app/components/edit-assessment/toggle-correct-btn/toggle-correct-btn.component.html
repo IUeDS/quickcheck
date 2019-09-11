@@ -1,17 +1,17 @@
-<label class="sr-only" id="mc-option-{{vm.question.id}}-{{vm.option.id}}-correct">
-    Mark option #{{ vm.index + 1 }}
-    <span ng-if="vm.isCorrect()">correct</span>
-    <span ng-if="!vm.isCorrect()">incorrect</span>
-    for question #{{ vm.question.question_order }}
+<label class="sr-only" id="mc-option-{{this.question.id}}-{{this.option.id}}-correct">
+    Mark option #{{ this.index + 1 }}
+    <span *ngIf="this.isCorrect()">correct</span>
+    <span *ngIf="!this.isCorrect()">incorrect</span>
+    for question #{{ this.question.question_order }}
 </label>
 <span class="fa fa-lg qc-correct-symbol"
-    ng-class="{
-        'fa-check-circle-o' : vm.isMultipleChoice(),
-        'fa-check-square-o' : vm.isMultipleCorrect(),
-        'qc-selected-correct' : vm.isCorrect(),
-        'qc-selected-incorrect': !vm.isCorrect()
+    [ngClass]="{
+        'fa-check-circle-o' : this.isMultipleChoice(),
+        'fa-check-square-o' : this.isMultipleCorrect(),
+        'qc-selected-correct' : this.isCorrect(),
+        'qc-selected-incorrect': !this.isCorrect()
     }"
     role="button" type="button"
-    ng-click="vm.toggleCorrect()"
-    aria-labelled-by="mc-option-{{vm.question.id}}-{{vm.option.id}}-correct">
+    (click)="this.toggleCorrect()"
+    [attr.aria-labelled-by]="'mc-option-' + this.question.id + '-' + this.option.id + '-correct'">
 </span>

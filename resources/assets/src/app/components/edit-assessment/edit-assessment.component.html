@@ -1,110 +1,110 @@
-<qc-nav qc-current-page="vm.currentPage"></qc-nav>
-<qc-loading ng-show="vm.utils.loading"></qc-loading>
+<qc-nav qc-current-page="this.currentPage"></qc-nav>
+<qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
 <div class="row qc-edit-assessment">
-    <div class="col-xs-12">
-        <qc-error-message ng-if="vm.utils.errorFound" qc-utils="vm.utils"></qc-error-message>
-        <form ng-submit="vm.saveAssessment()" ng-cloak>
-            <a href="{{vm.utils.setContextLink('/collection/' + vm.collection.id)}}" target="_self" ng-cloak>
+    <div class="col-12">
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" qc-utilitiesService="this.utilitiesService"></qc-error-message>
+        <form (ngSubmit)="this.saveAssessment()" >
+            <a href="{{this.utilitiesService.setContextLink('/collection/' + this.collection.id)}}" target="_self" >
                 <span class="fa fa-angle-double-left" aria-hidden="true"></span> Back
             </a>
-            <h1>{{ vm.readOnly ? 'View' : 'Edit' }} Quick Check</h1>
-            <qc-read-only-notice ng-if="vm.readOnly"></qc-read-only-notice>
+            <h1>{{ this.readOnly ? 'View' : 'Edit' }} Quick Check</h1>
+            <qc-read-only-notice *ngIf="this.readOnly"></qc-read-only-notice>
             <div class="row form-group">
-                <div class="col-xs-5">
+                <div class="col-5">
                     <h2>Basic information:</h2>
                     <div class="row">
-                        <div class="col-xs-12 form-group">
+                        <div class="col-12 form-group">
                             <label for="name">Quick Check Name (required)</label>
                             <input type="text" class="form-control" id="name" required
-                                ng-model="vm.assessment.name"
-                                ng-change="vm.onEdited()"
-                                ng-disabled="vm.readOnly">
+                                [(ngModel)]="this.assessment.name"
+                                (ngModelChange)="this.onEdited()"
+                                [disabled]="this.readOnly">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 form-group">
+                        <div class="col-12 form-group">
                             <label for="assessment_group_id">Subset</label>
                             <select id="assessment_group_id" class="form-control"
-                                ng-model="vm.assessment.assessment_group_id"
-                                ng-change="vm.onEdited()"
-                                ng-disabled="vm.readOnly">
-                                <option ng-repeat="assessmentGroup in vm.assessmentGroups" value="{{assessmentGroup.id}}">{{assessmentGroup.name}}</option>
+                                [(ngModel)]="this.assessment.assessment_group_id"
+                                (ngModelChange)="this.onEdited()"
+                                [disabled]="this.readOnly">
+                                <option *ngFor="let assessmentGroup of this.assessmentGroups" value="{{assessmentGroup.id}}">{{assessmentGroup.name}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 form-group">
+                        <div class="col-12 form-group">
                             <div class="checkbox">
                                 <input type="checkbox" id="shuffle-question-order"
-                                    ng-click="vm.toggleShuffled()"
-                                    ng-disabled="vm.readOnly"
-                                    ng-checked="vm.assessment.shuffled == 'true'">
+                                    (click)="this.toggleShuffled()"
+                                    [disabled]="this.readOnly"
+                                    ng-checked="this.assessment.shuffled == 'true'">
                                 <label for="shuffle-question-order">Shuffle question order</label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-6 col-xs-offset-1">
+                <div class="col-6 col-offset-1">
                     <h2>Optional: </h2>
                     <div class="form-group">
                         <label for="title">Title (appears as top-level header when taking quiz)</label>
                         <input type="text" class="form-control" id="title"
-                            ng-model="vm.assessment.title"
-                            ng-change="vm.onEdited()"
-                            ng-disabled="vm.readOnly">
+                            [(ngModel)]="this.assessment.title"
+                            (ngModelChange)="this.onEdited()"
+                            [disabled]="this.readOnly">
                     </div>
                     <div class="form-group">
                         <label for="description">Description (appears as top-level paragraph when taking quiz)</label>
                         <textarea class="form-control" id="description" rows="4"
-                            ng-model="vm.assessment.description"
-                            ng-change="vm.onEdited()"
-                            ng-disabled="vm.readOnly"></textarea>
+                            [(ngModel)]="this.assessment.description"
+                            (ngModelChange)="this.onEdited()"
+                            [disabled]="this.readOnly"></textarea>
                     </div>
                 </div>
             </div>
-            <qc-edit-question ng-repeat="question in vm.questions track by $index"
+            <qc-edit-question *ngFor="let question of this.questions; index as $index;"
                 qc-index="$index"
-                qc-on-delete="vm.onQuestionDeleted($event)"
-                qc-on-question-edited="vm.onQuestionEdited($event)"
-                qc-on-question-reordered="vm.onQuestionReordered($event)"
+                qc-on-delete="this.onQuestionDeleted($event)"
+                qc-on-question-edited="this.onQuestionEdited($event)"
+                qc-on-question-reordered="this.onQuestionReordered($event)"
                 qc-question="question"
-                qc-read-only="vm.readOnly"
-                qc-total-question-count="vm.getQuestionCount()"
-                qc-utils="vm.utils">
+                qc-read-only="this.readOnly"
+                qc-total-question-count="this.getQuestionCount()"
+                qc-utilitiesService="this.utilitiesService">
             </qc-edit-question>
             <qc-custom-activity-selection
-                ng-if="!vm.isQuestionAdded() && vm.canViewCustomActivity()"
-                qc-admin="vm.admin"
-                qc-assessment="vm.assessment"
-                qc-custom-activity="vm.customActivity"
-                qc-custom-activity-added="vm.customActivityAdded"
-                qc-read-only="vm.readOnly"
-                qc-utils="vm.utils">
+                *ngIf="!this.isQuestionAdded() && this.canViewCustomActivity()"
+                qc-admin="this.admin"
+                qc-assessment="this.assessment"
+                qc-custom-activity="this.customActivity"
+                qc-custom-activity-added="this.customActivityAdded"
+                qc-read-only="this.readOnly"
+                qc-utilitiesService="this.utilitiesService">
             </qc-custom-activity-selection>
             <!-- if custom activity added, then can't add questions to quiz -->
-            <div ng-hide="vm.customActivityAdded" class="form-group" ng-if="!vm.readOnly">
+            <div [hidden]="this.customActivityAdded" class="form-group" *ngIf="!this.readOnly">
                 <hr>
-                <button class="btn qc-btn qc-btn-add qc-btn-add-question" type="button" ng-click="vm.addQuestion()">
+                <button class="btn qc-btn qc-btn-add qc-btn-add-question" type="button" (click)="this.addQuestion()">
                     <span class="fa fa-plus" aria-hidden="true"></span> Add question</button>
                 <hr>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-success btn-lg qc-btn qc-btn-save-quiz" ng-if="!vm.readOnly">Save quick check</button>
+                <button type="submit" class="btn btn-success btn-lg qc-btn qc-btn-save-quiz" *ngIf="!this.readOnly">Save quick check</button>
             </div>
-            <qc-loading ng-show="vm.utils.loading"></qc-loading>
-            <div ng-if="vm.validationError" class="alert alert-danger" id="qc-validation-error" role="alert" tabindex="-1" >
+            <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
+            <div *ngIf="this.validationError" class="alert alert-danger" id="qc-validation-error" role="alert" tabindex="-1" >
                 <span class="fa fa-thumbs-o-down fa-3x" aria-hidden="true"></span>
                 <span class="sr-only">Error</span>
                 <h2>There was a validation error in saving your quick check.</h2>
                 <ul>
-                    <li ng-repeat="error in vm.validationErrorList">{{ error }}</li>
+                    <li *ngFor="let error of this.validationErrorList">{{ error }}</li>
                 </ul>
             </div>
-            <div ng-if="vm.saved && vm.edited" class="alert alert-success" role="alert" tabindex="-1" id="qc-save-success">
+            <div *ngIf="this.saved && this.edited" class="alert alert-success" role="alert" tabindex="-1" id="qc-save-success">
                 <span class="fa fa-thumbs-o-up fa-3x" aria-hidden="true"></span>
                 <span class="sr-only">Success</span>
                 <h2 id="assessment-save-success" tabindex="-1">Quick check saved</h2>
-                <a href="{{vm.utils.setContextLink('/collection/' + vm.collection.id)}}" target="_self">Return to set "{{ vm.collection.name }}"</a>
+                <a href="{{this.utilitiesService.setContextLink('/collection/' + this.collection.id)}}" target="_self">Return to set "{{ this.collection.name }}"</a>
             </div>
         </form>
     </div>

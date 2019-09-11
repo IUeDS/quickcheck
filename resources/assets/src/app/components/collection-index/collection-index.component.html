@@ -3,12 +3,12 @@
 <div class="row">
     <div class="col-12">
         <h1>Sets</h1>
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" qc-utilitiesService="this.utilitiesService"></qc-error-message>
-        <qc-admin-panel *ngIf="this.admin"
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+        <!--<qc-admin-panel *ngIf="this.admin"
             qc-collection-data="this.adminCollectionData"
             qc-utilitiesService="this.utilitiesService">
-        </qc-admin-panel>
-        <div class="row" >
+        </qc-admin-panel>-->
+        <div class="row">
             <div class="col-4 col-md-3">
                 <div class="form-group" *ngIf="this.memberships.length">
                     <label for="search-name" class="sr-only">Filter by set name: </label>
@@ -26,10 +26,10 @@
             </div>
         </div>
         <div>
-            <qc-public-collections [hidden]="!this.publicCollectionsVisible"
+            <!--<qc-public-collections [hidden]="!this.publicCollectionsVisible"
                 qc-user="this.user"
                 qc-utilitiesService="this.utilitiesService">
-            </qc-public-collections>
+            </qc-public-collections>-->
             <div *ngIf="!this.adminCollectionData.viewAll">
                 <div *ngIf="!this.memberships.length && !this.utilitiesService.loading">
                     <h2>Looks like you haven't created a set yet.</h2>
@@ -88,7 +88,7 @@
         </div>
     </div>
 </div>
-<qc-add-collection
+<!--<qc-add-collection
     qc-on-save="this.onCollectionAdded($event)"
     qc-utilitiesService="this.utilitiesService">
-</qc-add-collection>
+</qc-add-collection>-->

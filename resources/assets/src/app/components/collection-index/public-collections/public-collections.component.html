@@ -1,37 +1,37 @@
 <!-- show only if we have received data back from server -->
-<div class="well col-xs-12 qc-public-collection-container" ng-if="vm.publicCollections">
+<div class="well col-12 qc-public-collection-container" *ngIf="this.publicCollections">
     <p class="lead">Public sets allow any instructor to embed quick checks that have been made publicly available. All public sets are read-only. Sets can only be made public by a system administrator.</p>
-    <p class="lead text-danger qc-no-public-sets" ng-if="!vm.publicCollections.length">
+    <p class="lead text-danger qc-no-public-sets" *ngIf="!this.publicCollections.length">
         <span class="fa fa-hand-o-right" aria-hidden="true"></span>
         There are no public sets in the system at this time. When a public set is added, it will appear here in the future.
     </p>
-    <ul class="qc-public-collections-list list-group" ng-if="vm.publicCollections.length">
-        <li ng-repeat="collection in vm.publicCollections" class="collections-row list-group-item">
+    <ul class="qc-public-collections-list list-group" *ngIf="this.publicCollections.length">
+        <li *ngFor="let collection of this.publicCollections" class="collections-row list-group-item">
             <h3 class="collection-header uppercase" id="collection-header-{{collection.id}}" tabindex="-1">{{ collection.name }}</h3>
             <p>Description: {{ collection.description }}</p>
             <!-- only show these buttons if the user is a member of the collection-->
-            <div class="row" ng-if="collection.user_membership">
-                <div class="col-xs-3">
+            <div class="row" *ngIf="collection.user_membership">
+                <div class="col-3">
                     <a target="_self" id="goto-collection-{{collection.id}}"
-                        ng-href="{{vm.utils.setContextLink('../index.php/collection/' + collection.id)}}" >
+                        [href]="this.utilitiesService.setContextLink('../index.php/collection/' + collection.id)" >
                         <button type="button" class="btn qc-view-set-btn qc-btn">
                             Go to set <span class="sr-only">{{ collection.name }}</span>
                         </button>
                     </a>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-3">
                     <button role="button" class="btn qc-opt-out-btn qc-btn"
-                        ng-click="vm.optOutPublicCollection(collection)">
+                        (click)="this.optOutPublicCollection(collection)">
                         <span class="fa fa-remove" aria-hidden="true"></span>
                         Opt-out <span class="sr-only">of public set {{ collection.name }}</span>
                     </button>
                 </div>
             </div>
             <!-- show if user has not joined the collection -->
-            <div class="row" ng-if="!collection.user_membership">
-                <div class="col-xs-3">
+            <div class="row" *ngIf="!collection.user_membership">
+                <div class="col-3">
                     <button role="button" class="btn btn-success qc-join-btn qc-btn"
-                        ng-click="vm.joinPublicCollection(collection)">
+                        (click)="this.joinPublicCollection(collection)">
                         <span class="fa fa-plus" aria-hidden="true"></span>
                         Join <span class="sr-only">public set {{ collection.name }}</span>
                     </button>

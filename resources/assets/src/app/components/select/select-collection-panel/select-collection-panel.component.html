@@ -1,29 +1,29 @@
 <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="heading-group-{{vm.collection.id}}" role="button" data-toggle="collapse"
-        href="#collapse-group-{{vm.collection.id}}" aria-expanded="vm.collection.closed ? 'false' : 'true'"
-        aria-controls="collapse-group-{{vm.collection.id}}" ng-click="vm.collection.closed = !vm.collection.closed">
+    <div class="panel-heading" role="tab" id="heading-group-{{this.collection.id}}" role="button" data-toggle="collapse"
+        [attr.href]="'#collapse-group-' + this.collection.id" [attr.aria-expanded]="this.collection.closed ? 'false' : 'true'"
+        [attr.aria-controls]="'collapse-group-' + this.collection.id" (click)="this.collection.closed = !this.collection.closed">
         <h3>
-            <span class="fa" ng-class="vm.collection.closed ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true"></span>
-            {{ vm.collection.name }}
+            <span class="fa" [ngClass]="this.collection.closed ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true"></span>
+            {{ this.collection.name }}
         </h3>
     </div>
-    <div id="collapse-group-{{vm.collection.id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-group-{{vm.collection.id}}">
+    <div id="collapse-group-{{this.collection.id}}" class="panel-collapse collapse in" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.collection.id">
         <div class="panel-body">
-            <div ng-repeat="assessmentGroup in vm.collection.assessment_groups">
+            <div *ngFor="let assessmentGroup of this.collection.assessment_groups">
                 <h4>{{assessmentGroup.name}}</h4>
-                <form class="row" method="POST" action="{{ vm.redirectUrl }}"
-                    ng-repeat="assessment in assessmentGroup.assessments">
-                    <div class="col-xs-6 qc-select-row">
+                <form class="row" method="POST" action="{{ this.redirectUrl }}"
+                    *ngFor="let assessment of assessmentGroup.assessments">
+                    <div class="col-6 qc-select-row">
                         <h5 class="admin-assessment-name">
                             {{ assessment.name }}
-                            <span ng-if="assessment.custom_activity_id" class="label label-info qc-label-custom">Custom</span>
+                            <span *ngIf="assessment.custom_activity_id" class="label label-info qc-label-custom">Custom</span>
                         </h5>
                     </div>
-                    <div class="col-xs-6 qc-select-row">
+                    <div class="col-6 qc-select-row">
                         <!-- hidden form input for content item embed -->
                         <input type="hidden" name="lti_message_type" value="ContentItemSelection">
                         <input type="hidden" name="lti_version" value="LTI-1p0">
-                        <input type="hidden" name="content_items" ng-value="vm.createContentItemJson(assessment)">
+                        <input type="hidden" name="content_items" [value]="this.createContentItemJson(assessment)">
 
                         <!-- submit button to select embed -->
                         <button class="btn btn-success qc-btn qc-select-btn" type="submit">
@@ -31,19 +31,19 @@
                         </button>
 
                         <!-- preview button -->
-                        <a ng-href="../assessment/{{assessment.id}}?preview=true" target="_blank" class="qc-view-btn qc-select-preview-btn">
+                        <a [href]="'../assessment/' + assessment.id + '?preview=true'" target="_blank" class="qc-view-btn qc-select-preview-btn">
                             <span ng-include="$root.iconViewPath" aria-hidden="true"></span>
                             <span class="sr-only">Preview quick check {{assessment.name}}</span>
                         </a>
                     </div>
                 </form>
-                <div ng-if="!assessmentGroup.assessments.length">
+                <div *ngIf="!assessmentGroup.assessments.length">
                     <h5>There are no quick checks in this subset. You can add a quick check by clicking on the quick check tool in the course navigation.</h5>
                 </div>
                 <hr>
             </div>
-            <div class="row" ng-if="!vm.collection.assessment_groups.length">
-                <div class="col-xs-12">
+            <div class="row" *ngIf="!this.collection.assessment_groups.length">
+                <div class="col-12">
                     <p>There are no subsets in this set.</p>
                 </div>
             </div>
