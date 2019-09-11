@@ -1,0 +1,35 @@
+@import '../../../styles/colors';
+
+.qc-select-row {
+    display: inline-block;
+    margin-bottom: 10px;
+
+    .qc-select-preview-btn {
+        svg {
+            height: 50px;
+            margin-left: 10px;
+            vertical-align: middle;
+            width: 50px;
+        }
+    }
+
+    a {
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+.qc-select-search {
+    input,
+    .qc-select-clear-search {
+        display: inline-block;
+    }
+
+    .qc-select-clear-search {
+        color: $iron-gray-lighter;
+        position: absolute;
+        right: 25px;
+        top: 0;
+    }
+}

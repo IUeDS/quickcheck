@@ -1,0 +1,141 @@
+@import '../../../styles/colors';
+
+::ng-deep {
+    .qc-assessment-button-area {
+        float: left;
+        margin-left: 20px;
+        margin-top: 30px;
+        width: 35%;
+    }
+
+    //checkmark on completion
+    .qc-assessment-checkmark-wrapper {
+        float: left;
+        margin-right: 40px;
+        width: 100px;
+    }
+
+    //gray button to click to restart
+    .qc-btn-restart-assessment {
+        background-color: $neutral-gray;
+
+        &:hover,
+        &:focus {
+            background-color: $dark-gray;
+        }
+    }
+
+    .qc-current-score,
+    .qc-submit-response,
+    .qc-restart {
+        border: 0;
+        border-bottom-right-radius: 20px;
+        border-top-right-radius: 20px;
+        clear: left;
+        float: left;
+        font-family: 'Oswald', sans-serif;
+        font-weight: 400;
+        letter-spacing: .05em;
+        margin-bottom: 10px;
+        padding: 10px;
+        text-align: left;
+        text-transform: uppercase;
+        vertical-align: middle;
+        width: 90%;
+    }
+
+    .qc-current-score {
+        background-color: $neutral-gray;
+    }
+
+    #qc-completion-modal,
+    #qc-feedback-modal {
+        h2 { //don't capitalize h2 in modal
+            text-transform: none;
+        }
+    }
+
+    //visual indication of focus for buttons
+    .qc-restart,
+    .qc-submit-response {
+        &:focus {
+            border: solid $iron-gray 5px;
+        }
+    }
+
+    .qc-restart {
+        background-color: $restart-red;
+        color: $white;
+
+        &:hover {
+            color: $dark-gray;
+            cursor: pointer;
+        }
+    }
+
+    .qc-submit-response {
+        background-color: $seafoam-green;
+        color: $black;
+        margin-bottom: 30px;
+
+        &:hover {
+            background-color: $seafoam-green-darker;
+            cursor: pointer;
+        }
+
+        &:disabled {
+            background-color: $neutral-gray;
+
+            &:hover {
+                color: $black;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    //h2 within the quiz is different from h2s in the instructor view; keep the blue Oswald font since it pops more
+    .qc-quiz-view {
+        //remove horizontal scrollbar from containing row
+        margin-left: 0;
+        margin-right: 0;
+
+        h2 {
+            color: $ocean-blue-muted;
+            font-family: 'Oswald', sans-serif;
+            font-style: normal; //don't make these italic in the quiz view
+            font-weight: 400;
+            margin-bottom: 35px; //add extra room between header and continue button
+            text-transform: uppercase;
+        }
+    }
+
+    .qc-timeout-timer {
+        display: block;
+        margin: 20px auto;
+    }
+
+    .qc-timeout-border {
+        fill: $dark-blue;
+    }
+
+    .qc-timeout-loader {
+        fill: $electric-blue;
+    }
+
+    .checkmark {
+        animation: dash 2s ease-out forwards;
+        stroke: $green;
+        stroke-dasharray: 745.74853515625;
+        stroke-dashoffset: 745.74853515625;
+    }
+
+    @keyframes dash {
+        0% {
+            stroke-dashoffset: 745.74853515625;
+        }
+
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+}
