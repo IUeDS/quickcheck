@@ -1,0 +1,33 @@
+<span ng-if="!vm.isUserInCourse">
+    (dropped)
+</span>
+<span ng-if="vm.isUserInCourse">
+    <span ng-if="!vm.submission.isGradeable()">
+        NA
+    </span>
+    <span ng-if="vm.submission.isGradeable()">
+        <!-- when a grade has already been recorded -->
+        <span ng-if="vm.submission.isGraded()" ng-hide="vm.editingGrade" class="attempt-view-grade">
+            <a href="#" ng-click="vm.editGrade()" id="grade-{{attempt.id}}" class="qc-edit-grade"><span class="sr-only">Grade:</span>{{ vm.submission.calculateGrade() }}</a>
+        </span>
+        <!-- editing view, when grade has not yet been recorded or instructor is changing it -->
+        <span ng-show="vm.editingGrade || vm.submission.needsGrade()" class="qc-attempt-edit-grade">
+            <div class="form-group form-group-sm qc-edit-grade-input">
+                <label for="grade-submission-{{attempt.id}}">Grade<br>(0-100): </label>
+                <input type="text" ng-model="vm.editedGradeValue" id="grade-submission-{{attempt.id}}" class="qc-grade-submit-input">
+            </div>
+            <div ng-if="vm.gradeLoading" aria-live="polite">
+                <p class="text-center">
+                    <span class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></span>
+                    <span class="sr-only">Grade submission in progress, please wait.</span>
+                </p>
+            </div>
+            <div ng-if="vm.error" class="alert alert-danger" role="alert">
+                <p><span class="fa fa-exclamation" aria-hidden="true"></span> Error: {{ vm.error }}</p>
+            </div>
+            <button class="btn btn-primary btn-xs qc-btn" ng-click="vm.submitGrade(attempt)" type="submit">Submit</button>
+            <!-- only allow instructor to cancel grading if editing and grade already present -->
+            <button class="btn btn-default btn-xs qc-btn" ng-show="vm.submission.isGraded()" ng-click="vm.cancelGradeSubmit(attempt)" type="button">Cancel</button>
+        </span>
+    </span>
+</span>

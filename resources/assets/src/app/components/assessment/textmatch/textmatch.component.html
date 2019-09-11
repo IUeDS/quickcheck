@@ -1,0 +1,10 @@
+<div class="textmatch">
+    <p class="lead qc-assessment-question" ng-bind-html="vm.currentQuestion.question_text"></p>
+    <div class="form-group">
+        <label for="textmatch-answer-box">Type your answer here</label>
+        <input type="text" class="form-control"
+            ng-model="vm.answer"
+            ng-change="vm.onInput()"
+            id="textmatch-answer-box">
+    </div>
+</div>

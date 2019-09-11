@@ -21,6 +21,64 @@ import { PublicCollectionsComponent } from './components/collection-index/public
 import { LoadingComponent } from './components/shared/loading/loading.component';
 import { EditIconComponent } from './components/shared/edit-icon/edit-icon.component';
 import { DeleteIconComponent } from './components/shared/delete-icon/delete-icon.component';
+import { ViewAllCollectionsToggleComponent } from './components/shared/view-all-collections-toggle/view-all-collections-toggle.component';
+import { ReadOnlyNoticeComponent } from './components/shared/read-only-notice/read-only-notice.component';
+import { AssessmentComponent } from './components/assessment/assessment.component';
+import { CheckmarkComponent } from './components/assessment/checkmark/checkmark.component';
+import { CompletionModalComponent } from './components/assessment/completion-modal/completion-modal.component';
+import { DropdownsComponent } from './components/assessment/dropdowns/dropdowns.component';
+import { ErrorModalComponent } from './components/assessment/error-modal/error-modal.component';
+import { FeedbackModalComponent } from './components/assessment/feedback-modal/feedback-modal.component';
+import { MatchingComponent } from './components/assessment/matching/matching.component';
+import { MatrixComponent } from './components/assessment/matrix/matrix.component';
+import { MultipleChoiceComponent } from './components/assessment/multiple-choice/multiple-choice.component';
+import { MultipleCorrectComponent } from './components/assessment/multiple-correct/multiple-correct.component';
+import { NumericalComponent } from './components/assessment/numerical/numerical.component';
+import { RowFeedbackComponent } from './components/assessment/row-feedback/row-feedback.component';
+import { TextmatchComponent } from './components/assessment/textmatch/textmatch.component';
+import { TimeoutModalComponent } from './components/assessment/timeout-modal/timeout-modal.component';
+import { AttemptsOverviewComponent } from './components/attempts-overview/attempts-overview.component';
+import { DocumentationComponent } from './components/documentation/documentation.component';
+import { EditAssessmentComponent } from './components/edit-assessment/edit-assessment.component';
+import { CustomActivitySelectionComponent } from './components/edit-assessment/custom-activity-selection/custom-activity-selection.component';
+import { CustomFeedbackComponent } from './components/edit-assessment/custom-feedback/custom-feedback.component';
+import { DeleteOptionBtnComponent } from './components/edit-assessment/delete-option-btn/delete-option-btn.component';
+import { EditDropdownsComponent } from './components/edit-assessment/edit-dropdowns/edit-dropdowns.component';
+import { EditMatchingComponent } from './components/edit-assessment/edit-matching/edit-matching.component';
+import { EditMatrixComponent } from './components/edit-assessment/edit-matrix/edit-matrix.component';
+import { EditMultipleChoiceComponent } from './components/edit-assessment/edit-multiple-choice/edit-multiple-choice.component';
+import { EditMultipleCorrectComponent } from './components/edit-assessment/edit-multiple-correct/edit-multiple-correct.component';
+import { EditNumericalComponent } from './components/edit-assessment/edit-numerical/edit-numerical.component';
+import { EditQuestionComponent } from './components/edit-assessment/edit-question/edit-question.component';
+import { EditTextmatchComponent } from './components/edit-assessment/edit-textmatch/edit-textmatch.component';
+import { RandomizeCheckboxComponent } from './components/edit-assessment/randomize-checkbox/randomize-checkbox.component';
+import { RichContentToggleComponent } from './components/edit-assessment/rich-content-toggle/rich-content-toggle.component';
+import { ToggleCorrectBtnComponent } from './components/edit-assessment/toggle-correct-btn/toggle-correct-btn.component';
+import { SelectComponent } from './components/select/select.component';
+import { SelectCollectionPanelComponent } from './components/select/select-collection-panel/select-collection-panel.component';
+import { StudentViewComponent } from './components/student-view/student-view.component';
+import { ReleasesComponent } from './components/student-view/releases/releases.component';
+import { ViewAttemptsComponent } from './components/view-attempts/view-attempts.component';
+import { AttemptDataComponent } from './components/view-attempts/attempt-data/attempt-data.component';
+import { AutoGradeComponent } from './components/view-attempts/auto-grade/auto-grade.component';
+import { GradeComponent } from './components/view-attempts/grade/grade.component';
+import { QuestionAnalyticsComponent } from './components/view-attempts/question-analytics/question-analytics.component';
+import { QuizAnalyticsComponent } from './components/view-attempts/quiz-analytics/quiz-analytics.component';
+import { ReleaseComponent } from './components/view-attempts/release/release.component';
+import { ResponsesComponent } from './components/view-attempts/responses/responses.component';
+import { ViewAttemptsForStudentComponent } from './components/view-attempts-for-student/view-attempts-for-student.component';
+import { StudentAnalyticsComponent } from './components/view-attempts-for-student/student-analytics/student-analytics.component';
+import { StudentAssessmentAttemptsComponent } from './components/view-attempts-for-student/student-assessment-attempts/student-assessment-attempts.component';
+import { ViewCollectionComponent } from './components/view-collection/view-collection.component';
+import { AddAssessmentGroupComponent } from './components/view-collection/add-assessment-group/add-assessment-group.component';
+import { AssessmentGroupsComponent } from './components/view-collection/assessment-groups/assessment-groups.component';
+import { FeaturesComponent } from './components/view-collection/features/features.component';
+import { QtiExportComponent } from './components/view-collection/qti-export/qti-export.component';
+import { QtiExportBtnComponent } from './components/view-collection/qti-export/qti-export-btn/qti-export-btn.component';
+import { QtiImportComponent } from './components/view-collection/qti-import/qti-import.component';
+import { QtiImportBtnComponent } from './components/view-collection/qti-import/qti-import-btn/qti-import-btn.component';
+import { TogglePublicCollectionComponent } from './components/view-collection/toggle-public-collection/toggle-public-collection.component';
+import { UsersComponent } from './components/view-collection/users/users.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +99,64 @@ import { DeleteIconComponent } from './components/shared/delete-icon/delete-icon
     LoadingComponent,
     EditIconComponent,
     DeleteIconComponent,
+    ViewAllCollectionsToggleComponent,
+    ReadOnlyNoticeComponent,
+    AssessmentComponent,
+    CheckmarkComponent,
+    CompletionModalComponent,
+    DropdownsComponent,
+    ErrorModalComponent,
+    FeedbackModalComponent,
+    MatchingComponent,
+    MatrixComponent,
+    MultipleChoiceComponent,
+    MultipleCorrectComponent,
+    NumericalComponent,
+    RowFeedbackComponent,
+    TextmatchComponent,
+    TimeoutModalComponent,
+    AttemptsOverviewComponent,
+    DocumentationComponent,
+    EditAssessmentComponent,
+    CustomActivitySelectionComponent,
+    CustomFeedbackComponent,
+    DeleteOptionBtnComponent,
+    EditDropdownsComponent,
+    EditMatchingComponent,
+    EditMatrixComponent,
+    EditMultipleChoiceComponent,
+    EditMultipleCorrectComponent,
+    EditNumericalComponent,
+    EditQuestionComponent,
+    EditTextmatchComponent,
+    RandomizeCheckboxComponent,
+    RichContentToggleComponent,
+    ToggleCorrectBtnComponent,
+    SelectComponent,
+    SelectCollectionPanelComponent,
+    StudentViewComponent,
+    ReleasesComponent,
+    ViewAttemptsComponent,
+    AttemptDataComponent,
+    AutoGradeComponent,
+    GradeComponent,
+    QuestionAnalyticsComponent,
+    QuizAnalyticsComponent,
+    ReleaseComponent,
+    ResponsesComponent,
+    ViewAttemptsForStudentComponent,
+    StudentAnalyticsComponent,
+    StudentAssessmentAttemptsComponent,
+    ViewCollectionComponent,
+    AddAssessmentGroupComponent,
+    AssessmentGroupsComponent,
+    FeaturesComponent,
+    QtiExportComponent,
+    QtiExportBtnComponent,
+    QtiImportComponent,
+    QtiImportBtnComponent,
+    TogglePublicCollectionComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,

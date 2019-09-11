@@ -1,0 +1,21 @@
+<div class="panel panel-default qc-accordion-panel qc-feature-panel" ng-click="vm.toggleShowFeatures()">
+    <div class="panel-heading" role="button" data-toggle="collapse" data-target="#featureList" aria-expanded="false" aria-controls="featureList">
+        <span class="qc-accordion-arrow fa fa-lg" ng-class="vm.showFeatures ? 'fa-caret-down' : 'fa-caret-right'" aria-hidden="true"></span>
+        <h3 class="panel-title">Show features in this set</h3>
+    </div>
+    <div class="panel-body collapse" id="featureList">
+        <div ng-repeat="collectionFeature in vm.collectionFeatures" class="form-group">
+            <h3>{{collectionFeature.feature.name}} -
+                <span ng-if="collectionFeature.enabled == 'true'"> ON</span>
+                <span ng-if="collectionFeature.enabled != 'true'"> OFF</span>
+            </h3>
+            <input class="tgl tgl-ios sr-only" type="checkbox" id="feature-{{collectionFeature.id}}"
+                ng-model="collectionFeature.enabled"
+                ng-checked="collectionFeature.enabled == 'true'"
+                ng-click="vm.toggleFeature(collectionFeature)"
+                ng-if="!vm.readOnly">
+            <label class="tgl-btn qc-feature-toggle-btn" for="feature-{{collectionFeature.id}}" ng-if="!vm.readOnly"><span class="sr-only">Toggle for feature {{collectionFeature.feature.name}}</span></label>
+            <p>{{collectionFeature.feature.description}}</p>
+        </div>
+    </div>
+</div>

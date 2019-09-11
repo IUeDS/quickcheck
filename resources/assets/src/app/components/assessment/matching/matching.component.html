@@ -1,0 +1,44 @@
+<div class="qc-matching-options">
+    <p class="lead qc-assessment-question" ng-bind-html="vm.currentQuestion.question_text"></p>
+    <div class="row">
+        <div class="col-xs-12" aria-hidden="true">
+            <p class="qc-selectable-answer-option-text">Remaining options: </p>
+            <span ng-repeat="selectableAnswer in vm.selectableAnswers"
+                class="label qc-selectable-answer-option"
+                ng-class="vm.isAnswerUsed(selectableAnswer) ? 'label-default' : 'label-primary'">{{selectableAnswer.option_text}}
+            </span>
+        </div>
+        <table class="table table-striped">
+            <caption class="sr-only" ng-bind-html="vm.currentQuestion.question_text"></caption>
+            <thead class="sr-only">
+                <th>Prompt</th>
+                <th>Selection</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="prompt in vm.prompts" ng-class="{'danger': !vm.checkRowCorrectness(prompt)}">
+                    <td>
+                        <span ng-if="!vm.checkRowCorrectness(prompt)">
+                            <span class="fa fa-remove fa-2x" aria-hidden="true"></span>
+                            <span class="sr-only">This selection is incorrect</span>
+                        </span>
+                        <label ng-bind-html="prompt.option_text" for="{{'select-' + prompt.id}}"></label>
+                    </td>
+                    <td>
+                        <select class="form-control"
+                            ng-model="prompt.selected_answer"
+                            ng-change="vm.onAnswerSelected(prompt)"
+                            id="{{'select-' + prompt.id}}"
+                            ng-attr-aria-invalid="{{ !vm.checkRowCorrectness(prompt) ? 'true' : 'false' }}">
+                            <option value=""></option> <!-- blank option -->
+                            <option ng-repeat="selectableAnswer in vm.selectableAnswers"
+                                    value="{{selectableAnswer.id}}"
+                                    ng-bind-html="selectableAnswer.option_text"
+                                    ng-show="!vm.isAnswerUsed(selectableAnswer)">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

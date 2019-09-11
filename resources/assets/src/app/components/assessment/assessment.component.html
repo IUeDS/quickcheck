@@ -1,0 +1,88 @@
+<main class="container-fluid">
+    <div class="row section-white qc-quiz-view" ng-cloak>
+        <div class="col-xs-12">
+            <h1 ng-if="vm.assessmentTitle" class="qc-assessment-title">{{ vm.assessmentTitle }}</h1>
+            <!-- if no title, make a generic h1 header for accessibility, to maintain semantic header structure -->
+            <h1 ng-if="!vm.assessmentTitle" class="sr-only">Take the quick check</h1>
+            <p ng-if="vm.assessmentDescription" class="qc-assessment-description" ng-bind-html="vm.assessmentDescription"></p>
+            <h2 ng-if="vm.currentQuestionIndex + 1 <= vm.pointsPossible"
+                class="qc-question-number"
+                tabindex="-1" aria-live="assertive" aria-atomic="true">
+                Question {{ vm.currentQuestionIndex + 1 }} out of {{ vm.pointsPossible }}
+            </h2>
+            <div ng-if="vm.currentQuestion" ng-attr-aria-hidden="{{ vm.modalVisible ? 'true' : 'false' }}">
+                <qc-multiple-choice ng-if="vm.isQuestionType('multiple_choice')"
+                    qc-current-question="vm.currentQuestion"
+                    qc-on-answer-selection="vm.onAnswerSelection($event)">
+                </qc-multiple-choice>
+
+                <qc-multiple-correct ng-if="vm.isQuestionType('multiple_correct')"
+                    qc-current-question="vm.currentQuestion"
+                    qc-on-answer-selection="vm.onAnswerSelection($event)">
+                </qc-multiple-correct>
+
+                <qc-matrix ng-if="vm.isQuestionType('matrix')"
+                    qc-current-question="vm.currentQuestion"
+                    qc-incorrect-rows="vm.incorrectRows"
+                    qc-on-answer-selection="vm.onAnswerSelection($event)">
+                </qc-matrix>
+
+                <qc-matching ng-if="vm.isQuestionType('matching')"
+                    qc-current-question="vm.currentQuestion"
+                    qc-incorrect-rows="vm.incorrectRows"
+                    qc-on-answer-selection="vm.onAnswerSelection($event)">
+                </qc-matching>
+
+                <qc-dropdowns ng-if="vm.isQuestionType('dropdown')"
+                    qc-current-question="vm.currentQuestion"
+                    qc-on-answer-selection="vm.onAnswerSelection($event)">
+                </qc-dropdowns>
+
+                <qc-textmatch ng-if="vm.isQuestionType('textmatch')"
+                    qc-current-question="vm.currentQuestion"
+                    qc-on-answer-selection="vm.onAnswerSelection($event)">
+                </qc-textmatch>
+
+                <qc-numerical ng-if="vm.isQuestionType('numerical')"
+                    qc-current-question="vm.currentQuestion"
+                    qc-on-answer-selection="vm.onAnswerSelection($event)">
+                </qc-numerical>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="qc-assessment-button-area">
+                    <qc-row-feedback ng-if="vm.incorrectRows"
+                        qc-feedback="vm.feedback"
+                        qc-incorrect-rows="vm.incorrectRows"
+                        qc-is-correct="vm.isCorrect"
+                        qc-is-next-btn-disabled="vm.isNextBtnDisabled"
+                        qc-on-continue="vm.nextQuestion()"
+                        qc-partial-credit="vm.partialCredit">
+                    </qc-row-feedback>
+                    <button class="qc-submit-response" ng-disabled="vm.isSubmitDisabled()" ng-click="vm.submitAnswer()">Submit</button>
+                    <div class="qc-current-score" aria-live="assertive" aria-atomic="true">{{ vm.score }} / {{ vm.pointsPossible }} questions correct</div>
+                    <button class="qc-restart" ng-click="vm.restart()">Start Over</button>
+                </div>
+            </div>
+        </div>
+        <qc-feedback-modal
+            qc-feedback="vm.feedback"
+            qc-is-correct="vm.isCorrect"
+            qc-is-next-btn-disabled="vm.isNextBtnDisabled"
+            qc-on-next-question="vm.nextQuestion()">
+        </qc-feedback-modal>
+        <qc-completion-modal
+            qc-attempt-id="vm.attemptId"
+            qc-complete="vm.complete"
+            qc-points-possible="vm.pointsPossible"
+            qc-score="vm.score">
+        </qc-completion-modal>
+        <qc-timeout-modal
+            qc-timeout-seconds-remaining="vm.timeoutSecondsRemaining">
+        </qc-timeout-modal>
+        <qc-error-modal ng-if="vm.errorMessage"
+            qc-error-message="vm.errorMessage">
+        </qc-error-modal>
+    </div>
+</main>

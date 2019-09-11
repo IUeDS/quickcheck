@@ -1,1 +1,41 @@
-<p>custom-activities-panel works!</p>
+<div class="form-group">
+    <button class="btn btn-primary qc-btn" type="button"
+        ng-disabled="vm.isOpen"
+        ng-click="vm.open()">
+        <span class="fa fa-cogs" aria-hidden="true"></span> Manage custom activities
+    </button>
+</div>
+<div ng-if="vm.isOpen" class="custom-activities-panel">
+    <h3>Manage custom activities</h3>
+    <p>Custom activities can be developed in html/css/js and function as assessments. The source files should first be uploaded within the directory "public/customActivities/".</p>
+    <qc-add-custom-activity
+        qc-utils="vm.utils"
+        qc-on-save="vm.onSave($event)">
+    </qc-add-custom-activity>
+    <div class="custom-activities-list">
+        <h4 class="qc-custom-activities-header">Custom Activities</h4>
+        <div ng-show="vm.loading">
+            <div class="text-center" aria-live="polite">
+                <span class="fa fa-spinner fa-3x fa-spin" aria-hidden="true"></span>
+                <span class="sr-only">Custom activities loading, please wait.</span>
+            </div>
+        </div>
+        <div ng-show="!vm.loading">
+            <div class="panel-group qc-panel-group" id="qc-custom-activity-accordion"
+                role="tablist"
+                aria-multiselectable="true"
+                ng-if="vm.customActivities.length">
+                <qc-custom-activity
+                    ng-repeat="customActivity in vm.customActivities track by $index"
+                    qc-custom-activity-data="customActivity"
+                    qc-index="$index"
+                    qc-on-delete="vm.onDelete($event)"
+                    qc-utils="vm.utils">
+            </div>
+            <div ng-if="!vm.customActivities.length" class="qc-custom-none-added">
+                <h5>Looks like you haven't added any custom activities yet.</h5>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-default qc-btn" type="button" ng-click="vm.close()">Close</button>
+</div>

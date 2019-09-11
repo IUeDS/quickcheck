@@ -1,0 +1,20 @@
+<h2>Released quick check results</h2>
+<p class="lead">Your instructor chooses when to release a quick check so that results are visible to students. Results include all of your attempts at a quick check, count correct/incorrect, and score. Note that results are <em>not</em> the same as grades. Your grades will appear in the Canvas gradebook as soon as a quick check is graded, regardless of whether your instructor has chosen to release the results or not.</p>
+<div ng-if="!vm.releases.length">
+    <h3>Try back later</h3>
+    <p>Looks like your instructor hasn't released any results yet.</p>
+</div>
+<ul class="list-group" ng-if="vm.releases.length">
+    <div class="row text-left">
+        <div class="col-xs-4 col-md-3">
+            <div class="form-group">
+                <label for="search-name" class="sr-only">Search: </label>
+                <input type="text" class="form-control qc-search-box" id="search-name" ng-model="vm.search.assessmentName" placeholder="Search">
+            </div>
+        </div>
+    </div>
+    <a ng-repeat="release in vm.releases" class="list-group-item" target="_self" href="#" ng-click="vm.viewAttempts(release.assessment)" ng-hide="vm.isSubstringNotFound(release.assessment.title, vm.search.assessmentName) && vm.isSubstringNotFound(release.assessment.name, vm.search.assessmentName)">
+        <span ng-if="release.assessment.title">{{ release.assessment.title }}</span>
+        <span ng-if="!release.assessment.title">{{ release.assessment.name }}</span>
+    </a>
+</ul>

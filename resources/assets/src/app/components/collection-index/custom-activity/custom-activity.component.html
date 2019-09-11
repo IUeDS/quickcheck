@@ -1,1 +1,69 @@
-<p>custom-activity works!</p>
+<div class="panel panel-default qc-accordion-panel qc-custom-activity-panel">
+    <div class="panel-heading" role="tab" id="qc-custom-activity-{{vm.customActivity.id}}"
+        role="button"
+        data-toggle="collapse"
+        href="#collapse-group-{{vm.customActivity.id}}"
+        aria-expanded="{{ vm.customActivity.closed ? 'false' : 'true'}}"
+        aria-controls="collapse-group-{{vm.customActivity.id}}"
+        ng-click="vm.toggleAccordion()">
+        <span class="fa fa-lg qc-accordion-arrow"
+            ng-class="vm.customActivity.closed ? 'fa-caret-right' : 'fa-caret-down'"
+            aria-hidden="true">
+        </span>
+        <h5>{{ vm.customActivity.name }}</h5>
+        <span class="qc-edit-btn qc-custom-activity-edit-btn" role="button" ng-click="vm.edit($event)" ng-hide="vm.isEditing">
+            <span ng-include="$root.iconEditPath" aria-hidden="true"></span>
+            <span class="sr-only">Edit custom activity {{vm.customActivity.name}}</span>
+        </span>
+        <span class="qc-delete-btn qc-custom-activity-delete-btn" role="button" ng-click="vm.deleteCustomActivity($event)">
+            <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+            <span class="sr-only">Delete custom activity {{vm.customActivity.name}}</span>
+        </span>
+    </div>
+     <div id="collapse-group-{{vm.customActivity.id}}" class="panel-collapse collapse"
+        role="tabpanel"
+        aria-labelledby="qc-custom-activity-{{vm.customActivity.id}}">
+        <div class="panel-body">
+            <div class="form-group" ng-if="!vm.isEditing">
+                <p>Description: {{ vm.customActivity.description }}</p>
+                <p>Url: {{ vm.customActivity.url }}</p>
+                <p>Developer: {{ vm.customActivity.developer }}</p>
+                <p ng-if="vm.isGroupRequired()">Group required</p>
+            </div>
+            <form ng-if="vm.isEditing" ng-submit="vm.update()">
+                <div class="form-group">
+                    <label for="edit-custom-name">Name of the activity</label>
+                    <input type="text" class="form-control" ng-model="vm.editingData.name" id="edit-custom-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-custom-description">Description</label>
+                    <textarea class="form-control" ng-model="vm.editingData.description" id="edit-custom-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-custom-url">Url of the activity where it can be launched, relative to the "public/customActivities/" folder in app root (i.e., foldername/filename.html)</label>
+                    <input type="text" class="form-control" ng-model="vm.editingData.url" id="edit-custom-url" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-custom-developer">Primary developer of the activity</label>
+                    <input type="text" class="form-control" ng-model="vm.editingData.developer" id="edit-custom-developer" required>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="edit-custom-group"
+                                ng-model="vm.editingData.group_required"
+                                ng-checked="vm.editingData.group_required == 'true'"
+                                ng-click="vm.toggleCustomGroupRequired()">
+                            Group required (get group the student belongs to, if applicable, and append as query string on launch)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-sm btn-success qc-btn" type="submit">Update</button>
+                    <button class="btn btn-sm btn-default qc-btn" type="button" ng-click="vm.cancelEdit()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
