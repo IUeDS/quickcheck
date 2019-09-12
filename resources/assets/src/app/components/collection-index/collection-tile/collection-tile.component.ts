@@ -51,6 +51,9 @@ export class CollectionTileComponent implements OnInit {
       this.utilitiesService.showError(error);
       return;
     }
+
+    this.utilitiesService.loadingFinished();
+    this.collection = null; //trigger ng-if on parent to remove DOM element
   }
 
   async updateCollection() {
