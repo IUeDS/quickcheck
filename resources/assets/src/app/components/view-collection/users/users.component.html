@@ -13,7 +13,7 @@
             <span class="fa fa-plus" aria-hidden="true"></span> <span>Add a user to this set</span>
         </button>
         <span class="qc-edit-btn qc-users-edit-btn" role="button" (click)="this.isEditingUsersInit()" [attr.disabled]="this.isEditingUsers.init || this.isAddingUser.init">
-            <span ng-include="$root.iconEditPath" aria-hidden="true"></span>
+            <qc-edit-icon aria-hidden="true"></qc-edit-icon>
             <span class="sr-only">Edit users in {{ this.collection.name }}</span>
         </span>
         <div *ngIf="this.isAddingUser.init">
@@ -87,7 +87,7 @@
                         </td>
                         <td>
                             <span class="qc-delete-btn qc-delete-user-btn" role="button" (click)="this.deleteMembership(user)" [hidden]="user.deleted">
-                                <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+                                <qc-delete-icon aria-hidden="true"></qc-delete-icon>
                                 <span class="sr-only">Delete set membership for user {{user.username}}</span>
                             </span>
                             <span [hidden]="!user.deleted">Click save button to confirm deletion</span>

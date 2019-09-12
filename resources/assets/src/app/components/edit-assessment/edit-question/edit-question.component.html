@@ -16,7 +16,7 @@
         <span class="qc-delete-btn qc-delete-question-btn" role="button" type="button"
             (click)="this.deleteQuestion($event)"
             *ngIf="!this.readOnly">
-            <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+            <qc-delete-icon aria-hidden="true"></qc-delete-icon>
             <span class="sr-only">Delete question #{{this.question.question_order}}</span>
         </span>
 
@@ -25,13 +25,13 @@
             <span class="qc-reorder-up-btn" role="button" type="button"
                 (click)="this.reorderQuestionUp($event)"
                 *ngIf="!this.readOnly && !this.isFirstQuestion()">
-                <span ng-include="$root.iconArrowUpPath" aria-hidden="true"></span>
+                <qc-arrow-up-icon aria-hidden="true"></qc-edit-icon>
                 <span class="sr-only">Move question #{{this.question.question_order}} up in order></span>
             </span>
             <span class="qc-reorder-down-btn" role="button" type="button"
                 (click)="this.reorderQuestionDown($event)"
                 *ngIf="!this.readOnly && !this.isLastQuestion()">
-                <span ng-include="$root.iconArrowDownPath" aria-hidden="true"></span>
+                <qc-arrow-down-icon aria-hidden="true"></qc-arrow-down-icon>
                 <span class="sr-only">Move question #{{this.question.question_order}} down in order></span>
             </span>
         </span>

@@ -14,11 +14,11 @@
                 </form>
             </div>
             <span class="qc-edit-btn qc-subset-edit-btn" role="button" (click)="this.editAssessmentGroup($event)" [hidden]="this.isEditing" *ngIf="!this.readOnly">
-                <span ng-include="$root.iconEditPath" aria-hidden="true"></span>
+                <qc-edit-icon aria-hidden="true"></qc-edit-icon>
                 <span class="sr-only">Edit subset {{this.assessmentGroup.name}}</span>
             </span>
             <span class="qc-delete-btn qc-subset-delete-btn" role="button" (click)="this.deleteAssessmentGroup($event)" *ngIf="!this.readOnly">
-                <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+                <qc-delete-icon aria-hidden="true"></qc-delete-icon>
                 <span class="sr-only">Delete subset {{this.assessmentGroup.name}}</span>
             </span>
         </div>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-12 col-sm-6 offset-sm-1">
                     <a [href]="this.utilitiesService.setContextLink('../assessment/' + assessment.id + '/edit')" target="_self" id="assessment-edit-{{assessment.id}}" class="qc-edit-btn qc-quiz-edit-btn">
-                        <span ng-include="$root.iconEditPath" aria-hidden="true"></span>
+                        <qc-edit-icon aria-hidden="true"></qc-edit-icon>
                         <span class="sr-only">
                             <span *ngIf="!this.readOnly">Edit </span>
                             <span *ngIf="this.readOnly">View </span>
@@ -43,15 +43,15 @@
                         </span>
                     </a>
                     <a [href]="'../assessment/' + assessment.id + '?preview=true'" target="_blank" class="qc-view-btn qc-quiz-preview-btn">
-                        <span ng-include="$root.iconViewPath" aria-hidden="true"></span>
+                        <qc-preview-icon aria-hidden="true"></qc-preview-icon>
                         <span class="sr-only">Preview quick check {{ assessment.name }}</span>
                     </a>
                     <span class="qc-delete-btn qc-quiz-delete-btn" role="button" (click)="this.deleteAssessment(assessment.id, $index)" *ngIf="!this.readOnly">
-                        <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+                        <qc-delete-icon aria-hidden="true"></qc-delete-icon>
                         <span class="sr-only">Delete quick check {{ assessment.name }}</span>
                     </span>
                     <span class="qc-copy-btn qc-quiz-copy-btn" role="button" (click)="this.initCopyAssessment(assessment)" *ngIf="!this.readOnly">
-                            <span ng-include="$root.iconCopyPath" aria-hidden="true"></span>
+                            <qc-copy-icon aria-hidden="true"></qc-copy-icon>
                             <span class="sr-only">Copy quick check {{ assessment.name }}</span>
                     </span>
                 </div>

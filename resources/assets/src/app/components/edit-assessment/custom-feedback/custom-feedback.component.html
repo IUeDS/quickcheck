@@ -8,7 +8,7 @@
     <span class="qc-delete-btn qc-delete-option-btn-inline qc-delete-feedback-btn" role="button" type="button"
         (click)="this.toggleCustomFeedback()"
         *ngIf="!this.readOnly">
-        <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+        <qc-delete-icon aria-hidden="true"></qc-delete-icon>
         <span class="sr-only">Delete feedback for question #{{ this.question.question_order }}</span>
     </span>
     <h3 class="qc-feedback-header">Custom Feedback</h3>

@@ -12,11 +12,11 @@
         </span>
         <h5>{{ this.customActivity.name }}</h5>
         <span class="qc-edit-btn qc-custom-activity-edit-btn" role="button" (click)="this.edit($event)" [hidden]="this.isEditing">
-            <span ng-include="$root.iconEditPath" aria-hidden="true"></span>
+            <qc-edit-icon aria-hidden="true"></qc-edit-icon>
             <span class="sr-only">Edit custom activity {{this.customActivity.name}}</span>
         </span>
         <span class="qc-delete-btn qc-custom-activity-delete-btn" role="button" (click)="this.deleteCustomActivity($event)">
-            <span ng-include="$root.iconDeletePath" aria-hidden="true"></span>
+            <qc-delete-icon aria-hidden="true"></qc-delete-icon
             <span class="sr-only">Delete custom activity {{this.customActivity.name}}</span>
         </span>
     </div>

@@ -80,6 +80,10 @@ import { QtiImportBtnComponent } from './components/view-collection/qti-import/q
 import { TogglePublicCollectionComponent } from './components/view-collection/toggle-public-collection/toggle-public-collection.component';
 import { UsersComponent } from './components/view-collection/users/users.component';
 import { SafePipe } from './safe.pipe';
+import { ArrowDownIconComponent } from './components/shared/arrow-down-icon/arrow-down-icon.component';
+import { ArrowUpIconComponent } from './components/shared/arrow-up-icon/arrow-up-icon.component';
+import { CopyIconComponent } from './components/shared/copy-icon/copy-icon.component';
+import { PreviewIconComponent } from './components/shared/preview-icon/preview-icon.component';
 
 @NgModule({
   declarations: [
@@ -159,6 +163,10 @@ import { SafePipe } from './safe.pipe';
     TogglePublicCollectionComponent,
     UsersComponent,
     SafePipe,
+    ArrowDownIconComponent,
+    ArrowUpIconComponent,
+    CopyIconComponent,
+    PreviewIconComponent,
   ],
   imports: [
     BrowserModule,
