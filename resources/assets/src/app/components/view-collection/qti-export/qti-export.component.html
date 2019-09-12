@@ -1,8 +1,8 @@
-<div class="panel panel-info">
-    <div class="panel-heading">
-        <h3 class="panel-title">Export QTI Package (1.2)</h3>
+<div class="card">
+    <div class="card-header text-white bg-info">
+        <h3 class="card-title">Export QTI Package (1.2)</h3>
     </div>
-    <div class="panel-body" id="qti-export-panel">
+    <div class="card-body" id="qti-export-panel">
         <p>A QTI package exported from Quick Check is a .zip file that can be uploaded to a Learning Management System, in order to export quick checks and migrate your quiz questions to another platform. Quick Check's QTI export system is optimized for Canvas. Note that since Canvas does not contain a matrix question type, matrix questions will be converted to separate multiple choice questions (one for each row of the matrix question).</p>
         <div class="qc-qti-export-list form-group">
             <p class="lead">Select the quick checks from this set that you would like to export:</p>
@@ -37,7 +37,7 @@
         <form method="POST" action="/index.php/exportQTI" target="_blank">
             <input type="hidden" *ngFor="let assessment of this.assessments; index as $index;" name="assessments[{{$index}}]" [value]="assessment">
             <button type="submit" class="btn btn-primary qc-btn" [disabled]="!this.assessments.length">Export QTI package</button>
-            <button type="button" class="btn btn-default qc-btn" (click)="this.cancelQtiExport()">Close <span class="sr-only">QTI export panel</span></button>
+            <button type="button" class="btn btn-outline-dark qc-btn" (click)="this.cancelQtiExport()">Close <span class="sr-only">QTI export panel</span></button>
         </form>
     </div>
 </div>

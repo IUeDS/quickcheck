@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let option of this.question.options" [ngClass]="option.correct == 'true' ? 'success' : 'active'">
+                    <tr *ngFor="let option of this.question.options" [ngClass]="option.correct == 'true' ? 'table-success' : 'table-active'">
                         <td class="qc-analytics-mc-option">{{ option.answer_text }}</td>
                         <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
                             <div [ngClass]="option.correct == 'true' ? 'qc-correct-bar' : 'qc-incorrect-bar'" style="width:{{option.responseAnalytics.percentSelected / 100 * this.fullBarWidth}}px">
@@ -47,7 +47,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let answer of option.answers" [ngClass]="option.matching_answer_text == answer.option_text ? 'success' : 'active'">
+                            <tr *ngFor="let answer of option.answers" [ngClass]="option.matching_answer_text == answer.option_text ? 'table-success' : 'table-active'">
                                 <td class="qc-analytics-matching-answer">{{ answer.option_text }}</td>
                                 <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
                                     <div [ngClass]="option.matching_answer_text == answer.option_text ? 'qc-correct-bar' : 'qc-incorrect-bar'" style="width: {{ answer.responseAnalytics.percentSelected / 100 * this.fullBarWidth }}px">
@@ -72,7 +72,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let answer of option.answers" [ngClass]="option.dropdown_answer_text == answer.answer_text ? 'success' : 'active'">
+                            <tr *ngFor="let answer of option.answers" [ngClass]="option.dropdown_answer_text == answer.answer_text ? 'table-success' : 'table-active'">
                                 <td class="qc-analytics-dropdown-answer">{{answer.answer_text}}</td>
                                 <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
                                     <div [ngClass]="option.dropdown_answer_text == answer.answer_text ? 'qc-correct-bar' : 'qc-incorrect-bar'" style="width: {{ answer.responseAnalytics.percentSelected / 100 * this.fullBarWidth }}px">
@@ -97,7 +97,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let column of option.columns" [ngClass]="option.matrix_answer_text == column.answer_text ? 'success' : 'active'">
+                            <tr *ngFor="let column of option.columns" [ngClass]="option.matrix_answer_text == column.answer_text ? 'table-success' : 'table-active'">
                                 <td class="qc-analytics-matrix-column">{{ column.answer_text }}</td>
                                 <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
                                     <div [ngClass]="option.matrix_answer_text == column.answer_text ? 'qc-correct-bar' : 'qc-incorrect-bar'" style="width: {{ column.responseAnalytics.percentSelected  / 100 * this.fullBarWidth }}px">
@@ -120,7 +120,7 @@
                 </thead>
                 <tbody>
                     <!-- correct options -->
-                    <tr *ngFor="let option of this.question.options" class="success">
+                    <tr *ngFor="let option of this.question.options" class="table-success">
                         <td class="qc-analytics-textmatch-answer">{{ option.textmatch_answer_text }}</td>
                         <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
                             <div class="qc-correct-bar" style="width: {{ option.responseAnalytics.percentSelected / 100 * this.fullBarWidth }}px">
@@ -129,13 +129,13 @@
                         </td>
                     </tr>
                     <!-- all other student responses -->
-                    <tr class="active" *ngIf="this.question.questionAnalytics.otherResponses.length">
+                    <tr class="table-active" *ngIf="this.question.questionAnalytics.otherResponses.length">
                         <td>
                             <div class="form-group">
                                 Other responses&nbsp;
-                                <button type="button" class="btn btn-default btn-xs qc-btn qc-other-responses-btn" (click)="this.toggleResponses(this.question)">See list of other responses</button>
+                                <button type="button" class="btn btn-outline-dark btn-sm qc-btn qc-other-responses-btn" (click)="this.toggleResponses(this.question)">See list of other responses</button>
                             </div>
-                            <div class="well" *ngIf="this.question.responsesVisible">
+                            <div class="card card-body bg-light" *ngIf="this.question.responsesVisible">
                                 <ul>
                                     <li *ngFor="let response of this.question.questionAnalytics.otherResponses; index as $index;">{{ response }}</li>
                                 </ul>
@@ -160,7 +160,7 @@
                 </thead>
                 <tbody>
                     <!-- correct options -->
-                    <tr *ngFor="let option of this.question.options" class="success">
+                    <tr *ngFor="let option of this.question.options" class="table-success">
                         <td class="qc-analytics-numerical-answer">
                             <span *ngIf="option.answer_type === 'exact'">
                                 {{option.numerical_answer}}, with margin of error of {{ option.margin_of_error }}
@@ -176,13 +176,13 @@
                         </td>
                     </tr>
                     <!-- all other student responses -->
-                    <tr class="active" *ngIf="this.question.questionAnalytics.otherResponses.length">
+                    <tr class="table-active" *ngIf="this.question.questionAnalytics.otherResponses.length">
                         <td>
                             <div class="form-group">
                                 Other responses&nbsp;
-                                <button type="button" class="btn btn-default btn-xs qc-btn qc-other-responses-btn" (click)="this.toggleResponses(this.question)">See list of other responses</button>
+                                <button type="button" class="btn btn-outline-dark btn-sm qc-btn qc-other-responses-btn" (click)="this.toggleResponses(this.question)">See list of other responses</button>
                             </div>
-                            <div class="well" *ngIf="this.question.responsesVisible">
+                            <div class="card card-body bg-light" *ngIf="this.question.responsesVisible">
                                 <ul>
                                     <li *ngFor="let response of this.question.questionAnalytics.otherResponses; index as $index;">{{ response }}</li>
                                 </ul>

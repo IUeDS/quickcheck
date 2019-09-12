@@ -1,10 +1,10 @@
-<button class="btn btn-sm btn-default qc-btn qc-btn-add-feedback" type="button"
+<button class="btn btn-sm btn-outline-dark qc-btn qc-btn-add-feedback" type="button"
     (click)="this.toggleCustomFeedback()"
     [hidden]="this.isFeedbackPresent()">
     <span class="fa fa-plus-circle" aria-hidden="true"></span>
     Add custom feedback <span class="sr-only">for question #{{ this.question.question_order }}</span>
 </button>
-<div *ngIf="this.isFeedbackPresent()" class="well qc-custom-feedback-container clearfix">
+<div *ngIf="this.isFeedbackPresent()" class="card card-body bg-light qc-custom-feedback-container clearfix">
     <span class="qc-delete-btn qc-delete-option-btn-inline qc-delete-feedback-btn" role="button" type="button"
         (click)="this.toggleCustomFeedback()"
         *ngIf="!this.readOnly">

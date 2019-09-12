@@ -1,5 +1,5 @@
-<div class="panel panel-default qc-question-panel">
-    <div class="panel-heading qc-question-panel-heading" role="button"
+<div class="card qc-question-panel">
+    <div class="card-header qc-question-panel-heading" role="button"
         data-toggle="collapse"
         [attr.data-target]="'#question-data-' + this.question.id"
         [attr.aria-expanded]="false"
@@ -36,7 +36,7 @@
             </span>
         </span>
     </div>
-    <div class="panel-body collapse in" id="question-data-{{this.question.id}}">
+    <div class="card-body collapse in" id="question-data-{{this.question.id}}">
         <!-- question type -->
         <label for="question-type-{{this.question.id}}">
             <h3>Question type <span class="sr-only">for question # {{this.question.question_order}}</span></h3>

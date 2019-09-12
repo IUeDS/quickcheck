@@ -7,7 +7,7 @@
                 <h1>Student Results</h1>
             </div>
             <div class="col-6 text-right">
-                <a class="btn btn-default qc-btn qc-btn-download-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId">
+                <a class="btn btn-outline-dark qc-btn qc-btn-download-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId">
                     <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
                 </a>
 

@@ -5,7 +5,7 @@
                 [disabled]="this.isAddingCollection">
             <span class="fa fa-plus" aria-hidden="true"></span> <span>Add set</span>
         </button>
-        <div *ngIf="this.isAddingCollection" class="panel panel-default">
+        <div *ngIf="this.isAddingCollection">
             <div class="card">
                 <form (ngSubmit)="this.saveNewCollection()" class="card-body">
                     <h2 class="qc-add-collection-header" tabindex="-1">Add new set</h2>

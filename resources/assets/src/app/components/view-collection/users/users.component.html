@@ -1,11 +1,11 @@
-<div class="panel panel-default qc-accordion-panel qc-user-panel" (click)="this.toggleShowUsers()" *ngIf="!this.readOnly">
-    <div class="panel-heading" role="button" data-toggle="collapse" data-target="#qc-user-list" [attr.aria-expanded]="false" [attr.aria-controls]="qc-user-list">
+<div class="card qc-accordion-panel qc-user-panel" (click)="this.toggleShowUsers()" *ngIf="!this.readOnly">
+    <div class="card-header" role="button" data-toggle="collapse" data-target="#qc-user-list" [attr.aria-expanded]="false" [attr.aria-controls]="qc-user-list">
         <span class="qc-accordion-arrow fa fa-lg" [ngClass]="this.showUsers ? 'fa-caret-down' : 'fa-caret-right'" aria-hidden="true"></span>
-        <h3 class="panel-title">Show users in this set</h3>
+        <h3 class="card-title">Show users in this set</h3>
     </div>
-    <div class="panel-body collapse" id="qc-user-list">
+    <div class="card-body collapse" id="qc-user-list">
         <ul [hidden]="this.isEditingUsers.init">
-            <li *ngFor="let user of this.collectionUsers"><strong>{{user.username}}</strong> <span class="label label-default" *ngIf="user.readOnly">Read-only</span></li>
+            <li *ngFor="let user of this.collectionUsers"><strong>{{user.username}}</strong> <span class="badge badge-secondary" *ngIf="user.readOnly">Read-only</span></li>
         </ul>
         <button type="button" class="btn btn-lg qc-btn-add qc-btn-user-add qc-btn"
                 (click)="this.isAddingUserInit()"
@@ -30,7 +30,7 @@
                         </label>
                     </div>
                     <button class="btn btn-sm btn-primary qc-btn" type="submit">Validate and add user</button>
-                    <button type="button" class="btn btn-default qc-btn" (click)="this.addUserCancel()">Cancel</button>
+                    <button type="button" class="btn btn-outline-dark qc-btn" (click)="this.addUserCancel()">Cancel</button>
                     <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="this.isAddingUser.validationError">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>
@@ -53,14 +53,14 @@
                         <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>
                         <p>{{ this.isAddingUser.saveErrorReason }}</p>
                         <button class="btn btn-primary btn-sm qc-btn" (click)="this.isAddingUserInit()" type="button">Add another user</button>
-                        <button type="button" class="btn btn-default qc-btn" (click)="this.addUserCancel()">Close</button>
+                        <button type="button" class="btn btn-outline-dark qc-btn" (click)="this.addUserCancel()">Close</button>
                     </div>
                 </div>
             </div>
             <div *ngIf="this.isAddingUser.userAdded">
                 <h4>User <strong>{{ this.isAddingUser.username }}</strong> has been added to this set</h4>
                 <button class="btn btn-primary btn-sm qc-btn" (click)="this.isAddingUserInit()" type="button">Add another user</button>
-                <button type="button" class="btn btn-default qc-btn" (click)="this.addUserCancel()">Close</button>
+                <button type="button" class="btn btn-outline-dark qc-btn" (click)="this.addUserCancel()">Close</button>
             </div>
         </div>
         <div *ngIf="this.isEditingUsers.init">
@@ -75,7 +75,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let user of this.isEditingUsers.users" [ngClass]="{'danger': user.deleted}" class="form-inline"
+                    <tr *ngFor="let user of this.isEditingUsers.users" [ngClass]="{'table-danger': user.deleted}" class="form-inline"
                         [hidden]="user.username == this.currentUser.username">
                         <td [ngClass]="{'strike-through': user.deleted}">{{ user.username }}</td>
                         <td>
@@ -102,7 +102,7 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary btn-sm qc-btn" (click)="this.saveUserEdits()" [hidden]="this.isEditingUsers.loading || this.isEditingUsers.users.length == 1">Save User Edits</button>
-            <button type="button" class="btn btn-default btn-sm qc-btn" (click)="this.editUsersCancel()" [hidden]="this.isEditingUsers.loading">Cancel</button>
+            <button type="button" class="btn btn-outline-dark btn-sm qc-btn" (click)="this.editUsersCancel()" [hidden]="this.isEditingUsers.loading">Cancel</button>
         </div>
         <div *ngIf="this.isEditingUsers.loading" class="text-center" aria-live="polite">
             <span class="fa fa-refresh fa-spin fa-3x" aria-hidden="true"></span><span class="sr-only">Saving user membership edits, please wait.</span>

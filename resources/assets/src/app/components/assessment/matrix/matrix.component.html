@@ -9,7 +9,7 @@
             </th>
         </thead>
         <tbody>
-            <tr *ngFor="let row of this.rows" [ngClass]="{'danger': !this.checkRowCorrectness(row)}">
+            <tr *ngFor="let row of this.rows" [ngClass]="{'table-danger': !this.checkRowCorrectness(row)}">
                 <td>
                     <span *ngIf="!this.checkRowCorrectness(row)">
                         <span class="fa fa-remove fa-2x" aria-hidden="true"></span>
@@ -18,7 +18,7 @@
                     <span ng-bind-html="row.answer_text"></span>
                 </td>
                 <td *ngFor="let column of row.columns">
-                    <div class="checkbox">
+                    <div class="form-check">
                         <label class="sr-only" for="matrixrow-{{row.id}}-column-{{column.id}}">Check this box to match {{row.answer_text}} to {{column.answer_text}}</label>
                         <input type="checkbox" name="{{row.id}}" value="{{column.answer_text}}"
                             ng-checked="false"

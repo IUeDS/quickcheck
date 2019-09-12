@@ -3,7 +3,7 @@
         <h1>Analytics for {{ this.studentName }}</h1>
     </div>
     <div class="col-6 text-right">
-        <a class="btn btn-default qc-btn qc-btn-download-csv qc-btn-attempts-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId + '/' + this.studentId">
+        <a class="btn btn-outline-dark qc-btn qc-btn-download-csv qc-btn-attempts-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId + '/' + this.studentId">
             <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
         </a>
     </div>
@@ -11,7 +11,7 @@
 <div class="row section-white" *ngIf="!this.utilitiesService.loading">
     <div class="col-12">
         <div class="row">
-            <div class="col-5 col-offset-1 text-center qc-student-analytics-blurb">
+            <div class="col-5 offset-1 text-center qc-student-analytics-blurb">
                 <p class="lead">Total attempts: </p>
                 <p class="qc-student-analytics-total-attempts">
                     <span class="qc-student-analytics-number">{{ this.totalAttempts }}</span>
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-5 col-offset-1 text-center qc-student-analytics-blurb">
+            <div class="col-5 offset-1 text-center qc-student-analytics-blurb">
                 <p class="lead">Total questions answered: </p>
                 <p class="qc-student-analytics-total-questions">
                     <span class="qc-student-analytics-number">{{ this.totalQuestions }}</span>

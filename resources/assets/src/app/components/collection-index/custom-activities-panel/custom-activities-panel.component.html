@@ -21,8 +21,8 @@
                     <span class="sr-only">Custom activities loading, please wait.</span>
                 </div>
             </div>
-            <div [hidden]="!!this.loading">
-                <div class="panel-group qc-panel-group" id="qc-custom-activity-accordion"
+            <div [hidden]="this.loading">
+                <div class="card-group qc-panel-group" id="qc-custom-activity-accordion"
                     role="tablist"
                     aria-multiselectable="true"
                     *ngIf="this.customActivities.length">
@@ -39,6 +39,6 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-default qc-btn" type="button" (click)="this.close()">Close</button>
+        <button class="btn btn-outline-dark qc-btn" type="button" (click)="this.close()">Close</button>
     </div>
 </div>

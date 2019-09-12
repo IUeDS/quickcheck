@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12">
-        <div class="well well-lg qc-row-feedback" tabindex="-1" role="alertdialog">
+        <div class="card card-body bg-light well-lg qc-row-feedback" tabindex="-1" role="alertdialog">
             <div class="sr-only"><h1>Quick Check question feedback</h1></div>
             <h2 *ngIf="this.isCorrect">Correct</h2>
             <h2 *ngIf="!this.isCorrect">Incorrect. <span *ngIf="this.partialCredit">Partial credit assigned.</span></h2>

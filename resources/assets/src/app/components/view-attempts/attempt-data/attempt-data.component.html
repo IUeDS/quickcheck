@@ -1,4 +1,4 @@
-<table class="table table-condensed table-striped qc-attempts-table">
+<table class="table table-sm table-striped qc-attempts-table">
     <thead>
         <th *ngIf="!this.isStudent">Name</th>
         <th>Last Milestone</th>
@@ -36,7 +36,7 @@
             <td>{{ this.utilitiesService.formatTimeWithTimeZone(attempt.created_at, this.courseContext.time_zone) }}</td>
             <td class="qc-attempt-elapsed-time">{{ this.dateDiff(attempt.created_at, attempt.updated_at) }}</td>
             <td *ngIf="this.showResponses">
-                <a class="btn btn-primary btn-xs qc-btn qc-btn-view-responses" role="button" type="button" (click)="this.viewResponses(attempt)" *ngIf="this.responsesAvailable(attempt)">
+                <a class="btn btn-primary btn-sm qc-btn qc-btn-view-responses" role="button" type="button" (click)="this.viewResponses(attempt)" *ngIf="this.responsesAvailable(attempt)">
                     View Responses
                     <span class="sr-only">for <span *ngIf="!this.isStudent">{{ attempt.student.lis_person_name_given }} {{ attempt.student.lis_person_name_family }}'s </span>attempt beginning at {{ this.utilitiesService.formatTimeWithTimeZone(attempt.created_at, this.courseContext.time_zone) }}</span>
                 </a>

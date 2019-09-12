@@ -24,7 +24,7 @@
                 <div *ngIf="this.admin">
                     <qc-view-all-collections-toggle qc-collection-data="this.adminCollectionData" qc-utilitiesService="this.utilitiesService"></qc-view-all-collections-toggle>
                 </div>
-                <div class="panel-group" id="accordion-collections" role="tablist" aria-multiselectable="true">
+                <div class="card-group" id="accordion-collections" role="tablist" aria-multiselectable="true">
                     <div *ngIf="this.adminCollectionData.viewAll">
                         <qc-select-collection-panel
                             *ngFor="let collection of this.adminCollectionData.collections"
@@ -51,7 +51,7 @@
                     <div class="col-6 qc-select-row">
                         <h5 class="admin-assessment-name">
                             {{ assessment.name }}
-                            <span *ngIf="assessment.custom_activity_id" class="label label-info qc-label-custom">Custom</span>
+                            <span *ngIf="assessment.custom_activity_id" class="badge badge-info qc-label-custom">Custom</span>
                         </h5>
                     </div>
                     <div class="col-6 qc-select-row">

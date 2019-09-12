@@ -1,8 +1,8 @@
-<div class="panel panel-info">
-    <div class="panel-heading">
-        <h3 class="panel-title">Import QTI Package (1.2)</h3>
+<div class="card">
+    <div class="card-header text-white bg-info">
+        <h3 class="card-title">Import QTI Package (1.2)</h3>
     </div>
-    <div class="panel-body" id="qc-qti-import-panel">
+    <div class="card-body" id="qc-qti-import-panel">
 
         <!-- instructions and upload form -->
         <div [hidden]="this.done">
@@ -21,7 +21,7 @@
                     <input type="file" id="importFile" name="importFile" accept=".zip" [(ngModel)]="this.zipFile" ngf-select ngf-accept="'.zip'" required>
                 </div>
                 <button type="submit" class="btn btn-sm btn-success qc-btn-qti-import-submit qc-btn">Submit <span class="sr-only">QTI import package</span></button>
-                <button type="button" class="btn btn-sm btn-default qc-btn" (click)="this.cancelQtiImport()">Cancel <span class="sr-only">QTI import</span></button>
+                <button type="button" class="btn btn-sm btn-outline-dark qc-btn" (click)="this.cancelQtiImport()">Cancel <span class="sr-only">QTI import</span></button>
             </form>
         </div>
 
@@ -89,7 +89,7 @@
 
             <!-- close panel or restart -->
             <button type="button" class="btn btn-sm btn-primary qc-btn" (click)="this.resetQtiImport()">Import another QTI Package</button>
-            <button type="button" class="btn btn-sm btn-default qc-btn" (click)="this.cancelQtiImport()">Close <span class="sr-only">QTI import panel</span></button>
+            <button type="button" class="btn btn-sm btn-outline-dark qc-btn" (click)="this.cancelQtiImport()">Close <span class="sr-only">QTI import panel</span></button>
         </div>
     </div>
 </div>

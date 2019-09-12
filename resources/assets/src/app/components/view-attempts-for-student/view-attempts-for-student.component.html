@@ -13,7 +13,7 @@
                 <h2>{{ this.studentName }}</h2>
             </div>
             <div class="col-6 text-right" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()">
-                <button class="btn btn-default qc-btn qc-btn-analytics" type="button" (click)="this.toggleAnalytics()">
+                <button class="btn btn-outline-dark qc-btn qc-btn-analytics" type="button" (click)="this.toggleAnalytics()">
                     <span class="fa fa-bar-chart fa-2x" aria-hidden="true"></span>
                     <span>View <strong>Analytics</strong></span>
                 </button>
@@ -35,7 +35,7 @@
                 [user]="this.user"
                 [utilitiesService]="this.utilitiesService">
             </qc-student-assessment-attempts>
-            <div class="well text-center qc-none-found-well" *ngIf="!this.displayedAssessments.length && this.assessmentsWithAttempts.length">
+            <div class="card card-body bg-light text-center qc-none-found-well" *ngIf="!this.displayedAssessments.length && this.assessmentsWithAttempts.length">
                 <h3 class="uppercase">No quick checks found</h3>
                 <p>Either the name does not match, or the student has not yet attempted the quick check.</p>
             </div>

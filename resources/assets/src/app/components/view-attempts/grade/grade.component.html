@@ -12,7 +12,7 @@
         </span>
         <!-- editing view, when grade has not yet been recorded or instructor is changing it -->
         <span [hidden]="!this.editingGrade || this.submission.needsGrade()" class="qc-attempt-edit-grade">
-            <div class="form-group form-group-sm qc-edit-grade-input">
+            <div class="form-group form-control-sm qc-edit-grade-input">
                 <label for="grade-submission-{{attempt.id}}">Grade<br>(0-100): </label>
                 <input type="text" [(ngModel)]="this.editedGradeValue" id="grade-submission-{{attempt.id}}" class="qc-grade-submit-input">
             </div>
@@ -25,9 +25,9 @@
             <div *ngIf="this.error" class="alert alert-danger" role="alert">
                 <p><span class="fa fa-exclamation" aria-hidden="true"></span> Error: {{ this.error }}</p>
             </div>
-            <button class="btn btn-primary btn-xs qc-btn" (click)="this.submitGrade(attempt)" type="submit">Submit</button>
+            <button class="btn btn-primary btn-sm qc-btn" (click)="this.submitGrade(attempt)" type="submit">Submit</button>
             <!-- only allow instructor to cancel grading if editing and grade already present -->
-            <button class="btn btn-default btn-xs qc-btn" [hidden]="!this.submission.isGraded()" (click)="this.cancelGradeSubmit(attempt)" type="button">Cancel</button>
+            <button class="btn btn-outline-dark btn-sm qc-btn" [hidden]="!this.submission.isGraded()" (click)="this.cancelGradeSubmit(attempt)" type="button">Cancel</button>
         </span>
     </span>
 </span>

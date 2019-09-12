@@ -1,5 +1,5 @@
 <!-- show only if we have received data back from server -->
-<div class="well col-12 qc-public-collection-container" *ngIf="this.publicCollections">
+<div class="card card-body bg-light col-12 qc-public-collection-container" *ngIf="this.publicCollections">
     <p class="lead">Public sets allow any instructor to embed quick checks that have been made publicly available. All public sets are read-only. Sets can only be made public by a system administrator.</p>
     <p class="lead text-danger qc-no-public-sets" *ngIf="!this.publicCollections.length">
         <span class="fa fa-hand-o-right" aria-hidden="true"></span>

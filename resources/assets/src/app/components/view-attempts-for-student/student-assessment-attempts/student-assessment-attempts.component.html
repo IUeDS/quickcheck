@@ -1,5 +1,5 @@
-<div class="panel panel-default qc-accordion-panel qc-student-attempts-panel">
-    <div class="panel-heading qc-student-attempts-panel-heading"
+<div class="card qc-accordion-panel qc-student-attempts-panel">
+    <div class="card-header qc-student-attempts-panel-heading"
         role="tab" role="button"
         id="heading-group-{{this.assessment.id}}"
         data-toggle="collapse"
@@ -10,8 +10,8 @@
         <span class="fa fa-lg qc-accordion-arrow" [ngClass]="this.isAccordionClosed() ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true"></span>
         <h3>{{ this.assessment.name }}</h3>
     </div>
-    <div id="collapse-group-{{this.assessment.id}}" class="panel-collapse collapse" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.assessment.id">
-        <div class="panel-body">
+    <div id="collapse-group-{{this.assessment.id}}" class="collapse" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.assessment.id">
+        <div class="card-body">
             <div *ngIf="!this.responseViewVisible">
                 <p *ngIf="this.dueAt" class="qc-due-at">Due at: {{ this.dueAt }}</p>
                 <qc-attempt-data *ngIf="!this.isAccordionClosed()"

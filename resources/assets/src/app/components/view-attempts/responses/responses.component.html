@@ -1,5 +1,5 @@
 <p class="lead" *ngIf="!this.studentResponses.length">No responses were recorded for this attempt.</p>
-<table class="table table-condensed qc-responses-table" *ngIf="this.showTableView">
+<table class="table table-sm qc-responses-table" *ngIf="this.showTableView">
     <thead>
         <th>Time</th>
         <th class="text-center">Is Correct</th>
@@ -11,7 +11,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let response of this.studentResponses"
-            [ngClass]="response.is_correct == '1' ? 'success' : 'danger'">
+            [ngClass]="response.is_correct == '1' ? 'table-success' : 'table-danger'">
             <td>{{ this.utilitiesService.formatTimeWithTimeZone(response.created_at, this.courseContext.time_zone) }}</td>
             <td class="text-center response-is-correct">
                 <span *ngIf="response.is_correct == '1'">
@@ -55,8 +55,8 @@
                     <p class="lead">Error</p>
                     <p>There were no student responses that matched the options for this question. Either there was an error recording the student response, or the quiz was edited after the student took the quiz (i.e., a question option the student selected was deleted, or a new question was added).</p>
                 </div>
-                <div class="panel" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'panel-success' : 'panel-danger'">
-                    <div class="panel-heading">
+                <div class="card">
+                    <div class="card-header text-white" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'bg-success' : 'bg-danger'">
                         <h4 class="lead">
                             <span *ngIf="currentQuestion.studentResponse.isCorrect">
                                 <span class="fa fa-check" aria-hidden="true"></span>
@@ -69,11 +69,11 @@
                             <span>Question #{{ $index + 1 }}</span>
                         </h4>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div class="qc-mc-options" *ngIf="currentQuestion.question_type == 'multiple_choice'" >
                             <fieldset>
                                 <legend class="qc-assessment-question" ng-bind-html="currentQuestion.question_text"></legend>
-                                <div class="radio" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
+                                <div class="form-check" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
                                     <input type="radio" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" disabled
                                         ng-checked="answerOption.studentAnswer" id="{{answerOption.id}}">
                                     <label class="qc-mc-option-response" for="{{answerOption.id}}">
@@ -201,12 +201,12 @@
                         </div>
                         <div class="textmatch" *ngIf="currentQuestion.question_type == 'textmatch'" >
                             <p class="qc-assessment-question" ng-bind-html="currentQuestion.question_text"></p>
-                            <div class="form-group has-feedback" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'has-success' : 'has-error'">
+                            <div class="form-group has-feedback" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'is-valid' : 'is-invalid'">
                                 <label for="textmatch-answer-box"><span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student</span> answer <span class="sr-only">for question #{{ $index + 1 }}</span>:</label>
                                 <input type="text" class="form-control" disabled [value]="currentQuestion.studentAnswer" id="textmatch-answer-box"
                                     [ngClass]="currentQuestion.studentResponse.isCorrect ? 'qc-correct-answer-input' : 'qc-incorrect-answer-input'">
                             </div>
-                            <div class="well textmatch-correct-answers">
+                            <div class="card card-body bg-light textmatch-correct-answers">
                                 <p>Correct answers: </p>
                                 <ul class="fa-ul">
                                     <li *ngFor="let option of currentQuestion.options">
@@ -221,7 +221,7 @@
                                 <label for="numerical-answer-box"><span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student</span>  answer:</label>
                                 <input type="number" step="any" class="form-control" disabled [value]="currentQuestion.studentAnswer" id="numerical-answer-box" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'qc-correct-answer-input' : 'qc-incorrect-answer-input'">
                             </div>
-                            <div class="well numerical-correct-answers">
+                            <div class="card card-body bg-light numerical-correct-answers">
                                 <p>Correct answers: </p>
                                 <ul class="fa-ul">
                                     <li *ngFor="let option of currentQuestion.options">

@@ -1,5 +1,5 @@
-<div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="heading-group-{{this.collection.id}}" role="button" data-toggle="collapse"
+<div class="card">
+    <div class="card-header" role="tab" id="heading-group-{{this.collection.id}}" role="button" data-toggle="collapse"
         [attr.href]="'#collapse-group-' + this.collection.id" [attr.aria-expanded]="this.collection.closed ? 'false' : 'true'"
         [attr.aria-controls]="'collapse-group-' + this.collection.id" (click)="this.collection.closed = !this.collection.closed">
         <h3>
@@ -7,8 +7,8 @@
             {{ this.collection.name }}
         </h3>
     </div>
-    <div id="collapse-group-{{this.collection.id}}" class="panel-collapse collapse in" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.collection.id">
-        <div class="panel-body">
+    <div id="collapse-group-{{this.collection.id}}" class="collapse in" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.collection.id">
+        <div class="card-body">
             <div *ngFor="let assessmentGroup of this.collection.assessment_groups">
                 <h4>{{assessmentGroup.name}}</h4>
                 <form class="row" method="POST" action="{{ this.redirectUrl }}"
@@ -16,7 +16,7 @@
                     <div class="col-6 qc-select-row">
                         <h5 class="admin-assessment-name">
                             {{ assessment.name }}
-                            <span *ngIf="assessment.custom_activity_id" class="label label-info qc-label-custom">Custom</span>
+                            <span *ngIf="assessment.custom_activity_id" class="badge badge-info qc-label-custom">Custom</span>
                         </h5>
                     </div>
                     <div class="col-6 qc-select-row">
