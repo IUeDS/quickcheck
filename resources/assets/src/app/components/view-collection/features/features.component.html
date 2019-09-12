@@ -11,7 +11,7 @@
             </h3>
             <input class="tgl tgl-ios sr-only" type="checkbox" id="feature-{{collectionFeature.id}}"
                 [(ngModel)]="collectionFeature.enabled"
-                ng-checked="collectionFeature.enabled == 'true'"
+                [checked]="collectionFeature.enabled == 'true'"
                 (click)="this.toggleFeature(collectionFeature)"
                 *ngIf="!this.readOnly">
             <label class="tgl-btn qc-feature-toggle-btn" for="feature-{{collectionFeature.id}}" *ngIf="!this.readOnly"><span class="sr-only">Toggle for feature {{collectionFeature.feature.name}}</span></label>

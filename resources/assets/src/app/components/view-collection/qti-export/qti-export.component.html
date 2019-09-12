@@ -10,7 +10,7 @@
                 <li>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" (click)="this.toggleQtiExportCheckAll()" ng-checked="this.checkAll">
+                            <input type="checkbox" (click)="this.toggleQtiExportCheckAll()" [checked]="this.checkAll">
                             All quick checks in this set
                         </label>
                     </div>
@@ -22,7 +22,7 @@
                                     <li *ngIf="!assessment.custom_activity_id">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" (click)="this.toggleAssessmentExport(assessment.id.toString())" ng-checked="this.assessmentList[assessment.id.toString()]">
+                                                <input type="checkbox" (click)="this.toggleAssessmentExport(assessment.id.toString())" [checked]="this.assessmentList[assessment.id.toString()]">
                                                 {{assessment.name}}
                                             </label>
                                         </div>

@@ -36,7 +36,7 @@
                         <input class="tgl tgl-ios sr-only" type="checkbox"
                             id="qc-student-results-toggle"
                             [(ngModel)]="this.isResultsByStudentToggled"
-                            ng-checked="this.isResultsByStudentToggled == 'true'"
+                            [checked]="this.isResultsByStudentToggled == 'true'"
                             (click)="this.toggleStudentResultsView()">
                         <label class="tgl-btn inline-block" for="qc-student-results-toggle"><span class="sr-only">Toggle to view results by student</span></label>
                         <p class="qc-toggle-student-results-text">{{ this.isResultsByStudentToggled == 'true' ? 'Hide' : 'View' }} results by student</p>

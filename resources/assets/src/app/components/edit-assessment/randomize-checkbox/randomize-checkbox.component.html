@@ -2,7 +2,7 @@
     <input type="checkbox" class="qc-randomize-checkbox" id="randomize-{{this.question.id}}"
         (click)="this.toggleRandomized()"
         [disabled]="this.readOnly"
-        ng-checked="this.isRandomized()">
+        [checked]="this.isRandomized()">
     <label for="randomize-{{this.question.id}}">
         Randomize options
         <span class="sr-only">for question #{{ this.question.question_order }}</span>

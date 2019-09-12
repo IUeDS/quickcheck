@@ -52,7 +52,7 @@
                         <label>
                             <input type="checkbox" id="edit-custom-group"
                                 [(ngModel)]="this.editingData.group_required"
-                                ng-checked="this.editingData.group_required == 'true'"
+                                [checked]="this.editingData.group_required == 'true'"
                                 (click)="this.toggleCustomGroupRequired()">
                             Group required (get group the student belongs to, if applicable, and append as query string on launch)
                         </label>

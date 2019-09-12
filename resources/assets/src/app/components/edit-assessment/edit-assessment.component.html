@@ -38,7 +38,7 @@
                                 <input type="checkbox" id="shuffle-question-order"
                                     (click)="this.toggleShuffled()"
                                     [disabled]="this.readOnly"
-                                    ng-checked="this.assessment.shuffled == 'true'">
+                                    [checked]="this.assessment.shuffled == 'true'">
                                 <label for="shuffle-question-order">Shuffle question order</label>
                             </div>
                         </div>

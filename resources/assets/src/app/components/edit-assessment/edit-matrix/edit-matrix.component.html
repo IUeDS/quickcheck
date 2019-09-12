@@ -61,7 +61,7 @@
                         <p class="sr-only" id="matrixrow-{{row.id}}-column-{{column.id}}">Check this box to match {{row.answer_text}} to {{column.answer_text}}</p>
                         <label>
                             <input type="checkbox" name="{{row.id}}" value="{{column.answer_text}}"
-                                ng-checked="row.columnAnswerId == column.id"
+                                [checked]="row.columnAnswerId == column.id"
                                 (click)='this.onSelect(column.id, row)'
                                 [attr.aria-labelled-by]="'matrixrow-' + row.id + '-column-' + column.id"
                                 [disabled]="this.readOnly">

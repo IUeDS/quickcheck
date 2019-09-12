@@ -5,7 +5,7 @@
             <input type="radio" name="{{this.currentQuestion.id}}"
                     value="{{answerOption.answer_text}}"
                     id="{{answerOption.id}}"
-                    ng-checked="false"
+                    [checked]="false"
                     [(ngModel)]="answerOption.selected"
                     (click)="this.onAnswerSelected(answerOption)">
             <label [innerHTML]="answerOption.answer_text | safe: 'html'" for="{{answerOption.id}}"></label>

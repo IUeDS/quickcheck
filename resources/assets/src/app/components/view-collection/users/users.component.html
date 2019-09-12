@@ -81,7 +81,7 @@
                         <td>
                             <div class="checkbox">
                                 <label [ngClass]="{'strike-through': user.deleted}">
-                                    <input type="checkbox" [(ngModel)]="user.readOnly" ng-checked="user.readOnly == 'true'" [disabled]="user.deleted" (click)="this.toggleReadOnly(user)"> Read-only permissions <span class="sr-only">for user {{user.username}}</span>
+                                    <input type="checkbox" [(ngModel)]="user.readOnly" [checked]="user.readOnly == 'true'" [disabled]="user.deleted" (click)="this.toggleReadOnly(user)"> Read-only permissions <span class="sr-only">for user {{user.username}}</span>
                                 </label>
                             </div>
                         </td>

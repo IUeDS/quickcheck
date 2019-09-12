@@ -75,7 +75,7 @@
                                 <legend class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></legend>
                                 <div class="form-check" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
                                     <input type="radio" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" disabled
-                                        ng-checked="answerOption.studentAnswer" id="{{answerOption.id}}">
+                                        [checked]="answerOption.studentAnswer" id="{{answerOption.id}}">
                                     <label class="qc-mc-option-response" for="{{answerOption.id}}">
                                         <span [innerHTML]="answerOption.answer_text | safe: 'html'"></span>
                                         <span *ngIf="answerOption.correct === 'true'" class="qc-correct-text"> <span class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></span> Correct answer</span>
@@ -88,7 +88,7 @@
                             <fieldset>
                                 <legend class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></legend>
                                 <div class="checkbox" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
-                                    <input type="checkbox" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" ng-checked="answerOption.studentAnswer" disabled id="{{answerOption.id}}">
+                                    <input type="checkbox" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" [checked]="answerOption.studentAnswer" disabled id="{{answerOption.id}}">
                                     <label for="{{answerOption.id}}">
                                         <span [innerHTML]="answerOption.answer_text | safe: 'html'"></span>
                                         <span *ngIf="answerOption.correct === 'true'" class="qc-correct-text"> <span class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></span> Correct answer</span>
@@ -118,7 +118,7 @@
                                             <div class="checkbox">
                                                 <label class="sr-only" for="matrixrow-{{row.id}}-column-{{column.id}}">Check this box to match {{row.answer_text}} to {{column.answer_text}}</label>
                                                 <input type="checkbox" name="{{row.id}}" value="{{column.answer_text}}" disabled
-                                                ng-checked="row.studentAnswer.id == column.id"
+                                                [checked]="row.studentAnswer.id == column.id"
                                                 id="matrixrow-{{row.id}}-column-{{column.id}}">
                                                 <span *ngIf="this.isMatrixAnswerCorrect(row, column)" class="qc-correct-text"> <span class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></span> Correct answer</span>
                                             </div>
@@ -148,7 +148,7 @@
                                                 <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
                                                         value="{{selectableAnswer.id}}"
                                                         [innerHTML]="selectableAnswer.option_text | safe: 'html'"
-                                                        ng-selected="selectableAnswer.id == prompt.studentAnswer.id">
+                                                        [selected]="selectableAnswer.id == prompt.studentAnswer.id">
                                                 </option>
                                             </select>
                                         </td>
@@ -173,7 +173,7 @@
                                             <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
                                                 value="{{selectableAnswer.id}}"
                                                 [innerHTML]="selectableAnswer.answer_text | safe: 'html'"
-                                                ng-selected="selectableAnswer.id == prompt.studentAnswer.id">
+                                                [selected]="selectableAnswer.id == prompt.studentAnswer.id">
                                             </option>
                                         </select>
                                     </span>
@@ -192,7 +192,7 @@
                                             <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
                                                 value="{{selectableAnswer.id}}"
                                                 [innerHTML]="selectableAnswer.answer_text | safe: 'html'"
-                                                ng-selected="prompt.dropdown_answer_text == selectableAnswer.answer_text">
+                                                [selected]="prompt.dropdown_answer_text == selectableAnswer.answer_text">
                                             </option>
                                         </select>
                                     </span>

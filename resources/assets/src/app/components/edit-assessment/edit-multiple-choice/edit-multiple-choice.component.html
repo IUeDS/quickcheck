@@ -82,7 +82,7 @@
         <input type="checkbox" id="multiple-correct-{{this.question.id}}"
             (click)="this.toggleMultipleCorrect()"
             [disabled]="this.readOnly"
-            ng-checked="this.isMultipleCorrect()">
+            [checked]="this.isMultipleCorrect()">
         <label for="multiple-correct-{{this.question.id}}">Multiple correct <span class="sr-only">for question #{{ this.question.question_order }} </span>(question keeps radio buttons and only allows a single answer, but students can get credit for any of the responses marked correct)</label>
     </div>
 </div>
