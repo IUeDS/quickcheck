@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CustomActivityService } from '../../../services/custom-activity.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { CustomActivityService } from '../../../services/custom-activity.service
   styleUrls: ['./add-custom-activity.component.scss']
 })
 export class AddCustomActivityComponent implements OnInit {
+  @Input() utilitiesService;
+  @Output() onSave = new EventEmitter();
+
   customActivityData = {};
   isOpen = false;
 

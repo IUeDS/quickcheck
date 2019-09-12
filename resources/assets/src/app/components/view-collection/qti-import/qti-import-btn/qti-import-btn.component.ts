@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'qc-qti-import-btn',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./qti-import-btn.component.scss']
 })
 export class QtiImportBtnComponent implements OnInit {
+  @Input() isImportingQti;
 
   constructor() { }
 

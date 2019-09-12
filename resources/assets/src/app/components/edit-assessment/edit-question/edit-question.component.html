@@ -71,52 +71,52 @@
 
         <!-- show question options based on question type -->
         <qc-edit-multiple-choice *ngIf="this.isQuestionType('multipleChoice')"
-            qc-on-question-edited="this.onSubComponentEdited($event)"
-            qc-on-saved-option-deleted="this.onSavedOptionDeleted($event)"
-            qc-question="this.question"
-            qc-read-only="this.readOnly">
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
         </qc-edit-multiple-choice>
 
         <qc-edit-multiple-correct *ngIf="this.isQuestionType('multipleCorrect')"
-            qc-on-question-edited="this.onSubComponentEdited($event)"
-            qc-on-saved-option-deleted="this.onSavedOptionDeleted($event)"
-            qc-question="this.question"
-            qc-read-only="this.readOnly">
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
         </qc-edit-multiple-correct>
 
         <qc-edit-matching *ngIf="this.isQuestionType('matching')"
-            qc-on-question-edited="this.onSubComponentEdited($event)"
-            qc-on-saved-option-deleted="this.onSavedOptionDeleted($event)"
-            qc-question="this.question"
-            qc-read-only="this.readOnly">
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
         </qc-edit-matching>
 
         <qc-edit-dropdowns *ngIf="this.isQuestionType('dropdowns')"
-            qc-on-question-edited="this.onSubComponentEdited($event)"
-            qc-on-saved-option-deleted="this.onSavedOptionDeleted($event)"
-            qc-question="this.question"
-            qc-read-only="this.readOnly">
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
         </qc-edit-dropdowns>
 
         <qc-edit-matrix *ngIf="this.isQuestionType('matrix')"
-            qc-on-question-edited="this.onSubComponentEdited($event)"
-            qc-on-saved-option-deleted="this.onSavedOptionDeleted($event)"
-            qc-question="this.question"
-            qc-read-only="this.readOnly">
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
         </qc-edit-matrix>
 
         <qc-edit-textmatch *ngIf="this.isQuestionType('textmatch')"
-            qc-on-question-edited="this.onSubComponentEdited($event)"
-            qc-on-saved-option-deleted="this.onSavedOptionDeleted($event)"
-            qc-question="this.question"
-            qc-read-only="this.readOnly">
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
         </qc-edit-textmatch>
 
         <qc-edit-numerical *ngIf="this.isQuestionType('numerical')"
-            qc-on-question-edited="this.onSubComponentEdited($event)"
-            qc-on-saved-option-deleted="this.onSavedOptionDeleted($event)"
-            qc-question="this.question"
-            qc-read-only="this.readOnly">
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
         </qc-edit-numerical>
     </div>
 </div>

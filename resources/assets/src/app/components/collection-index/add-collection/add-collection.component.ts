@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CollectionService } from '../../../services/collection.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { CollectionService } from '../../../services/collection.service';
   styleUrls: ['./add-collection.component.scss']
 })
 export class AddCollectionComponent implements OnInit {
+  @Input() utilitiesService;
+  @Output() onSave = new EventEmitter();
+
   isAddingCollection = false;
   newCollection = {};
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'qc-feedback-modal',
@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./feedback-modal.component.scss']
 })
 export class FeedbackModalComponent implements OnInit {
+  @Input() feedback;
+  @Input() isCorrect;
+  @Input() isNextBtnDisabled;
+  @Output() onNextQuestion = new EventEmitter();
 
   constructor() { }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'qc-qti-import',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./qti-import.component.scss']
 })
 export class QtiImportComponent implements OnInit {
+  @Input() assessmentGroups;
+  @Input() isImportingQti;
 
   assessment_group_id = null;
   criticalNotices = null;

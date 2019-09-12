@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'qc-error-modal',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./error-modal.component.scss']
 })
 export class ErrorModalComponent implements OnInit {
+  @Input() errorMessage;
 
   constructor() { }
 

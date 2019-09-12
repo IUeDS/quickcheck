@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
 import { UtilitiesService } from '../../../services/utilities.service';
 
@@ -8,6 +8,11 @@ import { UtilitiesService } from '../../../services/utilities.service';
   styleUrls: ['./edit-multiple-choice.component.scss']
 })
 export class EditMultipleChoiceComponent implements OnInit {
+  @Input() question;
+  @Input() readOnly;
+  @Output() onQuestionEdited = new EventEmitter();
+  @Output() onSavedOptionDeleted = new EventEmitter();
+
   defaultOptionCount = 4;
   isRichContentToggled = false;
   tinymceOptions = {};

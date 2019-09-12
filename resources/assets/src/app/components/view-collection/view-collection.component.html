@@ -1,8 +1,8 @@
-<qc-nav qc-current-page="this.currentPage"></qc-nav>
+<qc-nav [currentPage]="this.currentPage"></qc-nav>
 <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
 <div class="row">
     <div class="col-12">
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" qc-utilitiesService="this.utilitiesService"></qc-error-message>
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
         <div >
             <div class="row">
                 <div class="col-6">
@@ -13,17 +13,13 @@
                 </div>
                 <div class="col-6 text-right" *ngIf="!this.readOnly">
                     <div class="form-group">
-                        <qc-qti-import-btn
-                            qc-is-importing-qti="this.isImportingQti">
-                        </qc-qti-import-btn>
-                        <qc-qti-export-btn
-                            qc-is-exporting-qti="this.isExportingQti">
-                        </qc-qti-export-btn>
+                        <qc-qti-import-btn [isImportingQti]="this.isImportingQti"></qc-qti-import-btn>
+                        <qc-qti-export-btn [isExportingQti]="this.isExportingQti"></qc-qti-export-btn>
                     </div>
                     <qc-toggle-public-collection
                         *ngIf="this.admin && this.collection"
-                        qc-collection="this.collection"
-                        qc-utilitiesService="this.utilitiesService">
+                        [collection]="this.collection"
+                        [utilitiesService]="this.utilitiesService">
                     </qc-toggle-public-collection>
                 </div>
             </div>
@@ -58,44 +54,44 @@
                 </div>
             </div>
             <qc-qti-import [hidden]="!this.isImportingQti"
-                qc-assessment-groups="this.assessmentGroups"
-                qc-is-importing-qti="this.isImportingQti">
+                [assessmentGroups]="this.assessmentGroups"
+                [isImportingQti]="this.isImportingQti">
             </qc-qti-import>
 
             <qc-qti-export [hidden]="!this.isExportingQti"
-                qc-assessment-groups="this.assessmentGroups"
-                qc-is-exporting-qti="this.isExportingQti">
+                [assessmentGroups]="this.assessmentGroups"
+                [isExportingQti]="this.isExportingQti">
             </qc-qti-export>
         </div>
         <div >
             <qc-users
-                qc-collection-id="this.collectionId"
-                qc-current-user="this.currentUser"
-                qc-read-only="this.readOnly"
-                qc-utilitiesService="this.utilitiesService">
+                [collectionId]="this.collectionId"
+                [currentUser]="this.currentUser"
+                [readOnly]="this.readOnly"
+                [utilitiesService]="this.utilitiesService">
             </qc-users>
             <qc-features
-                qc-collection-id="this.collectionId"
-                qc-read-only="this.readOnly"
-                qc-utilitiesService="this.utilitiesService">
+                [collectionId]="this.collectionId"
+                [readOnly]="this.readOnly"
+                [utilitiesService]="this.utilitiesService">
             </qc-features>
             <h2 class="qc-h1-style">Subsets</h2>
             <qc-add-assessment-group
                 *ngIf="!this.readOnly"
-                qc-collection-id="this.collectionId"
-                qc-on-save="this.onAssessmentGroupSaved($event)"
-                qc-utilitiesService="this.utilitiesService">
+                [collectionId]="this.collectionId"
+                (onSave)="this.onAssessmentGroupSaved($event)"
+                [utilitiesService]="this.utilitiesService">
             </qc-add-assessment-group>
             <p *ngIf="!this.assessmentGroups.length && !this.readOnly && !this.utilitiesService.loading" class="lead qc-subset-instructions">Looks like you haven't added a subset yet. A subset is a way to organize your quick checks. All quick checks must belong to a subset group. Click the button to add a new subset to get started.</p>
             <div class="panel-group qc-panel-group" id="accordion" role="tablist" aria-multiselectable="true" *ngIf="this.assessmentGroups.length">
                 <qc-assessment-group
                     *ngFor="let assessmentGroup of this.assessmentGroups; index as $index;"
-                    qc-assessment-group-data="assessmentGroup"
-                    qc-assessment-group-index="$index"
-                    qc-on-assessment-copy="this.onAssessmentCopy($event)"
-                    qc-on-delete="this.onAssessmentGroupDeleted($event)"
-                    qc-read-only="this.readOnly"
-                    qc-utilitiesService="this.utilitiesService">
+                    [assessmentGroup]="assessmentGroup"
+                    [assessmentGroupIndex]="$index"
+                    (onAssessmentCopy)="this.onAssessmentCopy($event)"
+                    (onDelete)="this.onAssessmentGroupDeleted($event)"
+                    [readOnly]="this.readOnly"
+                    [utilitiesService]="this.utilitiesService">
                 </qc-assessment-group>
             </div>
         </div>

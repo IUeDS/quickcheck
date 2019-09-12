@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 
 @Component({
@@ -7,6 +7,8 @@ import { UserService } from '../../../services/user.service';
   styleUrls: ['./invite-admin.component.scss']
 })
 export class InviteAdminComponent implements OnInit {
+  @Input() utilitiesService;
+
   isEnteringUsername = false;
   formOpen = false;
   username = null;

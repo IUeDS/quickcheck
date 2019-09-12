@@ -1,8 +1,8 @@
 <div class="row">
     <div class="col-12">
         <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" qc-utilitiesService="this.utilitiesService"></qc-error-message>
-        <div [hidden]="!!this.utilitiesService.loading">
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+        <div [hidden]="this.utilitiesService.loading">
             <h1>Select a quick check</h1>
             <p>See the <a href="/documentation#embedding-assessments" target="_blank">embedding section in the documentation</a> for more information on embedding quick checks.</p>
             <div class="row">
@@ -28,18 +28,18 @@
                     <div *ngIf="this.adminCollectionData.viewAll">
                         <qc-select-collection-panel
                             *ngFor="let collection of this.adminCollectionData.collections"
-                            qc-collection="collection"
-                            qc-launch-url-stem="this.launchUrlStem"
-                            qc-redirect-url="this.redirectUrl">
+                            [collection]="collection"
+                            [launchUrlStem]="this.launchUrlStem"
+                            [redirectUrl]="this.redirectUrl">
                         </qc-select-collection-panel>
                     </div>
                     <div *ngIf="!this.adminCollectionData.viewAll">
                         <qc-select-collection-panel
                             *ngFor="let membership of this.memberships"
-                            qc-membership="membership"
-                            qc-collection="membership.collection"
-                            qc-launch-url-stem="this.launchUrlStem"
-                            qc-redirect-url="this.redirectUrl">
+                            [membership]="membership"
+                            [collection]="membership.collection"
+                            [launchUrlStem]="this.launchUrlStem"
+                            [redirectUrl]="this.redirectUrl">
                         </qc-select-collection-panel>
                     </div>
                 </div>

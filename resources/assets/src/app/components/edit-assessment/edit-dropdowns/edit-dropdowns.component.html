@@ -36,11 +36,11 @@
                 </td>
                 <td>
                     <qc-delete-option-btn
-                        qc-index="$index"
-                        qc-on-delete="this.deletePrompt($event)"
-                        qc-option="prompt"
-                        qc-option-type-text="'dropdown pair'"
-                        qc-question="this.question"
+                        [index]="$index"
+                        (onDelete)="this.deletePrompt($event)"
+                        [option]="prompt"
+                        [optionTypeText]="'dropdown pair'"
+                        [question]="this.question"
                         *ngIf="!this.readOnly">
                     </qc-delete-option-btn>
                 </td>
@@ -70,11 +70,11 @@
                 required
                 [disabled]="this.readOnly">
             <qc-delete-option-btn
-                qc-index="$index"
-                qc-on-delete="this.deleteDistractor($event)"
-                qc-option="distractor"
-                qc-option-type-text="'dropdown distractor'"
-                qc-question="this.question"
+                [index]="$index"
+                (onDelete)="this.deleteDistractor($event)"
+                [option]="distractor"
+                [optionTypeText]="'dropdown distractor'"
+                [question]="this.question"
                 *ngIf="!this.readOnly">
             </qc-delete-option-btn>
         </div>
@@ -84,7 +84,7 @@
         <span class="sr-only">for question #{{ this.question.question_order }}</span>
     </button>
     <qc-custom-feedback *ngIf="!this.readOnly"
-        qc-on-question-edited="this.onSubComponentEdited($event)"
-        qc-question="this.question">
+        (onQuestionEdited)="this.onSubComponentEdited($event)"
+        [question]="this.question">
     </qc-custom-feedback>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ManageService } from '../../../services/manage.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { ManageService } from '../../../services/manage.service';
   styleUrls: ['./student-analytics.component.scss']
 })
 export class StudentAnalyticsComponent implements OnInit {
+  @Input() studentId;
+  @Input() studentName;
+  @Input() utilitiesService;
 
   averageRetries = 0;
   averageScore = 0;

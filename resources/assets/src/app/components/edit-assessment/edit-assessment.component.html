@@ -63,23 +63,23 @@
                 </div>
             </div>
             <qc-edit-question *ngFor="let question of this.questions; index as $index;"
-                qc-index="$index"
-                qc-on-delete="this.onQuestionDeleted($event)"
-                qc-on-question-edited="this.onQuestionEdited($event)"
-                qc-on-question-reordered="this.onQuestionReordered($event)"
-                qc-question="question"
-                qc-read-only="this.readOnly"
-                qc-total-question-count="this.getQuestionCount()"
-                qc-utilitiesService="this.utilitiesService">
+                [questionIndex]="$index"
+                (onDelete)="this.onQuestionDeleted($event)"
+                (onQuestionEdited)="this.onQuestionEdited($event)"
+                (onQuestionReordered)="this.onQuestionReordered($event)"
+                [question]="question"
+                [readOnly]="this.readOnly"
+                [totalQuestionCount]="this.getQuestionCount()"
+                [utilitiesService]="this.utilitiesService">
             </qc-edit-question>
             <qc-custom-activity-selection
                 *ngIf="!this.isQuestionAdded() && this.canViewCustomActivity()"
-                qc-admin="this.admin"
-                qc-assessment="this.assessment"
-                qc-custom-activity="this.customActivity"
-                qc-custom-activity-added="this.customActivityAdded"
-                qc-read-only="this.readOnly"
-                qc-utilitiesService="this.utilitiesService">
+                [admin]="this.admin"
+                [assessment]="this.assessment"
+                [customActivity]="this.customActivity"
+                [customActivityAdded]="this.customActivityAdded"
+                [readOnly]="this.readOnly"
+                [utilitiesService]="this.utilitiesService">
             </qc-custom-activity-selection>
             <!-- if custom activity added, then can't add questions to quiz -->
             <div [hidden]="this.customActivityAdded" class="form-group" *ngIf="!this.readOnly">

@@ -14,20 +14,19 @@
         <div class="panel-body">
             <div *ngIf="!this.responseViewVisible">
                 <p *ngIf="this.dueAt" class="qc-due-at">Due at: {{ this.dueAt }}</p>
-                <qc-attempt-data
-                    *ngIf="!this.isAccordionClosed()"
-                    qc-attempts="this.attempts"
-                    qc-course-context="this.courseContext"
-                    qc-grades-loading="this.gradesLoading"
-                    qc-is-student="false"
-                    qc-is-visible="false"
-                    qc-large-class-size="false"
-                    qc-points-possible="this.pointsPossible"
-                    qc-show-responses="true"
-                    qc-submissions="this.submission"
-                    qc-users="this.user"
-                    qc-utilitiesService="this.utilitiesService"
-                    qc-view-responses="this.viewResponses($event)">
+                <qc-attempt-data *ngIf="!this.isAccordionClosed()"
+                    [attempts]="this.attempts"
+                    [courseContext]="this.courseContext"
+                    [gradesLoading]="this.gradesLoading"
+                    [isStudent]="false"
+                    [isVisible]="false"
+                    [largeClassSize]="false"
+                    [pointsPossible]="this.pointsPossible"
+                    [showResponses]="true"
+                    [submissions]="this.submission"
+                    [users]="this.user"
+                    [utilitiesService="this.utilitiesService"
+                    (viewResponses)="this.viewResponses($event)">
                 </qc-attempt-data>
             </div>
             <div *ngIf="this.responseViewVisible">
@@ -38,11 +37,11 @@
                 <h1 id="response-header" tabindex="-1">Responses for {{ this.responseAttempt.student.lis_person_name_given }} {{ this.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
                 <p class="lead">Starting at {{ this.utilitiesService.formatTimeWithTimeZone(this.responseAttempt.created_at, this.courseContext.time_zone) }}</p>
                 <qc-responses
-                    qc-attempt="this.responseAttempt"
-                    qc-course-context="this.courseContext"
-                    qc-is-student="false"
-                    qc-questions="this.questions"
-                    qc-responses="this.studentResponses">
+                    [attempt]="this.responseAttempt"
+                    [courseContext]="this.courseContext"
+                    [isStudent]="false"
+                    [questions]="this.questions"
+                    [responses]="this.studentResponses">
                 </qc-responses>
                 <span class="sr-only">
                     <!-- screenreader user will be moving down the page, so easier for the back button to be down here -->

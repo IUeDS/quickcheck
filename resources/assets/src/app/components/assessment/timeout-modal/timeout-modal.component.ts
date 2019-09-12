@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'qc-timeout-modal',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./timeout-modal.component.scss']
 })
 export class TimeoutModalComponent implements OnInit {
+  @Input() timeoutSecondsRemaining;
 
   countdownAnimation = null; //path for svg to animate
   countdownIncrement = 0; //how much of the circle to increment each repaint; calculated in $onInit
@@ -15,7 +16,6 @@ export class TimeoutModalComponent implements OnInit {
   timeoutFinished = false;
   timeoutFinishedTime = null;
   timeoutMsRemaining = 0;
-  timeoutSecondsRemaining = 0;
   timeoutStartedTime = null;
   timerInterval = null;
 

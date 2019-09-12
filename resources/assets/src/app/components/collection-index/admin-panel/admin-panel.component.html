@@ -4,10 +4,10 @@
     </div>
     <div class="panel-body">
         <qc-view-all-collections-toggle
-            qc-collection-data="this.collectionData"
-            qc-utilitiesService="this.utilitiesService">
+            [collectionData]="this.collectionData"
+            [utilitiesService]="this.utilitiesService">
         </qc-view-all-collections-toggle>
-        <qc-invite-admin qc-utilitiesService="this.utilitiesService"></qc-invite-admin>
-        <qc-custom-activities-panel qc-utilitiesService="this.utilitiesService"></qc-custom-activities-panel>
+        <qc-invite-admin [utilitiesService]="this.utilitiesService"></qc-invite-admin>
+        <qc-custom-activities-panel [utilitiesService]="this.utilitiesService"></qc-custom-activities-panel>
     </div>
 </div>

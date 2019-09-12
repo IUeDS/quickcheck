@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ManageService } from '../../../services/manage.service';
 
 @Component({
@@ -7,6 +7,11 @@ import { ManageService } from '../../../services/manage.service';
   styleUrls: ['./auto-grade.component.scss']
 })
 export class AutoGradeComponent implements OnInit {
+  @Input() pointsPossible;
+  @Input() submissions;
+  @Input() ungradedAttempts;
+  @Input() utilitiesService;
+  @Output() onSuccess = new EventEmitter();
 
   error = false;
   graded = false;

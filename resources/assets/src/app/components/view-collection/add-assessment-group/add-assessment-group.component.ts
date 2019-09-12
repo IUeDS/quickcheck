@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CollectionService } from '../../../services/collection.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { CollectionService } from '../../../services/collection.service';
   styleUrls: ['./add-assessment-group.component.scss']
 })
 export class AddAssessmentGroupComponent implements OnInit {
+  @Input() collectionId;
+  @Input() utilitiesService;
+  @Output() onSave = new EventEmitter();
 
   formOpen = false;
   newAssessmentGroup = null;

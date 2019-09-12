@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
@@ -7,6 +7,10 @@ import { UtilitiesService } from '../../../services/utilities.service';
   styleUrls: ['./matching.component.scss']
 })
 export class MatchingComponent implements OnInit {
+  @Input() currentQuestion;
+  @Input() incorrectRows;
+  @Output() onAnswerSelection = new EventEmitter();
+
   prompts = [];
   selectableAnswers = [];
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
 
 @Component({
@@ -7,6 +7,10 @@ import { EditAssessmentConfigService } from '../../../services/edit-assessment-c
   styleUrls: ['./toggle-correct-btn.component.scss']
 })
 export class ToggleCorrectBtnComponent implements OnInit {
+  @Input() index;
+  @Input() option;
+  @Input() question;
+  @Output() onToggleCorrect = new EventEmitter();
 
   questionTypes = {};
 

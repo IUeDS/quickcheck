@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ManageService } from '../../../services/manage.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { ManageService } from '../../../services/manage.service';
   styleUrls: ['./release.component.scss']
 })
 export class ReleaseComponent implements OnInit {
+  @Input() assessmentId;
+  @Input() release;
+  @Input() utilitiesService;
 
   error = false;
   success = false;

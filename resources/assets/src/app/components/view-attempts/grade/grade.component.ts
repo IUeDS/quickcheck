@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ManageService } from '../../../services/manage.service';
 import { Submission } from '../../../classes/submission';
 
@@ -8,6 +8,11 @@ import { Submission } from '../../../classes/submission';
   styleUrls: ['./grade.component.scss']
 })
 export class GradeComponent implements OnInit {
+  @Input() attempt;
+  @Input() pointsPossible;
+  @Input() submissions;
+  @Input() users;
+  @Input() utilitiesService;
 
   editedGradeValue = '';
   editingGrade = false;

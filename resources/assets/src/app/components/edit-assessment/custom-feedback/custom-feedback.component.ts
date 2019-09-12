@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
 import { UtilitiesService } from '../../../services/utilities.service';
 
@@ -8,6 +8,8 @@ import { UtilitiesService } from '../../../services/utilities.service';
   styleUrls: ['./custom-feedback.component.scss']
 })
 export class CustomFeedbackComponent implements OnInit {
+  @Input() question;
+  @Output() onQuestionEdited = new EventEmitter();
 
   isRichContentToggled = false;
   perResponseFeedback = false;

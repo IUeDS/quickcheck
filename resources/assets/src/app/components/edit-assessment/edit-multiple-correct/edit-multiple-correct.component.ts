@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
 
@@ -8,6 +8,10 @@ import { EditAssessmentConfigService } from '../../../services/edit-assessment-c
   styleUrls: ['./edit-multiple-correct.component.scss']
 })
 export class EditMultipleCorrectComponent implements OnInit {
+  @Input() question;
+  @Input() readOnly;
+  @Output() onQuestionEdited = new EventEmitter();
+  @Output() onSavedOptionDeleted = new EventEmitter();
 
   constructor(private editAssessmentConfig: EditAssessmentConfigService, private utilitiesService: UtilitiesService) { }
 

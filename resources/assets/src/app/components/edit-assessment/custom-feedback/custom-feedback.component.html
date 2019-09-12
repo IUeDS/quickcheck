@@ -13,9 +13,9 @@
     </span>
     <h3 class="qc-feedback-header">Custom Feedback</h3>
     <qc-rich-content-toggle
-        qc-on-rich-content-toggle="this.onRichContentToggle($event)"
-        qc-question="this.question"
-        qc-toggle-type="'feedback'">
+        (onRichContentToggle)="this.onRichContentToggle($event)"
+        [question]="this.question"
+        [toggleType]="'feedback'">
     </qc-rich-content-toggle>
     <div *ngIf="!this.perResponseFeedback" class="qc-custom-feedback-general">
         <div class="form-group qc-custom-feedback-correct">

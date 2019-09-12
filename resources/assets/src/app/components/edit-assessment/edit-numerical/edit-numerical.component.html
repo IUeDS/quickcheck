@@ -6,12 +6,12 @@
 
             <!-- delete button -->
             <qc-delete-option-btn
-                qc-index="$index"
-                qc-on-delete="this.deleteOption($event)"
-                qc-option="option"
-                qc-option-type-text="'numerical option'"
-                qc-question="this.question"
-                *ngIf="!this.readOnly">
+                [index]="$index"
+                (onDelete)="this.deleteOption($event)"
+                [option]="option"
+                [optionTypeText]="'numerical option'"
+                [question]="this.question"
+                *ngIf="!this.readOnly && this.isRichContentToggled">
             </qc-delete-option-btn>
 
             <!-- answer input -->
@@ -100,8 +100,8 @@
             <span class="sr-only">to question #{{ this.question.question_order }}</span>
         </button>
         <qc-custom-feedback *ngIf="!this.readOnly"
-            qc-on-question-edited="this.onSubComponentEdited($event)"
-            qc-question="this.question">
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            [question]="this.question">
         </qc-custom-feedback>
         <hr>
     </div>

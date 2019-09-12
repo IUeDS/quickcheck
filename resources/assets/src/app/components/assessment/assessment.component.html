@@ -12,40 +12,40 @@
             </h2>
             <div *ngIf="this.currentQuestion" [attr.aria-hidden]="this.modalVisible ? 'true' : 'false'">
                 <qc-multiple-choice *ngIf="this.isQuestionType('multiple_choice')"
-                    qc-current-question="this.currentQuestion"
-                    qc-on-answer-selection="this.onAnswerSelection($event)">
+                    [currentQuestion]="this.currentQuestion"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-multiple-choice>
 
                 <qc-multiple-correct *ngIf="this.isQuestionType('multiple_correct')"
-                    qc-current-question="this.currentQuestion"
-                    qc-on-answer-selection="this.onAnswerSelection($event)">
+                    [currentQuestion]="this.currentQuestion"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-multiple-correct>
 
                 <qc-matrix *ngIf="this.isQuestionType('matrix')"
-                    qc-current-question="this.currentQuestion"
-                    qc-incorrect-rows="this.incorrectRows"
-                    qc-on-answer-selection="this.onAnswerSelection($event)">
+                    [currentQuestion]="this.currentQuestion"
+                    [incorrectRows]="this.incorrectRows"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-matrix>
 
                 <qc-matching *ngIf="this.isQuestionType('matching')"
-                    qc-current-question="this.currentQuestion"
-                    qc-incorrect-rows="this.incorrectRows"
-                    qc-on-answer-selection="this.onAnswerSelection($event)">
+                    [currentQuestion]="this.currentQuestion"
+                    [incorrectRows]="this.incorrectRows"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-matching>
 
                 <qc-dropdowns *ngIf="this.isQuestionType('dropdown')"
-                    qc-current-question="this.currentQuestion"
-                    qc-on-answer-selection="this.onAnswerSelection($event)">
+                    [currentQuestion]="this.currentQuestion"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-dropdowns>
 
                 <qc-textmatch *ngIf="this.isQuestionType('textmatch')"
-                    qc-current-question="this.currentQuestion"
-                    qc-on-answer-selection="this.onAnswerSelection($event)">
+                    [currentQuestion]="this.currentQuestion"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-textmatch>
 
                 <qc-numerical *ngIf="this.isQuestionType('numerical')"
-                    qc-current-question="this.currentQuestion"
-                    qc-on-answer-selection="this.onAnswerSelection($event)">
+                    [currentQuestion]="this.currentQuestion"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-numerical>
             </div>
         </div>
@@ -53,12 +53,12 @@
             <div class="col-12">
                 <div class="qc-assessment-button-area">
                     <qc-row-feedback *ngIf="this.incorrectRows"
-                        qc-feedback="this.feedback"
-                        qc-incorrect-rows="this.incorrectRows"
-                        qc-is-correct="this.isCorrect"
-                        qc-is-next-btn-disabled="this.isNextBtnDisabled"
-                        qc-on-continue="this.nextQuestion()"
-                        qc-partial-credit="this.partialCredit">
+                        [feedback]="this.feedback"
+                        [incorrectRows]="this.incorrectRows"
+                        [isCorrect]="this.isCorrect"
+                        [isNextBtnDisabled]="this.isNextBtnDisabled"
+                        (onContinue)="this.nextQuestion()"
+                        [partialCredit]="this.partialCredit">
                     </qc-row-feedback>
                     <button class="qc-submit-response" [disabled]="this.isSubmitDisabled()" (click)="this.submitAnswer()">Submit</button>
                     <div class="qc-current-score" aria-live="assertive" aria-atomic="true">{{ this.score }} / {{ this.pointsPossible }} questions correct</div>
@@ -67,22 +67,22 @@
             </div>
         </div>
         <qc-feedback-modal
-            qc-feedback="this.feedback"
-            qc-is-correct="this.isCorrect"
-            qc-is-next-btn-disabled="this.isNextBtnDisabled"
-            qc-on-next-question="this.nextQuestion()">
+            [feedback]="this.feedback"
+            [isCorrect]="this.isCorrect"
+            [isNextBtnDisabled]="this.isNextBtnDisabled"
+            (onNextQuestion)="this.nextQuestion()">
         </qc-feedback-modal>
         <qc-completion-modal
-            qc-attempt-id="this.attemptId"
-            qc-complete="this.complete"
-            qc-points-possible="this.pointsPossible"
-            qc-score="this.score">
+            [attemptId]="this.attemptId"
+            [complete]="this.complete"
+            [pointsPossible]="this.pointsPossible"
+            [score]="this.score">
         </qc-completion-modal>
         <qc-timeout-modal
-            qc-timeout-seconds-remaining="this.timeoutSecondsRemaining">
+            [timeoutSecondsRemaining]="this.timeoutSecondsRemaining">
         </qc-timeout-modal>
         <qc-error-modal *ngIf="this.errorMessage"
-            qc-error-message="this.errorMessage">
+            [errorMessage]="this.errorMessage">
         </qc-error-modal>
     </div>
 </main>

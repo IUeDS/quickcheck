@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
@@ -7,6 +7,11 @@ import { UtilitiesService } from '../../../services/utilities.service';
   styleUrls: ['./responses.component.scss']
 })
 export class ResponsesComponent implements OnInit {
+  @Input('attempt') attemptData;
+  @Input() courseContext;
+  @Input('responses') studentResponsesData;
+  @Input('questions') questionsData;
+  @Input('isStudent') isStudentData;
 
   showTableView = false;
   correctIconClass = 'fa-long-arrow-right'; //so we can easily swap out the correct icon

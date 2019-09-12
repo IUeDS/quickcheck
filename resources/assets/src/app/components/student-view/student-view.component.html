@@ -2,10 +2,10 @@
 <div class="row section-white">
     <div class="col-12" >
         <h1>Results</h1>
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" qc-utilitiesService="this.utilitiesService"></qc-error-message>
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
         <qc-releases *ngIf="this.view == 'releases'" [hidden]="this.utilitiesService.loading"
-            qc-on-view-attempts="this.viewAttempts($event)"
-            qc-utilitiesService="this.utilitiesService">
+            (onViewAttempts)="this.viewAttempts($event)"
+            [utilitiesService]="this.utilitiesService">
         </qc-releases>
         <div *ngIf="this.view == 'attempts'" [hidden]="this.utilitiesService.loading">
             <h2>Attempts for
@@ -14,25 +14,25 @@
             </h2>
             <a href='#' (click)="this.goBackToReleases()"><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to course results</a>
             <qc-attempt-data *ngIf="this.displayedAttempts.length"
-                qc-attempts="this.displayedAttempts"
-                qc-course-context="this.courseContext"
-                qc-is-student="true"
-                qc-is-visible="this.isAttemptsView()"
-                qc-large-class-size="false"
-                qc-show-responses="this.showResponses"
-                qc-utilitiesService="this.utilitiesService"
-                qc-view-responses="this.viewResponses($event)">
+                [attempts]="this.displayedAttempts"
+                [courseContext]="this.courseContext"
+                [isStudent]="true"
+                [isVisible]="this.isAttemptsView()"
+                [largeClassSize]="false"
+                [showResponses]="this.showResponses"
+                [utilitiesService="this.utilitiesService"
+                (viewResponses)="this.viewResponses($event)">
             </qc-attempt-data>
         </div>
         <div *ngIf="this.view == 'responses'" [hidden]="this.utilitiesService.loading">
             <h2 id="response-header" tabindex="-1">Responses for attempt starting at {{ this.utilitiesService.formatTimeWithTimeZone(this.responseAttempt.created_at, this.courseContext.time_zone) }}</h2>
             <a href='#' (click)="this.goBackToAttempts()"><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to attempts</a>
             <qc-responses
-                qc-attempt="this.responseAttempt"
-                qc-course-context="this.courseContext"
-                qc-is-student="true"
-                qc-questions="this.questions"
-                qc-responses="this.responses">
+                [attempt]="this.responseAttempt"
+                [courseContext]="this.courseContext"
+                [isStudent]="true"
+                [questions]="this.questions"
+                [responses]="this.responses">
             </qc-responses>
             <span class="sr-only">
                 <!-- screenreader user will be moving down the page, so easier for the back button to be down here -->

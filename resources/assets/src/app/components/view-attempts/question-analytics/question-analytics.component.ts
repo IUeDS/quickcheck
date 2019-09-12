@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
@@ -7,6 +7,7 @@ import { UtilitiesService } from '../../../services/utilities.service';
   styleUrls: ['./question-analytics.component.scss']
 })
 export class QuestionAnalyticsComponent implements OnInit {
+  @Input() question;
 
   constructor(private utilitiesService: UtilitiesService) { }
 

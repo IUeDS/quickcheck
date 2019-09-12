@@ -10,8 +10,8 @@
         <h3>Manage custom activities</h3>
         <p>Custom activities can be developed in html/css/js and function as assessments. The source files should first be uploaded within the directory "public/customActivities/".</p>
         <qc-add-custom-activity
-            qc-utilitiesService="this.utilitiesService"
-            qc-on-save="this.onSave($event)">
+            [utilitiesService]="this.utilitiesService"
+            (onSave)="this.onSave($event)">
         </qc-add-custom-activity>
         <div class="custom-activities-list">
             <h4 class="qc-custom-activities-header">Custom Activities</h4>
@@ -28,10 +28,10 @@
                     *ngIf="this.customActivities.length">
                     <qc-custom-activity
                         *ngFor="let customActivity of this.customActivities; index as $index;"
-                        qc-custom-activity-data="customActivity"
-                        qc-index="$index"
-                        qc-on-delete="this.onDelete($event)"
-                        qc-utilitiesService="this.utilitiesService">
+                        [customActivity]="customActivity"
+                        [index]="$index"
+                        (onDelete)="this.onDelete($event)"
+                        [utilitiesService]="this.utilitiesService">
                     </qc-custom-activity>
                 </div>
                 <div *ngIf="!this.customActivities.length" class="qc-custom-none-added">

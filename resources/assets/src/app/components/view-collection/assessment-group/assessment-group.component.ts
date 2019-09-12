@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AssessmentEditService } from '../../../services/assessment-edit.service';
 import { CollectionService } from '../../../services/collection.service';
 import { HttpService } from '../../../services/http.service';
@@ -9,6 +9,12 @@ import { HttpService } from '../../../services/http.service';
   styleUrls: ['./assessment-group.component.scss']
 })
 export class AssessmentGroupComponent implements OnInit {
+  @Input() assessmentGroup;
+  @Input() assessmentGroupIndex;
+  @Input() readOnly;
+  @Input() utilitiesService;
+  @Output() onAssessmentCopy = new EventEmitter();
+  @Output() onDelete = new EventEmitter();
 
   editingData = {};
   isAddingAssessment = null;

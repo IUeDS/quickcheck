@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'qc-delete-option-btn',
@@ -6,6 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./delete-option-btn.component.scss']
 })
 export class DeleteOptionBtnComponent implements OnInit {
+  @Input() index;
+  @Input() option;
+  @Input() optionTypeText;
+  @Input() question;
+  @Output() onDelete = new EventEmitter();
 
   constructor() { }
 

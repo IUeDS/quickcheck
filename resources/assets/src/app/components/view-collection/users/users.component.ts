@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CollectionService } from '../../../services/collection.service';
 import { UserService } from '../../../services/user.service';
 
@@ -8,6 +8,10 @@ import { UserService } from '../../../services/user.service';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
+  @Input() collectionId;
+  @Input() currentUser;
+  @Input() readOnly;
+  @Input() utilitiesService;
 
   collectionUsers = [];
   isAddingUser = {};

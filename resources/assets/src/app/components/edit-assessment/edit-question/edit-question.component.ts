@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
 import { HttpService } from '../../../services/http.service';
 
@@ -8,6 +8,15 @@ import { HttpService } from '../../../services/http.service';
   styleUrls: ['./edit-question.component.scss']
 })
 export class EditQuestionComponent implements OnInit {
+  @Input() question;
+  @Input() questionIndex;
+  @Input() readOnly;
+  @Input() totalQuestionCount;
+  @Input() utilitiesService;
+  @Output() onDelete = new EventEmitter();
+  @Output() onQuestionEdited = new EventEmitter();
+  @Output() onQuestionReordered = new EventEmitter();
+
   questionTypes = {};
   tinymceOptions = {};
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ManageService } from '../../../services/manage.service';
 
 @Component({
@@ -7,6 +7,11 @@ import { ManageService } from '../../../services/manage.service';
   styleUrls: ['./student-assessment-attempts.component.scss']
 })
 export class StudentAssessmentAttemptsComponent implements OnInit {
+  @Input('assessmentWithAttempts') assessment;
+  @Input() courseContext;
+  @Input() studentId;
+  @Input() user;
+  @Input() utilitiesService;
 
   attempts = [];
   accordionClosed = true;

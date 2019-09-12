@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CustomActivityService } from '../../../services/custom-activity.service';
 
 @Component({
@@ -7,6 +7,8 @@ import { CustomActivityService } from '../../../services/custom-activity.service
   styleUrls: ['./custom-activities-panel.component.scss']
 })
 export class CustomActivitiesPanelComponent implements OnInit {
+  @Input() utilitiesService;
+
   customActivities = [];
   isOpen = false;
   loading = false;

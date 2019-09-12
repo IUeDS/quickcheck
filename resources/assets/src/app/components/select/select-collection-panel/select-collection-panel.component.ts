@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'qc-select-collection-panel',
@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./select-collection-panel.component.scss']
 })
 export class SelectCollectionPanelComponent implements OnInit {
+  @Input() collection;
+  @Input() membership;
+  @Input() redirectUrl;
+  @Input() launchUrlStem;
 
   constructor() { }
 

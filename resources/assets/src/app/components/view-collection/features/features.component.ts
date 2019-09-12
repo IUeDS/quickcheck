@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CollectionService } from '../../../services/collection.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { CollectionService } from '../../../services/collection.service';
   styleUrls: ['./features.component.scss']
 })
 export class FeaturesComponent implements OnInit {
+  @Input() collectionId;
+  @Input() readOnly;
+  @Input() utilitiesService;
 
   collectionFeatures = [];
   showFeatures = false;

@@ -23,11 +23,11 @@
                         required
                         [disabled]="this.readOnly">
                     <qc-delete-option-btn
-                        qc-index="$index"
-                        qc-on-delete="this.deleteColumn($event)"
-                        qc-option="column"
-                        qc-option-type-text="'matrix column'"
-                        qc-question="this.question"
+                        [index]="$index"
+                        (onDelete)="this.deleteColumn($event)"
+                        [option]="column"
+                        [optionTypeText]="'matrix column'"
+                        [question]="this.question"
                         *ngIf="!this.readOnly">
                     </qc-delete-option-btn>
                 </div>
@@ -47,11 +47,11 @@
                             required
                             [disabled]="this.readOnly">
                         <qc-delete-option-btn
-                            qc-index="$index"
-                            qc-on-delete="this.deleteRow($event)"
-                            qc-option="row"
-                            qc-option-type-text="'matrix row'"
-                            qc-question="this.question"
+                            [index]="$index"
+                            (onDelete)="this.deleteRow($event)"
+                            [option]="row"
+                            [optionTypeText]="'matrix row'"
+                            [question]="this.question"
                             *ngIf="!this.readOnly">
                         </qc-delete-option-btn>
                     </div>
@@ -72,12 +72,12 @@
         </tbody>
     </table>
     <qc-custom-feedback *ngIf="!this.readOnly"
-        qc-on-question-edited="this.onSubComponentEdited($event)"
-        qc-question="this.question">
+        (onQuestionEdited)="this.onSubComponentEdited($event)"
+        [question]="this.question">
     </qc-custom-feedback>
     <qc-randomize-checkbox
-        qc-on-question-edited="this.onSubComponentEdited($event)"
-        qc-question="this.question"
-        qc-read-only="this.readOnly">
+        (onQuestionEdited)="this.onSubComponentEdited($event)"
+        [question]="this.question"
+        [readOnly]="this.readOnly">
     </qc-randomize-checkbox>
 </div>

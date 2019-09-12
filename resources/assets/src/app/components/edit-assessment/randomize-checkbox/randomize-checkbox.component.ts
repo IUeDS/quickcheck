@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'qc-randomize-checkbox',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./randomize-checkbox.component.scss']
 })
 export class RandomizeCheckboxComponent implements OnInit {
+  @Input() question;
+  @Input() readOnly;
+  @Output() onQuestionEdited = new EventEmitter();
 
   constructor() { }
 

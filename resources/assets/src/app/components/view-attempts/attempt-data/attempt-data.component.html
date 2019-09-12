@@ -48,11 +48,11 @@
                         <span class="sr-only">Grades loading, please wait.</span>
                     </span>
                     <qc-grade *ngIf="!this.gradesLoading"
-                        qc-attempt="attempt"
-                        qc-points-possible="this.pointsPossible"
-                        qc-submissions="this.submissions"
-                        qc-users="this.users"
-                        qc-utilitiesService="this.utilitiesService">
+                        [attempt]="attempt"
+                        [pointsPossible]="this.pointsPossible"
+                        [submissions]="this.submissions"
+                        [users]="this.users"
+                        [utilitiesService]="this.utilitiesService">
                     </qc-grade>
                 </span>
             </td>

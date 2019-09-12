@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'qc-rich-content-toggle',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rich-content-toggle.component.scss']
 })
 export class RichContentToggleComponent implements OnInit {
+  @Input() question;
+  @Input() toggleType;
+  @Output() onRichContentToggle = new EventEmitter();
 
   isToggled = false;
 

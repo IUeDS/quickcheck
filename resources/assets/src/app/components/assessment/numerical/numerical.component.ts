@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { UtilitiesService } from '../../../services/utilities.service';
   styleUrls: ['./numerical.component.scss']
 })
 export class NumericalComponent implements OnInit {
+  @Input() currentQuestion;
+  @Output() onAnswerSelection = new EventEmitter();
+
   answer = null;
 
   constructor(private utilitiesService: UtilitiesService) { }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CustomActivityService } from '../../../services/custom-activity.service';
 
 @Component({
@@ -7,6 +7,12 @@ import { CustomActivityService } from '../../../services/custom-activity.service
   styleUrls: ['./custom-activity-selection.component.scss']
 })
 export class CustomActivitySelectionComponent implements OnInit {
+  @Input() admin;
+  @Input() assessment;
+  @Input() customActivity;
+  @Input() customActivityAdded;
+  @Input() readOnly;
+  @Input() utilitiesService;
 
   customActivities = [];
 

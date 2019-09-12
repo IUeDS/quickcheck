@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ManageService } from '../../../services/manage.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { ManageService } from '../../../services/manage.service';
   styleUrls: ['./releases.component.scss']
 })
 export class ReleasesComponent implements OnInit {
+  @Input() utilitiesService;
+  @Output() onViewAttempts = new EventEmitter();
+
   releases = [];
   search = {'assessmentName': ''}; //for searching through attempts
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
@@ -7,6 +7,12 @@ import { UtilitiesService } from '../../../services/utilities.service';
   styleUrls: ['./row-feedback.component.scss']
 })
 export class RowFeedbackComponent implements OnInit {
+  @Input() feedback;
+  @Input() incorrectRows;
+  @Input() isCorrect;
+  @Input() isNextBtnDisabled;
+  @Input() partialCredit;
+  @Output() onContinue = new EventEmitter();
 
   constructor(private utilitiesService: UtilitiesService) { }
 

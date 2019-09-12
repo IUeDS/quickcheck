@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
@@ -7,6 +7,8 @@ import { UtilitiesService } from '../../../services/utilities.service';
   styleUrls: ['./multiple-correct.component.scss']
 })
 export class MultipleCorrectComponent implements OnInit {
+  @Input() currentQuestion;
+  @Output() onAnswerSelection = new EventEmitter();
 
   constructor(private utilitiesService: UtilitiesService) { }
 

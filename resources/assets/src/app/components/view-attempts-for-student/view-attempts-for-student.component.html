@@ -1,4 +1,4 @@
-<qc-nav qc-current-page="this.currentPage"></qc-nav>
+<qc-nav [currentPage]="this.currentPage"></qc-nav>
 <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
 <div class="row section-white">
     <div class="col-12">
@@ -29,11 +29,11 @@
             </div>
             <qc-student-assessment-attempts
                 *ngFor="let assessment of this.displayedAssessments"
-                qc-assessment-with-attempts="assessment"
-                qc-course-context="this.courseContext"
-                qc-student-id="this.studentId"
-                qc-user="this.user"
-                qc-utilitiesService="this.utilitiesService">
+                [assessmentWithAttempts]="assessment"
+                [courseContext]="this.courseContext"
+                [studentId]="this.studentId"
+                [user]="this.user"
+                [utilitiesService]="this.utilitiesService">
             </qc-student-assessment-attempts>
             <div class="well text-center qc-none-found-well" *ngIf="!this.displayedAssessments.length && this.assessmentsWithAttempts.length">
                 <h3 class="uppercase">No quick checks found</h3>
@@ -48,8 +48,8 @@
         Back to attempts
     </a>
     <qc-student-analytics
-        qc-student-id="this.studentId"
-        qc-student-name="this.studentName"
-        qc-utilitiesService="this.utilitiesService">
+        [studentId]="this.studentId"
+        [studentName]="this.studentName"
+        [utilitiesService]="this.utilitiesService">
     </qc-student-analytics>
 </div>
