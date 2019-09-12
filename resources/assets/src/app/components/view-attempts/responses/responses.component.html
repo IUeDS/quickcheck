@@ -25,7 +25,7 @@
             </td>
             <td class="qc-response-partial-credit"><span *ngIf="response.partial_credit > 0">{{ response.partial_credit }}</span></td>
             <td>{{ response.custom_responses[0].retry_count }}</td>
-            <td class="qc-response-question" ng-bind-html="response.custom_responses[0].question"></td>
+            <td class="qc-response-question" [innerHTML]="response.custom_responses[0].question | safe: 'html'"></td>
             <td class="qc-response-answer">{{ response.custom_responses[0].answer }}</td>
             <td class="qc-response-answer-key">{{ response.custom_responses[0].answer_key }}</td>
         </tr>
@@ -72,12 +72,12 @@
                     <div class="card-body">
                         <div class="qc-mc-options" *ngIf="currentQuestion.question_type == 'multiple_choice'" >
                             <fieldset>
-                                <legend class="qc-assessment-question" ng-bind-html="currentQuestion.question_text"></legend>
+                                <legend class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></legend>
                                 <div class="form-check" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
                                     <input type="radio" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" disabled
                                         ng-checked="answerOption.studentAnswer" id="{{answerOption.id}}">
                                     <label class="qc-mc-option-response" for="{{answerOption.id}}">
-                                        <span ng-bind-html="answerOption.answer_text"></span>
+                                        <span [innerHTML]="answerOption.answer_text | safe: 'html'"></span>
                                         <span *ngIf="answerOption.correct === 'true'" class="qc-correct-text"> <span class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></span> Correct answer</span>
                                     </label>
                                 </div>
@@ -86,18 +86,18 @@
                         </div>
                         <div class="qc-mcorrect-options" *ngIf="currentQuestion.question_type == 'multiple_correct'" >
                             <fieldset>
-                                <legend class="qc-assessment-question" ng-bind-html="currentQuestion.question_text"></legend>
+                                <legend class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></legend>
                                 <div class="checkbox" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
                                     <input type="checkbox" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" ng-checked="answerOption.studentAnswer" disabled id="{{answerOption.id}}">
                                     <label for="{{answerOption.id}}">
-                                        <span ng-bind-html="answerOption.answer_text"></span>
+                                        <span [innerHTML]="answerOption.answer_text | safe: 'html'"></span>
                                         <span *ngIf="answerOption.correct === 'true'" class="qc-correct-text"> <span class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></span> Correct answer</span>
                                     </label>
                                 </div>
                             </fieldset>
                         </div>
                         <div class="qc-matrix-options" *ngIf="currentQuestion.question_type == 'matrix'" >
-                            <p class="qc-assessment-question" ng-bind-html="currentQuestion.question_text"></p>
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
                             <p *ngIf="currentQuestion.studentResponse.partial_credit">Partial credit: {{ currentQuestion.studentResponse.partial_credit * 100 | number : 0 }}%</p>
                             <table class="table table-striped">
                                 <caption class="sr-only">Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.</caption>
@@ -105,14 +105,14 @@
                                     <tr>
                                         <th><span class="sr-only">Row label</span></th>
                                         <th *ngFor="let column of currentQuestion.columns">
-                                            <span ng-bind-html="column.answer_text"></span>
+                                            <span [innerHTML]="column.answer_text | safe: 'html'"></span>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let row of currentQuestion.rows">
                                         <td>
-                                            <span ng-bind-html="row.answer_text"></span>
+                                            <span [innerHTML]="row.answer_text | safe: 'html'"></span>
                                         </td>
                                         <td *ngFor="let column of currentQuestion.columns" [ngClass]="{'qc-correct-answer-marked': this.isMatrixAnswerCorrect(row, column)}">
                                             <div class="checkbox">
@@ -128,7 +128,7 @@
                             </table>
                         </div>
                         <div class="qc-matching-options" *ngIf="currentQuestion.question_type == 'matching'" >
-                            <p class="qc-assessment-question" ng-bind-html="currentQuestion.question_text"></p>
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
                             <p *ngIf="currentQuestion.studentResponse.partial_credit">Partial credit: {{ currentQuestion.studentResponse.partial_credit * 100 | number : 0 }}%</p>
                             <div class="row">
                                 <table class="table table-striped">
@@ -140,14 +140,14 @@
                                     </tr>
                                     <tr *ngFor="let prompt of currentQuestion.prompts">
                                         <td>
-                                            <label ng-bind-html="prompt.option_text" for="{{'select-matching-' + prompt.id}}"></label>
+                                            <label [innerHTML]="prompt.option_text | safe: 'html'" for="{{'select-matching-' + prompt.id}}"></label>
                                         </td>
                                         <td>
                                             <select class="form-control" id="{{'select-matching-' + prompt.id}}" disabled>
                                                 <option value=""></option> <!-- blank option -->
                                                 <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
                                                         value="{{selectableAnswer.id}}"
-                                                        ng-bind-html="selectableAnswer.option_text"
+                                                        [innerHTML]="selectableAnswer.option_text | safe: 'html'"
                                                         ng-selected="selectableAnswer.id == prompt.studentAnswer.id">
                                                 </option>
                                             </select>
@@ -160,19 +160,19 @@
                             </div>
                         </div>
                         <div class="dropdown-options" *ngIf="currentQuestion.question_type == 'dropdown'" >
-                            <p class="qc-assessment-question" ng-bind-html="currentQuestion.question_text"></p>
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
                             <div class="row student-dropdown-answer">
                                 <div class="col-12">
                                     <p *ngIf="!currentQuestion.studentResponse.isCorrect"><span class="fa fa-remove qc-incorrect-icon" aria-hidden="true"></span> <span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student's</span> Answer:</p>
                                     <!-- TODO: orderBy no longer in angular, original: <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section"> -->
                                     <span *ngFor="let prompt of currentQuestion.prompts" class="qc-dropdown-section">
-                                        <label ng-bind-html="prompt.answer_text" for="{{'select-dropdown-' + prompt.id}}"></label>
+                                        <label [innerHTML]="prompt.answer_text | safe: 'html'" for="{{'select-dropdown-' + prompt.id}}"></label>
                                         <select class="form-control"
                                                 id="{{'select-dropdown-' + prompt.id}}" disabled>
                                             <option></option> <!-- blank option -->
                                             <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
                                                 value="{{selectableAnswer.id}}"
-                                                ng-bind-html="selectableAnswer.answer_text"
+                                                [innerHTML]="selectableAnswer.answer_text | safe: 'html'"
                                                 ng-selected="selectableAnswer.id == prompt.studentAnswer.id">
                                             </option>
                                         </select>
@@ -185,13 +185,13 @@
                                     <p><span class="fa fa-check qc-correct-icon" aria-hidden="true"></span> Correct Answer:</p>
                                     <!-- TODO: orderBy no longer in angular, original:  <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section">-->
                                     <span *ngFor="let prompt of currentQuestion.prompts" class="qc-dropdown-section">
-                                        <label ng-bind-html="prompt.answer_text" for="{{'select-dropdown-correct-' + prompt.id}}"></label>
+                                        <label [innerHTML]="prompt.answer_text | safe: 'html'" for="{{'select-dropdown-correct-' + prompt.id}}"></label>
                                         <select class="form-control"
                                                 id="{{'select-dropdown-correct-' + prompt.id}}" disabled>
                                             <option></option> <!-- blank option -->
                                             <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
                                                 value="{{selectableAnswer.id}}"
-                                                ng-bind-html="selectableAnswer.answer_text"
+                                                [innerHTML]="selectableAnswer.answer_text | safe: 'html'"
                                                 ng-selected="prompt.dropdown_answer_text == selectableAnswer.answer_text">
                                             </option>
                                         </select>
@@ -200,7 +200,7 @@
                             </div>
                         </div>
                         <div class="textmatch" *ngIf="currentQuestion.question_type == 'textmatch'" >
-                            <p class="qc-assessment-question" ng-bind-html="currentQuestion.question_text"></p>
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
                             <div class="form-group has-feedback" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'is-valid' : 'is-invalid'">
                                 <label for="textmatch-answer-box"><span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student</span> answer <span class="sr-only">for question #{{ $index + 1 }}</span>:</label>
                                 <input type="text" class="form-control" disabled [value]="currentQuestion.studentAnswer" id="textmatch-answer-box"
@@ -216,7 +216,7 @@
                             </div>
                         </div>
                         <div class="numerical" *ngIf="currentQuestion.question_type == 'numerical'" >
-                            <p class="qc-assessment-question" ng-bind-html="currentQuestion.question_text"></p>
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
                             <div class="form-group">
                                 <label for="numerical-answer-box"><span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student</span>  answer:</label>
                                 <input type="number" step="any" class="form-control" disabled [value]="currentQuestion.studentAnswer" id="numerical-answer-box" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'qc-correct-answer-input' : 'qc-incorrect-answer-input'">

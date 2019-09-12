@@ -63,7 +63,7 @@
         </textarea>
 
         <!-- for read-only users, show the text in a disabled form field -->
-        <div *ngIf="this.readOnly" ng-bind-html="this.question.question_text"
+        <div *ngIf="this.readOnly" [innerHTML]="this.question.question_text | safe: 'html'"
             class="form-control"
             [attr.aria-labelledby]="'question-text-label-' + this.question.id"
             [attr.disabled]="true">

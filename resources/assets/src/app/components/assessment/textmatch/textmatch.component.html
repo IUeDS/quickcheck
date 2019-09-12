@@ -1,5 +1,5 @@
 <div class="textmatch">
-    <p class="lead qc-assessment-question" ng-bind-html="this.currentQuestion.question_text"></p>
+    <p class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></p>
     <div class="form-group">
         <label for="textmatch-answer-box">Type your answer here</label>
         <input type="text" class="form-control"

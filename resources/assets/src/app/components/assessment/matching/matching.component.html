@@ -1,5 +1,5 @@
 <div class="qc-matching-options">
-    <p class="lead qc-assessment-question" ng-bind-html="this.currentQuestion.question_text"></p>
+    <p class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></p>
     <div class="row">
         <div class="col-12" aria-hidden="true">
             <p class="qc-selectable-answer-option-text">Remaining options: </p>
@@ -9,7 +9,7 @@
             </span>
         </div>
         <table class="table table-striped">
-            <caption class="sr-only" ng-bind-html="this.currentQuestion.question_text"></caption>
+            <caption class="sr-only" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></caption>
             <thead class="sr-only">
                 <th>Prompt</th>
                 <th>Selection</th>
@@ -21,7 +21,7 @@
                             <span class="fa fa-remove fa-2x" aria-hidden="true"></span>
                             <span class="sr-only">This selection is incorrect</span>
                         </span>
-                        <label ng-bind-html="prompt.option_text" for="{{'select-' + prompt.id}}"></label>
+                        <label [innerHTML]="prompt.option_text | safe: 'html'" for="{{'select-' + prompt.id}}"></label>
                     </td>
                     <td>
                         <select class="form-control"
@@ -32,7 +32,7 @@
                             <option value=""></option> <!-- blank option -->
                             <option *ngFor="let selectableAnswer of this.selectableAnswers"
                                     value="{{selectableAnswer.id}}"
-                                    ng-bind-html="selectableAnswer.option_text"
+                                    [innerHTML]="selectableAnswer.option_text | safe: 'html'"
                                     [hidden]="!!this.isAnswerUsed(selectableAnswer)">
                             </option>
                         </select>

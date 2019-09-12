@@ -54,7 +54,7 @@
                 <h4>QTI package imported. The following content was incompatible:</h4>
                 <div class="alert alert-warning" role="alert" *ngFor="let notice of this.notices">
                     <h5><span class="fa fa-exclamation" aria-hidden="true"></span> Notice:</h5>
-                    <div ng-bind-html="notice"></div>
+                    <div [innerHTML]="notice | safe: 'html'"></div>
                 </div>
             </div>
 

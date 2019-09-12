@@ -1,11 +1,11 @@
 <div class="qc-matrix-options">
-    <p class="lead qc-assessment-question" ng-bind-html="this.currentQuestion.question_text"></p>
+    <p class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></p>
     <table class="table table-striped">
         <caption class="sr-only">Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.</caption>
         <thead>
             <th><span class="sr-only">Row name</span></th>
             <th *ngFor="let column of this.columns">
-                <span ng-bind-html="column.answer_text"></span>
+                <span [innerHTML]="column.answer_text | safe: 'html'"></span>
             </th>
         </thead>
         <tbody>
@@ -15,7 +15,7 @@
                         <span class="fa fa-remove fa-2x" aria-hidden="true"></span>
                         <span class="sr-only">This selection is incorrect</span>
                     </span>
-                    <span ng-bind-html="row.answer_text"></span>
+                    <span [innerHTML]="row.answer_text | safe: 'html'"></span>
                 </td>
                 <td *ngFor="let column of row.columns">
                     <div class="form-check">

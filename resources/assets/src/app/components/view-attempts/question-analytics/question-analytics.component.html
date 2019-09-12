@@ -14,7 +14,7 @@
                 <div class="text question-percentage-score lead"><span class="fa fa-lg fa-check qc-correct-icon" aria-hidden="true"></span><br>{{ this.correctPercentage }}% <span class="sr-only">answered correctly</span></div>
             </div>
         </div>
-        <p ng-bind-html="this.question.question_text" class="lead qc-analytics-question-text"></p>
+        <p [innerHTML]="this.question.question_text | safe: 'html'" class="lead qc-analytics-question-text"></p>
         <div *ngIf="this.question.question_type == 'multiple_choice' || this.question.question_type == 'multiple_correct'">
             <table class="table">
                 <thead class="sr-only">

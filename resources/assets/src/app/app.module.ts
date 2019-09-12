@@ -79,6 +79,7 @@ import { QtiImportComponent } from './components/view-collection/qti-import/qti-
 import { QtiImportBtnComponent } from './components/view-collection/qti-import/qti-import-btn/qti-import-btn.component';
 import { TogglePublicCollectionComponent } from './components/view-collection/toggle-public-collection/toggle-public-collection.component';
 import { UsersComponent } from './components/view-collection/users/users.component';
+import { SafePipe } from './safe.pipe';
 
 @NgModule({
   declarations: [
@@ -157,6 +158,7 @@ import { UsersComponent } from './components/view-collection/users/users.compone
     QtiImportBtnComponent,
     TogglePublicCollectionComponent,
     UsersComponent,
+    SafePipe,
   ],
   imports: [
     BrowserModule,

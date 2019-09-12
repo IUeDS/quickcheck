@@ -4,7 +4,7 @@
             <h1 *ngIf="this.assessmentTitle" class="qc-assessment-title">{{ this.assessmentTitle }}</h1>
             <!-- if no title, make a generic h1 header for accessibility, to maintain semantic header structure -->
             <h1 *ngIf="!this.assessmentTitle" class="sr-only">Take the quick check</h1>
-            <p *ngIf="this.assessmentDescription" class="qc-assessment-description" ng-bind-html="this.assessmentDescription"></p>
+            <p *ngIf="this.assessmentDescription" class="qc-assessment-description" [innerHTML]="this.assessmentDescription | safe: 'html'"></p>
             <h2 *ngIf="this.currentQuestionIndex + 1 <= this.pointsPossible"
                 class="qc-question-number"
                 tabindex="-1" aria-live="assertive" aria-atomic="true">

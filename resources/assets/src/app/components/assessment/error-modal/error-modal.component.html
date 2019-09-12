@@ -7,7 +7,7 @@
                 </div>
                 <div class="modal-body">
                     <h2>There was an error processing your request.</h2>
-                    <p class="lead" ng-bind-html="this.errorMessage"></p>
+                    <p class="lead" [innerHTML]="this.errorMessage | safe: 'html'"></p>
                 </div>
             </div>
         </div>

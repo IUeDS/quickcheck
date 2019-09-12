@@ -1,12 +1,12 @@
 <div class="qc-mcorrect-options">
     <fieldset>
-        <legend class="lead qc-assessment-question" ng-bind-html="this.currentQuestion.question_text"></legend>
+        <legend class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></legend>
         <div class="form-check" *ngFor="let answerOption of this.currentQuestion.options">
             <input type="checkbox" name="{{this.currentQuestion.id}}" value="{{answerOption.answer_text}}" ng-checked="false"
                 id="{{answerOption.id}}"
                 [(ngModel)]="answerOption.selected"
                 (click)='this.onAnswerSelected(answerOption)'>
-            <label ng-bind-html="answerOption.answer_text" for="{{answerOption.id}}"></label>
+            <label [innerHTML]="answerOption.answer_text | safe: 'html'" for="{{answerOption.id}}"></label>
         </div>
     </fieldset>
 </div>

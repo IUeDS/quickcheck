@@ -4,7 +4,7 @@
             <div class="sr-only"><h1>Quick Check question feedback</h1></div>
             <h2 *ngIf="this.isCorrect">Correct</h2>
             <h2 *ngIf="!this.isCorrect">Incorrect. <span *ngIf="this.partialCredit">Partial credit assigned.</span></h2>
-            <p class="custom-feedback" *ngFor="let feedbackItem of this.feedback" ng-bind-html="feedbackItem.feedback_text"></p>
+            <p class="custom-feedback" *ngFor="let feedbackItem of this.feedback" [innerHTML]="feedbackItem.feedback_text | safe: 'html'"></p>
             <div class="sr-only" *ngIf="!this.isCorrect">
                 <ul>
                     <li *ngFor="let incorrectRow of this.incorrectRows">
