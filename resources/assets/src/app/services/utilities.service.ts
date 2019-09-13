@@ -265,7 +265,7 @@ export class UtilitiesService {
   //successful, just the user isn't valid. In cases like this, we need to check for
   //a specific success/error structure in the API response.
   isSuccessResponse(resp) {
-    if (resp.data.success) {
+    if (resp.success) {
       return true;
     }
     return false;

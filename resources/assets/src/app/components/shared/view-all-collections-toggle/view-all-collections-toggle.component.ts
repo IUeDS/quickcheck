@@ -19,4 +19,28 @@ export class ViewAllCollectionsToggleComponent implements OnInit {
   ngOnInit() {
   }
 
+  async toggleViewAll() {
+    this.collectionData.viewAll = !this.collectionData.viewAll;
+    if (this.collectionData.viewAll && !this.previousRequestMade) {
+      await this.getAllCollections();
+    }
+  }
+
+  async getAllCollections() {
+    let data;
+    this.utilitiesService.loadingStarted();
+
+    try {
+      const resp = await this.collectionService.getCollectionsWithAssessments();
+      data = this.utilitiesService.getResponseData(resp);
+    }
+    catch (error) {
+      this.utilitiesService.showError(error);
+      return;
+    }
+
+    this.collectionData.collections = data.collections;
+    this.utilitiesService.loadingFinished();
+    this.previousRequestMade = true;
+  }
 }

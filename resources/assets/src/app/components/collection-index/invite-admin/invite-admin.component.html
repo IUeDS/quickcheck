@@ -8,9 +8,9 @@
 <div *ngIf="this.formOpen">
     <h3>Invite Admin User</h3>
     <div *ngIf="this.isEnteringUsername">
-        <form (ngSubmit)="this.validateUser()">
+        <form class="form-inline" (ngSubmit)="this.validateUser()">
             <label for="username">IU Username</label>
-            <input type="text" id="username" [(ngModel)]="this.username">
+            <input type="text" id="username" class="form-control ml-2 mr-2" name="username" [(ngModel)]="this.username">
             <button class="btn btn-sm btn-primary qc-btn" type="submit">Validate username and save</button>
             <div class="alert alert-danger" role="alert" *ngIf="this.validationError">
                 <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>

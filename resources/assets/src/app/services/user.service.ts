@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { timeout } from 'rxjs/operators';
 import { HttpService } from './http.service';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -49,8 +50,15 @@ export class UserService {
   async optOutPublicCollection(id, data) {
     const timeoutLength = this.httpService.getDefaultTimeout();
     const path = this.httpService.getApiRoute() + '/publicmembership/collection/' + id;
+    //to pass data in a DELETE request, have to specify it as "body" in options and also specify headers
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: data
+    };
 
-    return await this.httpClient.delete(path, data)
+    return await this.httpClient.delete(path, options)
       .pipe(timeout(timeoutLength))
       .toPromise();
   }

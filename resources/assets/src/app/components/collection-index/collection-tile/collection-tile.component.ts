@@ -13,11 +13,17 @@ export class CollectionTileComponent implements OnInit {
   @Input() membership;
   @Input() index;
   @Input() utilitiesService: UtilitiesService;
+  isReadOnly = false;
 
   constructor(private collectionService: CollectionService) { }
 
   ngOnInit() {
     this.utilitiesService.setLtiHeight();
+
+    //membership included for normal users but not for admins
+    if (this.membership) {
+      this.isReadOnly = this.membership.read_only ? true : false;
+    }
   }
 
     editCollection () {

@@ -15,7 +15,6 @@ export class CollectionIndexComponent implements OnInit {
     'collections': []
   };
   currentPage = 'sets';
-  searchedAdminCollections = [];
   searchedMemberships = [];
   memberships = [];
   publicCollectionsVisible = false;
@@ -94,25 +93,26 @@ export class CollectionIndexComponent implements OnInit {
     this.utilitiesService.focusToElement(focusElement); //focus for screenreaders
   }
 
-  searchUpdated() {
+  get searchedAdminCollections() {
     const searchTerm = this.search.collectionName.toLowerCase();
-    this.searchedAdminCollections = [];
-    this.searchedMemberships = [];
+    const searchedAdminCollections = [];
 
-    if (this.adminCollectionData.viewAll) {
       if (!searchTerm) {
-        this.searchedAdminCollections = this.adminCollectionData.collections;
-        return;
+        return this.adminCollectionData.collections;
       }
 
       for (let collection of this.adminCollectionData.collections) {
         if (collection.name.toLowerCase().indexOf(searchTerm) > -1) {
-          this.searchedAdminCollections.push(collection);
+          searchedAdminCollections.push(collection);
         }
       }
 
-      return;
-    }
+      return searchedAdminCollections;
+  }
+
+  searchUpdated() {
+    const searchTerm = this.search.collectionName.toLowerCase();
+    this.searchedMemberships = [];
 
     if (!searchTerm) {
       this.searchedMemberships = this.memberships;

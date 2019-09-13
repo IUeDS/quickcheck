@@ -91,6 +91,15 @@ export class CollectionService {
       .toPromise();
   }
 
+  async getCollectionsWithAssessments() {
+    const timeoutLength = this.httpService.getDefaultTimeout();
+    const path = this.httpService.getApiRoute() + '/collections/assessments';
+
+    return await this.httpClient.get(path)
+      .pipe(timeout(timeoutLength))
+      .toPromise();
+  }
+
   async getCollectionFeatures(id) {
     const timeoutLength = this.httpService.getDefaultTimeout();
     const path = this.httpService.getApiRoute() + '/features/collection/' + id;
@@ -127,7 +136,7 @@ export class CollectionService {
       .toPromise();
   }
 
-  async getPublicCollections(id) {
+  async getPublicCollections() {
     const timeoutLength = this.httpService.getDefaultTimeout();
     const path = this.httpService.getApiRoute() + '/publiccollections';
 

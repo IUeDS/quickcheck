@@ -2,17 +2,17 @@
     <div [hidden]="this.collection.isEditing">
         <div class="qc-collection-header">
             <h2 id="collection-header-{{this.collection.id}}" tabindex="-1">{{ this.collection.name }}</h2>
-            <span class="qc-edit-btn qc-collection-edit-btn" role="button" (click)="this.editCollection()" *ngIf="!this.membership.read_only">
+            <span class="qc-edit-btn qc-collection-edit-btn" role="button" (click)="this.editCollection()" *ngIf="!this.isReadOnly">
                 <qc-edit-icon aria-hidden="true"></qc-edit-icon>
                 <span class="sr-only">Edit set {{ this.collection.name }}</span>
             </span>
-            <span class="qc-delete-btn qc-collection-delete-btn" role="button" (click)="this.deleteCollection()" *ngIf="!this.membership.read_only">
+            <span class="qc-delete-btn qc-collection-delete-btn" role="button" (click)="this.deleteCollection()" *ngIf="!this.isReadOnly">
                 <qc-delete-icon aria-hidden="true"></qc-delete-icon>
                 <span class="sr-only">Delete set {{ this.collection.name }}</span>
             </span>
         </div>
         <h3>Owner: <span class="qc-owner-name">{{ this.collection.owner }}</span></h3>
-        <h3 *ngIf="this.membership.read_only">Permissions: Read-Only</h3>
+        <h3 *ngIf="this.isReadOnly">Permissions: Read-Only</h3>
         <h3 *ngIf="this.collection.public_collection == 'true'"><span class="fa fa-eye" aria-hidden="true"></span> Public set</h3>
         <div class="row">
             <div class="col-6">

@@ -7,6 +7,8 @@
 }
 
 .qc-custom-activity-panel {
+    margin-bottom: 0;
+
     h5 {
         display: inline-block;
         font-family: 'BentonSansComp';
@@ -14,18 +16,19 @@
         font-style: normal;
         margin: 0;
         text-transform: uppercase;
+
     }
 
-    .panel-body {
+    .card-body {
         background-color: $white !important;
     }
 
-    .panel-heading {
+    .card-header {
         background-color: $dark-gray;
         border-left: solid $muted-purple 10px;
     }
 
-    .qc-custom-activity-edit-btn {
+    ::ng-deep .qc-custom-activity-edit-btn {
         margin-left: 20px;
         vertical-align: middle;
 
@@ -39,9 +42,10 @@
         }
     }
 
-    .qc-custom-activity-delete-btn {
+    ::ng-deep .qc-custom-activity-delete-btn {
         float: right;
         margin-right: 10px;
+        vertical-align: middle;
 
         svg {
             path {

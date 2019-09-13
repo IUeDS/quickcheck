@@ -26,10 +26,10 @@
             </div>
         </div>
         <div>
-            <!--<qc-public-collections [hidden]="!this.publicCollectionsVisible"
+            <qc-public-collections [hidden]="!this.publicCollectionsVisible"
                 [user]="this.user"
                 [utilitiesService]="this.utilitiesService">
-            </qc-public-collections>-->
+            </qc-public-collections>
             <div *ngIf="!this.adminCollectionData.viewAll">
                 <div *ngIf="!this.memberships.length && !this.utilitiesService.loading">
                     <h2>Looks like you haven't created a set yet.</h2>

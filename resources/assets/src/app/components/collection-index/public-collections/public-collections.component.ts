@@ -15,7 +15,48 @@ export class PublicCollectionsComponent implements OnInit {
 
   constructor(private collectionService: CollectionService, private userService: UserService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    try {
+      const resp = await this.collectionService.getPublicCollections();
+      const data = this.utilitiesService.getResponseData(resp);
+      this.publicCollections = data.publicCollections;
+    }
+    catch (error) {
+      this.utilitiesService.showError(error);
+    }
+  }
+
+  async joinPublicCollection(collection) {
+    this.utilitiesService.loadingStarted();
+    let data;
+
+    try {
+      const resp = await this.userService.joinPublicCollection(collection.id, this.user);
+      data = this.utilitiesService.getResponseData(resp);
+    }
+    catch (error) {
+      this.utilitiesService.showError(error);
+      return;
+    }
+
+    collection.user_membership = data.membership;
+    const focusElement = '#goto-collection-' + collection.id;
+    this.utilitiesService.loadingFinished(focusElement);
+  }
+
+  async optOutPublicCollection(collection) {
+    this.utilitiesService.loadingStarted();
+    let data;
+
+    try {
+      const resp = await this.userService.optOutPublicCollection(collection.id, this.user);
+      this.utilitiesService.loadingFinished();
+      collection.user_membership = false;
+    }
+    catch (error) {
+      this.utilitiesService.showError(error);
+      return;
+    }
   }
 
 }

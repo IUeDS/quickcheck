@@ -8,7 +8,7 @@
     <ul class="qc-public-collections-list list-group" *ngIf="this.publicCollections.length">
         <li *ngFor="let collection of this.publicCollections" class="collections-row list-group-item">
             <h3 class="collection-header uppercase" id="collection-header-{{collection.id}}" tabindex="-1">{{ collection.name }}</h3>
-            <p>Description: {{ collection.description }}</p>
+            <p *ngIf="collection.description">Description: {{ collection.description }}</p>
             <!-- only show these buttons if the user is a member of the collection-->
             <div class="row" *ngIf="collection.user_membership">
                 <div class="col-3">
