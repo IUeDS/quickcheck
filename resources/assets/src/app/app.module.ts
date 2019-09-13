@@ -84,6 +84,11 @@ import { ArrowDownIconComponent } from './components/shared/arrow-down-icon/arro
 import { ArrowUpIconComponent } from './components/shared/arrow-up-icon/arrow-up-icon.component';
 import { CopyIconComponent } from './components/shared/copy-icon/copy-icon.component';
 import { PreviewIconComponent } from './components/shared/preview-icon/preview-icon.component';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 @NgModule({
   declarations: [
@@ -172,7 +177,12 @@ import { PreviewIconComponent } from './components/shared/preview-icon/preview-i
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    CollapseModule.forRoot(),
+    BrowserAnimationsModule,
+    ModalModule.forRoot(),
+    TooltipModule.forRoot(),
+    PopoverModule.forRoot()
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

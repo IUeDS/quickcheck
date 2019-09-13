@@ -1,4 +1,4 @@
-<button class="btn btn-primary qc-btn" type="button"
+<button class="btn btn-primary qc-btn mb-3" type="button"
     [disabled]="this.isOpen"
     (click)="this.openForm()">
     <span class="fa fa-plus" aria-hidden="true"></span> Add custom activity
@@ -7,23 +7,23 @@
     <form (ngSubmit)="this.save()">
         <div class="form-group">
             <label for="name">Name of the activity </label>
-            <input type="text" class="form-control" [(ngModel)]="this.customActivityData.name" id="name" required>
+            <input type="text" class="form-control" [(ngModel)]="this.customActivityData.name" id="name" name="name" required>
         </div>
         <div class="form-group">
             <label for="custom-add-description">Description </label>
-            <textarea class="form-control" [(ngModel)]="this.customActivityData.description" id="custom-add-description" required></textarea>
+            <textarea class="form-control" [(ngModel)]="this.customActivityData.description" id="custom-add-description" name="custom-add-description" required></textarea>
         </div>
         <div class="form-group">
             <label for="url">Url of the activity where it can be launched, relative to the "customActivities" folder in app root (i.e., foldername/filename.html)</label>
-            <input type="text" class="form-control" [(ngModel)]="this.customActivityData.url" id="url" required>
+            <input type="text" class="form-control" [(ngModel)]="this.customActivityData.url" id="url" name="url" required>
         </div>
         <div class="form-group">
             <label for="developer">Primary developer of the activity</label>
-            <input type="text" class="form-control" [(ngModel)]="this.customActivityData.developer" id="developer" required>
+            <input type="text" class="form-control" [(ngModel)]="this.customActivityData.developer" id="developer" name="developer" required>
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" [(ngModel)]="this.customActivityData.group_required" > Group required (get group the student belongs to, if applicable, and append as query string on launch)
+                <input type="checkbox" [(ngModel)]="this.customActivityData.group_required" name="group-required"> Group required (get group the student belongs to, if applicable, and append as query string on launch)
             </label>
         </div>
         <button type="submit" class="btn btn-success qc-btn">Save custom activity</button>

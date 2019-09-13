@@ -4,10 +4,10 @@
     <div class="col-12">
         <h1>Sets</h1>
         <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
-        <!--<qc-admin-panel *ngIf="this.admin"
+        <qc-admin-panel *ngIf="this.admin"
             [collectionData]="this.adminCollectionData"
             [utilitiesService]="this.utilitiesService">
-        </qc-admin-panel>-->
+        </qc-admin-panel>
         <div class="row">
             <div class="col-4 col-md-3">
                 <div class="form-group" *ngIf="this.memberships.length">

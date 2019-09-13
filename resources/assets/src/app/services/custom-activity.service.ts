@@ -10,7 +10,7 @@ export class CustomActivityService {
 
   constructor(private httpClient: HttpClient, private httpService: HttpService) { }
 
-  async getCustomActivities(id) {
+  async getCustomActivities() {
     const timeoutLength = this.httpService.getDefaultTimeout();
     const path = this.httpService.getApiRoute() + '/customActivities';
 

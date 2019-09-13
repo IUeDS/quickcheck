@@ -12,6 +12,7 @@ export class AdminPanelComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.utilitiesService.setLtiHeight();
   }
 
 }

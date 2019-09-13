@@ -28,6 +28,7 @@
                     *ngIf="this.customActivities.length">
                     <qc-custom-activity
                         *ngFor="let customActivity of this.customActivities; index as $index;"
+                        class="w-75"
                         [customActivity]="customActivity"
                         [index]="$index"
                         (onDelete)="this.onDelete($event)"

@@ -25,7 +25,7 @@
             <span class="qc-reorder-up-btn" role="button" type="button"
                 (click)="this.reorderQuestionUp($event)"
                 *ngIf="!this.readOnly && !this.isFirstQuestion()">
-                <qc-arrow-up-icon aria-hidden="true"></qc-edit-icon>
+                <qc-arrow-up-icon aria-hidden="true"></qc-arrow-up-icon>
                 <span class="sr-only">Move question #{{this.question.question_order}} up in order></span>
             </span>
             <span class="qc-reorder-down-btn" role="button" type="button"

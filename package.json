@@ -31,6 +31,8 @@
     "lodash": "^4.17.15",
     "mathquill": "^0.10.1-a",
     "moment-timezone": "^0.5.13",
+    "ngx-bootstrap": "^5.1.1",
+    "popper.js": "^1.15.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

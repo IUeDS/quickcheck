@@ -24,12 +24,16 @@
             "tsConfig": "tsconfig.app.json",
             "aot": false,
             "assets": [
-              {"glob": "**/*", "input": "../../../node_modules/font-awesome/fonts", "output": "./assets/"}
+              {
+                "glob": "**/*",
+                "input": "../../../node_modules/font-awesome/fonts",
+                "output": "./assets/"
+              }
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/animate.css/animate.min.css",
-              "node_modules/mathquill/build/mathquill.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/animate.css/animate.min.css",
+              "./node_modules/mathquill/build/mathquill.css",
               "resources/assets/src/styles.scss"
             ],
             "scripts": []
@@ -70,7 +74,7 @@
                   "replace": "resources/assets/src/environments/environment.ts",
                   "with": "resources/assets/src/environments/environment.reg.ts"
                 }
-              ],
+              ]
             }
           }
         },
@@ -103,6 +107,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -134,6 +139,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "quickcheck"
 }
