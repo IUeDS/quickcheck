@@ -13,4 +13,8 @@ export class QtiImportBtnComponent implements OnInit {
   ngOnInit() {
   }
 
+  initQtiImport()  {
+    this.isImportingQti = true;
+  }
+
 }

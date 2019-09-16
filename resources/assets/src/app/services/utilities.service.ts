@@ -284,6 +284,11 @@ export class UtilitiesService {
     this.errorFound = false; //reset if it had been set in a previous failed request
   }
 
+  //for elements inside of collapse components, prevent toggling collapse on click
+  preventToggle(event) {
+    event.stopPropagation();
+  }
+
   removeScrollHeight() {
     this.scrollingLtiHeight = 0;
     this.setLtiHeight();

@@ -16,7 +16,7 @@ var SetPage = function(browserRef) {
     //elements
     page.addSubsetBtn = page.browser.element(by.partialButtonText('Add new subset'));
     page.exportQtiBtn = page.browser.element(by.css('.qc-btn-qti-export'));
-    page.featuresAccordion = page.browser.element(by.cssContainingText('.panel-heading', 'Show features in this set'));
+    page.featuresAccordion = page.browser.element(by.cssContainingText('.card-header', 'Show features in this set'));
     page.searchBox = page.browser.element(by.css('.qc-search-box'));
     page.importQtiBtn = page.browser.element(by.css('.qc-btn-qti-import'));
     page.initialInstructions = page.browser.element(by.css('.qc-subset-instructions'));
@@ -28,7 +28,7 @@ var SetPage = function(browserRef) {
     page.setName = page.browser.element(by.css('.qc-view-set-subheader'));
     page.subsetPanels = page.browser.element.all(by.repeater('assessmentGroup in vm.assessmentGroups'));
     page.togglePublicBtn = page.browser.element(by.css('.qc-toggle-public-btn'));
-    page.usersAccordion = page.browser.element(by.cssContainingText('.panel-heading', 'Show users in this set'));
+    page.usersAccordion = page.browser.element(by.cssContainingText('.card-header', 'Show users in this set'));
 
     //functions
     page.addSubset = addSubset;

@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-12">
         <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
-        <div >
+        <div *ngIf="this.collection">
             <div class="row">
                 <div class="col-6">
                     <h1 class="qc-view-set-header">View Set</h1>
@@ -30,7 +30,6 @@
                         <input type="text" class="form-control qc-search-box" id="search-box"
                             placeholder="Search set"
                             [(ngModel)]="this.searchTerm"
-                            [(ngModel)]-options="{ debounce: 500}"
                             (ngModelChange)="this.search()">
                     </div>
                 </div>
@@ -63,7 +62,7 @@
                 [isExportingQti]="this.isExportingQti">
             </qc-qti-export>
         </div>
-        <div >
+        <div>
             <qc-users
                 [collectionId]="this.collectionId"
                 [currentUser]="this.currentUser"
@@ -86,6 +85,7 @@
             <div class="card-group qc-panel-group" id="accordion" role="tablist" aria-multiselectable="true" *ngIf="this.assessmentGroups.length">
                 <qc-assessment-group
                     *ngFor="let assessmentGroup of this.assessmentGroups; index as $index;"
+                    class="w-100"
                     [assessmentGroup]="assessmentGroup"
                     [assessmentGroupIndex]="$index"
                     (onAssessmentCopy)="this.onAssessmentCopy($event)"

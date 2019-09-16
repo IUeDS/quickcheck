@@ -16,7 +16,39 @@ export class FeaturesComponent implements OnInit {
 
   constructor(private collectionService: CollectionService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    let data;
+
+    try {
+      const resp = await this.collectionService.getCollectionFeatures(this.collectionId);
+      data = this.utilitiesService.getResponseData(resp);
+    }
+    catch (error) {
+      this.utilitiesService.showError(error);
+      return;
+    }
+
+    this.collectionFeatures = data.features;
   }
 
+   toggleShowFeatures() {
+    this.showFeatures = !this.showFeatures;
+    this.utilitiesService.setLtiHeight();
+  }
+
+  async toggleFeature(collectionFeature) {
+    if (collectionFeature.enabled == 'true') {
+      collectionFeature.enabled = 'false';
+    } else {
+      collectionFeature.enabled = 'true';
+    }
+    collectionFeature.loading = true; //disable input while saving
+
+    try {
+      await this.collectionService.updateFeature(collectionFeature.id, { 'collectionFeature': collectionFeature });
+    }
+    catch(error) {
+      this.utilitiesService.showError(error);
+    }
+  }
 }

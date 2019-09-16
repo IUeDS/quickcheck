@@ -1,0 +1,178 @@
+@import '../../../styles/colors';
+@import '../../../styles/mixins';
+
+::ng-deep {
+    .qc-assessment-group-title {
+        h3 {
+            display: inline-block;
+            margin-right: 10px;
+        }
+    }
+
+    .qc-edit-subset {
+        display: inline-block;
+        width: 75%;
+
+        .qc-edit-subset-input {
+            display: inline-block;
+            width: 50%;
+        }
+
+        .btn {
+            display: inline-block;
+        }
+    }
+
+    .qc-feature-panel {
+        margin-bottom: 50px;
+
+        .card-header {
+            border-left: solid $dark-blue 10px;
+        }
+
+        p {
+            clear: both;
+        }
+    }
+
+    .qc-qti-export-list {
+        max-height: 500px;
+        overflow: scroll;
+
+        ul {
+            list-style: none;
+        }
+    }
+
+    .qc-subset-panel {
+        .card-header {
+            background-color: $dark-gray;
+            border-left: solid $muted-purple 10px;
+
+            &:hover {
+                background-color: $medium-gray;
+                cursor: pointer;
+                transition: color .3s;
+            }
+        }
+
+        .qc-subset-edit-btn {
+            margin-left: 20px;
+            vertical-align: middle;
+
+            svg {
+                vertical-align: top;
+
+                path {
+                    //make edit and delete icons darker so they pop more
+                    fill: $iron-gray;
+                }
+            }
+        }
+
+        .qc-subset-delete-btn {
+            float: right;
+            margin-right: 10px;
+
+            svg {
+                path {
+                    fill: $iron-gray;
+                }
+            }
+        }
+
+        .qc-quiz-edit-btn,
+        .qc-quiz-preview-btn,
+        .qc-quiz-delete-btn,
+        .qc-quiz-copy-btn {
+            margin-right: 35px;
+            vertical-align: middle;
+
+            svg {
+                @include respond-to('xs') {
+                    height: 40px;
+                    margin-right: 15px;
+                    width: 40px;
+                }
+                //fill in the background of the circles as white
+                background-color: $white;
+                border-radius: 50%;
+                height: 55px;
+                vertical-align: bottom;
+                width: 55px;
+            }
+        }
+
+        .qc-btn-add-quiz {
+            font-size: 1em;
+            height: 50px;
+
+            &::after {
+                height: 29px; // 50px/sqrt(3)
+                margin: -14px -13px;
+                width: 25px; // 50px/2
+            }
+
+            span {
+                padding-right: 10px;
+            }
+        }
+
+        .qc-quiz-row {
+            margin-bottom: 20px;
+
+            a { //no underlining for buttons that are links
+                text-decoration: none;
+            }
+        }
+    }
+
+    .qc-user-panel {
+        //add a bit of extra space between general set info above and this panel
+        margin-top: 50px;
+
+        .card-header {
+            border-left: solid $golden-yellow 10px;
+        }
+
+        .qc-btn-user-add {
+            font-size: 0.9em;
+            height: 40px;
+            width: 180px;
+
+            span {
+                padding-right: 10px;
+            }
+
+            &::after {
+                height: 23px; // 40px/sqrt(3)
+                margin: -11px -10px;
+                width: 20px; // 40px/2
+            }
+        }
+
+        .qc-users-edit-btn {
+            padding-bottom: 20px;
+            vertical-align: middle;
+
+            svg {
+                height: 35px;
+                margin-left: 25px;
+                width: 35px;
+            }
+        }
+
+        table {
+            background-color: $white;
+        }
+    }
+
+    .qc-view-set-header {
+        margin-bottom: 10px;
+    }
+
+    .qc-view-set-subheader {
+        margin-top: 5px;
+    }
+
+}

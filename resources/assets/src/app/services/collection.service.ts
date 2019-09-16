@@ -145,6 +145,16 @@ export class CollectionService {
       .toPromise();
   }
 
+  async importQti(file, assessmentGroupId) {
+    const timeoutLength = this.httpService.getLongTimeout();
+    const path = this.httpService.getApiRoute() + '/importQTI';
+    const data = { 'importFile': file, 'assessment_group_id': assessmentGroupId };
+
+    return await this.httpClient.post(path, data)
+      .pipe(timeout(timeoutLength))
+      .toPromise();
+  }
+
   async quickAdd(assessment) {
     const timeoutLength = this.httpService.getDefaultTimeout();
     const path = this.httpService.getApiRoute() + '/quickadd';
