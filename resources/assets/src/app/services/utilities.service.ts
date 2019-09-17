@@ -179,8 +179,14 @@ export class UtilitiesService {
   //just within a certain component, like a grade, rather than at the top of the page),
   //get the error data so the component can display it to the user
   getError(resp) {
-    var errors = resp.data.errorList,
-      error = 'There was an error processing your request.'; //default
+    let error = 'There was an error processing your request.'; //default
+    let errors;
+
+    if (!resp.data) {
+      return error;
+    }
+
+    errors = resp.data.errorList;
 
     if (errors) {
       error = '';

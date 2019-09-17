@@ -146,9 +146,12 @@ export class CollectionService {
   }
 
   async importQti(file, assessmentGroupId) {
+    //source: https://stackoverflow.com/questions/47936183/angular-file-upload
     const timeoutLength = this.httpService.getLongTimeout();
     const path = this.httpService.getApiRoute() + '/importQTI';
-    const data = { 'importFile': file, 'assessment_group_id': assessmentGroupId };
+    const data = new FormData();
+    data.append('importFile', file, file.name);
+    data.append('assessment_group_id', assessmentGroupId);
 
     return await this.httpClient.post(path, data)
       .pipe(timeout(timeoutLength))

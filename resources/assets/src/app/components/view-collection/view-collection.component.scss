@@ -45,6 +45,12 @@
     }
 
     .qc-subset-panel {
+        h4 {
+            font-size: 1.2rem;
+            line-height: 3;
+        }
+
+
         .card-header {
             background-color: $dark-gray;
             border-left: solid $muted-purple 10px;
@@ -106,6 +112,7 @@
         .qc-btn-add-quiz {
             font-size: 1em;
             height: 50px;
+            width: 250px;
 
             &::after {
                 height: 29px; // 50px/sqrt(3)

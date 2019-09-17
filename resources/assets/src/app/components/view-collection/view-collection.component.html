@@ -13,8 +13,18 @@
                 </div>
                 <div class="col-6 text-right" *ngIf="!this.readOnly">
                     <div class="form-group">
-                        <qc-qti-import-btn [isImportingQti]="this.isImportingQti"></qc-qti-import-btn>
-                        <qc-qti-export-btn [isExportingQti]="this.isExportingQti"></qc-qti-export-btn>
+                        <button class="btn btn-light qc-btn-qti-import" type="button"
+                            (click)="this.initQtiImport()"
+                            [disabled]="this.isImportingQti">
+                            <span class="fa fa-cloud-upload fa-2x" aria-hidden="true"></span>
+                            <span> Import <strong>QTI Package</strong></span>
+                        </button>
+                        <button class="btn btn-light qc-btn-qti-export" type="button"
+                            (click)="this.initQtiExport()"
+                            [disabled]="this.isExportingQti">
+                            <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span>
+                            <span> Export <strong>QTI Package</strong></span>
+                        </button>
                     </div>
                     <qc-toggle-public-collection
                         *ngIf="this.admin && this.collection"
@@ -54,12 +64,14 @@
             </div>
             <qc-qti-import [hidden]="!this.isImportingQti"
                 [assessmentGroups]="this.assessmentGroups"
-                [isImportingQti]="this.isImportingQti">
+                [isImportingQti]="this.isImportingQti"
+                (onQtiImportCancel)="this.onQtiImportCancel($event)">
             </qc-qti-import>
 
             <qc-qti-export [hidden]="!this.isExportingQti"
                 [assessmentGroups]="this.assessmentGroups"
-                [isExportingQti]="this.isExportingQti">
+                [isExportingQti]="this.isExportingQti"
+                (onQtiExportCancel)="this.onQtiExportCancel($event)">
             </qc-qti-export>
         </div>
         <div>

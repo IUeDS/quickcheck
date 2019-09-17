@@ -162,7 +162,7 @@
     svg {
         &:hover {
             path {
-                fill: $crimson-red;
+                fill: $crimson-red !important;
             }
         }
     }
@@ -178,7 +178,7 @@
     svg {
         &:hover {
             path {
-                fill: $electric-blue;
+                fill: $electric-blue !important;
             }
         }
     }

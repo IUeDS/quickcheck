@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 import { CollectionService } from '../../../services/collection.service';
 
@@ -10,25 +10,31 @@ import { CollectionService } from '../../../services/collection.service';
 export class QtiImportComponent implements OnInit {
   @Input() assessmentGroups;
   @Input() isImportingQti;
+  @Output() onQtiImportCancel = new EventEmitter();
 
   assessmentGroupId = null;
-  criticalNotices = null;
+  criticalNotices = [];
   done = false;
   error;
-  notices = null;
-  quizzes = null;
+  notices = [];
+  quizzes = [];
   uploading = false;
   zipFile = null;
 
   constructor(private collectionService: CollectionService, private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
-  this.utilitiesService.setLtiHeight();
+    this.utilitiesService.setLtiHeight();
   }
 
   cancelQtiImport() {
     this.isImportingQti = false;
-    this.utilitiesService.setLtiHeight();
+    this.onQtiImportCancel.emit({ canceled: true});
+  }
+
+  handleFileInput(files: FileList) {
+    //source: https://stackoverflow.com/questions/47936183/angular-file-upload
+    this.zipFile = files.item(0);
   }
 
   importQti() {
@@ -39,11 +45,11 @@ export class QtiImportComponent implements OnInit {
 
   resetQtiImport() {
     this.assessmentGroupId = null;
-    this.criticalNotices = null;
+    this.criticalNotices = [];
     this.done = false;
     this.error = false;
-    this.notices = null;
-    this.quizzes = null;
+    this.notices = [];
+    this.quizzes = [];
     this.uploading = false;
     this.zipFile = null;
     this.utilitiesService.setLtiHeight();
@@ -66,8 +72,8 @@ export class QtiImportComponent implements OnInit {
     this.quizzes = data.quizzes;
     this.uploading = false;
     this.done = true;
-    this.notices = false;
-    this.criticalNotices = false;
+    this.notices = [];
+    this.criticalNotices = [];
   }
 
   async uploadFile(file) {

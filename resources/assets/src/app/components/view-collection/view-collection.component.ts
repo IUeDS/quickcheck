@@ -19,6 +19,7 @@ export class ViewCollectionComponent implements OnInit {
   isExportingQti = false;
   currentUser;
   admin = false;
+  searchDebounceTimer;
   searchResults = null;
   searchTerm = '';
 
@@ -82,6 +83,14 @@ export class ViewCollectionComponent implements OnInit {
     }
   }
 
+  initQtiExport() {
+    this.isExportingQti = true;
+  }
+
+  initQtiImport() {
+    this.isImportingQti = true;
+  }
+
   onAssessmentCopy($event) {
     var assessment = $event.assessment;
 
@@ -104,13 +113,34 @@ export class ViewCollectionComponent implements OnInit {
     this.utilitiesService.focusToElement('#heading-group-' + newAssessmentGroup.id);
   }
 
-  async search() {
-    //TODO: add debounce of 500 ms using observable
+  onQtiExportCancel($event) {
+    this.isExportingQti = false;
+    this.utilitiesService.setLtiHeight();
+  }
+
+  onQtiImportCancel($event) {
+    this.isImportingQti = false;
+    this.utilitiesService.setLtiHeight();
+  }
+
+  search() {
+    this.utilitiesService.loadingStarted();
+
     if (!this.searchTerm) {
+      clearTimeout(this.searchDebounceTimer);
+      this.utilitiesService.loadingFinished();
       return;
     }
 
-    this.utilitiesService.loadingStarted();
+    //debounce 500ms
+    if (this.searchDebounceTimer) {
+      clearTimeout(this.searchDebounceTimer);
+    }
+    this.searchDebounceTimer = setTimeout(() => { this.searchRequest() }, 500);
+  }
+
+  async searchRequest()  {
+
     let data;
 
     try {

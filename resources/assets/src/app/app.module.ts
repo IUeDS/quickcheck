@@ -74,9 +74,7 @@ import { AddAssessmentGroupComponent } from './components/view-collection/add-as
 import { AssessmentGroupComponent } from './components/view-collection/assessment-group/assessment-group.component';
 import { FeaturesComponent } from './components/view-collection/features/features.component';
 import { QtiExportComponent } from './components/view-collection/qti-export/qti-export.component';
-import { QtiExportBtnComponent } from './components/view-collection/qti-export/qti-export-btn/qti-export-btn.component';
 import { QtiImportComponent } from './components/view-collection/qti-import/qti-import.component';
-import { QtiImportBtnComponent } from './components/view-collection/qti-import/qti-import-btn/qti-import-btn.component';
 import { TogglePublicCollectionComponent } from './components/view-collection/toggle-public-collection/toggle-public-collection.component';
 import { UsersComponent } from './components/view-collection/users/users.component';
 import { SafePipe } from './safe.pipe';
@@ -162,9 +160,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
     AssessmentGroupComponent,
     FeaturesComponent,
     QtiExportComponent,
-    QtiExportBtnComponent,
     QtiImportComponent,
-    QtiImportBtnComponent,
     TogglePublicCollectionComponent,
     UsersComponent,
     SafePipe,

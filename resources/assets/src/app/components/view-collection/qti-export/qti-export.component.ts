@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
 	selector: 'qc-qti-export',
@@ -8,6 +8,7 @@ import { Component, OnInit, OnChanges, Input } from '@angular/core';
 export class QtiExportComponent implements OnInit {
 	@Input() assessmentGroups;
 	@Input() isExportingQti;
+	@Output() onQtiExportCancel = new EventEmitter();
 
 	assessmentList = null;
 	assessments = null;
@@ -30,6 +31,7 @@ export class QtiExportComponent implements OnInit {
 
 	cancelQtiExport() {
 		this.isExportingQti = false;
+		this.onQtiExportCancel.emit({canceled: true});
 	}
 
 	formatQtiExportData() {

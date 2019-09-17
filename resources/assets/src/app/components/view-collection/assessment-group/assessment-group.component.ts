@@ -198,6 +198,7 @@ export class AssessmentGroupComponent implements OnInit {
       if (membership.collection.id == collectionId) {
         const assessmentGroups = membership.collection.assessment_groups;
         assessment.copyData.assessmentGroups = assessmentGroups;
+        assessment.copyData.assessment_group_id = assessmentGroups[0].id;
         return;
       }
     }
