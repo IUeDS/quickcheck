@@ -90,7 +90,7 @@ export class EditAssessmentComponent implements OnInit {
     //in chrome on initial page load; FF was fine, and Chrome works fine as soon as
     //anything is edited. Moving this to sub-components was not working.
     //so, wait for a few seconds, after components all load, then set the height.
-    setTimeout(function() {
+    setTimeout(() => {
       this.utilitiesService.setLtiHeight();
     }, 3000, false);
   }
@@ -127,8 +127,10 @@ export class EditAssessmentComponent implements OnInit {
   focusToQuestion(question) {
     const questionId = '#question-header-' + question.question_order;
     this.utilitiesService.focusToElement(questionId);
-    const questionElement = document.getElementById(questionId);
-    questionElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest'});
+    //TODO:  this was throwing an error for some reason. Do we need it?
+    //const questionElement = document.getElementById(questionId);
+    //questionElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest'});
+
     // setTimeout(function() {
     //   this.utilitiesService.focusToElement(questionId);
     //   //scroll to question (it gets jittery in the iframe after resetting LTI height)

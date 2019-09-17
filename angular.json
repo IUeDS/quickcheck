@@ -43,6 +43,11 @@
                 "glob": "**/*",
                 "input": "node_modules/tinymce/plugins",
                 "output": "/tinymce/plugins/"
+              },
+              {
+                "glob": "**/*",
+                "input": "resources/assets/src/vendor/tinymce_plugins/mathquill",
+                "output": "/tinymce/plugins/mathquill"
               }
             ],
             "styles": [
@@ -52,7 +57,8 @@
               "resources/assets/src/styles.scss"
             ],
             "scripts": [
-              "node_modules/tinymce/tinymce.min.js"
+              "./node_modules/tinymce/tinymce.min.js",
+              "./node_modules/mathquill/build/mathquill.js"
             ]
           },
           "configurations": {

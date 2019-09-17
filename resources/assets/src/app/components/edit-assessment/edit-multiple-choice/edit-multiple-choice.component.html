@@ -53,7 +53,7 @@
                 *ngIf="!this.isRichContentToggled">
             </qc-toggle-correct-btn>
             <qc-delete-option-btn
-                [index="$index"
+                [index]="$index"
                 (onDelete)="this.deleteOption($event)"
                 [option]="option"
                 [optionTypeText]="'multiple choice option'"
