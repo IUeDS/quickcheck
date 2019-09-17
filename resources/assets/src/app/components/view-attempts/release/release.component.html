@@ -1,4 +1,4 @@
-<button *ngIf="!this.release" (click)="this.createRelease()" role="button" class="btn qc-btn qc-release-btn" data-toggle="tooltip" data-placement="top" title="Releasing results will allow students to see their attempt data for this quick check. (Note that results are unrelated to grades, which appear in the gradebook the moment the assignment is graded.)">
+<button *ngIf="!this.release" (click)="this.createRelease()" role="button" class="btn qc-btn qc-release-btn" tooltip="Releasing results will allow students to see their attempt data for this quick check. (Note that results are unrelated to grades, which appear in the gradebook the moment the assignment is graded.)" placement="top">
     <span class="fa fa-users" aria-hidden="true"></span> Release results to students
 </button>
 <button *ngIf="this.release" (click)="this.rollbackRelease()" role="button" class="btn qc-btn qc-release-btn" data-toggle="tooltip" data-placement="top" title="If student results were released in error, they can be rolled back and hidden from students.">

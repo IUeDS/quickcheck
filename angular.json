@@ -28,6 +28,21 @@
                 "glob": "**/*",
                 "input": "../../../node_modules/font-awesome/fonts",
                 "output": "./assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce/skins",
+                "output": "/tinymce/skins/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce/themes",
+                "output": "/tinymce/themes/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce/plugins",
+                "output": "/tinymce/plugins/"
               }
             ],
             "styles": [
@@ -36,7 +51,9 @@
               "./node_modules/mathquill/build/mathquill.css",
               "resources/assets/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/tinymce/tinymce.min.js"
+            ]
           },
           "configurations": {
             "production": {

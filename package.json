@@ -24,6 +24,7 @@
     "@angular/platform-browser": "~8.2.4",
     "@angular/platform-browser-dynamic": "~8.2.4",
     "@angular/router": "~8.2.4",
+    "@tinymce/tinymce-angular": "^3.3.0",
     "animate.css": "latest",
     "bootstrap": "^4.3.1",
     "font-awesome": "~4.6.3",
@@ -34,6 +35,7 @@
     "ngx-bootstrap": "^5.1.1",
     "popper.js": "^1.15.0",
     "rxjs": "~6.4.0",
+    "tinymce": "^5.0.15",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

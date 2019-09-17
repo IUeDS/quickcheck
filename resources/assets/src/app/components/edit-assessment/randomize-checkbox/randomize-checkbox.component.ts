@@ -15,4 +15,27 @@ export class RandomizeCheckboxComponent implements OnInit {
   ngOnInit() {
   }
 
+  isRandomized() {
+    if (this.question.randomized) {
+      return true;
+    }
+
+    return false;
+  }
+
+  onEdited() {
+    this.onQuestionEdited.emit({question: this.question});
+  }
+
+  toggleRandomized() {
+    if (this.question.randomized) {
+      this.question.randomized = false;
+    }
+    else {
+      this.question.randomized = true;
+    }
+
+    this.onEdited();
+  }
+
 }

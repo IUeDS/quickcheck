@@ -15,10 +15,54 @@ export class CustomActivitySelectionComponent implements OnInit {
   @Input() utilitiesService;
 
   customActivities = [];
+  saved = false;
 
   constructor(private customActivityService: CustomActivityService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.utilitiesService.setLtiHeight();
+    if (!this.admin) {
+      return;
+    }
+
+    //admins can select custom activity from list; instructor can only view
+    //what has already been selected by an admin
+    await this.getCustomActivities();
   }
 
+  addCustomActivity() {
+    this.customActivityAdded = true;
+    //if user saved and is adding/editing more data, remove the success box
+    this.saved = false;
+  }
+
+  async getCustomActivities() {
+    try {
+      const resp = await this.customActivityService.getCustomActivities();
+      const data = this.utilitiesService.getResponseData(resp);
+      this.customActivities = data.customActivities;
+    }
+    catch (error) {
+      this.utilitiesService.showError(error);
+      return;
+    }
+  }
+
+  removeCustomActivity() {
+    this.customActivityAdded = false;
+    delete this.assessment.custom_activity_id;
+    //if user saved and is adding/editing more data, remove the success box
+    this.saved = false;
+  }
+
+  //populate the url/developer info whenever a custom activity option is selected, to give user more info
+  selectCustomActivity(id) {
+    this.customActivities.forEach(function(activity) {
+      if (activity.id == id) {
+        this.customActivity = activity;
+        //if user saved and is adding/editing more data, remove the success box
+        this.saved = false;
+      }
+    });
+  }
 }

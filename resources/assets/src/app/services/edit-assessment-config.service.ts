@@ -7,7 +7,7 @@ export class EditAssessmentConfigService {
 
   constructor() { }
 
-    //keep question types as constants in one place
+  //keep question types as constants in one place
   getQuestionTypes() {
     return {
       multipleChoice: {

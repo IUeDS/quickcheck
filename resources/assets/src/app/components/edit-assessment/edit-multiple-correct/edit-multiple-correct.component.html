@@ -35,13 +35,13 @@
                 (ngModelChange)="this.onEdited()"
                 required
                 [disabled]="this.readOnly">
-            <textarea ui-tinymce="this.tinymceOptions"
+            <editor [init]="this.tinymceOptions"
                 *ngIf="this.isRichContentToggled"
                 [attr.aria-labelled-by]="'mc-option-' + this.question.id + '-' + option.id + '-label'"
                 [(ngModel)]="option.answer_text"
                 (ngModelChange)="this.onEdited()"
                 required>
-            </textarea>
+            </editor>
             <!-- put correct icon after text input, but float to the left; so that way, sighted users see it from left to right in a way that visually makes sense, but screenreader users see it after, so when they create a new option, focus is moved to the text input, and then they can select if they want it to be correct or not. Otherwise, if we moved focus to the text input and the correct symbol came before, the user would not be aware of its existence -->
             <qc-toggle-correct-btn
                 [index]="$index"

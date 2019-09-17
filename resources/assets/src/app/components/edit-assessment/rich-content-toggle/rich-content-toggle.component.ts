@@ -17,4 +17,19 @@ export class RichContentToggleComponent implements OnInit {
   ngOnInit() {
   }
 
+  toggle() {
+    var toggled;
+
+    //string of true/false required in html element
+    if (this.isToggled) {
+      this.isToggled = false;
+    }
+    else {
+      this.isToggled = true;
+    }
+
+    //send boolean to parent
+    toggled = this.isToggled ? true : false;
+    this.onRichContentToggle.emit({'isToggled': toggled});
+  }
 }

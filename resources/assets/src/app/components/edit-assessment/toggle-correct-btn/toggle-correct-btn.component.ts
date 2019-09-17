@@ -12,7 +12,7 @@ export class ToggleCorrectBtnComponent implements OnInit {
   @Input() question;
   @Output() onToggleCorrect = new EventEmitter();
 
-  questionTypes = {};
+  questionTypes;
 
   constructor(private editAssessmentConfig: EditAssessmentConfigService) {
     this.questionTypes = editAssessmentConfig.getQuestionTypes();
@@ -21,4 +21,31 @@ export class ToggleCorrectBtnComponent implements OnInit {
   ngOnInit() {
   }
 
+  isCorrect() {
+    if (this.option.correct == 'true') {
+      return true;
+    }
+
+    return false;
+  }
+
+  isMultipleChoice() {
+    if (this.question.question_type === this.questionTypes.multipleChoice.constantName) {
+      return true;
+    }
+
+    return false;
+  }
+
+  isMultipleCorrect() {
+    if (this.question.question_type === this.questionTypes.multipleCorrect.constantName) {
+      return true;
+    }
+
+    return false;
+  }
+
+  toggleCorrect() {
+    this.onToggleCorrect.emit({option: this.option});
+  }
 }

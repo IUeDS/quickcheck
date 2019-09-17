@@ -17,4 +17,11 @@ export class DeleteOptionBtnComponent implements OnInit {
   ngOnInit() {
   }
 
+  deleteOption() {
+    this.onDelete.emit({
+      'option': this.option,
+      'index': this.index
+    });
+  }
+
 }

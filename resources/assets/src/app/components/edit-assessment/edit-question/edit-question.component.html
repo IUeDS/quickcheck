@@ -56,11 +56,11 @@
         </label>
 
         <!-- WYSIWYG editor -->
-        <textarea ui-tinymce="this.tinymceOptions" *ngIf="!this.readOnly"
+        <editor [init]="this.tinymceOptions" *ngIf="!this.readOnly"
             [(ngModel)]="this.question.question_text"
             (ngModelChange)="this.onEdited()"
             [attr.aria-labelledby]="'question-text-label-' + this.question.id">
-        </textarea>
+        </editor>
 
         <!-- for read-only users, show the text in a disabled form field -->
         <div *ngIf="this.readOnly" [innerHTML]="this.question.question_text | safe: 'html'"

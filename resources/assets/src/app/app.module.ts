@@ -87,6 +87,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 @NgModule({
   declarations: [
@@ -178,7 +179,8 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
     BrowserAnimationsModule,
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
-    PopoverModule.forRoot()
+    PopoverModule.forRoot(),
+    EditorModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]
