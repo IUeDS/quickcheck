@@ -42,11 +42,10 @@ export class EditAssessmentConfigService {
   }
 
   getTinyMceConfig() {
-    //TODO: add mathquill back at end of list and fix
     const tinymcePlugins = ['advlist autolink lists link image charmap print hr anchor pagebreak',
       'searchreplace wordcount visualblocks visualchars code',
       'insertdatetime nonbreaking save table directionality',
-      'paste textpattern imagetools'];
+      'paste textpattern imagetools mathquill'];
 
     const tinymceToolbar = 'undo redo | styleselect | bold italic | alignleft aligncenter ' +
       'alignright alignjustify ltr rtl | bullist numlist outdent indent | link image mathquill';
@@ -56,14 +55,13 @@ export class EditAssessmentConfigService {
       suffix: '.min',
       plugins: tinymcePlugins,
       toolbar: tinymceToolbar,
-      //skin: 'lightgray',
       theme : 'silver',
       default_link_target: '_blank',
       image_advtab: true,
       table_default_attributes: {
         class: 'table table-bordered'
       },
-      height: 200
+      height: 300
     };
   }
 }

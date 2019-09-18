@@ -54,12 +54,7 @@ export class EditQuestionComponent implements OnInit {
   }
 
   getCSSFilePath() {
-    //necessary for prod to get to assets, but not for local
-    var splitPath = window.location.href.split('/index.php'),
-      basePath = splitPath[0],
-      cssPath = basePath + '/assets/dist/css/style.min.css';
-
-    return cssPath;
+    return '/assets/dist/styles.css';
   }
 
   initializeNewQuestion() {
