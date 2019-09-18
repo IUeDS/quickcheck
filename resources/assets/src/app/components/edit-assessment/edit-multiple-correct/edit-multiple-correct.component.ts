@@ -101,11 +101,11 @@ export class EditMultipleCorrectComponent implements OnInit {
       return;
     }
 
-    if (!option.correct) {
-      option.correct = true;
+    if (option.correct == 'false') {
+      option.correct = 'true';
     }
     else {
-      option.correct = false;
+      option.correct = 'false';
     }
 
     this.onEdited();

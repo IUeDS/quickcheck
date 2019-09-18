@@ -102,7 +102,7 @@ export class EditMultipleChoiceComponent implements OnInit {
   }
 
   isMultipleCorrect() {
-    if (this.question.multiple_correct == 'true') {
+    if (this.question.multiple_correct == 1) {
       return true;
     }
 
@@ -176,11 +176,11 @@ export class EditMultipleChoiceComponent implements OnInit {
   }
 
   toggleMultipleCorrect() {
-    if (this.question.multiple_correct == 'true') {
-      this.question.multiple_correct = 'false';
+    if (this.question.multiple_correct == 1) {
+      this.question.multiple_correct = 0;
     }
     else {
-      this.question.multiple_correct = 'true';
+      this.question.multiple_correct = 1;
     }
 
     this.onEdited();

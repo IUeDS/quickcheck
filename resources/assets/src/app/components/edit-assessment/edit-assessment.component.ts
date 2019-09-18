@@ -105,7 +105,7 @@ export class EditAssessmentComponent implements OnInit {
       'question_order': questionOrder,
       'question_text': '',
       'question_type': 'multiple_choice',
-      'randomized': 'true',
+      'randomized': 1,
       'multiple_correct': 'false',
       'options': []
     });
@@ -292,12 +292,12 @@ export class EditAssessmentComponent implements OnInit {
   validate() {
     this.validationError = false; //reset
     this.validationErrorList = []; //reset
-    this.questions.forEach(function(question) {
+    for (let question of this.questions) {
       if (question.validationError) {
         var error = 'Question #' + question.question_order + ': ' + question.validationError;
         this.validationErrorList.push(error);
       }
-    });
+    }
 
     if (this.validationErrorList.length) {
       this.validationError = true;

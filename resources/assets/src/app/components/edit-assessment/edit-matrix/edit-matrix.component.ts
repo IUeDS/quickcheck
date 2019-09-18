@@ -9,8 +9,8 @@ import { UtilitiesService } from '../../../services/utilities.service';
 export class EditMatrixComponent implements OnInit {
   @Input() question;
   @Input() readOnly;
-  @Output() onQuestionEdited;
-  @Output() onSavedOptionDeleted;
+  @Output() onQuestionEdited = new EventEmitter();
+  @Output() onSavedOptionDeleted = new EventEmitter();
 
   constructor(private utilitiesService: UtilitiesService) { }
 
@@ -59,22 +59,22 @@ export class EditMatrixComponent implements OnInit {
 
     //if the option was previously saved (not temp), add to deletedOptions array so we can delete on back-end
     if (column.id.toString().indexOf('temp') === -1) {
-      this.onSavedOptionDeleted({$event: { option: column }});
+      this.onSavedOptionDeleted.emit({ option: column });
     }
 
     //remove as possible answer
-    this.question.rows.forEach(function(row) {
+    for (let row of this.question.rows) {
       if (row.columnAnswerId == column.id) {
         row.columnAnswerId = false;
       }
-    });
+    }
 
     //remove the option entirely from the question options, so it does not muck up the view
-    this.question.columns.forEach(function(thisColumn, index) {
+    for (let [index, thisColumn] of this.question.columns.entries()) {
       if (thisColumn.id == column.id) {
         this.question.columns.splice(index, 1);
       }
-    });
+    }
 
     this.onEdited();
   }
@@ -84,15 +84,15 @@ export class EditMatrixComponent implements OnInit {
 
     //if the option was previously saved (not temp), add to deletedOptions array so we can delete on back-end
     if (row.id.toString().indexOf('temp') === -1) {
-      this.onSavedOptionDeleted({$event: { option: row }});
+      this.onSavedOptionDeleted.emit({ option: row });
     }
 
     //remove the option entirely from the question options, so it does not muck up the view
-    this.question.rows.forEach(function(thisRow, index) {
+    for (let [index, thisRow] of this.question.rows.entries()) {
       if (thisRow.id == row.id) {
         this.question.rows.splice(index, 1);
       }
-    });
+    }
 
     this.onEdited();
   }
@@ -112,23 +112,23 @@ export class EditMatrixComponent implements OnInit {
       return;
     }
 
-    this.question.options.forEach(function(qOption) {
+    for (let qOption of this.question.options) {
       if (qOption.row_or_column == 'row') {
         rows.push(qOption);
       }
       else {
         columns.push(qOption);
       }
-    });
+    }
 
-    rows.forEach(function(row) {
+    for (let row of rows) {
       row.columnAnswerId = false;
-      columns.forEach(function(column) {
+      for (let column of columns) {
         if (row.matrix_answer_text === column.answer_text) {
           row.columnAnswerId = column.id;
         }
-      });
-    });
+      }
+    }
 
     this.question.columns = columns;
     this.question.rows = rows;
@@ -149,11 +149,11 @@ export class EditMatrixComponent implements OnInit {
     }
 
     //check that a correct answer is marked
-    this.question.rows.forEach(function(row) {
+    for (let row of this.question.rows) {
       if (!row.columnAnswerId) {
         missingAnswer = true;
       }
-    });
+    }
 
     if (optionsAdded && !missingAnswer) {
       return false;

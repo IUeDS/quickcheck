@@ -8,7 +8,7 @@
         <span class="fa fa-plus" aria-hidden="true"></span> Add row
         <span class="sr-only">to question #{{ this.question.question_order }}</span>
     </button>
-    <table class="table table-striped table-bordered qc-matrix-entry-table" [hidden]="!this.question.columns.length || this.question.rows.length">
+    <table class="table table-striped table-bordered qc-matrix-entry-table" [hidden]="!this.question.columns.length && !this.question.rows.length">
         <thead>
             <th></th>
             <th *ngFor="let column of this.question.columns; index as $index;" class="qc-matrix-row-header">
@@ -19,7 +19,7 @@
                     </label>
                     <input type="text" id="matrix-column-{{column.id}}" class="form-control"
                         [(ngModel)]="column.answer_text"
-                        (ngModelChange)="this.onEdit()"
+                        (ngModelChange)="this.onEdited()"
                         required
                         [disabled]="this.readOnly">
                     <qc-delete-option-btn

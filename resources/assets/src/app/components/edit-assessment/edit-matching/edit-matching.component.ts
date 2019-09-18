@@ -46,7 +46,7 @@ export class EditMatchingComponent implements OnInit {
     this.onEdited();
 
     //focus to this element after adding it
-    setTimeout(function() {
+    setTimeout(() => {
       this.utilitiesService.focusToElement('#matching-distractor-' + this.question.id + '-' + tempId);
     }, 0, false);
   }
@@ -72,7 +72,7 @@ export class EditMatchingComponent implements OnInit {
     this.onEdited();
 
     //focus to this element after adding it
-    setTimeout(function() {
+    setTimeout(() => {
       this.utilitiesService.focusToElement('#matching-prompt-' + this.question.id + '-' + tempId);
     }, 0, false);
   }
@@ -102,12 +102,12 @@ export class EditMatchingComponent implements OnInit {
     //we need to delete not only the prompt, but also its paired answer, if it exists
     //(if dealing with a distractor, no action necessary)
     if (this.isSavedPrompt(prompt)) {
-      this.question.selectableAnswers.forEach(function(selectableAnswer, answerIndex) {
+      for (let [answerIndex, selectableAnswer] of this.question.selectableAnswers.entries()) {
         if (selectableAnswer.id == prompt.matching_answer_id) {
-          this.onSavedOptionDeleted({$event: { option: selectableAnswer }});
+          this.onSavedOptionDeleted.emit({ option: selectableAnswer });
           this.question.selectableAnswers.splice(answerIndex, 1);
         }
-      });
+      }
     }
 
     //delete prompt
@@ -119,7 +119,7 @@ export class EditMatchingComponent implements OnInit {
     this.question.prompts = [];
     this.question.selectableAnswers = [];
     this.question.distractors = [];
-    this.question.options.forEach(function(qOption) {
+    for (let qOption of this.question.options) {
       if (qOption.prompt_or_answer == 'prompt') {
         this.question.prompts.push(qOption);
       }
@@ -129,31 +129,31 @@ export class EditMatchingComponent implements OnInit {
           this.question.distractors.push(qOption);
         }
       }
-    });
+    }
 
     //Attach the answer ID to each prompt, so that when we're saving on the back-end,
     //if the text changes in the answer, we can still update it properly.
     //(The text input for the answer is bound to prompt.matching_answer_text
     //and if that text changes, the tie between prompt and answer is lost, since there
     //is no ID connecting them. A little clunky, but not sure how to better handle it.)
-    this.question.prompts.forEach(function(prompt) {
-      this.question.selectableAnswers.forEach(function(selectableAnswer) {
+    for (let prompt of this.question.prompts) {
+      for (let selectableAnswer of this.question.selectableAnswers) {
         if (prompt.matching_answer_text == selectableAnswer.option_text) {
           prompt.matching_answer_id = selectableAnswer.id;
         }
-      });
-    });
+      }
+    }
   }
 
   isDistractor(qOption) {
     var isDistractor = true;
 
     //if a prompt's answer matches this option's text, then it is a correct answer option and not a distractor
-    this.question.options.forEach(function(thisOption) {
+    for (let thisOption of this.question.options) {
       if (thisOption.prompt_or_answer === 'prompt' && thisOption.matching_answer_text && thisOption.matching_answer_text === qOption.option_text) {
         isDistractor = false;
       }
-    });
+    }
 
     return isDistractor;
   }
@@ -183,5 +183,4 @@ export class EditMatchingComponent implements OnInit {
     this.question = $event.question;
     this.onEdited();
   }
-
 }

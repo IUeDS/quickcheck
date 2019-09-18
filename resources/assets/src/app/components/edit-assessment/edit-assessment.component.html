@@ -2,7 +2,7 @@
 <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
 <div class="row qc-edit-assessment">
     <div class="col-12">
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" qc-utilitiesService="this.utilitiesService"></qc-error-message>
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
         <form (ngSubmit)="this.saveAssessment()" *ngIf="this.assessment">
             <a href="{{this.utilitiesService.setContextLink('/collection/' + this.collection.id)}}" target="_self" >
                 <span class="fa fa-angle-double-left" aria-hidden="true"></span> Back
@@ -34,7 +34,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12 form-group">
-                            <div class="checkbox">
+                            <div class="form-check">
                                 <input type="checkbox" id="shuffle-question-order"
                                     (click)="this.toggleShuffled()"
                                     [disabled]="this.readOnly"

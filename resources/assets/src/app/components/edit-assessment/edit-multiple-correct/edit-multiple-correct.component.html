@@ -48,7 +48,7 @@
                 (onToggleCorrect)="this.toggleCorrect($event)"
                 [option]="option"
                 [question]="this.question"
-                *ngIf="this.isRichContentToggled">
+                *ngIf="!this.isRichContentToggled">
             </qc-toggle-correct-btn>
             <qc-delete-option-btn
                 [index]="$index"
@@ -56,7 +56,7 @@
                 [option]="option"
                 [optionTypeText]="'multiple correct option'"
                 [question]="this.question"
-                *ngIf="!this.readOnly && this.isRichContentToggled">
+                *ngIf="!this.readOnly && !this.isRichContentToggled">
             </qc-delete-option-btn>
         </div>
     </div>

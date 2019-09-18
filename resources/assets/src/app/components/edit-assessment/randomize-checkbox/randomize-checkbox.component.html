@@ -1,10 +1,7 @@
-<div class="checkbox">
+<div class="form-check">
     <input type="checkbox" class="qc-randomize-checkbox" id="randomize-{{this.question.id}}"
         (click)="this.toggleRandomized()"
         [disabled]="this.readOnly"
         [checked]="this.isRandomized()">
-    <label for="randomize-{{this.question.id}}">
-        Randomize options
-        <span class="sr-only">for question #{{ this.question.question_order }}</span>
-    </label>
+    <label for="randomize-{{this.question.id}}">Randomize options <span class="sr-only">for question #{{ this.question.question_order }}</span></label>
 </div>

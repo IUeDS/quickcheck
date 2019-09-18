@@ -16,7 +16,7 @@
                         <span class="sr-only"> for question #{{ this.question.question_order }}, dropdown pair #{{ $index+1 }}</span>:
                     </label>
                     <input type="text" id="dropdown-prompt-{{this.question.id}}-{{prompt.id}}"
-                        class="form-control"
+                        class="form-control ml-2"
                         [(ngModel)]="prompt.answer_text"
                         (ngModelChange)="this.onEdited()"
                         required
@@ -28,7 +28,7 @@
                         <span class="sr-only"> for question #{{ this.question.question_order }}, dropdown pair #{{ $index+1 }}</span>:
                     </label>
                     <input type="text" id="dropdown-answer-{{this.question.id}}-{{prompt.id}}"
-                        class="form-control"
+                        class="form-control ml-2"
                         [(ngModel)]="prompt.dropdown_answer_text"
                         (ngModelChange)="this.onEdited();"
                         required
@@ -66,7 +66,7 @@
             <input type="text" id="dropdown-distractor-{{this.question.id}}-{{distractor.id}}"
                 [(ngModel)]="distractor.answer_text"
                 (ngModelChange)="this.onEdited()"
-                class="form-control"
+                class="form-control ml-2"
                 required
                 [disabled]="this.readOnly">
             <qc-delete-option-btn

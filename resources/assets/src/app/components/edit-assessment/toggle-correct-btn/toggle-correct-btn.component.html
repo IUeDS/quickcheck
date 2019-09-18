@@ -11,7 +11,7 @@
         'qc-selected-correct' : this.isCorrect(),
         'qc-selected-incorrect': !this.isCorrect()
     }"
-    role="button" type="button"
+    role="button" tabindex="0"
     (click)="this.toggleCorrect()"
     [attr.aria-labelled-by]="'mc-option-' + this.question.id + '-' + this.option.id + '-correct'">
 </span>

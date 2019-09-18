@@ -18,7 +18,7 @@
                     <input type="text" id="matching-prompt-{{this.question.id}}-{{prompt.id}}"
                         [(ngModel)]="prompt.option_text"
                         (ngModelChange)="this.onEdited()"
-                        class="form-control"
+                        class="form-control ml-2"
                         required
                         [disabled]="this.readOnly">
                 </td>
@@ -27,7 +27,7 @@
                         Answer
                         <span class="sr-only"> for question #{{ this.question.question_order }}, matching pair #{{ $index + 1 }}</span>: </label>
                     <input type="text" id="matching-answer-{{this.question.id}}-{{prompt.id}}"
-                        class="form-control"
+                        class="form-control ml-2"
                         [(ngModel)]="prompt.matching_answer_text"
                         (ngModelChange)="this.onEdited()"
                         required
@@ -64,7 +64,7 @@
             <input type="text" id="matching-distractor-{{this.question.id}}-{{distractor.id}}"
                 [(ngModel)]="distractor.option_text"
                 (ngModelChange)="this.onEdited()"
-                class="form-control"
+                class="form-control ml-2"
                 required
                 [disabled]="this.readOnly">
             <qc-delete-option-btn

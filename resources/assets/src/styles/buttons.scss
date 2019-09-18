@@ -2,6 +2,16 @@
     text-decoration: none; //if a link, make sure there is no underline
 }
 
+//darker blue for accessibility
+.btn-primary {
+    background-color: $primary-blue-darker;
+    border-color: $primary-blue-darker-border;
+
+    &:hover {
+        background-color: $primary-blue-darker-hover
+    }
+}
+
 //darker green for acccessible color contrast
 .btn-success {
     background-color: $success-green;

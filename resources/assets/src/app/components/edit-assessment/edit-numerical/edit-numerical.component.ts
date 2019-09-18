@@ -36,7 +36,7 @@ export class EditNumericalComponent implements OnInit {
     });
 
     this.onEdited();
-    this.utilitiesService.focusToElement('#numerical-answer-' + this.question.id + '-' + tempId);
+    this.utilitiesService.focusToElement('#numerical-answer-' + this.question.id + '-' + tempId + '-type');
   }
 
   deleteOption($event) {

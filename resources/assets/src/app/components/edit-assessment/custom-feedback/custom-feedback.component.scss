@@ -8,6 +8,20 @@
     margin-top: 10px;
 }
 
+::ng-deep .qc-custom-feedback-container {
+    .card-header {
+        padding-left: 60px;
+    }
+
+    .qc-rich-content-toggle {
+        padding-bottom: 0;
+    }
+
+    h3 {
+        margin-top: 10px;
+    }
+}
+
 .qc-custom-feedback-correct {
     color: $success-green;
 

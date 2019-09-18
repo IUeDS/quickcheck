@@ -1,8 +1,12 @@
 <div class="card card-body bg-light custom-activity-panel">
-    <button class="btn btn-outline-dark qc-btn" type="button" (click)="this.addCustomActivity()"
-        *ngIf="!this.customActivityAdded && this.admin">
-        <span class="fa fa-cog" aria-hidden="true"></span> Make this a custom activity
-    </button>
+    <div class="row">
+        <div class="col-3">
+            <button class="btn btn-sm btn-outline-dark qc-btn" type="button" (click)="this.addCustomActivity()"
+                *ngIf="!this.customActivityAdded && this.admin">
+                <span class="fa fa-cog" aria-hidden="true"></span> Make this a custom activity
+            </button>
+        </div>
+    </div>
     <div *ngIf="this.customActivityAdded">
         <h2>Custom Activity</h2>
         <p class="lead" *ngIf="!this.admin && !this.readOnly">If you would like to change the custom activity for this assessment, please contact a system admin.</p>

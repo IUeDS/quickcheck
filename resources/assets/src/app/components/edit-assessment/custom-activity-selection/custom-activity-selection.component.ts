@@ -57,12 +57,12 @@ export class CustomActivitySelectionComponent implements OnInit {
 
   //populate the url/developer info whenever a custom activity option is selected, to give user more info
   selectCustomActivity(id) {
-    this.customActivities.forEach(function(activity) {
+    for (let activity of this.customActivities) {
       if (activity.id == id) {
         this.customActivity = activity;
         //if user saved and is adding/editing more data, remove the success box
         this.saved = false;
       }
-    });
+    }
   }
 }
