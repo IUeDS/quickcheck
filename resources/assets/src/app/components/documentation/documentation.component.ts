@@ -9,15 +9,41 @@ import { UtilitiesService } from '../../services/utilities.service';
 })
 export class DocumentationComponent implements OnInit {
   //TODO: add contact us email, show overview video, and support center link just for IU
-  contactUsEmail = false;
   currentPage = 'help';
   isLoggedIn = false;
-  showOverviewVideo = false;
-  supportCenterLink = false;
+  isIU = false;
 
   constructor(private utilitiesService: UtilitiesService, private userService: UserService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.getUser();
+    this.isIU = document.location.href.indexOf('iu.edu') > -1 ? true : false;
+
+    //https://stackoverflow.com/questions/7717527/smooth-scrolling-when-clicking-an-anchor-link
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+              behavior: 'smooth'
+          });
+      });
+    });
+  }
+
+  async getUser() {
+    try {
+      const resp = await this.userService.getUser();
+      const data = this.utilitiesService.getResponseData(resp);
+      this.isLoggedIn = true;
+      this.utilitiesService.setLtiHeight();
+    }
+    catch (error) {
+      //just for the purposes of the documentation page, don't display an error if the user is
+      //not logged-in, since this is a public resource; just hide the nav if not logged-in
+      this.isLoggedIn = false;
+      return;
+    }
   }
 
 }

@@ -2,15 +2,15 @@
 <div class="row">
     <div class="col-12">
         <h1>Documentation</h1>
-        <p *ngIf="this.supportCenterLink">If you have a question or problem that is not addressed by the documentation on this page, please <a [href]="this.supportCenterLink" target="_blank">contact the Support Center</a>.</p>
-        <p *ngIf="this.contactUsEmail">If you have a feature request or feedback on how Quick Check can be improved, please <a [href]="'mailto:' + this.contactUsEmail" target="_blank">contact us</a>.</p>
+        <p *ngIf="this.isIU">If you have a question or problem that is not addressed by the documentation on this page, please <a href="https://kb.iu.edu/d/abxl" target="_blank">contact the Support Center</a>.</p>
+        <p *ngIf="this.isIU">If you have a feature request or feedback on how Quick Check can be improved, please <a href="mailto:elearn@iu.edu" target="_blank">contact us</a>.</p>
         <h2>Topics</h2>
         <!-- nested list group source: http://stackoverflow.com/questions/29063244/consistent-styling-for-nested-lists-with-bootstrap -->
         <div class="just-padding">
             <div class="card card-body bg-light list-group list-group-root">
                 <a href="#about" target="_self" class="list-group-item">About</a>
                 <div class="list-group">
-                    <a href="#overview-video" target="_self" class="list-group-item" *ngIf="this.showOverviewVideo">Overview video</a>
+                    <a href="#overview-video" target="_self" class="list-group-item" *ngIf="this.isIU">Overview video</a>
                     <a href="#who-made" target="_self" class="list-group-item">Who made this application?</a>
                     <a href="#what-purpose" target="_self" class="list-group-item">What purpose does this application serve?</a>
                     <a href="#why-should" target="_self" class="list-group-item">Why should I use this application?</a>
@@ -77,7 +77,7 @@
             </div>
         </div>
         <hr>
-        <h2 id="overview-video" *ngIf="this.showOverviewVideo">Overview Video</h2>
+        <h2 id="overview-video" *ngIf="this.isIU">Overview Video</h2>
         <iframe *ngIf="this.showOverviewVideo" src="https://cdnapisec.kaltura.com/p/1751071/sp/175107100/embedIframeJs/uiconf_id/26683571/partner_id/1751071?iframeembed=true&playerId=kaltura_player_1489789936&entry_id=1_c9mx20l5&flashvars[streamerType]=auto" width="560" height="395" allowfullscreen webkitallowfullscreen mozAllowFullScreen frameborder="0" title="Quick Check Overview Video"></iframe>
         <h2 id="about">About</h2>
         <h3 id="who-made">Who made this application?</h3>

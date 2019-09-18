@@ -4,7 +4,7 @@
 
 @section('content')
 <main class="container-fluid">
-    <qc-documentation></qc-documentation>
+    <app-root></app-root>
 </main>
 
 
