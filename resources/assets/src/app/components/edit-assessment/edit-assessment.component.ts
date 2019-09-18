@@ -33,21 +33,33 @@ export class EditAssessmentComponent implements OnInit {
   )
   {
     //Ask user if they really want to leave the page if unsaved changes
-    window.onbeforeunload = (event) => {
+    window.addEventListener("beforeunload", (event) => {
       if (this.saved || this.readOnly) {
         //changes are saved, or user has read-only permissions and can't make changes,
         //so let the user head out the door
       }
       else {
-        //browser should confirm to user that they want to leave the page
+        event.preventDefault();
         return 'You have unsaved changes.';
       }
-    };
+    });
   }
 
   async ngOnInit() {
     this.assessmentId = this.getAssessmentId();
     await this.init(); //this function gets called again after saving, so separate out
+  }
+
+  beforeUnload() {
+      if (this.saved || this.readOnly) {
+        //changes are saved, or user has read-only permissions and can't make changes,
+        //so let the user head out the door
+      }
+      else {
+        console.log('getting here?');
+        //browser should confirm to user that they want to leave the page
+        return 'You have unsaved changes.';
+      }
   }
 
   async init(assessmentSaved = false) {
