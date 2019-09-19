@@ -17,6 +17,10 @@ export class RowFeedbackComponent implements OnInit {
   constructor(private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
+    this.utilitiesService.formatMath(); //if equations shown in feedback
   }
 
+  next() {
+    this.onContinue.emit();
+  }
 }

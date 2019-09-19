@@ -3,7 +3,6 @@
 ::ng-deep {
     .qc-assessment-button-area {
         float: left;
-        margin-left: 20px;
         margin-top: 30px;
         width: 35%;
     }
@@ -94,17 +93,23 @@
     }
 
     //h2 within the quiz is different from h2s in the instructor view; keep the blue Oswald font since it pops more
+    .qc-quiz-view h2,
+    #qc-feedback-modal h2,
+    #qc-completion-modal h2 {
+        color: $ocean-blue-muted;
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.9rem;
+        font-style: normal; //don't make these italic in the quiz view
+        font-weight: 400;
+        margin-bottom: 35px; //add extra room between header and continue button
+    }
+
     .qc-quiz-view {
         //remove horizontal scrollbar from containing row
         margin-left: 0;
         margin-right: 0;
 
         h2 {
-            color: $ocean-blue-muted;
-            font-family: 'Oswald', sans-serif;
-            font-style: normal; //don't make these italic in the quiz view
-            font-weight: 400;
-            margin-bottom: 35px; //add extra room between header and continue button
             text-transform: uppercase;
         }
     }

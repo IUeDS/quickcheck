@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'qc-error-modal',
@@ -8,9 +9,13 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ErrorModalComponent implements OnInit {
   @Input() errorMessage;
 
-  constructor() { }
+  constructor(private utilitiesService: UtilitiesService,) { }
 
   ngOnInit() {
+  }
+
+  onRestart() {
+    window.location.reload();
   }
 
 }

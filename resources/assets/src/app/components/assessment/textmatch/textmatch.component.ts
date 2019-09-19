@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
@@ -15,6 +15,29 @@ export class TextmatchComponent implements OnInit {
   constructor(private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changesObj) {
+    if (changesObj.currentQuestion) {
+      this.utilitiesService.formatMath();
+      this.answer = null; //reset answer for new question
+    }
+
+    this.utilitiesService.setLtiHeight();
+  }
+
+  onInput() {
+    var answerComplete = false;
+
+    //ensure answer wasn't erased
+    if (this.answer) {
+      answerComplete = true;
+    }
+
+    this.onAnswerSelection.emit({
+      answerComplete: answerComplete,
+      studentAnswer: {'textmatch_answer': this.answer}
+    });
   }
 
 }

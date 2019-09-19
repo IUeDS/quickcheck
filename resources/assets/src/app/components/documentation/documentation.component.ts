@@ -17,7 +17,7 @@ export class DocumentationComponent implements OnInit {
 
   async ngOnInit() {
     await this.getUser();
-    this.isIU = document.location.href.indexOf('iu.edu') > -1 ? true : false;
+    this.isIU = this.utilitiesService.isIU();
 
     //https://stackoverflow.com/questions/7717527/smooth-scrolling-when-clicking-an-anchor-link
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

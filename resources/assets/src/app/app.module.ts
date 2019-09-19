@@ -182,6 +182,12 @@ import { EditorModule } from '@tinymce/tinymce-angular';
     PopoverModule.forRoot(),
     EditorModule
   ],
+  entryComponents: [
+      CompletionModalComponent,
+      ErrorModalComponent,
+      FeedbackModalComponent,
+      TimeoutModalComponent
+  ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]
 })

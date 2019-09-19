@@ -2,13 +2,12 @@
     <fieldset>
         <legend class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></legend>
         <div class="form-check" *ngFor="let answerOption of this.currentQuestion.options">
-            <input type="radio" name="{{this.currentQuestion.id}}"
+            <input type="radio" name="{{this.currentQuestion.id}}" class="form-check-input"
                     value="{{answerOption.answer_text}}"
                     id="{{answerOption.id}}"
                     [checked]="false"
-                    [(ngModel)]="answerOption.selected"
                     (click)="this.onAnswerSelected(answerOption)">
-            <label [innerHTML]="answerOption.answer_text | safe: 'html'" for="{{answerOption.id}}"></label>
+            <label [innerHTML]="answerOption.answer_text | safe: 'html'" for="{{answerOption.id}}" class="form-check-label"></label>
         </div>
     </fieldset>
 </div>

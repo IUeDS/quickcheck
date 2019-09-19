@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'qc-feedback-modal',
@@ -9,11 +10,13 @@ export class FeedbackModalComponent implements OnInit {
   @Input() feedback;
   @Input() isCorrect;
   @Input() isNextBtnDisabled;
-  @Output() onNextQuestion = new EventEmitter();
 
-  constructor() { }
+  constructor(public bsModalRef: BsModalRef) { }
 
   ngOnInit() {
   }
 
+  nextQuestion() {
+    this.bsModalRef.hide();
+  }
 }

@@ -166,6 +166,13 @@ export class UtilitiesService {
     return convertedTime.format('MM/DD/YY h:mm A');
   }
 
+  getAssessmentIdFromQueryParams() {
+    let params = this.route.snapshot.queryParamMap;
+
+    let id = params.get('id');
+    return id ? id : false;
+  }
+
   getCookieErrorMsg() {
     var errorMessage = 'Error: cookies (including third-party cookies) need to be enabled. For instructions, ' +
     '<a href="https://support.google.com/accounts/answer/61416?hl=en" target="_blank">read this article for Chrome</a>, ' +
@@ -212,6 +219,13 @@ export class UtilitiesService {
     }
 
     return false;
+  }
+
+  getAssessmentPreviewFromQueryParams() {
+    let params = this.route.snapshot.queryParamMap;
+
+    let preview = params.get('preview');
+    return preview ? preview : false;
   }
 
   //all of the successful API calls conform to the same structure, of:
@@ -275,6 +289,10 @@ export class UtilitiesService {
       return true;
     }
     return false;
+  }
+
+  isIU() {
+    return document.location.href.indexOf('iu.edu') > -1 ? true : false;
   }
 
   loadingFinished(focusElement = false) {

@@ -3,5 +3,5 @@
 @section('title', 'Take quick check')
 
 @section('content')
-    <qc-assessment></qc-assessment>
+    <app-root></app-root>
 @stop

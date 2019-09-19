@@ -5,14 +5,17 @@ import { CollectionIndexComponent } from './components/collection-index/collecti
 import { ViewCollectionComponent } from './components/view-collection/view-collection.component';
 import { EditAssessmentComponent } from './components/edit-assessment/edit-assessment.component';
 import { DocumentationComponent } from './components/documentation/documentation.component';
+import { AssessmentComponent } from './components/assessment/assessment.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'home', component: HomeComponent },
     { path: 'collection', component: CollectionIndexComponent },
     { path: 'collection/:id', component: ViewCollectionComponent },
+    { path: 'documentation', component: DocumentationComponent },
     { path: 'assessment/:id/edit', component: EditAssessmentComponent },
-    { path: 'documentation', component: DocumentationComponent }
+    { path: 'assessment', component: AssessmentComponent },
+    { path: 'assessment/:id', component: AssessmentComponent }
 ];
 
 @NgModule({

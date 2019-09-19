@@ -16,6 +16,16 @@ main {
     max-width: 1366px;
 }
 
+//add back in bottom border that bootstrap v4 took out
+legend {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+//darken the blindingly bright blue that bootstrap 4 added in
+.badge-primary {
+    background-color: $primary-blue-darker;
+}
+
 .section-white {
     background-color: $white;
     padding-top: 20px;

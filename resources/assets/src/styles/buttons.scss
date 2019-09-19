@@ -17,16 +17,26 @@
     background-color: $success-green;
     border-color: $success-green;
     color: $white;
+    font-size: 0.9rem;
 
     &:hover {
         background-color: $success-green-darker;
         color: $white;
+    }
+
+    &:focus {
+        box-shadow: none;
     }
 }
 
 //darker red for accessibility
 .btn-danger {
     background-color: $danger-red;
+    font-size: 0.9rem;
+
+    &:focus {
+        box-shadow: none;
+    }
 }
 
 //common to all buttons in the instructor view

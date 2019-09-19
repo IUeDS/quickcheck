@@ -8,6 +8,7 @@
 .qc-dropdown-section {
     select {
         display: inline-block;
+        margin: 5px;
         width: auto;
     }
 }
@@ -22,7 +23,6 @@
         min-width: 150px;
     }
 }
-
 
 .qc-matrix-options {
     .table {
@@ -53,9 +53,17 @@
             padding-left: 20px;
         }
     }
+}
 
+.qc-mc-options {
     label {
         padding-left: 25px;
+    }
+}
+
+.qc-mcorrect-options {
+    label {
+        padding-left: 10px;
     }
 }
 
