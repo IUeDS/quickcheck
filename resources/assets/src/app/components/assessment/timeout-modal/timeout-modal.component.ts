@@ -1,5 +1,5 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
-import { moment } from 'moment-timezone';
+import { Component, OnInit, Input } from '@angular/core';
+import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'qc-timeout-modal',
@@ -23,16 +23,10 @@ export class TimeoutModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changesObj) {
-    var timeoutSecondsRemaining = changesObj.timeoutSecondsRemaining.currentValue;
-
-    if (!timeoutSecondsRemaining) {
+    if (!this.timeoutSecondsRemaining) {
       return false;
     }
 
-    this.timeoutSecondsRemaining = timeoutSecondsRemaining;
     this.timeoutStartedTime = moment();
     this.timeoutFinishedTime = moment().add(this.timeoutSecondsRemaining, 'seconds');
     this.timeoutMsRemaining = this.timeoutSecondsRemaining * 1000;
@@ -47,6 +41,7 @@ export class TimeoutModalComponent implements OnInit {
   //be halted if the user switches tabs, leading to an inaccurate countdown graphic.
   //when user switches back to tab, accurate timer (or completed timer) will be shown.
   incrementTimer() {
+    //console.log('getting here?');
     var incrementsPassed,
       mid,
       now = moment(),

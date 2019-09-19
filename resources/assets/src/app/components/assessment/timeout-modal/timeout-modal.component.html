@@ -13,7 +13,9 @@
             </svg>
         </div>
         <div class="row text-center">
-            <button *ngIf="this.timeoutFinished" class="btn btn-lg qc-btn-restart-assessment qc-btn" (click)="this.restart()">Restart the quick check</button>
+            <div class="col-12">
+                <button *ngIf="this.timeoutFinished" class="btn btn-lg qc-btn-restart-assessment qc-btn" (click)="this.restart()">Restart the quick check</button>
+            </div>
         </div>
     </div>
 </div>
