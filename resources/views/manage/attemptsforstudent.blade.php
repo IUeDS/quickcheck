@@ -4,6 +4,6 @@
 
 @section('content')
 <main class="container-fluid">
-    <qc-view-attempts-for-student></qc-view-attempts-for-student>
+    <app-root></app-root>
 </main>
 @stop

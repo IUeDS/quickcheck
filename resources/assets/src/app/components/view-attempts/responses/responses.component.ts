@@ -32,6 +32,8 @@ export class ResponsesComponent implements OnInit {
     this.attempt = cloneDeep(this.attemptData);
     this.studentResponses = cloneDeep(this.studentResponsesData);
     this.questions = cloneDeep(this.questionsData);
+    console.log(this.questions);
+    console.log(this.studentResponses);
     this.isStudent = cloneDeep(this.isStudentData);
 
     this.parseResponseData();

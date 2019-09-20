@@ -4,10 +4,10 @@
             <h1>Analytics for {{ this.assessment.name }}</h1>
         </div>
         <div class="col-6 text-right">
-            <a class="btn btn-outline-dark qc-btn qc-btn-download-csv qc-btn-responses-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/responses/csv/download/assessment/' + this.assessment.id + '/context/' + this.utilitiesService.contextId">
+            <a class="btn btn-light qc-btn qc-btn-download-csv qc-btn-responses-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/responses/csv/download/assessment/' + this.assessment.id + '/context/' + this.utilitiesService.contextId">
                 <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download responses <strong>CSV</strong>
             </a>
-            <a class="btn btn-outline-dark qc-btn qc-btn-download-csv qc-btn-attempts-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/context/' + this.utilitiesService.contextId + '/assessment/' + this.assessment.id">
+            <a class="btn btn-light qc-btn qc-btn-download-csv qc-btn-attempts-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/context/' + this.utilitiesService.contextId + '/assessment/' + this.assessment.id">
                 <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
             </a>
         </div>
@@ -21,13 +21,13 @@
             <p class="lead qc-analytics-average-time">Average time spent: {{ this.utilitiesService.formatDateDiff(this.avgTime) }}</p>
             <hr>
             <h2>Student response analytics</h2>
-            <ng-container *ngFor="let question of this.questions; index as $index;">
+            <ng-container *ngFor="let question of this.questions | keyvalue; index as $index;">
                 <div class="row" *ngIf="!this.isCustom()">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header"><h3>Question #{{ $index+1 }}</h3></div>
                             <div class="card-body">
-                                <qc-question-analytics [question]="question"></qc-question-analytics>
+                                <qc-question-analytics [question]="question.value"></qc-question-analytics>
                             </div>
                         </div>
                     </div>

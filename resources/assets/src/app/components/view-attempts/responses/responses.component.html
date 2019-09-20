@@ -58,7 +58,7 @@
                     <p class="lead">Error</p>
                     <p>There were no student responses that matched the options for this question. Either there was an error recording the student response, or the quiz was edited after the student took the quiz (i.e., a question option the student selected was deleted, or a new question was added).</p>
                 </div>
-                <div class="card">
+                <div class="card" *ngIf="currentQuestion.studentResponse">
                     <div class="card-header text-white" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'bg-success' : 'bg-danger'">
                         <h4 class="lead">
                             <span *ngIf="currentQuestion.studentResponse.isCorrect">

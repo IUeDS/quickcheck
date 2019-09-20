@@ -295,7 +295,7 @@ export class UtilitiesService {
     return document.location.href.indexOf('iu.edu') > -1 ? true : false;
   }
 
-  loadingFinished(focusElement = false) {
+  loadingFinished(focusElement = null) {
     this.loading = false;
     if (focusElement) {
       this.focusToElement(focusElement);
