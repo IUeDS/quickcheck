@@ -2,6 +2,7 @@ exports.config = {
     framework: 'jasmine2',
     //seleniumAddress: 'http://localhost:4444/wd/hub',
     directConnect: true,
+    useAllAngular2AppRoots: true,
     specs: [
         'part1_instructor/1-initialization-spec.js',
         'part1_instructor/2-adding-and-editing-sets-spec.js',
