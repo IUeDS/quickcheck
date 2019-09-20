@@ -6,6 +6,7 @@ import { ViewCollectionComponent } from './components/view-collection/view-colle
 import { EditAssessmentComponent } from './components/edit-assessment/edit-assessment.component';
 import { DocumentationComponent } from './components/documentation/documentation.component';
 import { AssessmentComponent } from './components/assessment/assessment.component';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -17,6 +18,15 @@ const routes: Routes = [
     { path: 'assessment', component: AssessmentComponent },
     { path: 'assessment/:id', component: AssessmentComponent }
 ];
+
+//if index.php is in route, make sure angular doesn't choke;
+//use standard for loop since we're adding onto the array length
+const routeLength = routes.length;
+for (let i = 0; i < routeLength; i++) {
+    const indexRoute = cloneDeep(routes[i]);
+    indexRoute.path = 'index.php/' + indexRoute.path;
+    routes.push(indexRoute);
+}
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

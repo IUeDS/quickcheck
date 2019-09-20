@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 import { AssessmentService } from '../../../services/assessment.service';
 
@@ -20,15 +20,12 @@ export class CompletionModalComponent implements OnInit {
 
   constructor(private utilitiesService: UtilitiesService, private assessmentService: AssessmentService) { }
 
-  ngOnInit() {
-  }
-
-  async ngOnChanges(changesObj) {
-    if (!changesObj.complete) {
+  async ngOnInit() {
+    if (!this.complete) {
       return;
     }
 
-    if (changesObj.complete.currentValue === false) {
+    if (this.complete.currentValue === false) {
       return;
     }
 

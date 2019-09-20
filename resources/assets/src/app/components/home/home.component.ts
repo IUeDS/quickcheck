@@ -20,6 +20,8 @@ export class HomeComponent implements OnInit {
       var errorMessage = this.utilitiesService.getCookieErrorMsg();
       this.utilitiesService.setError(errorMessage);
     }
+
+    this.utilitiesService.setLtiHeight();
   }
 
   addAssessment() {

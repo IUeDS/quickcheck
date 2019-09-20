@@ -17,7 +17,7 @@
         <!-- app js -->
         <!-- running angular build in watch mode locally outputs different files, so check for local vs. prod, regression, etc.  -->
         <?php
-            if (env('APP_ENV') === 'local') {
+            if (env('APP_ENV') === 'local' || env('APP_ENV') === 'dev') {
                 echo '<script src="/assets/dist/runtime.js" type="module"></script><script src="/assets/dist/polyfills.js" type="module"></script><script src="/assets/dist/scripts.js" defer></script><script src="/assets/dist/vendor.js" type="module"></script><script src="/assets/dist/main.js" type="module"></script>';
             }
             else {
