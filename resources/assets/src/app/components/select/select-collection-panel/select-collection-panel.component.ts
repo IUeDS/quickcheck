@@ -16,4 +16,25 @@ export class SelectCollectionPanelComponent implements OnInit {
   ngOnInit() {
   }
 
+  createContentItemJson(assessment) {
+    var contentItemJson = {
+      '@context': 'http://purl.imsglobal.org/ctx/lti/v1/ContentItem',
+      '@graph': [
+        {
+          '@type': 'LtiLinkItem',
+          '@id': this.launchUrlStem + assessment.id,
+          'url': this.launchUrlStem + assessment.id,
+          'title': assessment.name,
+          'text': 'Quick Check',
+          'mediaType': 'application/vnd.ims.lti.v1.ltilink',
+          'placementAdvice': {
+            'presentationDocumentTarget': 'frame'
+          }
+        }
+      ]
+    };
+
+    return JSON.stringify(contentItemJson);
+  }
+
 }

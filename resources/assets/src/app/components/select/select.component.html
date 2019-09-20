@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-10 qc-select-search">
                     <label for="assessment-search" class="sr-only">Search for quick checks</label>
-                    <input type="text" class="form-control qc-search-box" id="assessment-search" (ngModelChange)="this.updateSearch()" [(ngModel)]="this.search.searchText" placeholder="Search">
+                    <input type="text" class="form-control qc-search-box" id="assessment-search" [(ngModel)]="this.search.searchText" (ngModelChange)="this.updateSearch()" placeholder="Search">
                     <span role="button" class="qc-select-clear-search" (click)="this.clearSearch()">
                         <span class="fa fa-remove fa-lg" aria-hidden="true"></span>
                         <span class="sr-only">Clear search</span>
@@ -22,9 +22,9 @@
                     <p class="lead">Looks like you haven't added any sets yet. You can add sets by clicking on the quick check tool in the course navigation.</p>
                 </div>
                 <div *ngIf="this.admin">
-                    <qc-view-all-collections-toggle qc-collection-data="this.adminCollectionData" qc-utilitiesService="this.utilitiesService"></qc-view-all-collections-toggle>
+                    <qc-view-all-collections-toggle [collectionData]="this.adminCollectionData" [utilitiesService]="this.utilitiesService"></qc-view-all-collections-toggle>
                 </div>
-                <div class="card-group" id="accordion-collections" role="tablist" aria-multiselectable="true">
+                <div id="accordion-collections" role="tablist" aria-multiselectable="true">
                     <div *ngIf="this.adminCollectionData.viewAll">
                         <qc-select-collection-panel
                             *ngFor="let collection of this.adminCollectionData.collections"
@@ -55,7 +55,7 @@
                         </h5>
                     </div>
                     <div class="col-6 qc-select-row">
-                        <form class="row" method="POST" action="{{ this.redirectUrl }}">
+                        <form ngNoForm class="row" method="POST" [action]="this.redirectUrl | safe: 'resourceUrl'">
                             <!-- hidden form input for content item embed -->
                             <input type="hidden" name="lti_message_type" value="ContentItemSelection">
                             <input type="hidden" name="lti_version" value="LTI-1p0">

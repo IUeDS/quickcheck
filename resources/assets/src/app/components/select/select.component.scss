@@ -1,8 +1,14 @@
 @import '../../../styles/colors';
 
-.qc-select-row {
+::ng-deep .qc-select-row {
     display: inline-block;
     margin-bottom: 10px;
+
+    .qc-select-btn {
+        .fa {
+            margin-right: 5px;
+        }
+    }
 
     .qc-select-preview-btn {
         svg {

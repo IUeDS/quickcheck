@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header" role="tab" id="heading-group-{{this.collection.id}}" role="button" data-toggle="collapse"
+    <div class="card-header" role="tab" id="heading-group-{{this.collection.id}}" role="button"
         [attr.href]="'#collapse-group-' + this.collection.id" [attr.aria-expanded]="this.collection.closed ? 'false' : 'true'"
         [attr.aria-controls]="'collapse-group-' + this.collection.id" (click)="this.collection.closed = !this.collection.closed">
         <h3>
@@ -7,11 +7,11 @@
             {{ this.collection.name }}
         </h3>
     </div>
-    <div id="collapse-group-{{this.collection.id}}" class="collapse in" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.collection.id">
+    <div id="collapse-group-{{this.collection.id}}" class="collapse in" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.collection.id" [collapse]="this.collection.closed" [isAnimated]="true">
         <div class="card-body">
             <div *ngFor="let assessmentGroup of this.collection.assessment_groups">
                 <h4>{{assessmentGroup.name}}</h4>
-                <form class="row" method="POST" action="{{ this.redirectUrl }}"
+                <form ngNoForm class="row" method="POST" [action]="this.redirectUrl | safe: 'resourceUrl'"
                     *ngFor="let assessment of assessmentGroup.assessments">
                     <div class="col-6 qc-select-row">
                         <h5 class="admin-assessment-name">
