@@ -8,6 +8,7 @@ import { DocumentationComponent } from './components/documentation/documentation
 import { AssessmentComponent } from './components/assessment/assessment.component';
 import { SelectComponent } from './components/select/select.component';
 import { StudentViewComponent } from './components/student-view/student-view.component';
+import { AttemptsOverviewComponent } from './components/attempts-overview/attempts-overview.component';
 import * as cloneDeep from 'lodash/cloneDeep';
 
 const routes: Routes = [
@@ -20,7 +21,8 @@ const routes: Routes = [
     { path: 'assessment', component: AssessmentComponent },
     { path: 'assessment/:id', component: AssessmentComponent },
     { path: 'select', component: SelectComponent },
-    { path: 'student', component: StudentViewComponent }
+    { path: 'student', component: StudentViewComponent },
+    { path: 'manage', component: AttemptsOverviewComponent }
 ];
 
 //if index.php is in route, make sure angular doesn't choke;
