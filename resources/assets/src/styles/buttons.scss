@@ -6,6 +6,7 @@
 .btn-primary {
     background-color: $primary-blue-darker;
     border-color: $primary-blue-darker-border;
+    color: $white;
 
     &:hover {
         background-color: $primary-blue-darker-hover

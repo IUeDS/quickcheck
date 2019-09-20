@@ -34,20 +34,23 @@
 <div class="row qc-response-view" *ngIf="!this.showTableView">
     <div class="col-12">
         <div class="row text-center">
-            <div class="qc-progress-wrapper">
-                <div round-progress
-                    max="100"
-                    current="this.attempt.score"
-                    color="#449D44"
-                    bgcolor="#eaeaea"
-                    radius="50"
-                    stroke="15"
-                    animation-delay="500"
-                    aria-hidden="true">
+            <div class="col-12">
+                <div class="qc-progress-wrapper">
+                    <round-progress
+                        class="qc-round-progress"
+                        [max]="100"
+                        [current]="this.attempt.score"
+                        [color]="'#449D44'"
+                        [background]="'#eaeaea'"
+                        [radius]="50"
+                        [stroke]="15"
+                        [animationDelay]="500"
+                        aria-hidden="true">
+                    </round-progress>
+                    <div class="text qc-attempt-percentage-score"><span class="sr-only">Score: </span>{{ this.attempt.score | number : 0 }}%</div>
                 </div>
-                <div class="text qc-attempt-percentage-score"><span class="sr-only">Score: </span>{{ this.attempt.score | number : 0 }}%</div>
+                <p class="lead qc-attempt-questions-correct">{{ this.getCountCorrect(this.attempt) }} / {{ this.questions.length }} correct</p>
             </div>
-            <p class="lead qc-attempt-questions-correct">{{ this.getCountCorrect(this.attempt) }} / {{ this.questions.length }} correct</p>
         </div>
         <div class="row" *ngFor="let currentQuestion of this.questions; index as $index;">
             <div class="col-12">

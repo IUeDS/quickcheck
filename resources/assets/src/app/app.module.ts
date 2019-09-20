@@ -88,6 +88,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { EditorModule } from '@tinymce/tinymce-angular';
+import { RoundProgressModule } from 'angular-svg-round-progressbar';
 
 @NgModule({
   declarations: [
@@ -180,7 +181,8 @@ import { EditorModule } from '@tinymce/tinymce-angular';
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
     PopoverModule.forRoot(),
-    EditorModule
+    EditorModule,
+    RoundProgressModule
   ],
   entryComponents: [
       CompletionModalComponent,

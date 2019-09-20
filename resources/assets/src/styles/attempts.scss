@@ -1,3 +1,5 @@
+@import './colors';
+
 .qc-attempts-table {
     thead {
         th {
@@ -153,10 +155,15 @@
         left: 0;
         position: absolute;
         text-align: center;
-        top: 45%;
+        top: 50%;
         transform: translateY(-50%);
         width: 100%;
         z-index: 1;
+    }
+
+    .qc-round-progress {
+        display: table;
+        margin: 10px auto;
     }
 }
 
@@ -183,6 +190,19 @@
                 position: static; //originally was position:absolute, but then it didn't line up with the checkmarks
             }
         }
+    }
+
+    .bg-danger {
+        background-color: $danger-red !important; //darken for accessibility
+    }
+
+    .bg-success {
+        background-color: $success-green !important; //darken for accessibility
+    }
+
+    h4 {
+        margin-bottom: 10px;
+        margin-top: 10px;
     }
 }
 

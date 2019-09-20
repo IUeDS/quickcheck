@@ -12,7 +12,7 @@
                 <span *ngIf="this.attemptAssessment.title">{{ this.attemptAssessment.title }}</span>
                 <span *ngIf="!this.attemptAssessment.title">{{ this.attemptAssessment.name }}</span>
             </h2>
-            <a href='#' (click)="this.goBackToReleases()"><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to course results</a>
+            <a href='javascript:;' target="_self" (click)="this.goBackToReleases()"><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to course results</a>
             <qc-attempt-data *ngIf="this.displayedAttempts.length"
                 [attempts]="this.displayedAttempts"
                 [courseContext]="this.courseContext"
@@ -20,13 +20,14 @@
                 [isVisible]="this.isAttemptsView()"
                 [largeClassSize]="false"
                 [showResponses]="this.showResponses"
-                [utilitiesService="this.utilitiesService"
-                (viewResponses)="this.viewResponses($event)">
+                [utilitiesService]="this.utilitiesService"
+                (onViewResponses)="this.viewResponses($event)">
             </qc-attempt-data>
+            <p class="lead" *ngIf="!this.displayedAttempts.length">No attempts recorded.</p>
         </div>
         <div *ngIf="this.view == 'responses'" [hidden]="this.utilitiesService.loading">
             <h2 id="response-header" tabindex="-1">Responses for attempt starting at {{ this.utilitiesService.formatTimeWithTimeZone(this.responseAttempt.created_at, this.courseContext.time_zone) }}</h2>
-            <a href='#' (click)="this.goBackToAttempts()"><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to attempts</a>
+            <a href='javascript:;' target="_self" (click)="this.goBackToAttempts()"><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to attempts</a>
             <qc-responses
                 [attempt]="this.responseAttempt"
                 [courseContext]="this.courseContext"
@@ -36,7 +37,7 @@
             </qc-responses>
             <span class="sr-only">
                 <!-- screenreader user will be moving down the page, so easier for the back button to be down here -->
-                <a href='#' (click)="this.goBackToAttempts()">Go Back to All Student Attempts</a>
+                <a href='javascript:;' (click)="this.goBackToAttempts()">Go Back to All Student Attempts</a>
             </span>
         </div>
     </div>

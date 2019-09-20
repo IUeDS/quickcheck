@@ -12,7 +12,7 @@
         <th *ngIf="this.showResponses">Responses</th>
         <th *ngIf="!this.isStudent && !this.largeClassSize">Grade</th>
     </thead>
-    <tbody infinite-scroll='this.loadMoreAttempts()'>
+    <tbody>
         <tr *ngFor="let attempt of this.attempts | slice:0:this.numAttemptsDisplayed; index as $index;"
             [ngClass]="{'qc-no-top-border': !attempt.firstRowForStudent}">
             <td class="qc-attempt-name" *ngIf="!this.isStudent">
@@ -36,10 +36,10 @@
             <td>{{ this.utilitiesService.formatTimeWithTimeZone(attempt.created_at, this.courseContext.time_zone) }}</td>
             <td class="qc-attempt-elapsed-time">{{ this.dateDiff(attempt.created_at, attempt.updated_at) }}</td>
             <td *ngIf="this.showResponses">
-                <a class="btn btn-primary btn-sm qc-btn qc-btn-view-responses" role="button" type="button" (click)="this.viewResponses(attempt)" *ngIf="this.responsesAvailable(attempt)">
+                <button class="btn btn-primary btn-sm qc-btn qc-btn-view-responses" role="button" type="button" (click)="this.viewResponses(attempt)" *ngIf="this.responsesAvailable(attempt)">
                     View Responses
                     <span class="sr-only">for <span *ngIf="!this.isStudent">{{ attempt.student.lis_person_name_given }} {{ attempt.student.lis_person_name_family }}'s </span>attempt beginning at {{ this.utilitiesService.formatTimeWithTimeZone(attempt.created_at, this.courseContext.time_zone) }}</span>
-                </a>
+                </button>
             </td>
             <td class="qc-attempt-grade" *ngIf="!this.isStudent && !this.largeClassSize">
                 <span *ngIf="attempt.firstRowForStudent">
