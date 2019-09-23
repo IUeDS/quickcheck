@@ -77,11 +77,13 @@ import { QtiExportComponent } from './components/view-collection/qti-export/qti-
 import { QtiImportComponent } from './components/view-collection/qti-import/qti-import.component';
 import { TogglePublicCollectionComponent } from './components/view-collection/toggle-public-collection/toggle-public-collection.component';
 import { UsersComponent } from './components/view-collection/users/users.component';
-import { SafePipe } from './safe.pipe';
 import { ArrowDownIconComponent } from './components/shared/arrow-down-icon/arrow-down-icon.component';
 import { ArrowUpIconComponent } from './components/shared/arrow-up-icon/arrow-up-icon.component';
 import { CopyIconComponent } from './components/shared/copy-icon/copy-icon.component';
 import { PreviewIconComponent } from './components/shared/preview-icon/preview-icon.component';
+
+import { SafePipe } from './pipes/safe.pipe';
+import { OrderByPipe } from './pipes/order-by.pipe';
 
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -90,6 +92,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
+
 
 @NgModule({
   declarations: [
@@ -171,6 +174,7 @@ import { RoundProgressModule } from 'angular-svg-round-progressbar';
     ArrowUpIconComponent,
     CopyIconComponent,
     PreviewIconComponent,
+    OrderByPipe,
   ],
   imports: [
     BrowserModule,

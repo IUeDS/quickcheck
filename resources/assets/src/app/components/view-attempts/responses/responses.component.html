@@ -167,8 +167,7 @@
                             <div class="row student-dropdown-answer">
                                 <div class="col-12">
                                     <p *ngIf="!currentQuestion.studentResponse.isCorrect"><span class="fa fa-remove qc-incorrect-icon" aria-hidden="true"></span> <span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student's</span> Answer:</p>
-                                    <!-- TODO: orderBy no longer in angular, original: <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section"> -->
-                                    <span *ngFor="let prompt of currentQuestion.prompts" class="qc-dropdown-section">
+                                    <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section">
                                         <label [innerHTML]="prompt.answer_text | safe: 'html'" for="{{'select-dropdown-' + prompt.id}}"></label>
                                         <select class="form-control"
                                                 id="{{'select-dropdown-' + prompt.id}}" disabled>
