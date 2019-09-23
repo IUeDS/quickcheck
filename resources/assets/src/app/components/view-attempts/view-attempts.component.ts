@@ -34,7 +34,7 @@ export class ViewAttemptsComponent implements OnInit {
   ungradedAttempts = [];
   users = [];
 
-  constructor(private utilitiesService: UtilitiesService, private manageService: ManageService) { }
+  constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   async ngOnInit() {
     let data;

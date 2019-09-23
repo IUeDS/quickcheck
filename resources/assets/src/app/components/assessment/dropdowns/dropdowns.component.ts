@@ -13,7 +13,7 @@ export class DropdownsComponent implements OnInit {
   prompts = [];
   selectableAnswers = [];
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

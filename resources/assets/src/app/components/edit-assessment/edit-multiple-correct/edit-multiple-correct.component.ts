@@ -15,7 +15,7 @@ export class EditMultipleCorrectComponent implements OnInit {
 
   isRichContentToggled = false;
 
-  constructor(private editAssessmentConfig: EditAssessmentConfigService, private utilitiesService: UtilitiesService) { }
+  constructor(private editAssessmentConfig: EditAssessmentConfigService, public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
     //when a new question is added, want to ensure validation is run immediately;

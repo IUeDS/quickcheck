@@ -18,7 +18,7 @@ export class CompletionModalComponent implements OnInit {
   isInModule = false;
   loading = false;
 
-  constructor(private utilitiesService: UtilitiesService, private assessmentService: AssessmentService) { }
+  constructor(public utilitiesService: UtilitiesService, private assessmentService: AssessmentService) { }
 
   async ngOnInit() {
     if (!this.complete) {

@@ -12,7 +12,7 @@ export class TextmatchComponent implements OnInit {
 
   answer = null;
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

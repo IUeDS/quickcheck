@@ -9,7 +9,7 @@ import { UtilitiesService } from '../../../services/utilities.service';
 export class ErrorModalComponent implements OnInit {
   @Input() errorMessage;
 
-  constructor(private utilitiesService: UtilitiesService,) { }
+  constructor(public utilitiesService: UtilitiesService,) { }
 
   ngOnInit() {
   }

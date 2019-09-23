@@ -11,7 +11,7 @@ export class QuickAddComponent implements OnInit {
   @Input() utilitiesService: UtilitiesService;
   @Output() onCancel = new EventEmitter();
 
-  assessment = { collection: { id: '' }, assessmentGroup: { id: '' } }; //data to be passed back if adding a new quick check
+  assessment = { collection: { id: '', name: null }, assessmentGroup: { id: '', name: null } }; //data to be passed back if adding a new quick check
   memberships = []; //if adding, possible collections/assessment groups new assessment can belong to
   newCollectionAdded = false; //if adding a new collection on the fly
   newAssessmentGroupAdded = false; //if adding a new assessment group on the fly
@@ -36,7 +36,8 @@ export class QuickAddComponent implements OnInit {
   collectionSelected() {
     if (this.assessment.collection.id === 'new') {
       this.newCollectionAdded = true;
-      this.assessment.assessmentGroup = {'id' : 'new'};
+      this.assessment.collection.name = '';
+      this.assessment.assessmentGroup = {'id' : 'new', 'name': ''};
     }
     //since we can't assign an entire collection object to the value in a select dropdown,
     //we have to assign ID value to select and search through our collections to find the one
@@ -76,6 +77,15 @@ export class QuickAddComponent implements OnInit {
 
   async saveAssessment() {
     let data;
+
+    //if not adding anything new, remove extraneous properties
+    if (this.assessment.collection.name === null) {
+      delete this.assessment.collection.name;
+    }
+
+    if (this.assessment.assessmentGroup.name === null) {
+      delete this.assessment.assessmentGroup.name;
+    }
 
     try {
       const resp = await this.collectionService.quickAdd({'assessment': this.assessment});

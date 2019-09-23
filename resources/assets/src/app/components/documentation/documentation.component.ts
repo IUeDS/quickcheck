@@ -12,7 +12,7 @@ export class DocumentationComponent implements OnInit {
   isLoggedIn = false;
   isIU = false;
 
-  constructor(private utilitiesService: UtilitiesService, private userService: UserService) { }
+  constructor(public utilitiesService: UtilitiesService, private userService: UserService) { }
 
   async ngOnInit() {
     await this.getUser();

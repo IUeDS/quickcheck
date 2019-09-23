@@ -14,7 +14,7 @@ export class RowFeedbackComponent implements OnInit {
   @Input() partialCredit;
   @Output() onContinue = new EventEmitter();
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
     this.utilitiesService.formatMath(); //if equations shown in feedback

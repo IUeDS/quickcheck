@@ -12,7 +12,7 @@ export class QuestionAnalyticsComponent implements OnInit {
   correctPercentage = 0;
   fullBarWidth = 500;
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
     this.correctPercentage = this.question.questionAnalytics.correctPercentage;

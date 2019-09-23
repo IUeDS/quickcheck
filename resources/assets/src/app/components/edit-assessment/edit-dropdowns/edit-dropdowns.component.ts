@@ -12,7 +12,7 @@ export class EditDropdownsComponent implements OnInit {
   @Output() onQuestionEdited = new EventEmitter();
   @Output() onSavedOptionDeleted = new EventEmitter();
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
     this.initOptions();

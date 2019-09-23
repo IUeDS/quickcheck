@@ -20,7 +20,7 @@ export class ViewAttemptsForStudentComponent implements OnInit {
   studentName = null;
   user = null;
 
-  constructor(private utilitiesService: UtilitiesService, private manageService: ManageService) { }
+  constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   async ngOnInit() {
     let data;

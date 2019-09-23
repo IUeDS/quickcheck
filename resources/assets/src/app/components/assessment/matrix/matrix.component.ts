@@ -15,7 +15,7 @@ export class MatrixComponent implements OnInit {
   columns = [];
   rows = [];
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

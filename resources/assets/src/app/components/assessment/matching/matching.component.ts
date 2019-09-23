@@ -14,7 +14,7 @@ export class MatchingComponent implements OnInit {
   prompts = [];
   selectableAnswers = [];
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

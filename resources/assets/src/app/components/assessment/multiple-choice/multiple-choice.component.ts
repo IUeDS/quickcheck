@@ -10,7 +10,7 @@ export class MultipleChoiceComponent implements OnInit {
   @Input() currentQuestion;
   @Output() onAnswerSelection = new EventEmitter();
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

@@ -11,7 +11,7 @@ export class AddCollectionComponent implements OnInit {
   @Output() onSave = new EventEmitter();
 
   isAddingCollection = false;
-  newCollection = {};
+  newCollection;
 
   constructor(private collectionService: CollectionService) { }
 

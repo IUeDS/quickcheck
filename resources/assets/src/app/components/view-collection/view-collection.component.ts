@@ -24,7 +24,7 @@ export class ViewCollectionComponent implements OnInit {
   searchTerm = '';
 
   constructor(
-    private utilitiesService: UtilitiesService,
+    public utilitiesService: UtilitiesService,
     private userService: UserService,
     private collectionService: CollectionService
   ) { }

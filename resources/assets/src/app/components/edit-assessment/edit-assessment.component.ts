@@ -27,7 +27,7 @@ export class EditAssessmentComponent implements OnInit {
   validationErrorList = [];
 
   constructor(
-    private utilitiesService: UtilitiesService,
+    public utilitiesService: UtilitiesService,
     private userService: UserService,
     private assessmentEditService: AssessmentEditService
   )

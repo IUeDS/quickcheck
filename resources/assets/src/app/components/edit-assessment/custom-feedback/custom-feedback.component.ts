@@ -15,7 +15,7 @@ export class CustomFeedbackComponent implements OnInit {
   perResponseFeedback = false;
   tinymceOptions = {};
 
-  constructor(private editAssessmentConfig: EditAssessmentConfigService, private utilitiesService: UtilitiesService) {
+  constructor(private editAssessmentConfig: EditAssessmentConfigService, public utilitiesService: UtilitiesService) {
   this.tinymceOptions = this.editAssessmentConfig.getTinyMceConfig();
   }
 

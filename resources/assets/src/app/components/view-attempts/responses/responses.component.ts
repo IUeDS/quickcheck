@@ -21,7 +21,7 @@ export class ResponsesComponent implements OnInit {
   showTableView = false;
   correctIconClass = 'fa-long-arrow-right'; //so we can easily swap out the correct icon
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
     //copy the passed in data so changes we make within this component

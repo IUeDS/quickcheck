@@ -9,7 +9,7 @@ import { UtilitiesService } from '../../../services/utilities.service';
 export class NavComponent implements OnInit {
   @Input() currentPage: string;
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

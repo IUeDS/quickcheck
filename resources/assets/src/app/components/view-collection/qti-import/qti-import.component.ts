@@ -21,7 +21,7 @@ export class QtiImportComponent implements OnInit {
   uploading = false;
   zipFile = null;
 
-  constructor(private collectionService: CollectionService, private utilitiesService: UtilitiesService) { }
+  constructor(private collectionService: CollectionService, public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
     this.utilitiesService.setLtiHeight();

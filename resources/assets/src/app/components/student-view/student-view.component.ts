@@ -17,7 +17,7 @@ export class StudentViewComponent implements OnInit {
   showResponses = false; //set by feature toggling on collection, by instructor preference
   view = 'releases';
 
-  constructor(private utilitiesService: UtilitiesService, private manageService: ManageService) { }
+  constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   ngOnInit() {
   }

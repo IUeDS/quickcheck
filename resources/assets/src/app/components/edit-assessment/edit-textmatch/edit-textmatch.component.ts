@@ -12,7 +12,7 @@ export class EditTextmatchComponent implements OnInit {
   @Output() onQuestionEdited = new EventEmitter();
   @Output() onSavedOptionDeleted = new EventEmitter();
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
     //when a new question is added, want to ensure validation is run immediately;

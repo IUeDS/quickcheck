@@ -18,7 +18,7 @@ export class AttemptsOverviewComponent implements OnInit {
   };
   students = [];
 
-  constructor(private utilitiesService: UtilitiesService, private manageService: ManageService) { }
+  constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   ngOnInit() {
     if (this.isResultsByStudentToggleEnabled()) {

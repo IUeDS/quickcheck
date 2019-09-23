@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   isAddingAssessment = false;
   sessionExpired = false;
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
     this.checkForExpiredSession();
@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
     this.isAddingAssessment = true;
   }
 
-  cancelAdd() {
+  cancelAdd($event) {
     this.isAddingAssessment = false;
   }
 

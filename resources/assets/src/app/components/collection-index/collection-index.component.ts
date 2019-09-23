@@ -22,7 +22,7 @@ export class CollectionIndexComponent implements OnInit {
   user = {};
 
   constructor(
-    private utilitiesService: UtilitiesService,
+    public utilitiesService: UtilitiesService,
     private userService: UserService,
     private collectionService: CollectionService
   ) { }

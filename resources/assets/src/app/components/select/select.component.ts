@@ -28,7 +28,7 @@ export class SelectComponent implements OnInit {
   };
 
   constructor(
-  private utilitiesService: UtilitiesService,
+  public utilitiesService: UtilitiesService,
   private userService: UserService,
   private collectionService: CollectionService
   ) { }

@@ -10,7 +10,7 @@ export class AddCustomActivityComponent implements OnInit {
   @Input() utilitiesService;
   @Output() onSave = new EventEmitter();
 
-  customActivityData = {};
+  customActivityData;
   isOpen = false;
 
   constructor(private customActivityService: CustomActivityService) { }

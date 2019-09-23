@@ -12,7 +12,7 @@ export class NumericalComponent implements OnInit {
 
   answer = null;
 
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

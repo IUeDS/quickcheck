@@ -42,7 +42,7 @@ export class AssessmentComponent implements OnInit {
   timeoutSecondsRemaining = null; //seconds of timeout remaining, if feature enabled
 
   constructor(
-    private utilitiesService: UtilitiesService,
+    public utilitiesService: UtilitiesService,
     private assessmentService: AssessmentService,
     private caliperService: CaliperService,
     private modalService: BsModalService
