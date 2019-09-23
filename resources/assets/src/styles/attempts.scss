@@ -29,6 +29,10 @@
     }
 }
 
+.qc-btn.qc-btn-view-responses {
+    font-size: 0.8em;
+}
+
 .qc-autograde-btn,
 .qc-release-btn
 {
@@ -87,7 +91,7 @@
 .qc-correct-bar,
 .qc-incorrect-bar {
     color: $white;
-    height: 30px;
+    height: 38px; //center text inside vertically
     min-width: 40px; //otherwise, really small numbers get cut off
     padding: 3px 10px 5px 0;
     text-align: right;
@@ -105,15 +109,23 @@
     text-decoration: underline;
 }
 
+.qc-attempt-edit-grade {
+    .btn {
+        font-size: 0.8em;
+    }
+}
+
 .qc-edit-grade-input {
+    margin-bottom: 0.5rem;
+
     label {
         display: block;
-        font-size: .8em;
+        font-size: 0.9em;
     }
 }
 
 .qc-grade-submit-input {
-    width: 50px;
+    width: 75px;
 }
 
 .qc-graded-message {

@@ -7,7 +7,7 @@
                 <h1>Student Results</h1>
             </div>
             <div class="col-6 text-right">
-                <a class="btn btn-outline-dark qc-btn qc-btn-download-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId">
+                <a class="btn btn-light qc-btn qc-btn-download-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId">
                     <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
                 </a>
 
@@ -53,11 +53,13 @@
 
             <div *ngIf="!this.isViewingByStudent()">
                 <div class="list-group attempt-overview-list" *ngIf="this.attempts.length">
-                    <ng-container  *ngFor="let attempt of this.attempts">
-                        <a target="_self" [href]="this.utilitiesService.setContextLink('assessment/' + attempt.assessment_id + '/attempts')" class="list-group-item list-group-item-action qc-attempt-overview-assessment" *ngIf="!this.isSubstringNotFound(attempt.assessment.name, this.search.assessmentName)">{{ attempt.assessment.name }}</a>
+                    <ng-container *ngFor="let attempt of this.attempts">
+                        <!-- if assessment deleted, then don't include, otherwise will throw errors -->
+                        <ng-container *ngIf="attempt.assessment">
+                            <a target="_self" [href]="this.utilitiesService.setContextLink('assessment/' + attempt.assessment_id + '/attempts')" class="list-group-item list-group-item-action qc-attempt-overview-assessment" *ngIf="!this.isSubstringNotFound(attempt.assessment.name, this.search.assessmentName)">{{ attempt.assessment.name }}</a>
+                        </ng-container>
                     </ng-container>
                 </div>
-
             </div>
 
             <div *ngIf="!this.attempts.length && !this.students.length" [hidden]="this.utilitiesService.loading">

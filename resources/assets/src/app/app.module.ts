@@ -82,6 +82,7 @@ import { ArrowDownIconComponent } from './components/shared/arrow-down-icon/arro
 import { ArrowUpIconComponent } from './components/shared/arrow-up-icon/arrow-up-icon.component';
 import { CopyIconComponent } from './components/shared/copy-icon/copy-icon.component';
 import { PreviewIconComponent } from './components/shared/preview-icon/preview-icon.component';
+
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';

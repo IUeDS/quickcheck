@@ -19,14 +19,14 @@ export class AttemptDataComponent implements OnInit {
   @Input() users;
   @Input() utilitiesService;
 
-  numAttemptsDisplayed = 100;
+  itemSize = 45; //angular infinite scrolling requires item size
   studentsWithFirstRow = {}; //for tracking table borders, etc.
 
   constructor() { }
 
   ngOnInit() {
     this.parseAttempts();
-    this.utilitiesService.setLtiHeight();
+    //this.utilitiesService.setLtiHeight();
   }
 
   ngOnChanges(changes) {
@@ -82,6 +82,11 @@ export class AttemptDataComponent implements OnInit {
     return countIncorrect;
   }
 
+  //identify used in trackBy with *ngFor to speed up performance
+  identify(index, attempt) {
+    return attempt.id;
+  }
+
   isFirstRowForStudent(attempt) {
     var key = 'user-' + attempt.student.lti_user_id; //in case the user id starts with an int
     if (this.studentsWithFirstRow[key]) {
@@ -108,19 +113,6 @@ export class AttemptDataComponent implements OnInit {
     }
 
     return false;
-  }
-
-  loadMoreAttempts() {
-    //the infinite loading angular directive does not take into account whether
-    //the element is visible or not, resulting in annoying stuttering if viewing
-    //responses or analytics. as of Nov 2017, the issue has not yet been fixed,
-    //but there are open forks on github that will hopefully be implemented later.
-    //for now, although a little clunky, we get visibility from parent component.
-    //also, make sure we're not continuing to hit this after all attempts displayed
-    if (this.isVisible && this.numAttemptsDisplayed < this.attempts.length) {
-      this.numAttemptsDisplayed += 100;
-      this.utilitiesService.setLtiHeight();
-    }
   }
 
   parseAttempts() {

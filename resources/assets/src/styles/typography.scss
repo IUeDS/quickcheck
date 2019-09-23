@@ -74,6 +74,12 @@ p {
     margin: 0 0 20px;
 }
 
+.alert {
+    p { //center paragraph in alert div
+        margin-bottom: 0;
+    }
+}
+
 ::placeholder {
     color: $iron-gray;
     font-family: 'BentonSansCompBook';

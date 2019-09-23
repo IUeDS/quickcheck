@@ -52,6 +52,7 @@ export class ViewAttemptsComponent implements OnInit {
 
     await this.initAttemptData(data);
     this.utilitiesService.loadingFinished();
+    this.setScrollingLtiHeight();
     this.getUsers();
   }
 
@@ -163,7 +164,7 @@ export class ViewAttemptsComponent implements OnInit {
 
   hideResponses() {
     this.responseViewVisible = false;
-    this.utilitiesService.setLtiHeight();
+    this.setScrollingLtiHeight();
   }
 
   initAttemptData(attemptData) {
@@ -257,10 +258,19 @@ export class ViewAttemptsComponent implements OnInit {
     });
   }
 
+  //for infinite scrolling, need a bit of a scrollbar in iframe
+  setScrollingLtiHeight() {
+    this.utilitiesService.setScrollingLtiHeight(100);
+    this.utilitiesService.setLtiHeight();
+  }
+
   toggleAnalytics() {
     this.analyticsViewVisible = !this.analyticsViewVisible;
-    if (!this.analyticsViewVisible) {
+    if (this.analyticsViewVisible) {
       this.utilitiesService.setLtiHeight();
+    }
+    else {
+      this.setScrollingLtiHeight();
     }
   }
 

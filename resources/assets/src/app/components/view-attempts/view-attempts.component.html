@@ -18,7 +18,7 @@
                 </button>
             </div>
         </div>
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" qc-utilitiesService="this.utilitiesService"></qc-error-message>
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
         <div class="row" *ngIf="this.largeClassSize" [hidden]="!this.isAttemptsView()">
             <div class="col-12">
                 <div class="card card-body bg-light">

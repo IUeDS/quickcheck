@@ -13,7 +13,7 @@
         <th *ngIf="!this.isStudent && !this.largeClassSize">Grade</th>
     </thead>
     <tbody>
-        <tr *ngFor="let attempt of this.attempts | slice:0:this.numAttemptsDisplayed; index as $index;"
+        <tr *ngFor="let attempt of this.attempts; index as $index; trackBy:this.identify"
             [ngClass]="{'qc-no-top-border': !attempt.firstRowForStudent}">
             <td class="qc-attempt-name" *ngIf="!this.isStudent">
                 <span *ngIf="attempt.firstRowForStudent">{{ attempt.student.lis_person_name_family }}, {{ attempt.student.lis_person_name_given }}</span>
