@@ -4,6 +4,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
+import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { ErrorMessageComponent } from './components/shared/error-message/error-message.component';
@@ -187,7 +188,8 @@ import { RoundProgressModule } from 'angular-svg-round-progressbar';
     TooltipModule.forRoot(),
     PopoverModule.forRoot(),
     EditorModule,
-    RoundProgressModule
+    RoundProgressModule,
+    RouterModule
   ],
   entryComponents: [
       CompletionModalComponent,

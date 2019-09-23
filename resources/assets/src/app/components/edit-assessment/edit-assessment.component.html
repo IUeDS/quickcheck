@@ -4,7 +4,7 @@
     <div class="col-12">
         <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
         <form (ngSubmit)="this.saveAssessment()" *ngIf="this.assessment">
-            <a href="{{this.utilitiesService.setContextLink('/collection/' + this.collection.id)}}" target="_self" >
+            <a [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_self" >
                 <span class="fa fa-angle-double-left" aria-hidden="true"></span> Back
             </a>
             <h1>{{ this.readOnly ? 'View' : 'Edit' }} Quick Check</h1>
@@ -104,7 +104,7 @@
                 <span class="fa fa-thumbs-o-up fa-3x" aria-hidden="true"></span>
                 <span class="sr-only">Success</span>
                 <h2 id="assessment-save-success" tabindex="-1">Quick check saved</h2>
-                <a href="{{this.utilitiesService.setContextLink('/collection/' + this.collection.id)}}" target="_self">Return to set "{{ this.collection.name }}"</a>
+                <a [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_self">Return to set "{{ this.collection.name }}"</a>
             </div>
         </form>
     </div>

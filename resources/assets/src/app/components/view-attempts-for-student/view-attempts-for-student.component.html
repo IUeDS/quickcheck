@@ -4,7 +4,7 @@
     <div class="col-12">
         <div class="row" *ngIf="this.isAttemptsView()">
             <div class="col-12">
-                <a href="../../manage?context={{this.utilitiesService.contextId}}" target="_self" ><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to all course results</a>
+                <a routerLink="/manage" queryParamsHandling="preserve" target="_self" ><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to all course results</a>
             </div>
         </div>
         <div class="row" [hidden]="!this.isAttemptsView()">

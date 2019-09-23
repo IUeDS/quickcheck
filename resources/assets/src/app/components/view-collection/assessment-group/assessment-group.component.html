@@ -35,7 +35,7 @@
                         </h4>
                     </div>
                     <div class="col-12 col-sm-6 offset-sm-1">
-                        <a [href]="this.utilitiesService.setContextLink('../assessment/' + assessment.id + '/edit')" target="_self" id="assessment-edit-{{assessment.id}}" class="qc-edit-btn qc-quiz-edit-btn">
+                        <a [routerLink]="'/assessment/' + assessment.id + '/edit'" queryParamsHandling="preserve" target="_self" id="assessment-edit-{{assessment.id}}" class="qc-edit-btn qc-quiz-edit-btn">
                             <qc-edit-icon aria-hidden="true"></qc-edit-icon>
                             <span class="sr-only">
                                 <span *ngIf="!this.readOnly">Edit </span>

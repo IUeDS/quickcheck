@@ -46,7 +46,7 @@
             <div *ngIf="this.isViewingByStudent()">
                 <div class="list-group attempt-overview-list" *ngIf="this.students.length">
                     <ng-container *ngFor="let student of this.students">
-                        <a target="_self" [href]="this.utilitiesService.setContextLink('student/' + student.id + '/attempts')" class="list-group-item list-group-item-action qc-attempt-overview-student" *ngIf="!this.isSubstringNotFound(student.lis_person_name_family, this.search.studentName)">{{ student.lis_person_name_family }}, {{ student.lis_person_name_given }}</a>
+                        <a target="_self" [routerLink]="'/student/' + student.id + '/attempts'" queryParamsHandling="preserve" class="list-group-item list-group-item-action qc-attempt-overview-student" *ngIf="!this.isSubstringNotFound(student.lis_person_name_family, this.search.studentName)">{{ student.lis_person_name_family }}, {{ student.lis_person_name_given }}</a>
                     </ng-container>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                     <ng-container *ngFor="let attempt of this.attempts">
                         <!-- if assessment deleted, then don't include, otherwise will throw errors -->
                         <ng-container *ngIf="attempt.assessment">
-                            <a target="_self" [href]="this.utilitiesService.setContextLink('assessment/' + attempt.assessment_id + '/attempts')" class="list-group-item list-group-item-action qc-attempt-overview-assessment" *ngIf="!this.isSubstringNotFound(attempt.assessment.name, this.search.assessmentName)">{{ attempt.assessment.name }}</a>
+                            <a target="_self" [routerLink]="'/assessment/' + attempt.assessment_id + '/attempts'" queryParamsHandling="preserve" class="list-group-item list-group-item-action qc-attempt-overview-assessment" *ngIf="!this.isSubstringNotFound(attempt.assessment.name, this.search.assessmentName)">{{ attempt.assessment.name }}</a>
                         </ng-container>
                     </ng-container>
                 </div>

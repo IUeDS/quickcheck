@@ -82,7 +82,7 @@
                 <p>Imported content links:</p>
                 <ul>
                     <li *ngFor="let quiz of this.quizzes">
-                        <a class="qc-import-qti-link" href="{{this.utilitiesService.setContextLink('../assessment/' + quiz.id + '/edit')}}" target="_self">Edit {{ quiz.title }}</a>
+                        <a class="qc-import-qti-link" [routerLink]="'/assessment/' + quiz.id + '/edit'" queryParamsHandling="preserve" target="_self">Edit {{ quiz.title }}</a>
                     </li>
                 </ul>
             </div>

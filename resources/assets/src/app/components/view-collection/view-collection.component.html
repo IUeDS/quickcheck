@@ -53,7 +53,7 @@
                     <div *ngIf="this.searchResults">
                         <ul>
                             <li *ngFor="let assessment of this.searchResults" class="qc-search-assessment-result">
-                                <strong><a href="{{this.utilitiesService.setContextLink('../assessment/' + assessment.id + '/edit')}}" target="_self">{{ assessment.name }}</a></strong>
+                                <strong><a [routerLink]="'/assessment/' + assessment.id + '/edit'" queryParamsHandling="preserve" target="_self">{{ assessment.name }}</a></strong>
                                 <ul>
                                     <li *ngFor="let question of assessment.questionSearchResults" class="qc-search-question-result">Question #{{ question.question_order }}</li>
                                 </ul>

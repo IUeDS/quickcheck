@@ -13,7 +13,7 @@
             <div class="row" *ngIf="collection.user_membership">
                 <div class="col-3">
                     <a target="_self" id="goto-collection-{{collection.id}}"
-                        [href]="this.utilitiesService.setContextLink('../index.php/collection/' + collection.id)" >
+                        [routerLink]="'/collection/' + collection.id" queryParamsHandling="preserve">
                         <button type="button" class="btn qc-view-set-btn qc-btn">
                             Go to set <span class="sr-only">{{ collection.name }}</span>
                         </button>
