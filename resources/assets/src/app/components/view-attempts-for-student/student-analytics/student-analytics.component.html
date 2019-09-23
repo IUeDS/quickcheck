@@ -3,7 +3,7 @@
         <h1>Analytics for {{ this.studentName }}</h1>
     </div>
     <div class="col-6 text-right">
-        <a class="btn btn-outline-dark qc-btn qc-btn-download-csv qc-btn-attempts-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId + '/' + this.studentId">
+        <a class="btn btn-light qc-btn qc-btn-download-csv qc-btn-attempts-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId + '/' + this.studentId">
             <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
         </a>
     </div>
@@ -80,7 +80,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <p class="lead"><strong>How long before the due date, on average, is the student starting a quick check?</strong> <span class="qc-student-analytics-avg-time-until-due">{{ this.utilitiesService.formatDuration(this.averageTimeUntilDueDate) }}</span></p>
+                <p class="lead"><strong>How long before the due date, on average, is the student starting a quick check? </strong> <span class="qc-student-analytics-avg-time-until-due">{{ this.utilitiesService.formatDuration(this.averageTimeUntilDueDate) }}</span></p>
             </div>
         </div>
     </div>

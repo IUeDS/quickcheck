@@ -56,7 +56,6 @@ export class EditAssessmentComponent implements OnInit {
         //so let the user head out the door
       }
       else {
-        console.log('getting here?');
         //browser should confirm to user that they want to leave the page
         return 'You have unsaved changes.';
       }

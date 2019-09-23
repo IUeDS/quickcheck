@@ -25,7 +25,34 @@ export class StudentAnalyticsComponent implements OnInit {
 
   constructor(private manageService: ManageService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.getAnalytics();
   }
 
+  async getAnalytics() {
+    let data;
+    this.utilitiesService.loadingStarted();
+
+    try {
+      const resp = await this.manageService.getStudentAnalytics(this.utilitiesService.contextId, this.studentId);
+      data = this.utilitiesService.getResponseData(resp);
+    }
+    catch(error) {
+      this.utilitiesService.showError(error);
+      return;
+    }
+
+    this.totalAttempts = data.studentAnalytics.totalAttempts;
+    this.averageScore = data.studentAnalytics.averageScore;
+    this.totalQuestions = data.studentAnalytics.totalQuestions;
+    this.averageRetries = data.studentAnalytics.averageRetries;
+    this.totalTime = data.studentAnalytics.totalTime;
+    this.totalTimeBeforeDueDate = data.studentAnalytics.totalTimeBeforeDueDate;
+    this.totalTimeAfterDueDate = data.studentAnalytics.totalTimeAfterDueDate;
+    this.averageTime = data.studentAnalytics.averageTime;
+    this.averageTimeBeforeDueDate = data.studentAnalytics.averageTimeBeforeDueDate;
+    this.averageTimeAfterDueDate = data.studentAnalytics.averageTimeAfterDueDate;
+    this.averageTimeUntilDueDate = data.studentAnalytics.averageTimeUntilDueDate;
+    this.utilitiesService.loadingFinished();
+  }
 }

@@ -15,13 +15,75 @@ export class ViewAttemptsForStudentComponent implements OnInit {
   courseContext = null;
   currentPage = 'results';
   displayedAssessments = []; //those shown to user (after filters, etc.)
+  search = { assessmentName: '' };
   studentId = null;
   studentName = null;
   user = null;
 
   constructor(private utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    let data;
+    this.utilitiesService.loadingStarted();
+    this.studentId = this.getStudentIdFromUrl();
+
+    try {
+      const resp = await this.manageService.getAttemptsForStudent(this.utilitiesService.contextId, this.studentId);
+      data = this.utilitiesService.getResponseData(resp);
+    }
+    catch(error) {
+      this.utilitiesService.showError(error);
+      return;
+    }
+
+    this.courseContext = data.courseContext;
+    this.user = data.user;
+    this.assessmentsWithAttempts = data.assessmentsWithAttempts;
+    this.displayedAssessments = this.assessmentsWithAttempts; //default show all
+    this.studentName = this.getStudentName();
+    this.utilitiesService.loadingFinished();
   }
 
+  getStudentIdFromUrl() {
+    var url = window.location.href,
+      splitUrl = url.split('/student/'),
+      idSplit = splitUrl[1].split('/'),
+      studentId = idSplit[0];
+
+    return studentId;
+  }
+
+  getStudentName() {
+    //user from Canvas is in an array keyed by user ID to be consistent across components
+    var userId = Object.keys(this.user)[0];
+    return this.user[userId].name;
+  }
+
+  isAttemptsView() {
+    if (!this.analyticsViewVisible) {
+      return true;
+    }
+
+    return false;
+  }
+
+  isSubstringFound(string1, string2) {
+    if (string1.toLowerCase().indexOf(string2.toLowerCase()) !== -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  searchAssessmentName() {
+    this.displayedAssessments = this.assessmentsWithAttempts.filter((assessment) => {
+      if (this.isSubstringFound(assessment.name, this.search.assessmentName)) {
+        return true;
+      }
+    });
+  }
+
+  toggleAnalytics() {
+    this.analyticsViewVisible = !this.analyticsViewVisible;
+  }
 }

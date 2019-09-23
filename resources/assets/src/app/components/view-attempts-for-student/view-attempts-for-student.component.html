@@ -13,18 +13,18 @@
                 <h2>{{ this.studentName }}</h2>
             </div>
             <div class="col-6 text-right" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()">
-                <button class="btn btn-outline-dark qc-btn qc-btn-analytics" type="button" (click)="this.toggleAnalytics()">
+                <button class="btn btn-light qc-btn qc-btn-analytics" type="button" (click)="this.toggleAnalytics()">
                     <span class="fa fa-bar-chart fa-2x" aria-hidden="true"></span>
                     <span>View <strong>Analytics</strong></span>
                 </button>
             </div>
         </div>
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" qc-utilitiesService="this.utilitiesService"></qc-error-message>
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
         <div [hidden]="this.utilitiesService.loading || !this.isAttemptsView()" >
             <div class="row">
                 <div class="col-6 col-md-4">
                     <label for="search-name" class="sr-only">Search by quick check name: </label>
-                    <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.assessmentName" (ngModelChange)="this.searchAssessmentName()" [(ngModel)]-options="{ debounce: 500}" placeholder="Search by quick check name">
+                    <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.assessmentName" (ngModelChange)="this.searchAssessmentName()" placeholder="Search by quick check name">
                 </div>
             </div>
             <qc-student-assessment-attempts
@@ -43,7 +43,7 @@
     </div>
 </div>
 <div *ngIf="this.analyticsViewVisible">
-    <a href='#' (click)="this.toggleAnalytics()">
+    <a href='javascript:;' (click)="this.toggleAnalytics()">
         <span class="fa fa-angle-double-left" aria-hidden="true"></span>
         Back to attempts
     </a>

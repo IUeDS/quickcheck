@@ -29,6 +29,12 @@
     }
 }
 
+.qc-student-attempts-panel {
+    .card-body {
+        background-color: $white;
+    }
+}
+
 .qc-accordion-arrow {
     display: inline-block;
     font-size: 2em;
