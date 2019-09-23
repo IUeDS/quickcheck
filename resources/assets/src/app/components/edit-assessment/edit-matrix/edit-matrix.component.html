@@ -63,7 +63,7 @@
                             <input type="checkbox" name="{{row.id}}" value="{{column.answer_text}}"
                                 [checked]="row.columnAnswerId == column.id"
                                 (click)='this.onSelect(column.id, row)'
-                                [attr.aria-labelled-by]="'matrixrow-' + row.id + '-column-' + column.id"
+                                [attr.aria-labelledby]="'matrixrow-' + row.id + '-column-' + column.id"
                                 [disabled]="this.readOnly">
                         </label>
                     </div>

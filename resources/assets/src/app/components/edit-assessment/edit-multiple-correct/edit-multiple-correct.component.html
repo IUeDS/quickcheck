@@ -37,7 +37,7 @@
                 [disabled]="this.readOnly">
             <editor [init]="this.tinymceOptions"
                 *ngIf="this.isRichContentToggled"
-                [attr.aria-labelled-by]="'mc-option-' + this.question.id + '-' + option.id + '-label'"
+                [attr.aria-labelledby]="'mc-option-' + this.question.id + '-' + option.id + '-label'"
                 [(ngModel)]="option.answer_text"
                 (ngModelChange)="this.onEdited()"
                 required>

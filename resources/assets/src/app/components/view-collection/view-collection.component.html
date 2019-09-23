@@ -94,7 +94,7 @@
                 [utilitiesService]="this.utilitiesService">
             </qc-add-assessment-group>
             <p *ngIf="!this.assessmentGroups.length && !this.readOnly && !this.utilitiesService.loading" class="lead qc-subset-instructions">Looks like you haven't added a subset yet. A subset is a way to organize your quick checks. All quick checks must belong to a subset group. Click the button to add a new subset to get started.</p>
-            <div class="card-group qc-panel-group" id="accordion" role="tablist" aria-multiselectable="true" *ngIf="this.assessmentGroups.length">
+            <div class="card-group qc-panel-group" *ngIf="this.assessmentGroups.length">
                 <qc-assessment-group
                     *ngFor="let assessmentGroup of this.assessmentGroups; index as $index;"
                     class="w-100"
