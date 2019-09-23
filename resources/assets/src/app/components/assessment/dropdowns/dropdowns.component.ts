@@ -84,7 +84,7 @@ export class DropdownsComponent implements OnInit {
     return false;
   }
 
-  onAnswerSelected(prompt, selectableAnswer) {
+  onAnswerSelected(prompt) {
     var studentAnswer = {'dropdown_answers': []},
       answerComplete = false;
 

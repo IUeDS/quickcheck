@@ -11,11 +11,11 @@ export class QuickAddComponent implements OnInit {
   @Input() utilitiesService: UtilitiesService;
   @Output() onCancel = new EventEmitter();
 
-  assessment = { collection: { id: '', name: null }, assessmentGroup: { id: '', name: null } }; //data to be passed back if adding a new quick check
+  assessment = { collection: { id: '', name: null, assessment_groups: [] }, assessmentGroup: { id: '', name: null }, name: null }; //data to be passed back if adding a new quick check
   memberships = []; //if adding, possible collections/assessment groups new assessment can belong to
   newCollectionAdded = false; //if adding a new collection on the fly
   newAssessmentGroupAdded = false; //if adding a new assessment group on the fly
-  selectedCollection = {}; //if adding, collection selected, from which we can draw assessment groups to select
+  selectedCollection = { id: '', name: null, assessment_groups: []}; //if adding, collection selected, from which we can draw assessment groups to select
 
   constructor(private collectionService: CollectionService) { }
 

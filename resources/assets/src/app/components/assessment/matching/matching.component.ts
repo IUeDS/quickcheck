@@ -79,7 +79,7 @@ export class MatchingComponent implements OnInit {
     return false;
   }
 
-  onAnswerSelected(prompt, selectableAnswer) {
+  onAnswerSelected(prompt) {
     var studentAnswer = {'matching_answers': []},
       answerComplete = false;
 

@@ -14,8 +14,11 @@ export class EditMultipleCorrectComponent implements OnInit {
   @Output() onSavedOptionDeleted = new EventEmitter();
 
   isRichContentToggled = false;
+  tinymceOptions;
 
-  constructor(private editAssessmentConfig: EditAssessmentConfigService, public utilitiesService: UtilitiesService) { }
+  constructor(private editAssessmentConfig: EditAssessmentConfigService, public utilitiesService: UtilitiesService) {
+    this.tinymceOptions = this.editAssessmentConfig.getTinyMceConfig();
+  }
 
   ngOnInit() {
     //when a new question is added, want to ensure validation is run immediately;

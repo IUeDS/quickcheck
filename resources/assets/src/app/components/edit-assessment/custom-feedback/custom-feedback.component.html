@@ -13,8 +13,7 @@
             [toggleType]="'feedback'">
         </qc-rich-content-toggle>
             <span class="qc-delete-btn qc-delete-option-btn-inline qc-delete-feedback-btn text-right" role="button" tabindex="0"
-            (click)="this.toggleCustomFeedback()"
-            *ngIf="!this.readOnly">
+            (click)="this.toggleCustomFeedback()">
             <qc-delete-icon aria-hidden="true"></qc-delete-icon>
             <span class="sr-only">Delete feedback for question #{{ this.question.question_order }}</span>
         </span>

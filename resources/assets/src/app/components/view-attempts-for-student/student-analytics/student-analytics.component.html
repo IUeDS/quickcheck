@@ -3,7 +3,7 @@
         <h1>Analytics for {{ this.studentName }}</h1>
     </div>
     <div class="col-6 text-right">
-        <a class="btn btn-light qc-btn qc-btn-download-csv qc-btn-attempts-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId + '/' + this.studentId">
+        <a class="btn btn-light qc-btn qc-btn-download-csv qc-btn-attempts-csv" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId + '/' + this.studentId">
             <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
         </a>
     </div>

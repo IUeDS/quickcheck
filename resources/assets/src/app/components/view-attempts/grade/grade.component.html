@@ -26,9 +26,9 @@
                 <p><span class="fa fa-exclamation" aria-hidden="true"></span> Error: {{ this.error }}</p>
             </div>
             <div class="btn-group">
-                <button class="btn btn-primary btn-sm qc-btn" (click)="this.submitGrade(attempt)" type="submit">Submit</button>
+                <button class="btn btn-primary btn-sm qc-btn" (click)="this.submitGrade()" type="submit">Submit</button>
                 <!-- only allow instructor to cancel grading if editing and grade already present -->
-                <button class="btn btn-outline-dark btn-sm qc-btn" [hidden]="!this.submission.isGraded()" (click)="this.cancelGradeSubmit(attempt)" type="button">Cancel</button>
+                <button class="btn btn-outline-dark btn-sm qc-btn" [hidden]="!this.submission.isGraded()" (click)="this.cancelGradeSubmit()" type="button">Cancel</button>
             </div>
         </span>
     </span>

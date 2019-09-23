@@ -7,7 +7,7 @@
                 <h1>Student Results</h1>
             </div>
             <div class="col-6 text-right">
-                <a class="btn btn-light qc-btn qc-btn-download-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId">
+                <a class="btn btn-light qc-btn qc-btn-download-csv" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId">
                     <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
                 </a>
 
@@ -36,10 +36,10 @@
                         <input class="tgl tgl-ios sr-only" type="checkbox"
                             id="qc-student-results-toggle"
                             [(ngModel)]="this.isResultsByStudentToggled"
-                            [checked]="this.isResultsByStudentToggled == 'true'"
+                            [checked]="this.isResultsByStudentToggled === true"
                             (click)="this.toggleStudentResultsView()">
                         <label class="tgl-btn inline-block" for="qc-student-results-toggle"><span class="sr-only">Toggle to view results by student</span></label>
-                        <p class="qc-toggle-student-results-text">{{ this.isResultsByStudentToggled == 'true' ? 'Hide' : 'View' }} results by student</p>
+                        <p class="qc-toggle-student-results-text">{{ this.isResultsByStudentToggled === true ? 'Hide' : 'View' }} results by student</p>
                     </div>
                 </div>
             </div>

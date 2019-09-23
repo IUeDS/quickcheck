@@ -17,7 +17,7 @@ export class AssessmentGroupComponent implements OnInit {
   @Output() onAssessmentCopy = new EventEmitter();
   @Output() onDelete = new EventEmitter();
 
-  editingData = {};
+  editingData = cloneDeep(this.assessmentGroup);
   focusEditAssessmentGroup = '';
   focusNewAssessment = '';
   focusSaveAssessment = '';

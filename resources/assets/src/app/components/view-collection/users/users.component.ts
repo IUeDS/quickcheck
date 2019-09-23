@@ -25,7 +25,7 @@ export class UsersComponent implements OnInit {
     userAdded: false,
     userValidated: false,
     validationError: false,
-    validatedUser: false
+    validatedUser: { name: null }
   };
   isEditingUsers = {
     init: false,

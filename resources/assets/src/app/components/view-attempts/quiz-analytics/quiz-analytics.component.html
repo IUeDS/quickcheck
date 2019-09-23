@@ -4,10 +4,10 @@
             <h1>Analytics for {{ this.assessment.name }}</h1>
         </div>
         <div class="col-6 text-right">
-            <a class="btn btn-light qc-btn qc-btn-download-csv qc-btn-responses-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/responses/csv/download/assessment/' + this.assessment.id + '/context/' + this.utilitiesService.contextId">
+            <a class="btn btn-light qc-btn qc-btn-download-csv qc-btn-responses-csv" target="_blank" [href]="'/index.php/responses/csv/download/assessment/' + this.assessment.id + '/context/' + this.utilitiesService.contextId">
                 <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download responses <strong>CSV</strong>
             </a>
-            <a class="btn btn-light qc-btn qc-btn-download-csv qc-btn-attempts-csv" *ngIf="!this.readOnly" target="_blank" [href]="'/index.php/attempts/csv/download/context/' + this.utilitiesService.contextId + '/assessment/' + this.assessment.id">
+            <a class="btn btn-light qc-btn qc-btn-download-csv qc-btn-attempts-csv" target="_blank" [href]="'/index.php/attempts/csv/download/context/' + this.utilitiesService.contextId + '/assessment/' + this.assessment.id">
                 <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
             </a>
         </div>

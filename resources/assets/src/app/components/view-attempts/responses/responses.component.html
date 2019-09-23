@@ -47,7 +47,7 @@
                         [animationDelay]="500"
                         aria-hidden="true">
                     </round-progress>
-                    <div class="text qc-attempt-percentage-score"><span class="sr-only">Score: </span>{{ this.attempt.score | number : 0 }}%</div>
+                    <div class="text qc-attempt-percentage-score"><span class="sr-only">Score: </span>{{ this.attempt.score | number}}%</div>
                 </div>
                 <p class="lead qc-attempt-questions-correct">{{ this.getCountCorrect(this.attempt) }} / {{ this.questions.length }} correct</p>
             </div>
@@ -101,7 +101,7 @@
                         </div>
                         <div class="qc-matrix-options" *ngIf="currentQuestion.question_type == 'matrix'" >
                             <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
-                            <p *ngIf="currentQuestion.studentResponse.partial_credit">Partial credit: {{ currentQuestion.studentResponse.partial_credit * 100 | number : 0 }}%</p>
+                            <p *ngIf="currentQuestion.studentResponse.partial_credit">Partial credit: {{ currentQuestion.studentResponse.partial_credit * 100 | number }}%</p>
                             <table class="table table-striped">
                                 <caption class="sr-only">Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.</caption>
                                 <thead>
@@ -132,7 +132,7 @@
                         </div>
                         <div class="qc-matching-options" *ngIf="currentQuestion.question_type == 'matching'" >
                             <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
-                            <p *ngIf="currentQuestion.studentResponse.partial_credit">Partial credit: {{ currentQuestion.studentResponse.partial_credit * 100 | number : 0 }}%</p>
+                            <p *ngIf="currentQuestion.studentResponse.partial_credit">Partial credit: {{ currentQuestion.studentResponse.partial_credit * 100 | number }}%</p>
                             <div class="row">
                                 <table class="table table-striped">
                                     <caption class="sr-only">Student respones for matching question #{{$index + 1}}.</caption>

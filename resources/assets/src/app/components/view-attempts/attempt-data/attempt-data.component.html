@@ -21,7 +21,7 @@
             <td>{{ attempt.last_milestone }}</td>
             <td class="success text-center qc-attempt-count-correct">{{ this.getCountCorrect(attempt) }}</td>
             <td class="danger text-center qc-attempt-count-incorrect">{{ this.getCountIncorrect(attempt) }}</td>
-            <td class="qc-attempt-calculated-score">{{ this.getCalculatedScore(attempt) | number : 0 }}%</td>
+            <td class="qc-attempt-calculated-score">{{ this.getCalculatedScore(attempt) | number }}%</td>
             <td class="text-center qc-attempt-complete">
                 <span *ngIf="attempt.complete == 1">
                     <span class="fa fa-check qc-attempt-completed" aria-hidden="true"></span>

@@ -11,7 +11,7 @@ export class PublicCollectionsComponent implements OnInit {
   @Input() user;
   @Input() utilitiesService;
 
-  publicCollections = false;
+  publicCollections = [];
 
   constructor(private collectionService: CollectionService, private userService: UserService) { }
 
