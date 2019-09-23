@@ -138,16 +138,6 @@ export class EditAssessmentComponent implements OnInit {
   focusToQuestion(question) {
     const questionId = '#question-header-' + question.question_order;
     this.utilitiesService.focusToElement(questionId);
-    //TODO:  this was throwing an error for some reason. Do we need it?
-    //const questionElement = document.getElementById(questionId);
-    //questionElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest'});
-
-    // setTimeout(function() {
-    //   this.utilitiesService.focusToElement(questionId);
-    //   //scroll to question (it gets jittery in the iframe after resetting LTI height)
-    //   $location.hash(questionId);
-    //   $anchorScroll();
-    // }, 0, false);
   }
 
   getAssessmentId() {

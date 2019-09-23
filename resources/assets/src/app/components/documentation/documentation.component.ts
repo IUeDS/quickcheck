@@ -8,7 +8,6 @@ import { UtilitiesService } from '../../services/utilities.service';
   styleUrls: ['./documentation.component.scss']
 })
 export class DocumentationComponent implements OnInit {
-  //TODO: add contact us email, show overview video, and support center link just for IU
   currentPage = 'help';
   isLoggedIn = false;
   isIU = false;

@@ -185,8 +185,7 @@
                                 <div class="col-12">
                                     <hr>
                                     <p><span class="fa fa-check qc-correct-icon" aria-hidden="true"></span> Correct Answer:</p>
-                                    <!-- TODO: orderBy no longer in angular, original:  <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section">-->
-                                    <span *ngFor="let prompt of currentQuestion.prompts" class="qc-dropdown-section">
+                                    <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section">
                                         <label [innerHTML]="prompt.answer_text | safe: 'html'" for="{{'select-dropdown-correct-' + prompt.id}}"></label>
                                         <select class="form-control"
                                                 id="{{'select-dropdown-correct-' + prompt.id}}" disabled>
