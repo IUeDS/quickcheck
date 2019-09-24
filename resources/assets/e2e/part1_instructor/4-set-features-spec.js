@@ -10,7 +10,8 @@ describe('Viewing features for a collection', function () {
         features = setPage.featurePanel.getFeatures();
         data.featureNames.forEach(async function (featureName, index) {
             var feature = features.get(index);
-            expect(await setPage.featurePanel.getFeatureTitle(feature)).toContain(featureName);
+            const title = await setPage.featurePanel.getFeatureTitle(feature);
+            expect(title).toContain(featureName);
         });
     });
 

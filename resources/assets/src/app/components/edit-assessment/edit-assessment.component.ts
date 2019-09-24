@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssessmentEditService } from '../../services/assessment-edit.service';
 import { UserService } from '../../services/user.service';
 import { UtilitiesService } from '../../services/utilities.service';
 import * as cloneDeep from 'lodash/cloneDeep';
+import { CanDeactivateGuard } from '../../guards/can-deactivate-guard.service';
+
+interface ComponentCanDeactivate {
+  canDeactivate: () => boolean;
+}
 
 @Component({
   selector: 'qc-edit-assessment',
   templateUrl: './edit-assessment.component.html',
   styleUrls: ['./edit-assessment.component.scss']
 })
-export class EditAssessmentComponent implements OnInit {
+export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
   admin = false;
   assessment = null;
   assessmentGroups = null;
@@ -40,7 +45,7 @@ export class EditAssessmentComponent implements OnInit {
       }
       else {
         event.preventDefault();
-        return 'You have unsaved changes.';
+        return 'You have unsaved changes. Are you sure you want to leave?';
       }
     });
   }
@@ -48,6 +53,17 @@ export class EditAssessmentComponent implements OnInit {
   async ngOnInit() {
     this.assessmentId = this.getAssessmentId();
     await this.init(); //this function gets called again after saving, so separate out
+    this.saved = true; //don't confirm before user leaves until changes have been made
+  }
+
+  canDeactivate() {
+    if (!this.saved && !this.readOnly) {
+      if (!confirm('You have unsaved changes. Are you sure you want to leave?')) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   beforeUnload() {

@@ -89,7 +89,7 @@ function Common(browserRef) {
     }
 
     function getTinyMceIframeFromElement(elem) {
-        return elem.all(by.css('.mce-edit-area iframe')).first();
+        return elem.all(by.css('.tox-edit-area iframe')).first();
     }
 
     async function getTinyMceText() {

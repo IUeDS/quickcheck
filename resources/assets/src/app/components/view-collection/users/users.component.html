@@ -28,7 +28,7 @@
                         <div class="form-group">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" [(ngModel)]="this.isAddingUser.readOnly" name="readOnly" class="qc-read-only-input"> Read-only permissions
+                                    <input type="checkbox" [(ngModel)]="this.isAddingUser.readOnly" name="readOnly"> Read-only permissions
                                 </label>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                             <td>
                                 <div class="checkbox">
                                     <label [ngClass]="{'strike-through': user.deleted}">
-                                        <input type="checkbox" [checked]="user.readOnly" [disabled]="user.deleted ? 'true' : null" (click)="this.toggleReadOnly(user)" name="readOnly"> Read-only permissions <span class="sr-only">for user {{user.username}}</span>
+                                        <input type="checkbox" [checked]="user.readOnly" [disabled]="user.deleted ? 'true' : null" (click)="this.toggleReadOnly(user)" name="readOnly" class="qc-read-only-input"> Read-only permissions <span class="sr-only">for user {{user.username}}</span>
                                     </label>
                                 </div>
                             </td>

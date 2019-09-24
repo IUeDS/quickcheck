@@ -16,6 +16,7 @@ import { SessionnotvalidComponent } from './components/errors/sessionnotvalid/se
 import { LtisessionnotvalidComponent } from './components/errors/ltisessionnotvalid/ltisessionnotvalid.component';
 import { ErrorComponent } from './components/errors/error/error.component';
 import * as cloneDeep from 'lodash/cloneDeep';
+import { CanDeactivateGuard } from './guards/can-deactivate-guard.service';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -24,7 +25,7 @@ const routes: Routes = [
     { path: 'collection', component: CollectionIndexComponent },
     { path: 'collection/:id', component: ViewCollectionComponent },
     { path: 'documentation', component: DocumentationComponent },
-    { path: 'assessment/:id/edit', component: EditAssessmentComponent },
+    { path: 'assessment/:id/edit', component: EditAssessmentComponent, canDeactivate: [CanDeactivateGuard] },
     { path: 'assessment', component: AssessmentComponent },
     { path: 'index.php/assessment', component: AssessmentComponent },
     { path: 'assessment/:id', component: AssessmentComponent },

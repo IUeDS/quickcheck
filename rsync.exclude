@@ -7,5 +7,6 @@ npm-debug.log
 node_modules/
 storage/logs
 public/assets/src
+resources/assets/src
 public/customActivities/
 storage/app/

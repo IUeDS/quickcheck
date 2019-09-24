@@ -86,6 +86,8 @@ import { PreviewIconComponent } from './components/shared/preview-icon/preview-i
 import { SafePipe } from './pipes/safe.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
 
+import { CanDeactivateGuard } from './guards/can-deactivate-guard.service';
+
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -207,7 +209,8 @@ import { ErrorComponent } from './components/errors/error/error.component';
   ],
   providers: [
       HttpClientModule,
-      Title
+      Title,
+      CanDeactivateGuard
   ],
   bootstrap: [AppComponent]
 })

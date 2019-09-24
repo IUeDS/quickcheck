@@ -12,6 +12,7 @@
     "build": "ng build --extract-css",
     "build:stats": "ng build --stats-json",
     "build:watch": "ng build --watch --extract-css",
+    "build:reg": "ng build --configuration=reg",
     "build:prod": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
