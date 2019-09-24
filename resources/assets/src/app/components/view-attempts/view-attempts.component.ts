@@ -52,7 +52,6 @@ export class ViewAttemptsComponent implements OnInit {
 
     await this.initAttemptData(data);
     this.utilitiesService.loadingFinished();
-    this.setScrollingLtiHeight();
     this.getUsers();
   }
 
@@ -164,7 +163,7 @@ export class ViewAttemptsComponent implements OnInit {
 
   hideResponses() {
     this.responseViewVisible = false;
-    this.setScrollingLtiHeight();
+    this.utilitiesService.setLtiHeight();
   }
 
   initAttemptData(attemptData) {
@@ -190,10 +189,6 @@ export class ViewAttemptsComponent implements OnInit {
     //if a very large course, grading functionality disabled for performance
     if (this.isLargeClassSize()) {
       this.largeClassSize = true;
-    }
-    //no need for infinite scrolling if a small amount of attempts
-    if (this.attempts.length <= 100) {
-      this.utilitiesService.removeScrollHeight();
     }
 
     this.utilitiesService.setTitle('Quick Check Results - ' + this.assessment.name);
@@ -261,6 +256,8 @@ export class ViewAttemptsComponent implements OnInit {
   }
 
   //for infinite scrolling, need a bit of a scrollbar in iframe
+  //this might not be necessary with updated versions of angular, so not
+  //currently being used, but available if needed
   setScrollingLtiHeight() {
     this.utilitiesService.setScrollingLtiHeight(100);
     this.utilitiesService.setLtiHeight();
@@ -272,7 +269,7 @@ export class ViewAttemptsComponent implements OnInit {
       this.utilitiesService.setLtiHeight();
     }
     else {
-      this.setScrollingLtiHeight();
+      this.utilitiesService.setLtiHeight();
     }
   }
 
