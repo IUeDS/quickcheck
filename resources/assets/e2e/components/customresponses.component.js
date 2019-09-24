@@ -3,7 +3,7 @@ var CustomResponsesComponent = function(browserRef) {
     component.browser = browserRef;
 
     //elements
-    component.responses = component.browser.element.all(by.repeater('response in vm.studentResponses'));
+    component.responses = component.browser.element.all(by.css('.qc-responses-custom-response'));
     component.responsesTable = component.browser.element(by.css('.qc-responses-table'));
 
     //sub-string elements

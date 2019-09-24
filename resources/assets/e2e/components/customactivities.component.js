@@ -3,7 +3,7 @@ var CustomActivitiesComponent = function(browserRef) {
     component.browser = browserRef;
 
     //elements
-    component.activities = component.browser.element.all(by.repeater('customActivity in vm.customActivities'));
+    component.activities = component.browser.element.all(by.css('.qc-custom-activity'));
     component.addActivityBtn = component.browser.element(by.partialButtonText('Add custom activity'));
     component.closeBtn = component.browser.element(by.partialButtonText('Close'));
     component.newDescriptionInput = component.browser.element(by.css('#custom-add-description'));
@@ -18,17 +18,17 @@ var CustomActivitiesComponent = function(browserRef) {
 
     //sub-string selectors
     component.deleteBtn = '.qc-custom-activity-delete-btn';
-    component.descriptionBinding = 'vm.customActivity.description';
-    component.devBinding = 'vm.customActivity.developer';
+    component.description = '.qc-custom-acitvity-description';
+    component.dev = '.qc-custom-activity-developer';
     component.editBtn = '.qc-custom-activity-edit-btn';
     component.editDescriptionInput = '#edit-custom-description';
     component.editDevInput = '#edit-custom-developer';
     component.editGroupInput = '#edit-custom-group';
     component.editNameInput = '#edit-custom-name';
     component.editUrlInput = '#edit-custom-url';
-    component.nameBinding = 'vm.customActivity.name';
+    component.name = '.qc-custom-activity-name';
     component.submitEditBtn = '.btn-success';
-    component.urlBinding = 'vm.customActivity.url';
+    component.url = '.qc-custom-activity-url';
 
     //functions
     component.addActivity = addActivity;
@@ -82,11 +82,11 @@ var CustomActivitiesComponent = function(browserRef) {
     }
 
     async function getDescription(activity) {
-        return await activity.element(by.exactBinding(component.descriptionBinding)).getText();
+        return await activity.element(by.css(component.description)).getText();
     }
 
     async function getDev(activity) {
-        return await activity.element(by.exactBinding(component.devBinding)).getText();
+        return await activity.element(by.css(component.dev)).getText();
     }
 
     function getEditedDescriptionInput(activity) {
@@ -110,7 +110,7 @@ var CustomActivitiesComponent = function(browserRef) {
     }
 
     async function getName(activity) {
-        return await activity.element(by.exactBinding(component.nameBinding)).getText();
+        return await activity.element(by.css(component.name)).getText();
     }
 
     function getNewDescriptionInput() {
@@ -134,7 +134,7 @@ var CustomActivitiesComponent = function(browserRef) {
     }
 
     async function getUrl(activity) {
-        return await activity.element(by.exactBinding(component.urlBinding)).getText();
+        return await activity.element(by.css(component.url)).getText();
     }
 
     async function isGroupRequired(activity) {

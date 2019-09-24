@@ -9,7 +9,7 @@
             [ngClass]="this.customActivity.closed ? 'fa-caret-right' : 'fa-caret-down'"
             aria-hidden="true">
         </span>
-        <h5>{{ this.customActivity.name }}</h5>
+        <h5 class="qc-custom-activity-name">{{ this.customActivity.name }}</h5>
         <span class="qc-edit-btn qc-custom-activity-edit-btn" role="button" (click)="this.edit($event)" [hidden]="this.isEditing">
             <qc-edit-icon aria-hidden="true"></qc-edit-icon>
             <span class="sr-only">Edit custom activity {{this.customActivity.name}}</span>
@@ -26,9 +26,9 @@
         [isAnimated]="true">
         <div class="card-body">
             <div class="form-group" *ngIf="!this.isEditing">
-                <p>Description: {{ this.customActivity.description }}</p>
-                <p>Url: {{ this.customActivity.url }}</p>
-                <p>Developer: {{ this.customActivity.developer }}</p>
+                <p class="qc-custom-acitvity-description">Description: {{ this.customActivity.description }}</p>
+                <p class="qc-custom-activity-url">Url: {{ this.customActivity.url }}</p>
+                <p class="qc-custom-activity-developer">Developer: {{ this.customActivity.developer }}</p>
                 <p *ngIf="this.isGroupRequired()">Group required</p>
             </div>
             <form *ngIf="this.isEditing" (ngSubmit)="this.update()">

@@ -20,13 +20,13 @@ var SetPage = function(browserRef) {
     page.searchBox = page.browser.element(by.css('.qc-search-box'));
     page.importQtiBtn = page.browser.element(by.css('.qc-btn-qti-import'));
     page.initialInstructions = page.browser.element(by.css('.qc-subset-instructions'));
-    page.newSubsetInput = page.browser.element(by.model('vm.newAssessmentGroup.name'));
+    page.newSubsetInput = page.browser.element(by.css('.qc-new-subset'));
     page.readOnlyNotice = page.browser.element(by.css('.read-only-notice'));
     page.saveNewSubsetBtn = page.browser.element(by.cssContainingText('.qc-add-assessment-group button', 'Save'));
     page.searchAssessmentResults = page.browser.element.all(by.css('.qc-search-assessment-result'));
     page.searchQuestionResults = page.browser.element.all(by.css('.qc-search-question-result'));
     page.setName = page.browser.element(by.css('.qc-view-set-subheader'));
-    page.subsetPanels = page.browser.element.all(by.repeater('assessmentGroup in vm.assessmentGroups'));
+    page.subsetPanels = page.browser.element.all(by.css('.qc-subset-panel'));
     page.togglePublicBtn = page.browser.element(by.css('.qc-toggle-public-btn'));
     page.usersAccordion = page.browser.element(by.cssContainingText('.card-header', 'Show users in this set'));
 

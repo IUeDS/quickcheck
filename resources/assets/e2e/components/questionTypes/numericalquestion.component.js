@@ -7,11 +7,11 @@ var NumericalQuestionComponent = function(browserRef, question) {
     component.addNumericalAnswerBtn = component.question.element(by.partialButtonText('Add possible answer'));
 
     //strings for sub-elements
-    component.answerTypeElement = 'option.answer_type';
-    component.exactAnswerElement = 'option.numerical_answer';
-    component.marginOfErrorElement = 'option.margin_of_error';
-    component.rangeMinElement = 'option.range_min';
-    component.rangeMaxElement = 'option.range_max';
+    component.answerTypeElement = '.qc-edit-numerical-answer-type';
+    component.exactAnswerElement = '.qc-edit-numerical-answer';
+    component.marginOfErrorElement = '.qc-edit-numerical-margin';
+    component.rangeMinElement = '.qc-edit-numerical-range-min';
+    component.rangeMaxElement = '.qc-edit-numerical-range-max';
 
     //functions
     component.addNumericalAnswer = addNumericalAnswer;
@@ -29,37 +29,37 @@ var NumericalQuestionComponent = function(browserRef, question) {
     }
 
     async function enterNumericalExactOption(option, answer, marginOfError) {
-        await option.element(by.model(component.exactAnswerElement)).sendKeys(answer);
-        await option.element(by.model(component.marginOfErrorElement)).sendKeys(marginOfError);
+        await option.element(by.css(component.exactAnswerElement)).sendKeys(answer);
+        await option.element(by.css(component.marginOfErrorElement)).sendKeys(marginOfError);
     }
 
     async function enterNumericalRangeOption(option, rangeMin, rangeMax) {
-        await option.element(by.model(component.rangeMinElement)).sendKeys(rangeMin);
-        await option.element(by.model(component.rangeMaxElement)).sendKeys(rangeMax);
+        await option.element(by.css(component.rangeMinElement)).sendKeys(rangeMin);
+        await option.element(by.css(component.rangeMaxElement)).sendKeys(rangeMax);
     }
 
     function getExactAnswerInput(option) {
-        return option.element(by.model(component.exactAnswerElement));
+        return option.element(by.css(component.exactAnswerElement));
     }
 
     function getMarginOfErrorInput(option) {
-        return option.element(by.model(component.marginOfErrorElement));
+        return option.element(by.css(component.marginOfErrorElement));
     }
 
     function getRangeMinInput(option) {
-        return option.element(by.model(component.rangeMinElement));
+        return option.element(by.css(component.rangeMinElement));
     }
 
     function getRangeMaxInput(option) {
-        return option.element(by.model(component.rangeMaxElement));
+        return option.element(by.css(component.rangeMaxElement));
     }
 
     async function setOptionAsExactAnswer(option) {
-        await option.element(by.model(component.answerTypeElement)).sendKeys('Exact');
+        await option.element(by.css(component.answerTypeElement)).sendKeys('Exact');
     }
 
     async function setOptionAsRange(option) {
-        await option.element(by.model(component.answerTypeElement)).sendKeys('Answer in the range');
+        await option.element(by.css(component.answerTypeElement)).sendKeys('Answer in the range');
     }
 }
 

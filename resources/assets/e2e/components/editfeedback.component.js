@@ -14,12 +14,12 @@ var EditFeedbackComponent = function(browserRef, question) {
     component.incorrectFeedback = component.question.element(by.css('.qc-custom-feedback-incorrect textarea'));
     component.questionLevelFeedbackContainer = component.question.element(by.css('.qc-custom-feedback-general'));
     component.perResponseFeedbackCheckbox = component.question.element(by.css('.qc-custom-feedback-response-checkbox input'));
-    component.perResponseFeedbackOptions = component.customFeedbackPanel.all(by.repeater('option in vm.question.options'));
+    component.perResponseFeedbackOptions = component.customFeedbackPanel.all(by.css('.qc-edit-response-feedback-option'));
     component.richContentToggle = component.customFeedbackPanel.element(by.css('.qc-rich-content-toggle label'));
 
     //strings for sub-elements
     component.perResponseFeedbackCorrectClass = 'qc-custom-feedback-correct';
-    component.perResponseFeedbackInput = 'option.mc_option_feedback.feedback_text';
+    component.perResponseFeedbackInput = '.qc-edit-response-feedback';
 
     //functions
     component.addCustomFeedback = addCustomFeedback;
@@ -50,7 +50,7 @@ var EditFeedbackComponent = function(browserRef, question) {
     }
 
     async function enterResponseFeedback(option, text) {
-        await option.element(by.model(component.perResponseFeedbackInput)).sendKeys(text);
+        await option.element(by.css(component.perResponseFeedbackInput)).sendKeys(text);
     }
 
     function getCorrectFeedback() {
@@ -83,7 +83,7 @@ var EditFeedbackComponent = function(browserRef, question) {
     }
 
     async function getPerResponseFeedbackText(responseFeedback) {
-        return await responseFeedback.element(by.model(component.perResponseFeedbackInput)).getAttribute('value');
+        return await responseFeedback.element(by.css(component.perResponseFeedbackInput)).getAttribute('value');
     }
 
     function getQuestionLevelFeedbackContainer() {

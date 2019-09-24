@@ -1,7 +1,7 @@
 <div class="qc-mc-options">
     <fieldset>
         <legend class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></legend>
-        <div class="form-check" *ngFor="let answerOption of this.currentQuestion.options">
+        <div class="form-check qc-assessment-multiple-choice-option" *ngFor="let answerOption of this.currentQuestion.options">
             <input type="radio" name="{{this.currentQuestion.id}}" class="form-check-input"
                     value="{{answerOption.answer_text}}"
                     id="{{answerOption.id}}"

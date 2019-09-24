@@ -7,7 +7,7 @@ var SubsetPanelComponent = function(browserRef, subsetElement) {
         component.subset = subsetElement;
     }
     else {
-        component.subset = component.browser.element.all(by.repeater('assessmentGroup in vm.assessmentGroups')).first();
+        component.subset = component.browser.element.all(by.css('.qc-subset-panel')).first();
     }
 
     //elements
@@ -18,7 +18,7 @@ var SubsetPanelComponent = function(browserRef, subsetElement) {
     component.header = component.subset.element(by.css('.qc-assessment-group-title'));
     component.name = component.subset.element(by.css('h3'));
     component.newQcInput = component.subset.element(by.css('input'));
-    component.quickChecks = component.subset.all(by.repeater('assessment in vm.assessmentGroup.assessments'));
+    component.quickChecks = component.subset.all(by.css('.qc-quiz-row'));
     component.saveQcBtn = component.subset.element(by.partialButtonText('Save'));
     component.subsetInstructions = component.subset.element(by.tagName('p'));
 

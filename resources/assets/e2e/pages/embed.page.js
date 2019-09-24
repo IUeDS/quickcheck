@@ -7,13 +7,13 @@ var EmbedPage = function(browserRef) {
 
     //elements
     page.adminToggleViewAll = page.browser.element(by.css('.qc-admin-all-sets-toggle'));
-    page.adminSets = page.browser.element.all(by.repeater('collection in vm.adminCollectionData.collections'));
+    page.adminSets = page.browser.element.all(by.css('.qc-select-collection'));
     page.clearSearchBtn = page.browser.element(by.css('.qc-select-clear-search'));
-    page.quickchecks = page.browser.element.all(by.repeater('assessment in assessmentGroup.assessments'));
-    page.memberships = page.browser.element.all(by.repeater('membership in vm.memberships'));
-    page.searchResults = page.browser.element.all(by.repeater('assessment in vm.search.searchResults'));
+    page.quickchecks = page.browser.element.all(by.css('.qc-select-assessment'));
+    page.memberships = page.browser.element.all(by.css('.qc-select-collection'));
+    page.searchResults = page.browser.element.all(by.css('.qc-select-search-assessment'));
     page.searchBox = page.browser.element(by.css('#assessment-search'));
-    page.subsets = page.browser.element.all(by.repeater('assessmentGroup in vm.collection.assessment_groups'));
+    page.subsets = page.browser.element.all(by.css('.qc-select-assessment-group'));
 
     //sub-string selectors
     page.previewBtn = '.qc-select-preview-btn';

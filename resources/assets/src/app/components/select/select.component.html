@@ -47,7 +47,7 @@
             <div [hidden]="!this.search.searchActivated" aria-live="polite">
                 <h2>Search results:</h2>
                 <h3 *ngIf="!this.search.searchResults.length">No results found.</h3>
-                <div class="row admin-assessment-row" *ngFor="let assessment of this.search.searchResults">
+                <div class="row admin-assessment-row qc-select-search-assessment" *ngFor="let assessment of this.search.searchResults">
                     <div class="col-6 qc-select-row">
                         <h5 class="admin-assessment-name">
                             {{ assessment.name }}

@@ -11,7 +11,7 @@
             <form (ngSubmit)="this.importQti()" enctype="multipart/form-data" *ngIf="this.assessmentGroups.length">
                 <div class="form-group">
                     <label for="qc-qti-import-assessment-group">Subset</label>
-                    <select [(ngModel)]="this.assessmentGroupId" class="form-control" id="qc-qti-import-assessment-group" name="qc-qti-import-assessment-group" required>
+                    <select [(ngModel)]="this.assessmentGroupId" class="form-control qc-import-qti-group" id="qc-qti-import-assessment-group" name="qc-qti-import-assessment-group" required>
                         <option></option>
                         <option *ngFor="let possibleAssessmentGroup of this.assessmentGroups" value="{{possibleAssessmentGroup.id}}">{{ possibleAssessmentGroup.name }}</option>
                     </select>
@@ -52,7 +52,7 @@
             <!-- minor notices, to inform user of data that may not be 100% the same -->
             <div *ngIf="this.notices.length" class="qc-qti-import-notices form-group">
                 <h4>QTI package imported. The following content was incompatible:</h4>
-                <div class="alert alert-warning" role="alert" *ngFor="let notice of this.notices">
+                <div class="alert alert-warning qc-qti-import-notice" role="alert" *ngFor="let notice of this.notices">
                     <h5><span class="fa fa-exclamation" aria-hidden="true"></span> Notice:</h5>
                     <div [innerHTML]="notice | safe: 'html'"></div>
                 </div>

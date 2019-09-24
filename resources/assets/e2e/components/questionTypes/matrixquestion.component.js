@@ -7,8 +7,8 @@ var MatrixQuestionComponent = function(browserRef, question) {
     component.matrixAddColumnBtn = component.question.element(by.partialButtonText('Add column'));
     component.matrixAddRowBtn = component.question.element(by.partialButtonText('Add row'));
     component.matrixCheckboxes = component.question.all(by.css('table input[type="checkbox"]'));
-    component.matrixColumns = component.question.all(by.repeater('column in vm.question.columns'));
-    component.matrixRows = component.question.all(by.repeater('row in vm.question.rows'));
+    component.matrixColumns = component.question.all(by.css('.qc-edit-matrix-column'));
+    component.matrixRows = component.question.all(by.css('.qc-edit-matrix-row'));
     component.matrixTextInputs = component.question.all(by.css('table input[type="text"]'));
 
     //strings for sub-elements

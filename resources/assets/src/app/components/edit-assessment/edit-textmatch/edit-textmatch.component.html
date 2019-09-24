@@ -1,7 +1,7 @@
 <div>
     <p class="lead qc-edit-instructions">Note: Textmatch questions will accept answers regardless of capitalization, leading or trailing whitespace, and punctuation.</p>
     <h3 *ngIf="this.question.options.length">Possible answers <span class="sr-only">for question #{{ question.question_order}}</span></h3>
-    <div *ngFor="let option of this.question.options; index as $index;">
+    <div *ngFor="let option of this.question.options; index as $index;" class="qc-edit-option">
         <h4>Option #{{ $index+1 }}</h4>
         <div class="qc-edit-textmatch-inline mb-2">
             <label for="textmatch-answer-{{this.question.id}}-{{option.id}}">

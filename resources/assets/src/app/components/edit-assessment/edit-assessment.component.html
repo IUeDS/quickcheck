@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col-12 form-group">
                             <label for="name">Quick Check Name (required)</label>
-                            <input type="text" class="form-control" id="name" name="name" required
+                            <input type="text" class="form-control qc-edit-name" id="name" name="name" required
                                 [(ngModel)]="this.assessment.name"
                                 (ngModelChange)="this.onEdited()"
                                 [disabled]="this.readOnly">
@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col-12 form-group">
                             <label for="assessment_group_id">Subset</label>
-                            <select id="assessment_group_id" name="assessment_group_id" class="form-control"
+                            <select id="assessment_group_id" name="assessment_group_id" class="form-control qc-edit-group"
                                 [(ngModel)]="this.assessment.assessment_group_id"
                                 (ngModelChange)="this.onEdited()"
                                 [disabled]="this.readOnly">
@@ -48,14 +48,14 @@
                     <h2>Optional: </h2>
                     <div class="form-group">
                         <label for="title">Title (appears as top-level header when taking quiz)</label>
-                        <input type="text" class="form-control" id="title" name="title"
+                        <input type="text" class="form-control qc-edit-title" id="title" name="title"
                             [(ngModel)]="this.assessment.title"
                             (ngModelChange)="this.onEdited()"
                             [disabled]="this.readOnly">
                     </div>
                     <div class="form-group">
                         <label for="description">Description (appears as top-level paragraph when taking quiz)</label>
-                        <textarea class="form-control" id="description" name="description" rows="4"
+                        <textarea class="form-control qc-edit-description" id="description" name="description" rows="4"
                             [(ngModel)]="this.assessment.description"
                             (ngModelChange)="this.onEdited()"
                             [disabled]="this.readOnly"></textarea>

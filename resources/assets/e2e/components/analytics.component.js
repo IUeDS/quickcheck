@@ -8,8 +8,8 @@ var AnalyticsComponent = function(browserRef) {
     component.avgTime = component.browser.element(by.css('.qc-analytics-average-time'));
     component.backBtn = component.browser.element.all(by.partialLinkText('Back')).filter(function(link) { return link.isDisplayed(); });
     component.medianScore = component.browser.element(by.css('.qc-analytics-median-score'));
-    component.otherResponses = component.browser.element.all(by.repeater('response in vm.question.questionAnalytics.otherResponses'));
-    component.questions = component.browser.element.all(by.repeater('question in vm.questions'));
+    component.otherResponses = component.browser.element.all(by.css('.qc-analytics-other-responses'));
+    component.questions = component.browser.element.all(by.css('.qc-analytics-question'));
     component.responsesCsvBtn = component.browser.element(by.css('.qc-btn-responses-csv'));
     component.totalAttempts = component.browser.element(by.css('.qc-analytics-total-attempts'));
 

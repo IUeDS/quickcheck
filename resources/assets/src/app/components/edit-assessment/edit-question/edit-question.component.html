@@ -40,7 +40,7 @@
         <label for="question-type-{{this.question.id}}">
             <h3>Question type <span class="sr-only">for question # {{this.question.question_order}}</span></h3>
         </label>
-        <select class="form-control" id="question-type-{{this.question.id}}"
+        <select class="form-control qc-edit-question-type" id="question-type-{{this.question.id}}"
             [(ngModel)]="this.question.question_type"
             (ngModelChange)="this.onQuestionTypeChanged(this.question.question_type, this.question.question_type)"
             [disabled]="this.readOnly">

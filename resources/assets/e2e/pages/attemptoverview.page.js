@@ -3,11 +3,11 @@ var AttemptOverviewPage = function(browserRef) {
     page.browser = browserRef;
 
     //elements
-    page.attempts = page.browser.element.all(by.repeater('attempt in vm.attempts'));
+    page.attempts = page.browser.element.all(by.css('.qc-attempt-overview-assessment'));
     page.searchBox = page.browser.element(by.css('.qc-search-box'));
     page.studentResultsToggle = page.browser.element(by.css('.qc-student-results-toggle label'));
     page.studentResultsToggleInput = page.browser.element(by.css('.qc-student-results-toggle input'));
-    page.students = page.browser.element.all(by.repeater('student in vm.students'));
+    page.students = page.browser.element.all(by.css('.qc-attempt-overview-student'));
 
     //sub-string selectors
 

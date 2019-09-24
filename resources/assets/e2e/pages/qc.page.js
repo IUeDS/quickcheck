@@ -15,7 +15,7 @@ var QcPage = function(browserRef) {
     page.finishedUngradedMessage = page.browser.element(by.css('.qc-ungraded-msg'));
     page.incorrectRows = page.browser.element.all(by.css('tr.danger'));
     page.matchingPrompts = page.browser.element.all(by.css('table tr td:first-of-type'));
-    page.mcOptions = page.browser.element.all(by.repeater('answerOption in vm.currentQuestion.options'));
+    page.mcOptions = page.browser.element.all(by.css('.qc-assessment-multiple-choice-option'));
     page.matrixCheckboxes = page.browser.element.all(by.css('table input'));
     page.matrixColumnCells = page.browser.element.all(by.css('table th'));
     page.matrixRowCells = page.browser.element.all(by.css('table tr td:first-of-type'));
@@ -25,7 +25,7 @@ var QcPage = function(browserRef) {
     page.modalFeedbackHeader = page.modalFeedback.element(by.css('h2'));
     page.moduleMessage = page.browser.element(by.css('.qc-module-msg'));
     page.numericalInput = page.browser.element(by.css('input[type="number"]'));
-    page.perResponseFeedback = page.browser.element.all(by.repeater('feedbackItem in vm.feedback'));
+    page.perResponseFeedback = page.browser.element.all(by.css('.custom-feedback'));
     page.questionProgress = page.browser.element(by.css('.qc-question-number'));
     page.questionText = page.browser.element(by.css('.qc-assessment-question'));
     page.restartBtn = page.browser.element(by.css('.qc-btn-restart-assessment'));

@@ -3,7 +3,7 @@ var FeaturePanelComponent = function(browserRef) {
     component.browser = browserRef;
 
     //elements
-    component.features = component.browser.element.all(by.repeater('collectionFeature in vm.collectionFeatures'));
+    component.features = component.browser.element.all(by.css('.qc-feature'));
 
     //string references (for ad-hoc sub-elements)
     component.featureTitle = 'h3';

@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <button type="button" *ngFor="let release of this.releases" class="list-group-item list-group-item-action" (click)="this.viewAttempts(release.assessment)" [hidden]="this.isSubstringNotFound(release.assessment.title, this.search.assessmentName) && this.isSubstringNotFound(release.assessment.name, this.search.assessmentName)">
+    <button type="button" *ngFor="let release of this.releases" class="list-group-item list-group-item-action qc-releases-release" (click)="this.viewAttempts(release.assessment)" [hidden]="this.isSubstringNotFound(release.assessment.title, this.search.assessmentName) && this.isSubstringNotFound(release.assessment.name, this.search.assessmentName)">
         <span *ngIf="release.assessment.title">{{ release.assessment.title }}</span>
         <span *ngIf="!release.assessment.title">{{ release.assessment.name }}</span>
     </button>

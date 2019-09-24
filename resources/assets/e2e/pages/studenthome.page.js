@@ -8,7 +8,7 @@ var StudentHomePage = function(browserRef) {
     page.responses = new page.includes.ResponsesComponent(page.browser);
 
     //elements
-    page.releases = page.browser.element.all(by.repeater('release in vm.releases'));
+    page.releases = page.browser.element.all(by.css('.qc-releases-release'));
     page.searchBox = page.browser.element(by.css('.qc-search-box'));
 
     //functions

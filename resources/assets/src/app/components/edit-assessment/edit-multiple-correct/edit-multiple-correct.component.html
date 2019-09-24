@@ -6,7 +6,8 @@
         [toggleType]="'options'">
     </qc-rich-content-toggle>
     <div *ngFor="let option of this.question.options; index as $index;"
-        [ngClass]="{'qc-rich-content-toggled' : this.isRichContentToggled }">
+        [ngClass]="{'qc-rich-content-toggled' : this.isRichContentToggled }"
+        class="qc-edit-option">
         <label for="mc-option-{{this.question.id}}-{{option.id}}"
             id="mc-option-{{this.question.id}}-{{option.id}}-label">
             Option #{{ $index+1 }}

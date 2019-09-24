@@ -6,8 +6,8 @@ var DropdownsQuestionComponent = function(browserRef, question) {
     //elements
     component.addDistractorBtn = component.question.element(by.partialButtonText('Add distractor'));
     component.addDropdownPairBtn = component.question.element(by.partialButtonText('Add dropdown pair'));
-    component.distractors = component.question.all(by.repeater('distractor in vm.question.distractors'));
-    component.dropdownPrompts = component.question.all(by.repeater('prompt in vm.question.prompts'));
+    component.distractors = component.question.all(by.css('.qc-edit-dropdown-distractor'));
+    component.dropdownPrompts = component.question.all(by.css('.qc-edit-dropdown-prompt'));
     component.dropdownTextInputs = component.question.all(by.css('table input[type="text"]'));
 
     //strings for sub-elements

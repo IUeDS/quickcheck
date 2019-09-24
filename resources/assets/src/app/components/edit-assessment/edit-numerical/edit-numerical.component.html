@@ -1,6 +1,6 @@
 <div>
     <h3 *ngIf="this.question.options.length">Possible answers <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
-    <div *ngFor="let option of this.question.options; index as $index;" class="row qc-edit-numerical-option">
+    <div *ngFor="let option of this.question.options; index as $index;" class="row qc-edit-numerical-option qc-edit-option">
         <div class="col-12">
             <h4 class="qc-edit-numerical-option-header">Option #{{$index+1}}</h4>
 
@@ -25,7 +25,7 @@
                     </label>
                     <select required [(ngModel)]="option.answer_type"
                         (ngModelChange)="this.onEdited()"
-                        class="form-control"
+                        class="form-control qc-edit-numerical-answer-type"
                         id="numerical-answer-{{this.question.id}}-{{option.id}}-type"
                         [disabled]="this.readOnly">
                         <option value="exact">Exact answer</option>
@@ -40,7 +40,7 @@
                             Exact answer
                             <span class="sr-only"> for question #{{ this.question.question_order }}, answer option #{{ $index+1 }}</span>:
                         </label>
-                        <input type="number" string-to-number step="any" class="form-control"
+                        <input type="number" string-to-number step="any" class="form-control qc-edit-numerical-answer"
                             id="numerical-answer-{{this.question.id}}-{{option.id}}-answer"
                             [(ngModel)]="option.numerical_answer"
                             (ngModelChange)="this.onEdited()"
@@ -53,7 +53,7 @@
                             Margin of error
                             <span class="sr-only"> for question #{{ this.question.question_order }}, answer option #{{ $index+1 }}</span>:
                         </label>
-                        <input type="number" string-to-number step="any" class="form-control"
+                        <input type="number" string-to-number step="any" class="form-control qc-edit-numerical-margin"
                             id="numerical-answer-{{this.question.id}}-{{option.id}}-margin"
                             [(ngModel)]="option.margin_of_error"
                             (ngModelChange)="this.onEdited()"
@@ -69,7 +69,7 @@
                             Range minimum
                             <span class="sr-only"> for question #{{ this.question.question_order }}, answer option #{{ $index+1 }}</span>:
                         </label>
-                        <input type="number" string-to-number step="any" class="form-control"
+                        <input type="number" string-to-number step="any" class="form-control qc-edit-numerical-range-min"
                             id="numerical-answer-{{this.question.id}}-{{option.id}}-range-min"
                             [(ngModel)]="option.range_min"
                             (ngModelChange)="this.onEdited()"
@@ -82,7 +82,7 @@
                             Range maximum
                             <span class="sr-only"> for question #{{ this.question.question_order }}, answer option #{{ $index+1 }}</span>:
                         </label>
-                        <input type="number" string-to-number step="any" class="form-control"
+                        <input type="number" string-to-number step="any" class="form-control qc-edit-numerical-range-max"
                             id="numerical-answer-{{this.question.id}}-{{option.id}}-range-max"
                             [(ngModel)]="option.range_max"
                             (ngModelChange)="this.onEdited()"

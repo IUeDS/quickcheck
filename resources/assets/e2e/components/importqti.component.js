@@ -4,11 +4,11 @@ var QtiImportComponent = function(browserRef) {
 
     //elements
     component.criticalError = component.browser.element(by.css('.qc-qti-import-critical'));
-    component.dropdown = component.browser.element(by.model('vm.assessment_group_id'));
+    component.dropdown = component.browser.element(by.css('.qc-import-qti-group'));
     component.error = component.browser.element(by.css('.qti-import-error'));
     component.finishedPanel = component.browser.element(by.css('.qc-qti-import-finished'));
     component.importLinks = component.browser.element.all(by.css('.qc-import-qti-link'));
-    component.notices = component.browser.element.all(by.repeater('notice in vm.notices'));
+    component.notices = component.browser.element.all(by.css('.qc-qti-import-notice'));
     component.panel = component.browser.element(by.css('#qc-qti-import-panel'));
     component.submitBtn = component.browser.element(by.css('.qc-btn-qti-import-submit'));
     component.success = component.browser.element(by.css('.qc-qti-import-success'));

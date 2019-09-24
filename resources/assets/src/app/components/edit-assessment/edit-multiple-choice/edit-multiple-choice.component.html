@@ -6,7 +6,8 @@
         [toggleType]="'options'">
     </qc-rich-content-toggle>
     <div *ngFor="let option of this.question.options; index as $index;"
-        [ngClass]="{'qc-rich-content-toggled' : this.isRichContentToggled }">
+        [ngClass]="{'qc-rich-content-toggled' : this.isRichContentToggled }"
+        class="qc-edit-option">
         <!-- include id on label for tinymce to use aria-labelled by; having an id set
              on the tinymce element is not allowed in the angular implementation -->
         <label for="mc-option-{{this.question.id}}-{{option.id}}"

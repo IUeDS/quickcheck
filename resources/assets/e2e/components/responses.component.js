@@ -5,7 +5,7 @@ var ResponsesComponent = function(browserRef) {
     //elements
     component.backLink = component.browser.element(by.partialLinkText('Back to attempts'));
     component.countCorrect = component.browser.element(by.css('.qc-attempt-questions-correct'));
-    component.questions = component.browser.element.all(by.repeater('currentQuestion in vm.questions'));
+    component.questions = component.browser.element.all(by.css('.qc-responses-question'));
     component.responseErrors = component.browser.element.all(by.css('.qc-error-message'));
     component.score = component.browser.element(by.css('.qc-attempt-percentage-score'));
 
@@ -23,17 +23,17 @@ var ResponsesComponent = function(browserRef) {
     component.matchingPrompts = 'label';
     component.matrixCell = 'tbody tr td:not(:first-of-type)';
     component.matrixCheckboxes = 'input[type="checkbox"]';
-    component.matrixColumns = 'column in currentQuestion.columns';
+    component.matrixColumns = '.qc-responses-matrix-column';
     component.matrixRows = 'tbody tr td:first-of-type';
-    component.mcOptions = 'answerOption in currentQuestion.options';
+    component.mcOptions = '.qc-responses-multiple-choice-option';
     component.numericalAnswer = 'input';
     component.numericalCorrect = '.qc-correct-answer-input';
-    component.numericalCorrectAnswers = 'option in currentQuestion.options';
+    component.numericalCorrectAnswers = '.qc-responses-numerical-option';
     component.selectedOption = 'option:checked';
     component.questionText = '.qc-assessment-question';
     component.textmatchAnswer = 'input';
     component.textmatchCorrect = '.qc-correct-answer-input';
-    component.textmatchCorrectAnswers = 'option in currentQuestion.options';
+    component.textmatchCorrectAnswers = '.qc-responses-textmatch-option';
 
     //functions
     component.getCountCorrect = getCountCorrect;
@@ -109,7 +109,7 @@ var ResponsesComponent = function(browserRef) {
 
     function getMatrixColumns(questionIndex) {
         var question = component.getQuestions().get(questionIndex);
-        return question.all(by.repeater(component.matrixColumns));
+        return question.all(by.css(component.matrixColumns));
     }
 
     function getMatrixOptionCells(questionIndex) {
@@ -124,7 +124,7 @@ var ResponsesComponent = function(browserRef) {
 
     function getMcOptions(questionIndex) {
         var question = component.getQuestions().get(questionIndex);
-        return question.all(by.repeater(component.mcOptions));
+        return question.all(by.css(component.mcOptions));
     }
 
     async function getNumericalAnswer(questionIndex) {
@@ -134,7 +134,7 @@ var ResponsesComponent = function(browserRef) {
 
     function getNumericalAnswers(questionIndex) {
         var question = component.getQuestions().get(questionIndex);
-        return question.all(by.repeater(component.numericalCorrectAnswers));
+        return question.all(by.css(component.numericalCorrectAnswers));
     }
 
     function getQuestions() {
@@ -169,7 +169,7 @@ var ResponsesComponent = function(browserRef) {
 
     function getTextMatchAnswers(questionIndex) {
         var question = component.getQuestions().get(questionIndex);
-        return question.all(by.repeater(component.textmatchCorrectAnswers));
+        return question.all(by.css(component.textmatchCorrectAnswers));
     }
 
     async function goBack() {

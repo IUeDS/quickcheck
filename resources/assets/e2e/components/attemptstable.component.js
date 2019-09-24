@@ -4,7 +4,7 @@ var AttemptsTableComponent = function(browserRef) {
     component.browser = browserRef;
 
     //elements
-    component.attempts = component.browser.element.all(by.repeater('attempt in vm.attempts'));
+    component.attempts = component.browser.element.all(by.css('.qc-attempts-table-attempt'));
     component.backBtn = component.browser.element(by.partialLinkText('Back'));
 
     //sub-string selectors

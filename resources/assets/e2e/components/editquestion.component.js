@@ -9,7 +9,7 @@ var EditQuestionComponent = function(browserRef, question, questionType) {
         component.question = question;
     }
     else {
-        component.question = component.browser.element.all(by.repeater('question in vm.questions')).first();
+        component.question = component.browser.element.all(by.css('.qc-question-panel')).first();
     }
 
     //sub-components
@@ -18,8 +18,8 @@ var EditQuestionComponent = function(browserRef, question, questionType) {
     //elements
     component.deleteBtn = component.question.element(by.css('.qc-delete-question-btn'));
     component.headerText = component.question.element(by.css('.qc-question-header-number'));
-    component.options = component.question.all(by.repeater('option in vm.question.options'));
-    component.questionTypeDropdown = component.question.element(by.model('vm.question.question_type'));
+    component.options = component.question.all(by.css('.qc-edit-option'));
+    component.questionTypeDropdown = component.question.element(by.css('.qc-edit-question-type'));
     component.randomizedCheckbox = component.question.element(by.css('.qc-randomize-checkbox'));
     component.reorderDownBtn = component.question.element(by.css('.qc-reorder-down-btn'));
     component.reorderUpBtn = component.question.element(by.css('.qc-reorder-up-btn'));

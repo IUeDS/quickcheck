@@ -5,7 +5,7 @@
     </div>
     <div class="card-body collapse" id="featureList" [collapse]="!this.showFeatures" [isAnimated]="true">
         <div (click)="this.utilitiesService.preventToggle($event)">
-            <div *ngFor="let collectionFeature of this.collectionFeatures" class="form-group">
+            <div *ngFor="let collectionFeature of this.collectionFeatures" class="form-group qc-feature">
                 <h3>{{collectionFeature.feature.name}} -
                     <span *ngIf="collectionFeature.enabled == 'true'"> ON</span>
                     <span *ngIf="collectionFeature.enabled != 'true'"> OFF</span>

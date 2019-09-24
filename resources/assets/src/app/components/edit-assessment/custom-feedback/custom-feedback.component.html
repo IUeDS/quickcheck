@@ -73,13 +73,13 @@
             </label>
         </div>
         <div *ngIf="this.perResponseFeedback">
-            <div *ngFor="let option of this.question.options; index as $index;" [ngClass]="this.isCorrect(option) ? 'qc-custom-feedback-correct' : 'qc-custom-feedback-incorrect'">
+            <div *ngFor="let option of this.question.options; index as $index;" [ngClass]="this.isCorrect(option) ? 'qc-custom-feedback-correct' : 'qc-custom-feedback-incorrect'" class="qc-edit-response-feedback-option">
                 <label for="qc-response-feedback-{{option.id}}"
                     id="qc-response-feedback-{{option.id}}-label">
                     <span class="fa" [ngClass]="this.isCorrect(option) ? 'fa-check' : 'fa-remove'" aria-hidden="true"></span>
                     <span> Feedback for option #{{ $index + 1 }}</span>
                     <span>(<em>{{ option.answer_text }}</em>)</span></label>
-                <textarea class="form-control" id="qc-response-feedback-{{option.id}}"
+                <textarea class="form-control qc-edit-response-feedback" id="qc-response-feedback-{{option.id}}"
                     *ngIf="!this.isRichContentToggled"
                     rows="3" required
                     [(ngModel)]="option.mc_option_feedback.feedback_text"

@@ -8,7 +8,7 @@
             <div class="form-group">
                 <label for="collection-select">Set:</label>
                 <select class="form-control" [(ngModel)]="this.assessment.collection.id" (ngModelChange)="this.collectionSelected()" id="collection-select" name="set" required>
-                    <option *ngFor="let membership of this.memberships" [ngValue]="membership.collection.id">{{membership.collection.name}}</option>
+                    <option *ngFor="let membership of this.memberships" [ngValue]="membership.collection.id" class="qc-home-membership">{{membership.collection.name}}</option>
                     <option value="new">[Add new set]</option>
                 </select>
             </div>
@@ -21,7 +21,7 @@
             <div class="form-group" *ngIf="!this.newCollectionAdded">
                 <label for="assessment-group-select">Subset:</label>
                 <select class="form-control" [(ngModel)]="this.assessment.assessmentGroup.id" (ngModelChange)="this.groupSelected()" id="assessment-group-select" name="subset" required>
-                    <option *ngFor="let assessmentGroup of this.selectedCollection.assessment_groups" [ngValue]="assessmentGroup.id">{{assessmentGroup.name}}</option>
+                    <option *ngFor="let assessmentGroup of this.selectedCollection.assessment_groups" [ngValue]="assessmentGroup.id" class="qc-home-assessment-group">{{assessmentGroup.name}}</option>
                     <option value="new">[Add new subset]</option>
                 </select>
             </div>

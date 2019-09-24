@@ -14,7 +14,8 @@
     </thead>
     <tbody>
         <tr *ngFor="let attempt of this.attempts; index as $index; trackBy:this.identify"
-            [ngClass]="{'qc-no-top-border': !attempt.firstRowForStudent}">
+            [ngClass]="{'qc-no-top-border': !attempt.firstRowForStudent}"
+            class="qc-attempts-table-attempt">
             <td class="qc-attempt-name" *ngIf="!this.isStudent">
                 <span *ngIf="attempt.firstRowForStudent">{{ attempt.student.lis_person_name_family }}, {{ attempt.student.lis_person_name_given }}</span>
             </td>

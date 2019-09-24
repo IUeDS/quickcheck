@@ -12,22 +12,22 @@ var EditQcPage = function(browserRef) {
     //elements
     page.addQuestionBtn = page.browser.element(by.partialButtonText('Add question'));
     page.backBtn = page.browser.element(by.partialLinkText('Back'));
-    page.customActivities = page.browser.element.all(by.repeater('customActivity in vm.customActivities'));
+    page.customActivities = page.browser.element.all(by.css('.qc-edit-custom-activity-option'));
     page.customBtn = page.browser.element(by.partialButtonText('Make this a custom activity'));
     page.customDropdown = page.browser.element(by.css('#custom-activity'));
-    page.customName = page.browser.element(by.exactBinding('vm.customActivity.name'));
+    page.customName = page.browser.element(by.css('.qc-edit-custom-activity-name'));
     page.deleteCustomBtn = page.browser.element(by.partialButtonText('Remove custom activity'));
-    page.descriptionInput = page.browser.element(by.model('vm.assessment.description'));
+    page.descriptionInput = page.browser.element(by.css('.qc-edit-description'));
     page.goBackToSetLink = page.browser.element(by.cssContainingText('a', 'Return to set'));
-    page.nameInput = page.browser.element(by.model('vm.assessment.name'));
-    page.questionsList = page.browser.element.all(by.repeater('question in vm.questions'));
+    page.nameInput = page.browser.element(by.css('.qc-edit-name'));
+    page.questionsList = page.browser.element.all(by.css('.qc-question-panel'));
     page.readOnlyNotice = page.browser.element(by.css('.read-only-notice'));
     page.saveBtn = page.browser.element(by.css('.qc-btn-save-quiz'));
     page.saveErrorMsg = page.browser.element(by.css('.alert-danger'));
     page.saveSuccessMsg = page.browser.element(by.css('.alert-success'));
-    page.subsetInput = page.browser.element(by.model('vm.assessment.assessment_group_id'));
-    page.subsetOptions = page.browser.element(by.model('vm.assessment.assessment_group_id')).all(by.css('option'));
-    page.titleInput = page.browser.element(by.model('vm.assessment.title'));
+    page.subsetInput = page.browser.element(by.css('.qc-edit-group'));
+    page.subsetOptions = page.browser.element(by.css('.qc-edit-group')).all(by.css('option'));
+    page.titleInput = page.browser.element(by.css('.qc-edit-title'));
 
     //functions
     page.addQuestion = addQuestion;

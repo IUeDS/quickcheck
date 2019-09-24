@@ -6,7 +6,7 @@
         There are no public sets in the system at this time. When a public set is added, it will appear here in the future.
     </p>
     <ul class="qc-public-collections-list list-group" *ngIf="this.publicCollections.length">
-        <li *ngFor="let collection of this.publicCollections" class="collections-row list-group-item">
+        <li *ngFor="let collection of this.publicCollections" class="collections-row list-group-item qc-public-collection">
             <h3 class="collection-header uppercase" id="collection-header-{{collection.id}}" tabindex="-1">{{ collection.name }}</h3>
             <p *ngIf="collection.description">Description: {{ collection.description }}</p>
             <!-- only show these buttons if the user is a member of the collection-->

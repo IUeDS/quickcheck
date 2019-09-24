@@ -22,7 +22,7 @@
             <hr>
             <h2>Student response analytics</h2>
             <ng-container *ngFor="let question of this.questions | keyvalue; index as $index;">
-                <div class="row" *ngIf="!this.isCustom()">
+                <div class="row qc-analytics-question" *ngIf="!this.isCustom()">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header"><h3>Question #{{ $index+1 }}</h3></div>

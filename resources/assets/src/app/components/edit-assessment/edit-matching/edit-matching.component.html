@@ -9,7 +9,7 @@
                 </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let prompt of this.question.prompts; index as $index;">
+            <tr *ngFor="let prompt of this.question.prompts; index as $index;" class="qc-edit-matching-prompt">
                 <td class="qc-edit-matching-inline">
                     <label for="matching-prompt-{{this.question.id}}-{{prompt.id}}">
                         Prompt
@@ -55,7 +55,7 @@
         <h3>Distractor answer options <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
         <p>These will appear as available answer options to the student, even though they are not correct answers.</p>
     </div>
-    <div *ngFor="let distractor of this.question.distractors; index as $index;" class="row qc-edit-assessment-inline">
+    <div *ngFor="let distractor of this.question.distractors; index as $index;" class="row qc-edit-assessment-inline qc-edit-matching-distractor">
         <div class="form-group col-12">
             <label for="matching-distractor-{{this.question.id}}-{{distractor.id}}">
                 Distractor

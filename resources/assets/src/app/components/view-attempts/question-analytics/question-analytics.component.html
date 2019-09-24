@@ -140,7 +140,7 @@
                             </div>
                             <div class="card card-body bg-light" *ngIf="this.question.responsesVisible">
                                 <ul>
-                                    <li *ngFor="let response of this.question.questionAnalytics.otherResponses; index as $index;">{{ response }}</li>
+                                    <li *ngFor="let response of this.question.questionAnalytics.otherResponses; index as $index;" class="qc-analytics-other-responses">{{ response }}</li>
                                 </ul>
                             </div>
                         </td>
@@ -187,7 +187,7 @@
                             </div>
                             <div class="card card-body bg-light" *ngIf="this.question.responsesVisible">
                                 <ul>
-                                    <li *ngFor="let response of this.question.questionAnalytics.otherResponses; index as $index;">{{ response }}</li>
+                                    <li *ngFor="let response of this.question.questionAnalytics.otherResponses; index as $index;" class="qc-analytics-other-responses">{{ response }}</li>
                                 </ul>
                             </div>
                         </td>

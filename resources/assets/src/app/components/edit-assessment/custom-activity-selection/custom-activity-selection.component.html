@@ -11,7 +11,7 @@
         <h2>Custom Activity</h2>
         <p class="lead" *ngIf="!this.admin && !this.readOnly">If you would like to change the custom activity for this assessment, please contact a system admin.</p>
         <div *ngIf="this.assessment.custom_activity_id">
-            <p><strong>Custom Activity Name: </strong>{{ this.customActivity.name }}</p>
+            <p class="qc-edit-custom-activity-name"><strong>Custom Activity Name: </strong>{{ this.customActivity.name }}</p>
             <p *ngIf="this.customActivity.description"><strong>Description: </strong> {{ this.customActivity.description }}</p>
             <p><strong>Developer: </strong> {{ this.customActivity.developer }}</p>
             <p *ngIf="admin"><strong>Url: </strong> {{ this.customActivity.url }}</p>
@@ -25,7 +25,7 @@
                 <select id="custom-activity" class="form-control" required
                     [(ngModel)]="this.assessment.custom_activity_id"
                     (ngModelChange)="this.selectCustomActivity(this.assessment.custom_activity_id)">
-                    <option *ngFor="let customActivity of this.customActivities" value="{{customActivity.id}}">{{ customActivity.name }}</option>
+                    <option *ngFor="let customActivity of this.customActivities" value="{{customActivity.id}}" class="qc-edit-custom-activity-option">{{ customActivity.name }}</option>
                 </select>
             </div>
             <div class="form-group" *ngIf="this.assessment.custom_activity_id">

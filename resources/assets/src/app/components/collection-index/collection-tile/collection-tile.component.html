@@ -32,12 +32,12 @@
             <h3 id="edit-collection-header-{{this.collection.id}}" class="edit-collection-header" tabindex="-1">Edit set</h3>
             <div class="form-group">
                 <label for="collection-name-{{this.collection.id}}">Set name (for internal use only, not displayed to student)</label>
-                <input type="text" class="form-control" id="collection-name-{{this.collection.id}}" name="collection-name-{{this.collection.id}}"
+                <input type="text" class="form-control qc-collection-edit-name" id="collection-name-{{this.collection.id}}" name="collection-name-{{this.collection.id}}"
                     [(ngModel)]="this.collection.editingData.name" required>
             </div>
             <div class="form-group">
                 <label for="collection-description-{{this.collection.id}}">Set description (optional)</label>
-                <textarea class="form-control" id="collection-description-{{this.collection.id}}" name="collection-description-{{this.collection.id}}" [(ngModel)]="this.collection.editingData.description" rows="3"></textarea>
+                <textarea class="form-control qc-collection-edit-description" id="collection-description-{{this.collection.id}}" name="collection-description-{{this.collection.id}}" [(ngModel)]="this.collection.editingData.description" rows="3"></textarea>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-success qc-btn">Save <span class="sr-only"> edits to set {{ this.collection.name }}</span></button>

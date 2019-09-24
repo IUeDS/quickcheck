@@ -11,7 +11,8 @@
     </thead>
     <tbody>
         <tr *ngFor="let response of this.studentResponses"
-            [ngClass]="response.is_correct == '1' ? 'table-success' : 'table-danger'">
+            [ngClass]="response.is_correct == '1' ? 'table-success' : 'table-danger'"
+            class="qc-responses-custom-response">
             <td>{{ this.utilitiesService.formatTimeWithTimeZone(response.created_at, this.courseContext.time_zone) }}</td>
             <td class="text-center response-is-correct">
                 <span *ngIf="response.is_correct == '1'">
@@ -52,7 +53,7 @@
                 <p class="lead qc-attempt-questions-correct">{{ this.getCountCorrect(this.attempt) }} / {{ this.questions.length }} correct</p>
             </div>
         </div>
-        <div class="row" *ngFor="let currentQuestion of this.questions; index as $index;">
+        <div class="row" *ngFor="let currentQuestion of this.questions; index as $index;" class="qc-responses-question">
             <div class="col-12">
                 <div *ngIf="currentQuestion.error" class="alert alert-danger qc-error-message" role="alert" tabindex="-1" >
                     <p class="lead">Error</p>
@@ -76,7 +77,7 @@
                         <div class="qc-mc-options" *ngIf="currentQuestion.question_type == 'multiple_choice'" >
                             <fieldset>
                                 <legend class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></legend>
-                                <div class="form-check" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
+                                <div class="form-check qc-responses-multiple-choice-option" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
                                     <input type="radio" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" disabled
                                         [checked]="answerOption.studentAnswer" id="{{answerOption.id}}">
                                     <label class="qc-mc-option-response" for="{{answerOption.id}}">
@@ -107,7 +108,7 @@
                                 <thead>
                                     <tr>
                                         <th><span class="sr-only">Row label</span></th>
-                                        <th *ngFor="let column of currentQuestion.columns">
+                                        <th *ngFor="let column of currentQuestion.columns" class="qc-responses-matrix-column">
                                             <span [innerHTML]="column.answer_text | safe: 'html'"></span>
                                         </th>
                                     </tr>
@@ -210,7 +211,7 @@
                             <div class="card card-body bg-light textmatch-correct-answers">
                                 <p>Correct answers: </p>
                                 <ul class="fa-ul">
-                                    <li *ngFor="let option of currentQuestion.options">
+                                    <li *ngFor="let option of currentQuestion.options" class="qc-responses-textmatch-option">
                                         <span class="fa-li fa fa-check qc-correct-icon qc-correct-icon-list" aria-hidden="true"></span> {{ option.textmatch_answer_text }}
                                     </li>
                                 </ul>
@@ -225,7 +226,7 @@
                             <div class="card card-body bg-light numerical-correct-answers">
                                 <p>Correct answers: </p>
                                 <ul class="fa-ul">
-                                    <li *ngFor="let option of currentQuestion.options">
+                                    <li *ngFor="let option of currentQuestion.options" class="qc-responses-numerical-option">
                                         <span class="fa-li fa fa-check qc-correct-icon qc-correct-icon-list" aria-hidden="true"></span>
                                         <span *ngIf="option.answer_type === 'exact'">
                                             {{ option.numerical_answer }}, with margin of error of {{ option.margin_of_error }}

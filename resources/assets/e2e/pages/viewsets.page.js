@@ -10,19 +10,19 @@ var ViewSetsPage = function(browserRef) {
     //elements
     page.addAdminUserBtn = page.browser.element(by.partialButtonText('Add admin user'));
     page.addSetBtn = page.browser.element(by.css('.qc-btn-add-set'));
-    page.adminSetTiles = page.browser.element.all(by.repeater('collection in collectionList'));
+    page.adminSetTiles = page.browser.element.all(by.css('.qc-collection-tile'));
     page.adminUserInput = page.browser.element(by.css('#username'));
     page.adminUserValidationError = page.browser.element(by.cssContainingText('p', 'User cannot be found. Please try again.'));
     page.adminUserValidationSuccess = page.browser.element(by.css('.qc-admin-add-user-success'));
     page.adminViewAllToggle = page.browser.element(by.css('.qc-admin-all-sets-toggle'));
     page.initialInstructions = page.browser.element(by.css('.qc-collection-instructions'));
-    page.membershipTiles = page.browser.element.all(by.repeater('membership in membershipList'));
+    page.membershipTiles = page.browser.element.all(by.css('.qc-collection-tile'));
     page.newSetDescriptionField = page.browser.element(by.css('#collection-description'));
     page.newSetNameField = page.browser.element(by.css('#collection-name'));
     page.noPublicSetsMsg = page.browser.element(by.css('.qc-no-public-sets'));
-    page.publicSets = page.browser.element.all(by.repeater('collection in vm.publicCollections'));
+    page.publicSets = page.browser.element.all(by.css('.qc-public-collection'));
     page.saveNewSetBtn = page.browser.element(by.css('.qc-save-collection-btn'));
-    page.searchBox = page.browser.element(by.model('vm.search.collectionName'));
+    page.searchBox = page.browser.element(by.css('.qc-search-box'));
     page.submitAdminUserBtn = page.browser.element(by.partialButtonText('Validate username and save'));
     page.togglePublicSetsBtn = page.browser.element(by.css('.qc-view-public-btn'));
 
@@ -30,8 +30,8 @@ var ViewSetsPage = function(browserRef) {
     page.cancelSetEditText = 'Cancel';
     page.deleteSetBtn = '.qc-collection-delete-btn';
     page.editSetBtn = '.qc-collection-edit-btn';
-    page.editSetDescriptionField = 'vm.collection.editingData.description';
-    page.editSetNameField = 'vm.collection.editingData.name';
+    page.editSetDescriptionField = '.qc-collection-edit-description';
+    page.editSetNameField = '.qc-collection-edit-name';
     page.goToSetText = 'Go to set';
     page.newTabBtn = '.qc-view-new-tab-btn';
     page.publicJoinBtn = '.qc-join-btn';
@@ -117,11 +117,11 @@ var ViewSetsPage = function(browserRef) {
     }
 
     function getEditedDescriptionInput(setElement) {
-        return setElement.element(by.model(page.editSetDescriptionField));
+        return setElement.element(by.css(page.editSetDescriptionField));
     }
 
     function getEditedNameInput(setElement) {
-        return setElement.element(by.model(page.editSetNameField));
+        return setElement.element(by.css(page.editSetNameField));
     }
 
     function getGoToSetBtn(setElement) {

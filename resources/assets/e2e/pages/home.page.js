@@ -14,9 +14,9 @@ var HomePage = function(browserRef) {
     page.newSubsetInput = page.browser.element(by.css('#assessment-group-name'));
     page.pageHeader = page.browser.element(by.css('h1'));
     page.saveBtn = page.browser.element(by.partialButtonText('Save'));
-    page.setOptions = page.browser.element.all(by.repeater('membership in vm.memberships'));
+    page.setOptions = page.browser.element.all(by.css('.qc-home-membership'));
     page.setSelect = page.browser.element(by.css('#collection-select'));
-    page.subsetOptions = page.browser.element.all(by.repeater('assessmentGroup in vm.selectedCollection.assessment_groups'));
+    page.subsetOptions = page.browser.element.all(by.css('.qc-home-assessment-group'));
     page.subsetSelect = page.browser.element(by.css('#assessment-group-select'));
 
     //string selectors

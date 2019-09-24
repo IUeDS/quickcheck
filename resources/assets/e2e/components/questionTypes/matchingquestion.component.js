@@ -6,9 +6,9 @@ var MatchingQuestionComponent = function(browserRef, question) {
     //elements
     component.addDistractorBtn = component.question.element(by.partialButtonText('Add distractor'));
     component.addMatchingPairBtn = component.question.element(by.partialButtonText('Add matching pair'));
-    component.distractors = component.question.all(by.repeater('distractor in vm.question.distractors'));
+    component.distractors = component.question.all(by.css('.qc-edit-matching-distractor'));
     component.matchingPairInputs = component.question.all(by.css('table input[type="text"]'));
-    component.matchingPrompts = component.question.all(by.repeater('prompt in vm.question.prompts'));
+    component.matchingPrompts = component.question.all(by.css('.qc-edit-matching-prompt'));
 
     //strings for sub-elements
     component.distractorInputElement = 'input[type="text"]';
