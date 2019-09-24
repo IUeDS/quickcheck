@@ -94,6 +94,7 @@ export class EditAssessmentComponent implements OnInit {
     if (this.customActivity) {
       this.customActivityAdded = true;
     }
+    this.utilitiesService.setTitle('Edit Quick Check - ' + this.assessment.name);
     this.setModelIntegers();
     this.getUserAndPermissions(); //determine if user is an admin and permissions
 

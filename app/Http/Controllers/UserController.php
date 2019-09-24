@@ -19,7 +19,7 @@ class UserController extends \BaseController
 
     public function userNotFound()
     {
-        return view('errors/usernotfound');
+        return displaySPA();
     }
 
     /**
@@ -30,7 +30,7 @@ class UserController extends \BaseController
 
     public function sessionNotValid()
     {
-        return view('errors/sessionnotvalid');
+        return displaySPA();
     }
 
     /**
@@ -42,7 +42,7 @@ class UserController extends \BaseController
 
     public function ltiSessionNotValid()
     {
-        return view('errors/ltisessionnotvalid');
+        return displaySPA();
     }
 
     /************************************************************************/

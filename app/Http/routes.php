@@ -26,10 +26,13 @@ Route::get('lticonfig', 'HomeController@returnLtiConfig');
 Route::get('usernotfound', 'UserController@userNotFound');
 Route::get('sessionnotvalid', 'UserController@sessionNotValid');
 Route::get('ltisessionnotvalid', 'UserController@ltiSessionNotValid');
+Route::get('error', function() {
+    return displaySPA();
+});
 
 //documentation
 Route::get('documentation', function() {
-    return View::make('documentation');
+    return displaySPA();
 });
 
 /********************************************************************/
@@ -107,6 +110,7 @@ Route::group(array('middleware' => array('auth')), function() {
 
     //select an LTI link in Canvas
     Route::post('select', 'CollectionController@selectLink');
+    Route::get('select', 'CollectionController@viewSelectLink');
 
     /********************************************************************/
     /****** INSTRUCTOR API **********************************************/

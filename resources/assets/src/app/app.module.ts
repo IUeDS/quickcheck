@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -93,6 +93,10 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
+import { UsernotfoundComponent } from './components/errors/usernotfound/usernotfound.component';
+import { SessionnotvalidComponent } from './components/errors/sessionnotvalid/sessionnotvalid.component';
+import { LtisessionnotvalidComponent } from './components/errors/ltisessionnotvalid/ltisessionnotvalid.component';
+import { ErrorComponent } from './components/errors/error/error.component';
 
 
 @NgModule({
@@ -176,6 +180,10 @@ import { RoundProgressModule } from 'angular-svg-round-progressbar';
     CopyIconComponent,
     PreviewIconComponent,
     OrderByPipe,
+    UsernotfoundComponent,
+    SessionnotvalidComponent,
+    LtisessionnotvalidComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -197,7 +205,10 @@ import { RoundProgressModule } from 'angular-svg-round-progressbar';
       FeedbackModalComponent,
       TimeoutModalComponent
   ],
-  providers: [HttpClientModule],
+  providers: [
+      HttpClientModule,
+      Title
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

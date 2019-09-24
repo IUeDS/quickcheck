@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
+    this.utilitiesService.setTitle('Quick Check - Home');
     this.checkForExpiredSession();
 
     if (!this.utilitiesService.areCookiesEnabled()) {

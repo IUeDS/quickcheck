@@ -195,6 +195,8 @@ export class ViewAttemptsComponent implements OnInit {
     if (this.attempts.length <= 100) {
       this.utilitiesService.removeScrollHeight();
     }
+
+    this.utilitiesService.setTitle('Quick Check Results - ' + this.assessment.name);
   }
 
   isAttemptsView() {

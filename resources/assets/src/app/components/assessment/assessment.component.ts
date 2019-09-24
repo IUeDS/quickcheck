@@ -144,6 +144,7 @@ export class AssessmentComponent implements OnInit {
     }
     this.pointsPossible = this.questions.length;
     this.currentQuestion = this.questions[this.currentQuestionIndex];
+    this.utilitiesService.setTitle('Quick Check');
     this.utilitiesService.loadingFinished();
   }
 
@@ -204,7 +205,7 @@ export class AssessmentComponent implements OnInit {
     //focus to question number and change title for accessibility
     this.utilitiesService.focusToElement('.qc-question-number');
     //update title for accessibility
-    document.title = 'Take assessment - Question ' + (this.currentQuestionIndex + 1) + ' out of ' + this.pointsPossible;
+    this.utilitiesService.setTitle('Quick Check - Question ' + (this.currentQuestionIndex + 1) + ' out of ' + this.pointsPossible);
   }
 
   onAnswerSelection($event) {

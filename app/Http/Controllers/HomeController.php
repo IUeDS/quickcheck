@@ -37,7 +37,7 @@ class HomeController extends BaseController
         //query param ensures user can have multiple courses open in different tabs simultaneously
         else if ($isInstructor && $isLti) {
             if ($request->has("context")) { //after the redirect grab the query param
-                return view('home');
+                return displaySPA();
             }
             else { //when we hit the route initially, need to add a query param on for context
                 $redirectUrl = 'home?context=' . $contextId;
@@ -49,7 +49,7 @@ class HomeController extends BaseController
         }
         //if an instructor and launching from CAS
         else if (User::getCurrentUser()) {
-            return view('home');
+            return displaySPA();
         }
     }
 

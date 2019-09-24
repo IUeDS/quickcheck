@@ -11,6 +11,10 @@ import { StudentViewComponent } from './components/student-view/student-view.com
 import { AttemptsOverviewComponent } from './components/attempts-overview/attempts-overview.component';
 import { ViewAttemptsComponent } from './components/view-attempts/view-attempts.component';
 import { ViewAttemptsForStudentComponent } from './components/view-attempts-for-student/view-attempts-for-student.component';
+import { UsernotfoundComponent } from './components/errors/usernotfound/usernotfound.component';
+import { SessionnotvalidComponent } from './components/errors/sessionnotvalid/sessionnotvalid.component';
+import { LtisessionnotvalidComponent } from './components/errors/ltisessionnotvalid/ltisessionnotvalid.component';
+import { ErrorComponent } from './components/errors/error/error.component';
 import * as cloneDeep from 'lodash/cloneDeep';
 
 const routes: Routes = [
@@ -26,7 +30,11 @@ const routes: Routes = [
     { path: 'student', component: StudentViewComponent },
     { path: 'manage', component: AttemptsOverviewComponent },
     { path: 'assessment/:id/attempts', component: ViewAttemptsComponent },
-    { path: 'student/:studentId/attempts', component: ViewAttemptsForStudentComponent }
+    { path: 'student/:studentId/attempts', component: ViewAttemptsForStudentComponent },
+    { path: 'usernotfound', component: UsernotfoundComponent },
+    { path: 'sessionnotvalid', component: SessionnotvalidComponent },
+    { path: 'ltisessionnotvalid', component: LtisessionnotvalidComponent },
+    { path: 'error', component: ErrorComponent }
 ];
 
 //if index.php is in route, make sure angular doesn't choke;

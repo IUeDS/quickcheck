@@ -20,6 +20,7 @@ export class StudentViewComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   ngOnInit() {
+    this.utilitiesService.setTitle('Quick Check - View Your Results');
   }
 
   //when going back from attempts view

@@ -27,7 +27,7 @@ class AssessmentController extends \BaseController
 
     public function edit($id)
     {
-        return view('assessments/edit');
+        return displaySPA();
     }
 
     /**
@@ -63,7 +63,7 @@ class AssessmentController extends \BaseController
             return $this->redirectToCustomActivity($assessment, $request);
         }
 
-        return view('assessments/show');
+        return displaySPA();
     }
 
     /**
@@ -100,7 +100,7 @@ class AssessmentController extends \BaseController
             return $this->redirectToCustomActivity($assessment, $request);
         }
 
-        return view('assessments/show');
+        return displaySPA();
     }
 
     /************************************************************************/

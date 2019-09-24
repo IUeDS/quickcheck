@@ -21,6 +21,7 @@ export class AttemptsOverviewComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   ngOnInit() {
+    this.utilitiesService.setTitle('Quick Check results');
     if (this.isResultsByStudentToggleEnabled()) {
       this.isResultsByStudentToggled = true;
       this.getStudents();

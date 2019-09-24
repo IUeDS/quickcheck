@@ -14,9 +14,8 @@ export class SelectComponent implements OnInit {
   admin = false;
   memberships = [];
   assessments = [];
-  //get server-side embedded values
-  launchUrlStem = document.getElementById('launch-url-stem').getAttribute('value');
-  redirectUrl = document.getElementById('redirect-url').getAttribute('value');
+  launchUrlStem;
+  redirectUrl;
   search = {
     searchText: '',
     searchActivated: false,
@@ -34,6 +33,9 @@ export class SelectComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.utilitiesService.setTitle('Quick Check - Select');
+    this.launchUrlStem = this.utilitiesService.getQueryParam('launchUrlStem');
+    this.redirectUrl = this.utilitiesService.getQueryParam('redirectUrl');
     await this.getMemberships();
   }
 

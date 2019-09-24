@@ -22,6 +22,7 @@
             "main": "resources/assets/src/main.ts",
             "polyfills": "resources/assets/src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "deployUrl": "/assets/dist/",
             "aot": false,
             "assets": [
               {

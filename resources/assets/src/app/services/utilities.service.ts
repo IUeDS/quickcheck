@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {environment} from '../../environments/environment';
 import * as moment from 'moment-timezone';
+import { Title } from '@angular/platform-browser';
+//const MathJax = require('mathjax');
+//import * as Mathjax from 'mathjax';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +19,7 @@ export class UtilitiesService {
   scrollingLtiHeight = 0;
   sessionExpired = false;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private titleService: Title) {
     let params = this.route.snapshot.queryParamMap;
 
     let contextId = params.get('context');
@@ -153,9 +156,6 @@ export class UtilitiesService {
   formatMath() {
     //see: http://docs.mathjax.org/en/latest/advanced/typeset.html
     setTimeout(() => {
-      //original MathJax, compiler error with typescript, trying more ts-friendly alternative
-      //see: https://stackoverflow.com/questions/12709074/how-do-you-explicitly-set-a-new-property-on-window-in-typescript
-      //MathJax.Hub.Queue(['Typeset',MathJax.Hub]);
       window['MathJax'].Hub.Queue(['Typeset',window['MathJax'].Hub]);
     }, 0);
   }
@@ -226,6 +226,13 @@ export class UtilitiesService {
 
     let preview = params.get('preview');
     return preview ? preview : false;
+  }
+
+  getQueryParam(paramName) {
+    let params = this.route.snapshot.queryParamMap;
+
+    let value = params.get(paramName);
+    return value ? value : false;
   }
 
   //all of the successful API calls conform to the same structure, of:
@@ -368,6 +375,10 @@ export class UtilitiesService {
 
   setScrollingLtiHeight(height) {
     this.scrollingLtiHeight = height;
+  }
+
+  setTitle(title: string) {
+    this.titleService.setTitle(title);
   }
 
   showError(resp) {
