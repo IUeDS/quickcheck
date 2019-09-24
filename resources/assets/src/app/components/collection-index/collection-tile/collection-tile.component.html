@@ -28,7 +28,7 @@
         </div>
     </div>
     <div *ngIf="this.collection.isEditing">
-        <form (ngSubmit)="this.updateCollection()">
+        <form ngNativeValidate (ngSubmit)="this.updateCollection()">
             <h3 id="edit-collection-header-{{this.collection.id}}" class="edit-collection-header" tabindex="-1">Edit set</h3>
             <div class="form-group">
                 <label for="collection-name-{{this.collection.id}}">Set name (for internal use only, not displayed to student)</label>

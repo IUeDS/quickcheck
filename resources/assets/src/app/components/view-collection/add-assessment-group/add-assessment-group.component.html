@@ -7,7 +7,7 @@
             <div class="card qc-add-assessment-group">
                 <div class="card-body">
                     <h3 id="create-assessmentgroup-header" class="qc-add-header" tabindex="-1">Create new subset</h3>
-                    <form (ngSubmit)="this.save()">
+                    <form ngNativeValidate (ngSubmit)="this.save()">
                         <label for="new-subset-name">Subset name: </label>
                         <input type="text" class="form-control qc-new-subset" id="new-subset-name" name="new-subset-name"
                                 placeholder="Example: Module 1"

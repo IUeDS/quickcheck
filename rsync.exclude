@@ -8,5 +8,6 @@ node_modules/
 storage/logs
 public/assets/src
 resources/assets/src
+resources/assets/e2e
 public/customActivities/
 storage/app/

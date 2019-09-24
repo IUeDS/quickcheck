@@ -4,7 +4,7 @@
     <span class="fa fa-plus" aria-hidden="true"></span> Add custom activity
 </button>
 <div [hidden]="!this.isOpen" class="form-group">
-    <form (ngSubmit)="this.save()">
+    <form ngNativeValidate (ngSubmit)="this.save()">
         <div class="form-group">
             <label for="name">Name of the activity </label>
             <input type="text" class="form-control" [(ngModel)]="this.customActivityData.name" id="name" name="name" required>

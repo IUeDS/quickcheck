@@ -7,7 +7,7 @@
         </button>
         <div *ngIf="this.isAddingCollection">
             <div class="card">
-                <form (ngSubmit)="this.saveNewCollection()" class="card-body">
+                <form ngNativeValidate (ngSubmit)="this.saveNewCollection()" class="card-body">
                     <h2 class="qc-add-collection-header" tabindex="-1">Add new set</h2>
                     <div class="form-group">
                         <label for="collection-name">Set name (for internal use only, not displayed to student)</label>

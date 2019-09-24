@@ -25,6 +25,7 @@ describe('Adding a multiple choice question', function() {
     it('should accept question text', async function() {
         var questionText = data.quizData.quiz1.question1.questionText;
 
+        await browser.sleep(2000); //tiny mce wasn't always loaded at this juncture; if continuing issue, try EC
         await common.enterTinyMceIframeInElement(question.question);
         await common.enterTinyMceText(questionText);
         expect(await common.getTinyMceText()).toBe(questionText);
@@ -678,7 +679,6 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         await homePage.addQuickCheck();
         await homePage.selectNewSet();
         await homePage.getNewSetInput().sendKeys(setName);
-        await homePage.selectNewSubset();
         await homePage.getNewSubsetInput().sendKeys(subsetName);
         await homePage.saveNewQuickCheck(qc2Name);
 

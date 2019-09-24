@@ -3,7 +3,7 @@
 <div class="row qc-edit-assessment">
     <div class="col-12">
         <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
-        <form (ngSubmit)="this.saveAssessment()" *ngIf="this.assessment">
+        <form ngNativeValidate (ngSubmit)="this.saveAssessment()" *ngIf="this.assessment">
             <a [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_self" >
                 <span class="fa fa-angle-double-left" aria-hidden="true"></span> Back
             </a>

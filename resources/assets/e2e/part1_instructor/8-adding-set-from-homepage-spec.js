@@ -31,7 +31,6 @@ describe('Adding a new set, subset, and quick checkfrom the home page', function
     it('should show a field input when a new subset is selected', async function() {
         var subsetInput;
 
-        await homePage.selectNewSubset();
         subsetInput = homePage.getNewSubsetInput();
         expect(await subsetInput.isDisplayed()).toBe(true);
         await subsetInput.sendKeys(subsetName);

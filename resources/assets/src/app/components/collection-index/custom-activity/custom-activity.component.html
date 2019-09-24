@@ -31,7 +31,7 @@
                 <p class="qc-custom-activity-developer">Developer: {{ this.customActivity.developer }}</p>
                 <p *ngIf="this.isGroupRequired()">Group required</p>
             </div>
-            <form *ngIf="this.isEditing" (ngSubmit)="this.update()">
+            <form ngNativeValidate *ngIf="this.isEditing" (ngSubmit)="this.update()">
                 <div class="form-group">
                     <label for="edit-custom-name">Name of the activity</label>
                     <input type="text" class="form-control" [(ngModel)]="this.editingData.name" id="edit-custom-name" name="edit-custom-name" required>

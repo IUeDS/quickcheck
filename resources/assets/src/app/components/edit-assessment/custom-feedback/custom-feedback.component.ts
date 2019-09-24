@@ -126,7 +126,7 @@ export class CustomFeedbackComponent implements OnInit {
       this.question.options.forEach(function(option) {
         option.mc_option_feedback = {
           'mc_answer_id' : option.id,
-          'feedback_text': ''
+          'feedback_text': null
         };
       });
     }

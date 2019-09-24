@@ -2,7 +2,7 @@
     <div *ngIf="this.utilitiesService.loading">
         <p class="text-center" aria-live="polite"><span class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></span><span class="sr-only">Data loading, please wait.</span></p>
     </div>
-    <form (ngSubmit)="this.saveAssessment()" [hidden]="this.utilitiesService.loading">
+    <form ngNativeValidate (ngSubmit)="this.saveAssessment()" [hidden]="this.utilitiesService.loading">
         <h2>Add quick check</h2>
         <div class="form-group">
             <div class="form-group">

@@ -86,7 +86,7 @@ describe('Importing a QTI package', function() {
             it('should have the correct question count', async function() {
                 await setPage.qtiImport.getImportLinks().get(1).click();
                 //NOTE: 8/29/19: failing here, protractor doesn't click for some reason, ugh
-                browser.pause();
+                //browser.pause();
                 await browser.sleep(1000);
                 await editQcPage.initQuestions();
                 expect(await editQcPage.getQuestions().count()).toBe(8);

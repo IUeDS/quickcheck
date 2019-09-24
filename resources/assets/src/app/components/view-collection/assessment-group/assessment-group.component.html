@@ -6,7 +6,7 @@
             <span class="fa fa-lg qc-accordion-arrow" [ngClass]="this.assessmentGroup.closed ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true" [hidden]="this.isEditing"></span>
             <h3 [hidden]="this.isEditing">{{ this.assessmentGroup.name }}</h3>
             <div *ngIf="this.isEditing" class="qc-edit-subset">
-                <form (ngSubmit)="this.updateAssessmentGroup()" (click)="this.utilitiesService.preventToggle($event)">
+                <form ngNativeValidate (ngSubmit)="this.updateAssessmentGroup()" (click)="this.utilitiesService.preventToggle($event)">
                     <h3 class="edit-assessmentgroup-header sr-only" id="edit-assessmentgroup-header-{{this.assessmentGroup.id}}" tabindex="-1">Edit subset</h3>
                     <label for="assessment-group-name-{{this.assessmentGroup.id}}" class="sr-only">Subset name</label>
                     <input type="text" id="assessment-group-name-{{this.assessmentGroup.id}}" name="assessment-group-name-{{this.assessmentGroup.id}}" class="form-control qc-edit-subset-input" [(ngModel)]="this.editingData.name" required (click)="this.stopAccordion($event)">
@@ -125,7 +125,7 @@
                         <div class="card">
                             <div class="card-body qc-add-quiz-panel">
                                 <h4 class="create-assessment-header qc-add-header" id="create-assessment-header-{{this.assessmentGroup.id}}" tabindex="-1">Create new quick check</h4>
-                                <form (ngSubmit)="this.saveNewAssessment()">
+                                <form ngNativeValidate (ngSubmit)="this.saveNewAssessment()">
                                     <label for="new-assessment-{{this.assessmentGroup.id}}">Quick check name</label>
                                     <input type="text" class="form-control"
                                             id="new-assessment-{{this.assessmentGroup.id}}"
