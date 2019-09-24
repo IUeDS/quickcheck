@@ -20,15 +20,19 @@ import * as cloneDeep from 'lodash/cloneDeep';
 const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'home', component: HomeComponent },
+    { path: 'index.php/home', component: HomeComponent }, //if index.php included (as is in LTI routes), separate rule needed
     { path: 'collection', component: CollectionIndexComponent },
     { path: 'collection/:id', component: ViewCollectionComponent },
     { path: 'documentation', component: DocumentationComponent },
     { path: 'assessment/:id/edit', component: EditAssessmentComponent },
     { path: 'assessment', component: AssessmentComponent },
+    { path: 'index.php/assessment', component: AssessmentComponent },
     { path: 'assessment/:id', component: AssessmentComponent },
     { path: 'select', component: SelectComponent },
+    { path: 'index.php/select', component: SelectComponent },
     { path: 'student', component: StudentViewComponent },
     { path: 'manage', component: AttemptsOverviewComponent },
+    { path: 'index.php/manage', component: AttemptsOverviewComponent },
     { path: 'assessment/:id/attempts', component: ViewAttemptsComponent },
     { path: 'student/:studentId/attempts', component: ViewAttemptsForStudentComponent },
     { path: 'usernotfound', component: UsernotfoundComponent },
@@ -36,15 +40,6 @@ const routes: Routes = [
     { path: 'ltisessionnotvalid', component: LtisessionnotvalidComponent },
     { path: 'error', component: ErrorComponent }
 ];
-
-//if index.php is in route, make sure angular doesn't choke;
-//use standard for loop since we're adding onto the array length
-const routeLength = routes.length;
-for (let i = 0; i < routeLength; i++) {
-    const indexRoute = cloneDeep(routes[i]);
-    indexRoute.path = 'index.php/' + indexRoute.path;
-    routes.push(indexRoute);
-}
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
