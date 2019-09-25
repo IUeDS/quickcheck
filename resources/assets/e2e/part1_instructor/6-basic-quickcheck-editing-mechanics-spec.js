@@ -112,7 +112,8 @@ describe('Using the rich content editor toggle', function() {
             await question.enterMcTextOption(option, submittedText);
 
             await question.toggleRichContent();
-            expect(await common.getTinyMceIframeFromElement(option).isDisplayed()).toBe(true);
+            const iframe = await common.getTinyMceIframeFromElement(option, true);
+            expect(await iframe.isDisplayed()).toBe(true);
         });
 
         it('should remove the basic input element when toggle is enabled', async function() {
@@ -128,7 +129,8 @@ describe('Using the rich content editor toggle', function() {
 
         it('should remove the rich content editor when toggle is disabled', async function() {
             await question.toggleRichContent();
-            expect(await common.getTinyMceIframeFromElement(option).isPresent()).toBe(false);
+            const iframe = await common.getTinyMceIframeFromElement(option);
+            expect(await iframe.isPresent()).toBe(false);
         });
 
         it('should show the basic input element when the toggle is disabled', async function() {
@@ -158,7 +160,8 @@ describe('Using the rich content editor toggle', function() {
             await question.enterMcTextOption(option, submittedText);
 
             await question.toggleRichContent();
-            expect(await common.getTinyMceIframeFromElement(option).isDisplayed()).toBe(true);
+            const iframe = await common.getTinyMceIframeFromElement(option, true);
+            expect(await iframe.isDisplayed()).toBe(true);
         });
 
         it('should remove the basic input element when toggle is enabled', async function() {
@@ -174,7 +177,8 @@ describe('Using the rich content editor toggle', function() {
 
         it('should remove the rich content editor when toggle is disabled', async function() {
             await question.toggleRichContent();
-            expect(await common.getTinyMceIframeFromElement(option).isPresent()).toBe(false);
+            const iframe = await common.getTinyMceIframeFromElement(option);
+            expect(await iframe.isPresent()).toBe(false);
         });
 
         it('should show the basic input element when the toggle is disabled', async function() {
@@ -205,7 +209,8 @@ describe('Using the rich content editor toggle', function() {
                 //add a bit of content first so we can see if it remains
                 await question.feedback.getCorrectFeedback().sendKeys(submittedText);
                 await question.feedback.toggleRichContent();
-                expect(await common.getTinyMceIframeFromElement(correctFeedbackContainer).isDisplayed()).toBe(true);
+                const iframe = await common.getTinyMceIframeFromElement(correctFeedbackContainer, true);
+                expect(await iframe.isDisplayed()).toBe(true);
             });
 
             it('should retain existing information when toggle is enabled', async function() {
@@ -217,7 +222,8 @@ describe('Using the rich content editor toggle', function() {
 
             it('should remove the rich content editor when toggle is disabled', async function() {
                 await question.feedback.toggleRichContent();
-                expect(await common.getTinyMceIframeFromElement(correctFeedbackContainer).isPresent()).toBe(false);
+                const iframe = await common.getTinyMceIframeFromElement(correctFeedbackContainer);
+                expect(await iframe.isPresent()).toBe(false);
             });
 
             it('should show the basic input element when the toggle is disabled', async function() {
@@ -236,7 +242,8 @@ describe('Using the rich content editor toggle', function() {
                 responseFeedbackOption = question.feedback.getPerResponseFeedbackOptions().get(0);
                 await question.feedback.enterResponseFeedback(responseFeedbackOption, submittedText);
                 await question.feedback.toggleRichContent();
-                expect(await common.getTinyMceIframeFromElement(responseFeedbackOption).isDisplayed()).toBe(true);
+                const iframe = await common.getTinyMceIframeFromElement(responseFeedbackOption, true);
+                expect(await iframe.isDisplayed()).toBe(true);
             });
 
             it('should retain existing information when toggle is enabled', async function() {
@@ -248,7 +255,8 @@ describe('Using the rich content editor toggle', function() {
 
             it('should remove the rich content editor when toggle is disabled', async function() {
                 await question.feedback.toggleRichContent();
-                expect(await common.getTinyMceIframeFromElement(responseFeedbackOption).isPresent()).toBe(false);
+                const iframe = await common.getTinyMceIframeFromElement(responseFeedbackOption);
+                expect(await iframe.isPresent()).toBe(false);
             });
 
             it('should show the basic input element when the toggle is disabled', async function() {
@@ -304,6 +312,7 @@ describe('Reordering questions', function() {
         //re-init questions to make sure they're composed properly
         await editQcPage.initQuestions();
         movedQuestion = editQcPage.getQuestion(0);
+        //await browser.sleep(29000);
         expect(await movedQuestion.getQuestionType()).toBe(data.questionTypes.numerical);
     });
 

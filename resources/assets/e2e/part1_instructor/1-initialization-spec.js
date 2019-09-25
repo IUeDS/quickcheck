@@ -20,7 +20,6 @@ describe('Navigating to the tool in Canvas', function () {
         await common.enterAngularPage();
         const header = await homePage.getHeader();
         expect(header).toContain('QUICK CHECK');
-        //await navComponent.goToSets();
     });
 });
 

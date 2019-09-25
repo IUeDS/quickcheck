@@ -4,6 +4,7 @@ var EditQcPage = function(browserRef) {
 
     page.browser = browserRef;
     page.includes = require('../common/includes.js');
+    page.common = new page.includes.Common(page.browser),
 
     //sub-components
     page.nav = new page.includes.NavComponent(page.browser);
@@ -81,6 +82,12 @@ var EditQcPage = function(browserRef) {
         //changing the question type removes current options, requiring us to re-add what's already there
         if (questionType && questionType !== page.includes.data.questionTypes.mc) {
             await questionObject.setQuestionType(questionType);
+            //await browser.sleep(1000); //testing to see if this improves intermittent errors
+            //it seems to be that the issue sometimes is a button is clicked and yet nothing happens when trying to
+            //add a matching/numerical option, etc. attempting to scroll to bottom of page to see if that helps?
+            //await page.browser.executeScript('window.scrollTo(0,document.body.scrollHeight)');
+            //testing: wait for tinymce iframe to load, maybe it's throwing off where protractor is clicking?
+            await page.common.getTinyMceIframeFromElement(newQuestion, true);
         }
         page.questions.push(questionObject);
     }
@@ -171,13 +178,13 @@ var EditQcPage = function(browserRef) {
 
     async function goBack() {
         await page.backBtn.click();
-        await page.browser.sleep(1000);
+        //await page.browser.sleep(1000);
     }
 
     async function goBackToSet() {
         await page.waitForSaveSuccess();
         await page.goBackToSetLink.click();
-        await page.browser.sleep(1000);
+        //await page.browser.sleep(1000);
     }
 
     async function initQuestions() {

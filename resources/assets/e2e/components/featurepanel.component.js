@@ -37,8 +37,8 @@ var FeaturePanelComponent = function(browserRef) {
         await feature.element(by.css(component.clickableToggle)).click();
     }
 
-    function toggleFeatureByIndex(index) {
-        component.features.get(index).element(by.css(component.clickableToggle)).click();
+    async function toggleFeatureByIndex(index) {
+        await component.features.get(index).element(by.css(component.clickableToggle)).click();
     }
 }
 

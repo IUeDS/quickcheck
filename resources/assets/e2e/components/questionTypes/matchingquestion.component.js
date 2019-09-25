@@ -1,5 +1,6 @@
 var MatchingQuestionComponent = function(browserRef, question) {
-    var component = this;
+    var component = this,
+        EC = protractor.ExpectedConditions;
     component.browser = browserRef;
     component.question = question;
 

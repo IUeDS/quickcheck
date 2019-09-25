@@ -179,7 +179,7 @@
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "e2e/conf.js",
+            "protractorConfig": "resources/assets/e2e/conf.js",
             "devServerTarget": "quickcheck:serve"
           },
           "configurations": {

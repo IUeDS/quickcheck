@@ -1,5 +1,6 @@
 var NumericalQuestionComponent = function(browserRef, question) {
-    var component = this;
+    var component = this,
+        EC = protractor.ExpectedConditions;
     component.browser = browserRef;
     component.question = question;
 
@@ -25,6 +26,7 @@ var NumericalQuestionComponent = function(browserRef, question) {
     component.setOptionAsRange = setOptionAsRange;
 
     async function addNumericalAnswer() {
+        await component.browser.wait(EC.elementToBeClickable(component.addNumericalAnswerBtn), 5000);
         await component.addNumericalAnswerBtn.click();
     }
 

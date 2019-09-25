@@ -17,7 +17,6 @@ export class QtiExportComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
-	  this.toggleQtiExportCheckAll();
 	}
 
   ngOnChanges(changes) {

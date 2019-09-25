@@ -291,7 +291,7 @@ describe('Importing a QTI package', function() {
             });
 
             it('should have the correct options', async function() {
-                var options = question.getMatchingPairInputs();
+                var options = await question.getMatchingPairInputs();
                 expect(await options[0].getAttribute('value')).toBe('Indianapolis');
                 expect(await options[1].getAttribute('value')).toBe('Indiana');
                 expect(await options[2].getAttribute('value')).toBe('Springfield');
@@ -321,14 +321,14 @@ describe('Importing a QTI package', function() {
                     option2 = question.getOptions().get(1),
                     option3 = question.getOptions().get(2);
 
-                expect(await question.getExactAnswerInput(option1).getAttribute('value')).toBe('2');
-                expect(await question.getMarginOfErrorInput(option1).getAttribute('value')).toBe('0');
+                expect(await question.getExactAnswerInput(option1).getAttribute('value')).toBe('2.000000');
+                expect(await question.getMarginOfErrorInput(option1).getAttribute('value')).toBe('0.000000');
 
-                expect(await question.getRangeMinInput(option2).getAttribute('value')).toBe('4');
-                expect(await question.getRangeMaxInput(option2).getAttribute('value')).toBe('6');
+                expect(await question.getRangeMinInput(option2).getAttribute('value')).toBe('4.000000');
+                expect(await question.getRangeMaxInput(option2).getAttribute('value')).toBe('6.000000');
 
-                expect(await question.getExactAnswerInput(option3).getAttribute('value')).toBe('10');
-                expect(await question.getMarginOfErrorInput(option3).getAttribute('value')).toBe('1');
+                expect(await question.getExactAnswerInput(option3).getAttribute('value')).toBe('10.000000');
+                expect(await question.getMarginOfErrorInput(option3).getAttribute('value')).toBe('1.000000');
             });
         });
 

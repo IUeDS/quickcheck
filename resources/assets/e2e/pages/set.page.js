@@ -129,12 +129,10 @@ var SetPage = function(browserRef) {
     }
 
     async function openFeaturesAccordion() {
-        //I hate to do this, but sometimes the bootstrap js has not properly loaded and the tests fail,
-        //so adding in a brief sleep to make sure that js has initialized from what's in the DOM;
-        //page.browser.sleep(1000);
         await page.featuresAccordion.click();
         //wait for animation to finish; for now, at least, 3 features, so wait for the last to be visible
         await page.browser.wait(EC.visibilityOf(this.featurePanel.getFeatures().get(2)), 5000);
+        await page.browser.sleep(500);
     }
 
     async function saveNewSubset() {

@@ -75,21 +75,41 @@ function Common(browserRef) {
     }
 
     async function enterTinyMceIframeInElement(elem) {
-        var frame = common.getTinyMceIframeFromElement(elem);
+        var frame = await common.getTinyMceIframeFromElement(elem, true);
         await common.browser.driver.switchTo().frame(frame.getWebElement());
         await common.enterNonAngularPage();
     }
 
-    async function enterTinyMceText(text) {
-        await common.browser.driver.findElement(by.css(common.tinyMce)).sendKeys(text);
+    //although previous versions of angular/tinymce accepted sending text directly to the iframe, apparently doing so
+    //at this point does not trigger an ng model update when sent directly using sendKeys(), and thus the changes appear
+    //but are not updated in the data model and not saved. instead, go to source code panel to enter text there.
+    async function enterTinyMceText(text, questionElement) {
+        const viewButton = questionElement.all(by.css('.tox-menubar button')).get(2);
+        await common.browser.wait(EC.presenceOf(viewButton), 10000);
+        await viewButton.click();
+
+        //this is added onto the DOM outside of the main tag, rather than inside of the question element...!
+        const sourceCodeButton = common.browser.element(by.cssContainingText('.tox-collection__item', 'Source code'));
+        await common.browser.wait(EC.presenceOf(sourceCodeButton), 10000);
+        await sourceCodeButton.click();
+
+        const textarea = common.browser.element(by.css('.tox-dialog__body textarea'));
+        await common.browser.wait(EC.presenceOf(textarea), 10000);
+        await textarea.sendKeys('<p>' + text + '</p>');
+        const saveBtn = common.browser.element(by.buttonText('Save'));
+        await saveBtn.click();
     }
 
     async function getSelectedText(select) {
         return await select.element(by.css('option:checked')).getText();
     }
 
-    function getTinyMceIframeFromElement(elem) {
-        return elem.all(by.css('.tox-edit-area iframe')).first();
+    async function getTinyMceIframeFromElement(elem, wait = false) {
+        const frame = elem.all(by.css('.tox-edit-area iframe')).first();
+        if (wait) {
+            await common.browser.wait(EC.presenceOf(frame), 10000);
+        }
+        return frame;
     }
 
     async function getTinyMceText() {

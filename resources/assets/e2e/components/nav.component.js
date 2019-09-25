@@ -13,17 +13,23 @@ var NavComponent = function(browserRef) {
 
     async function goToHome() {
         await component.homeLink.click();
-        await component.browser.sleep(1500); //added on 1/4/18, angular started having issues with redirects
+        //ARGH sometimes Protractor refuses to click on this button even when told to,
+        //so reclick if home page is not visible yet
+        const homepage = await component.browser.element(by.css('.qc-home-page'));
+        if (!await homepage.isPresent()) {
+            await component.homeLink.click();
+        }
+        //await component.browser.sleep(1500); //added on 1/4/18, angular started having issues with redirects
     }
 
     async function goToResults() {
         await component.resultsLink.click();
-        await component.browser.sleep(1500);
+        //await component.browser.sleep(1500);
     }
 
     async function goToSets() {
         await component.setsLink.click();
-        await component.browser.sleep(1500);
+        //await component.browser.sleep(1500);
     }
 };
 

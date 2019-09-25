@@ -15,11 +15,16 @@ describe('Adding a set', function () {
     it('should add the set to the user\’s list after being created', async function () {
         await viewSetsPage.getAddSetNameField().sendKeys(sets.toBeDeleted.name);
         await viewSetsPage.getAddDescriptionNameField().sendKeys(sets.toBeDeleted.description);
-        browser.sleep(1000); //ugh, kept on failing here for NO REASON on some runs, worked fine on others
+        //browser.sleep(1000); //ugh, kept on failing here for NO REASON on some runs, worked fine on others
         await viewSetsPage.saveNewSet();
-        const membershipTiles = viewSetsPage.getMembershipTiles();
+        let membershipTiles = viewSetsPage.getMembershipTiles();
         const newSet = membershipTiles.get(0);
-        await browser.wait(EC.visibilityOf(newSet, 10000));
+        //await browser.wait(EC.visibilityOf(newSet, 10000));
+        //sometimes this button just does not want to get clicked, it makes no sense
+        if (!await newSet.isPresent()) {
+            await viewSetsPage.saveNewSet();
+            membershipTiles = viewSetsPage.getMembershipTiles();
+        }
 
         expect(await membershipTiles.count()).toBe(1);
     });

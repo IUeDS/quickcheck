@@ -24,11 +24,11 @@ describe('Adding a multiple choice question', function() {
 
     it('should accept question text', async function() {
         var questionText = data.quizData.quiz1.question1.questionText;
+        await common.enterTinyMceText(questionText, question.question);
 
-        await browser.sleep(2000); //tiny mce wasn't always loaded at this juncture; if continuing issue, try EC
         await common.enterTinyMceIframeInElement(question.question);
-        await common.enterTinyMceText(questionText);
         expect(await common.getTinyMceText()).toBe(questionText);
+
         await common.leaveTinyMceIframe();
         await common.switchToLtiTool();
         await common.enterAngularPage();
@@ -160,8 +160,8 @@ describe('Adding a multiple correct question', function() {
     });
 
     it('should throw a validation error if an option does not contain text', async function() {
-        await editQcPage.saveWithError();
-        expect(await editQcPage.getSaveError().isDisplayed()).toBe(true);
+        await editQcPage.saveWithoutSuccess();
+        expect(await editQcPage.getSaveSuccess().isPresent()).toBe(false);
     });
 
     it('should throw a validation error if no correct answer is specified when trying to save', async function() {
@@ -671,7 +671,8 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         //for this set, where all features are on, toggle the one that is off
         await setPage.openFeaturesAccordion();
         await setPage.featurePanel.toggleFeatureByIndex(1);
-        setPage = new includes.SetPage(browser);
+
+        //setPage = new includes.SetPage(browser);
         await setPage.nav.goToHome();
         //await browser.waitForAngular(true);
 
@@ -709,6 +710,7 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         await currentQuestion.toggleRandomized();
         for(i = 0; i < 2; i++) {
             await currentQuestion.addMatchingPair();
+            await browser.sleep(1000); //would inconsistently fail without this, argh
         }
         const matchingPairInputs = await currentQuestion.getMatchingPairInputs();
         await matchingPairInputs[0].sendKeys(quizData.question2.prompt1);
@@ -717,9 +719,7 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         await matchingPairInputs[3].sendKeys(quizData.question2.answer2);
 
         await editQcPage.save();
-        //had to click the link at the bottom because the one at the top was unclickable for some
-        //reason, even though it wasn't before...gotta love Protractor! -he says as he rips his hair out
-        await editQcPage.goBackToSet();
+        await editQcPage.nav.goToHome();
     });
 
     it('should successfully add quick check #3 to an existing set/subset from the home page', async function() {
@@ -732,7 +732,6 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
             subset;
 
         //go back to home page to add the quick check
-        await setPage.nav.goToHome();
         await homePage.addQuickCheck();
         await homePage.selectSet(setName);
         await homePage.selectSubset(subsetName);
@@ -746,6 +745,8 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         //1. exact answer with 0 as margin of error; note that the answer itself is 0 in this case,
         //so we can also ensure that 0 is accepted as an answer (previous bug fix)
         await currentQuestion.addNumericalAnswer();
+        await browser.sleep(1000); //would fail inconsistently at this point, saying no options added
+        //NOTE: at this point, there were no numerical options present, hrm; also an issue intermittently with text match in previous test so maybe related
         option1 = currentQuestion.getOptions().get(0);
         await currentQuestion.enterNumericalExactOption(option1, questionData.option1.exact, questionData.option1.margin);
 

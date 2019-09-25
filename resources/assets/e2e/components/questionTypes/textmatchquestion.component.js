@@ -1,5 +1,6 @@
 var TextmatchQuestionComponent = function(browserRef, question) {
-    var component = this;
+    var component = this,
+        EC = protractor.ExpectedConditions;
     component.browser = browserRef;
     component.question = question;
 
@@ -15,6 +16,7 @@ var TextmatchQuestionComponent = function(browserRef, question) {
     component.getOptionInput = getOptionInput;
 
     async function addTextmatchAnswer() {
+        await component.browser.wait(EC.elementToBeClickable(component.addTextmatchAnswerBtn), 5000);
         await component.addTextmatchAnswerBtn.click();
     }
 
