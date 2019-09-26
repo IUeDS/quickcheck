@@ -328,127 +328,124 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
             });
         });
 
-        it('should show the answer options in a row above the table', function() {
+        it('should show the answer options in a row above the table', async function() {
             //once again, order changes for no reason from Laravel, so run down the list
             var selectables = qcPage.getSelectables(),
                 answer1Found = false,
                 answer2Found = false,
                 distractorFound = false;
 
-            selectables.each(function(selectable) {
-                selectable.getText().then(function(text) {
-                    if (text.indexOf(questionData.answer1) > -1) {
-                        answer1Found = true;
-                    }
-                    else if (text.indexOf(questionData.answer2) > -1) {
-                        answer2Found = true;
-                    }
-                    else if (text.indexOf(questionData.distractor) > -1) {
-                        distractorFound = true;
-                    }
-                });
-            })
-            .then(function() {
-                expect(answer1Found).toBe(true);
-                expect(answer2Found).toBe(true);
-                expect(distractorFound).toBe(true);
+            await selectables.each(async function(selectable) {
+                const text = await selectable.getText();
+                if (text.indexOf(questionData.answer1) > -1) {
+                    answer1Found = true;
+                }
+                else if (text.indexOf(questionData.answer2) > -1) {
+                    answer2Found = true;
+                }
+                else if (text.indexOf(questionData.distractor) > -1) {
+                    distractorFound = true;
+                }
             });
+
+            expect(answer1Found).toBe(true);
+            expect(answer2Found).toBe(true);
+            expect(distractorFound).toBe(true);
         });
 
-        it('should disable the submit button until all multiple dropdown answers are selected', function() {
-            expect(qcPage.isSubmitBtnDisabled()).toBe(true);
+        it('should disable the submit button until all multiple dropdown answers are selected', async function() {
+            expect(await qcPage.isSubmitBtnDisabled()).toBe(true);
         });
 
-        it('should gray out an option box after it has been selected but not the others', function() {
+        it('should gray out an option box after it has been selected but not the others', async function() {
             //once again, since order changes from Laravel, run through the whole list
-            qcPage.selectOption(0, questionData.answer2);
-            qcPage.getSelectables().each(function(selectable, index) {
-                selectable.getText().then(function(text) {
-                    if (text.indexOf(questionData.answer1) > -1) {
-                        expect(qcPage.isSelectablePicked(index)).toBe(false);
-                    }
-                    else if (text.indexOf(questionData.answer2) > -1) {
-                        expect(qcPage.isSelectablePicked(index)).toBe(true);
-                    }
-                    else if (text.indexOf(questionData.distractor) > -1) {
-                        expect(qcPage.isSelectablePicked(index)).toBe(false);
-                    }
-                });
+            await qcPage.selectOption(0, questionData.answer2);
+            qcPage.getSelectables().each(async function(selectable, index) {
+                const text = await selectable.getText();
+
+                if (text.indexOf(questionData.answer1) > -1) {
+                    expect(await qcPage.isSelectablePicked(index)).toBe(false);
+                }
+                else if (text.indexOf(questionData.answer2) > -1) {
+                    expect(await qcPage.isSelectablePicked(index)).toBe(true);
+                }
+                else if (text.indexOf(questionData.distractor) > -1) {
+                    expect(await qcPage.isSelectablePicked(index)).toBe(false);
+                }
             });
         });
 
-        it('should hide an option from future rows when the option has already been selected', function() {
-            qcPage.getSelects().get(1).all(by.css('option')).each(function(option) {
-                option.getText().then(function(text) {
-                    if (text.indexOf(questionData.answer2) > -1) {
-                        //for some reason isDisplayed() was being funny with me, so had to check that ng-hide was activated on it
-                        expect(option.getAttribute('class')).toContain('ng-hide');
-                    }
-                });
+        it('should hide an option from future rows when the option has already been selected', async function() {
+            qcPage.getSelects().get(1).all(by.css('option')).each(async function(option) {
+                const text = await option.getText();
+                if (text.indexOf(questionData.answer2) > -1) {
+                    //for some reason isDisplayed() was being funny with me, so had to check that ng-hide was activated on it
+                    expect(await option.getAttribute('class')).toContain('ng-hide');
+                }
             });
         });
 
-        it('should mark the multiple dropdowns answer as incorrect when answered incorrectly', function() {
-            qcPage.selectOption(1, questionData.distractor);
-            qcPage.submit();
-            expect(qcPage.isIncorrectModal()).toBe(true);
-            qcPage.clickContinue();
+        it('should mark the multiple dropdowns answer as incorrect when answered incorrectly', async function() {
+            await qcPage.selectOption(1, questionData.distractor);
+            await qcPage.submit();
+            expect(await qcPage.isIncorrectModal()).toBe(true);
+            await qcPage.clickContinue();
         });
     });
 
     describe('when on a textmatch question', function() {
         var questionData = quizData.question6;
 
-        it('should properly show a textmatch question', function() {
-            expect(qcPage.getQuestionText()).toBe(''); //no question text here
+        it('should properly show a textmatch question', async function() {
+            expect(await qcPage.getQuestionText()).toBe(''); //no question text here
         });
 
-        it('should disable the submit button until a textmatch answer is selected', function() {
-            expect(qcPage.isSubmitBtnDisabled()).toBe(true);
+        it('should disable the submit button until a textmatch answer is selected', async function() {
+            expect(await qcPage.isSubmitBtnDisabled()).toBe(true);
         });
 
-        it('should mark the textmatch answer as incorrect when answered incorrectly', function() {
-            qcPage.enterTextmatchAnswer('Totally the wrong answer');
-            qcPage.submit();
-            expect(qcPage.isIncorrectModal()).toBe(true);
-            qcPage.clickContinue();
+        it('should mark the textmatch answer as incorrect when answered incorrectly', async function() {
+            await qcPage.enterTextmatchAnswer('Totally the wrong answer');
+            await qcPage.submit();
+            expect(await qcPage.isIncorrectModal()).toBe(true);
+            await qcPage.clickContinue();
         });
     });
 
     describe('when on a numerical question', function() {
         var questionData = quizData.question7;
 
-        it('should properly show a numeric question', function() {
-            expect(qcPage.getQuestionText()).toBe(''); //no question text here
+        it('should properly show a numeric question', async function() {
+            expect(await qcPage.getQuestionText()).toBe(''); //no question text here
         });
 
-        it('should disable the submit button until a numeric answer is selected', function() {
-            expect(qcPage.isSubmitBtnDisabled()).toBe(true);
+        it('should disable the submit button until a numeric answer is selected', async function() {
+            expect(await qcPage.isSubmitBtnDisabled()).toBe(true);
         });
 
-        it('should mark the numeric question as incorrect when answered incorrectly', function() {
-            qcPage.enterNumericalAnswer('10000000');
-            qcPage.submit();
-            expect(qcPage.isIncorrectModal()).toBe(true);
+        it('should mark the numeric question as incorrect when answered incorrectly', async function() {
+            await qcPage.enterNumericalAnswer('10000000');
+            await qcPage.submit();
+            expect(await qcPage.isIncorrectModal()).toBe(true);
         });
     });
 
     describe('when the quick check is finished', function() {
-        it('should show a message that the quick check has been completed', function() {
-            qcPage.clickContinue();
-            expect(qcPage.isQcFinished()).toBe(true);
+        it('should show a message that the quick check has been completed', async function() {
+            await qcPage.clickContinue();
+            expect(await qcPage.isQcFinished()).toBe(true);
         });
 
-        it('should show a score of 0 when all questions were answered incorrectly', function() {
-            expect(qcPage.getFinalScore()).toBe('score: 0 / 7 questions correct');
+        it('should show a score of 0 when all questions were answered incorrectly', async function() {
+            expect(await qcPage.getFinalScore()).toBe('score: 0 / 7 questions correct');
         });
 
-        it('should show a message that the attempt has been graded', function() {
-            expect(qcPage.isQcGraded()).toBe(true);
+        it('should show a message that the attempt has been graded', async function() {
+            expect(await qcPage.isQcGraded()).toBe(true);
         });
 
-        it('should NOT show directions to click the module next button when not in a module', function() {
-            expect(qcPage.isModuleMessagePresent()).toBe(false);
+        it('should NOT show directions to click the module next button when not in a module', async function() {
+            expect(await qcPage.isModuleMessagePresent()).toBe(false);
         });
     });
 });
@@ -456,9 +453,9 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
 describe('Taking a graded quick check and getting all answers correct', function() {
     var quizData = data.quizData.quiz1;
 
-    it('should reinitialize the quiz after clicking the restart button', function() {
-        qcPage.restart();
-        expect(qcPage.getQuestionProgress()).toBe('question 1 out of 7');
+    it('should reinitialize the quiz after clicking the restart button', async function() {
+        await qcPage.restart();
+        expect(await qcPage.getQuestionProgress()).toBe('question 1 out of 7');
         common.saveOptionList(qcPage.getMcOptions());
     });
 
@@ -470,129 +467,128 @@ describe('Taking a graded quick check and getting all answers correct', function
     describe('when on a multiple choice question', function() {
         var questionData = quizData.question1;
 
-        it('should mark the answer as correct when answered correctly', function() {
+        it('should mark the answer as correct when answered correctly', async function() {
             qcPage.getMcOptions().each(function(option, index) {
-                option.getText().then(function(text) {
-                    if (text.indexOf(questionData.answer) > -1) {
-                        qcPage.selectMcOptionByIndex(index);
-                        qcPage.submit();
-                        expect(qcPage.isCorrectModal()).toBe(true);
-                    }
-                });
+                const text = await option.getText();
+                if (text.indexOf(questionData.answer) > -1) {
+                    await qcPage.selectMcOptionByIndex(index);
+                    await qcPage.submit();
+                    expect(await qcPage.isCorrectModal()).toBe(true);
+                }
             });
         });
 
-        it('should show per-response correct feedback if supplied', function() {
+        it('should show per-response correct feedback if supplied', async function() {
             var feedback = qcPage.getPerResponseFeedback();
-            expect(feedback.count()).toBe(1);
-            expect(feedback.first().getText()).toBe(questionData.feedbackOption2);
-            qcPage.clickContinue();
+            expect(await feedback.count()).toBe(1);
+            expect(await feedback.first().getText()).toBe(questionData.feedbackOption2);
+            await qcPage.clickContinue();
         });
 
-        it('should increment the score after answering correctly', function() {
-            expect(qcPage.getScore()).toBe('1 / 7 questions correct');
+        it('should increment the score after answering correctly', async function() {
+            expect(await qcPage.getScore()).toBe('1 / 7 questions correct');
         });
     });
 
     describe('for a multiple correct question', function() {
         var questionData = quizData.question2;
 
-        it('should mark the answer as correct when answered correctly', function() {
-            qcPage.selectMcOptionByIndex(questionData.answer1);
-            qcPage.selectMcOptionByIndex(questionData.answer2);
-            qcPage.submit();
-            expect(qcPage.isCorrectModal()).toBe(true);
+        it('should mark the answer as correct when answered correctly', async function() {
+            await qcPage.selectMcOptionByIndex(questionData.answer1);
+            await qcPage.selectMcOptionByIndex(questionData.answer2);
+            await qcPage.submit();
+            expect(await qcPage.isCorrectModal()).toBe(true);
         });
 
-        it('should show per-response correct feedback if supplied', function() {
+        it('should show per-response correct feedback if supplied', async function() {
             var feedback = qcPage.getPerResponseFeedback();
-            expect(feedback.count()).toBe(2);
-            expect(feedback.get(0).getText()).toBe(questionData.feedbackOption1);
-            expect(feedback.get(1).getText()).toBe(questionData.feedbackOption2);
-            qcPage.clickContinue();
+            expect(await feedback.count()).toBe(2);
+            expect(await feedback.get(0).getText()).toBe(questionData.feedbackOption1);
+            expect(await feedback.get(1).getText()).toBe(questionData.feedbackOption2);
+            await qcPage.clickContinue();
         });
     });
 
     describe('for a matrix question', function() {
         var questionData = quizData.question3;
 
-        it('should mark the answer as correct when answered correctly', function() {
-            qcPage.selectMatrixCheckboxByIndex(questionData.answer1);
-            qcPage.selectMatrixCheckboxByIndex(questionData.answer2);
-            qcPage.submit();
-            expect(qcPage.isCorrectRowFeedback()).toBe(true);
+        it('should mark the answer as correct when answered correctly', async function() {
+            await qcPage.selectMatrixCheckboxByIndex(questionData.answer1);
+            await qcPage.selectMatrixCheckboxByIndex(questionData.answer2);
+            await qcPage.submit();
+            expect(await qcPage.isCorrectRowFeedback()).toBe(true);
         });
 
-        it('should not show any incorrect rows', function() {
-            expect(qcPage.getIncorrectRows().count()).toBe(0);
+        it('should not show any incorrect rows', async function() {
+            expect(await qcPage.getIncorrectRows().count()).toBe(0);
         });
 
-        it('should show question-level correct feedback if supplied', function() {
-            expect(qcPage.getRowFeedback().getText()).toContain(questionData.feedbackCorrect);
-            qcPage.clickRowContinue();
+        it('should show question-level correct feedback if supplied', async function() {
+            expect(await qcPage.getRowFeedback().getText()).toContain(questionData.feedbackCorrect);
+            await qcPage.clickRowContinue();
         });
     });
 
     describe('for a matching question', function() {
         var questionData = quizData.question4;
 
-        it('should mark the answer as correct when a matching question has been answered correctly', function() {
-            qcPage.selectOption(0, questionData.answer1);
-            qcPage.selectOption(1, questionData.answer2);
-            qcPage.submit();
-            expect(qcPage.isCorrectRowFeedback()).toBe(true);
+        it('should mark the answer as correct when a matching question has been answered correctly', async function() {
+            await qcPage.selectOption(0, questionData.answer1);
+            await qcPage.selectOption(1, questionData.answer2);
+            await qcPage.submit();
+            expect(await qcPage.isCorrectRowFeedback()).toBe(true);
         });
 
-        it('should not show any incorrect rows', function() {
-            expect(qcPage.getIncorrectRows().count()).toBe(0);
-            qcPage.clickRowContinue();
+        it('should not show any incorrect rows', async function() {
+            expect(await qcPage.getIncorrectRows().count()).toBe(0);
+            await qcPage.clickRowContinue();
         });
     });
 
     describe('for a multiple dropdowns question', function() {
         var questionData = quizData.question5;
 
-        it('should mark the answer as correct when a multiple dropdown question has been answered correctly', function() {
-            qcPage.selectOption(0, questionData.answer1);
-            qcPage.selectOption(1, questionData.answer2);
-            qcPage.submit();
-            expect(qcPage.isCorrectModal()).toBe(true);
-            qcPage.clickContinue();
+        it('should mark the answer as correct when a multiple dropdown question has been answered correctly', async function() {
+            await qcPage.selectOption(0, questionData.answer1);
+            await qcPage.selectOption(1, questionData.answer2);
+            await qcPage.submit();
+            expect(await qcPage.isCorrectModal()).toBe(true);
+            await qcPage.clickContinue();
         });
     });
 
     describe('for a textmatch question', function() {
         var questionData = quizData.question6;
 
-        it('should mark the answer as correct when a textmatch question has been answered correctly, and match regardless of capitalization, punctuation, or trailing spaces', function() {
+        it('should mark the answer as correct when a textmatch question has been answered correctly, and match regardless of capitalization, punctuation, or trailing spaces', async function() {
             var answer = questionData.option1.toLowerCase() + '!    ';
-            qcPage.enterTextmatchAnswer(answer);
-            qcPage.submit();
-            expect(qcPage.isCorrectModal()).toBe(true);
-            qcPage.clickContinue();
+            await qcPage.enterTextmatchAnswer(answer);
+            await qcPage.submit();
+            expect(await qcPage.isCorrectModal()).toBe(true);
+            await qcPage.clickContinue();
         });
     });
 
     describe('for a numerical question', function() {
         var questionData = quizData.question7;
 
-        it('should mark the answer as correct when a numeric question has been answered correctly', function() {
-            qcPage.enterNumericalAnswer(questionData.option1);
-            qcPage.submit();
-            expect(qcPage.isCorrectModal()).toBe(true);
-            qcPage.clickContinue();
+        it('should mark the answer as correct when a numeric question has been answered correctly', async function() {
+            await qcPage.enterNumericalAnswer(questionData.option1);
+            await qcPage.submit();
+            expect(await qcPage.isCorrectModal()).toBe(true);
+            await qcPage.clickContinue();
         });
     });
 
-    it('should show the completion modal when finished', function() {
-        expect(qcPage.isCompletionModalVisible()).toBe(true);
+    it('should show the completion modal when finished', async function() {
+        expect(await qcPage.isCompletionModalVisible()).toBe(true);
     });
 
-    it('should show a perfect score when all answers were answered correctly', function() {
-        expect(qcPage.getFinalScore()).toBe('score: 7 / 7 questions correct');
+    it('should show a perfect score when all answers were answered correctly', async function() {
+        expect(await qcPage.getFinalScore()).toBe('score: 7 / 7 questions correct');
     });
 
-    it('should show a message that the attempt has been graded', function() {
-        expect(qcPage.isQcGraded()).toBe(true);
+    it('should show a message that the attempt has been graded', async function() {
+        expect(await qcPage.isQcGraded()).toBe(true);
     });
 });

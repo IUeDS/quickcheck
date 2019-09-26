@@ -10,49 +10,47 @@ describe('Taking a non-graded quiz', function() {
     var qcName = data.sets.featuresAllOff.quickchecks.urlEmbed,
         quizData = data.quizData.quiz2;
 
-    it('should show the quiz title when a title has been added', function() {
-        common.switchToCanvas().then(function() {
-            canvasAssignmentsPage.goToModules();
-            canvasModulesPage.selectItemByLinkText(qcName);
+    it('should show the quiz title when a title has been added', async function() {
+        await common.switchToCanvas();
+            await canvasAssignmentsPage.goToModules();
+            await canvasModulesPage.selectItemByLinkText(qcName);
             //this looks odd, but the problem is that changing browser synchronization for angular
             //and non-angular pages is synchronous rather than asynchronous, so I learned I had to
             //be careful about changing back to angular-specific stuff in the right spot in the
             //control flow, otherwise, it would fire off out of order and give an error saying that
             //angular was not on the window. tricky stuff!
-            common.switchToLtiTool();
-        }).then(function() {
-            common.enterAngularPage();
-            expect(qcPage.getTitle().getText()).toBe(qcName.toUpperCase());
-        });
+            await common.switchToLtiTool();
+            await common.enterAngularPage();
+            expect(await qcPage.getTitle().getText()).toBe(qcName.toUpperCase());
     });
 
-    it('should show the quiz description when a description has been added', function() {
-        expect(qcPage.getDescription().getText()).toBe('Description');
+    it('should show the quiz description when a description has been added', async function() {
+        expect(await qcPage.getDescription().getText()).toBe('Description');
     });
 
-    it('should reward partial credit for a half-correct matrix question', function() {
-        qcPage.selectMatrixCheckboxByIndex(quizData.question1.answer1);
-        qcPage.selectMatrixCheckboxByIndex(quizData.question1.answer2 + 1);
-        qcPage.submit();
-        expect(qcPage.getScore()).toBe('0.5 / 2 questions correct');
-        qcPage.clickRowContinue();
+    it('should reward partial credit for a half-correct matrix question', async function() {
+        await qcPage.selectMatrixCheckboxByIndex(quizData.question1.answer1);
+        await qcPage.selectMatrixCheckboxByIndex(quizData.question1.answer2 + 1);
+        await qcPage.submit();
+        expect(await qcPage.getScore()).toBe('0.5 / 2 questions correct');
+        await qcPage.clickRowContinue();
     });
 
-    it('should reward partial credit for a half-correct matching question', function() {
-        qcPage.selectOption(0, quizData.question2.answer1); //correct
-        qcPage.selectOption(1, quizData.question2.answer1); //incorrect
-        qcPage.submit();
-        expect(qcPage.getScore()).toBe('1 / 2 questions correct');
-        qcPage.clickRowContinue();
+    it('should reward partial credit for a half-correct matching question', async function() {
+        await qcPage.selectOption(0, quizData.question2.answer1); //correct
+        await qcPage.selectOption(1, quizData.question2.answer1); //incorrect
+        await qcPage.submit();
+        expect(await qcPage.getScore()).toBe('1 / 2 questions correct');
+        await qcPage.clickRowContinue();
     });
 
-    it('should show a message that the quiz was not graded after completing', function() {
-        expect(qcPage.isQcFinished()).toBe(true);
-        expect(qcPage.isQcUngraded()).toBe(true);
+    it('should show a message that the quiz was not graded after completing', async function() {
+        expect(await qcPage.isQcFinished()).toBe(true);
+        expect(await qcPage.isQcUngraded()).toBe(true);
     });
 
-    it('should show directions to click the module next button when in a module', function() {
-        expect(qcPage.isModuleMessagePresent()).toBe(true);
+    it('should show directions to click the module next button when in a module', async function() {
+        expect(await qcPage.isModuleMessagePresent()).toBe(true);
     });
 });
 
@@ -62,57 +60,54 @@ describe('Taking a manually graded quiz past the due date', function() {
     var qcName = data.sets.featuresAllOff.quickchecks.featuresAllOffPastDue,
         questionData = data.quizData.quiz3.question1;
 
-    it('should mark a numerical question as correct if an exact answer match', function() {
-        common.switchToCanvas().then(function() {
-            canvasAssignmentsPage.goToAssignments();
-            canvasAssignmentsPage.openAssignment(qcName);
-            //refresh so we can test if empty attempts are actually hidden
-            browser2.refresh();
-         }).then(function() {
-            common.switchToLtiTool();
-         }).then(function() {
-            common.enterAngularPage();
-            qcPage.enterNumericalAnswer(questionData.option1.exact);
-            qcPage.submit();
-            expect(qcPage.isCorrectModal()).toBe(true);
-            qcPage.clickContinue();
-            //GAH! using EC.visibilityOf resulted in timeouts even though the element
-            //was clearly visible. I have no choice but to just manually call sleep.
-            //browser2.sleep(1000);
-            qcPage.restart();
-         });
+    it('should mark a numerical question as correct if an exact answer match', async function() {
+        await common.switchToCanvas();
+        await canvasAssignmentsPage.goToAssignments();
+        await canvasAssignmentsPage.openAssignment(qcName);
+        //refresh so we can test if empty attempts are actually hidden
+        await browser2.refresh();
+        await common.switchToLtiTool();
+        await common.enterAngularPage();
+        await qcPage.enterNumericalAnswer(questionData.option1.exact);
+        await qcPage.submit();
+        expect(await qcPage.isCorrectModal()).toBe(true);
+        await qcPage.clickContinue();
+        //GAH! using EC.visibilityOf resulted in timeouts even though the element
+        //was clearly visible. I have no choice but to just manually call sleep.
+        //browser2.sleep(1000);
+        await qcPage.restart();
     });
 
-    it('should mark a numerical question correct if it falls within a margin of error', function() {
+    it('should mark a numerical question correct if it falls within a margin of error', async function() {
         var answer = +(questionData.option2.exact) - +(questionData.option2.margin);
-        qcPage.enterNumericalAnswer(answer);
-        qcPage.submit();
-        expect(qcPage.isCorrectModal()).toBe(true);
-        qcPage.clickContinue();
+        await qcPage.enterNumericalAnswer(answer);
+        await qcPage.submit();
+        expect(await qcPage.isCorrectModal()).toBe(true);
+        await qcPage.clickContinue();
         //browser2.sleep(1000);
-        qcPage.restart();
+        await qcPage.restart();
     });
 
-    it('should mark a numerical question correct if it falls within a range', function() {
-        qcPage.enterNumericalAnswer(questionData.option3.rangeMin);
-        qcPage.submit();
-        expect(qcPage.isCorrectModal()).toBe(true);
-        qcPage.clickContinue();
+    it('should mark a numerical question correct if it falls within a range', async function() {
+        await qcPage.enterNumericalAnswer(questionData.option3.rangeMin);
+        await qcPage.submit();
+        expect(await qcPage.isCorrectModal()).toBe(true);
+        await qcPage.clickContinue();
         //browser2.sleep(1000);
-        qcPage.restart();
+        await qcPage.restart();
     });
 
-    it('should mark a numerical question incorrect if it falls outside of all ranges', function() {
+    it('should mark a numerical question incorrect if it falls outside of all ranges', async function() {
         var answer = +(questionData.option3.rangeMax) + 1;
-        qcPage.enterNumericalAnswer(answer);
-        qcPage.submit();
-        expect(qcPage.isIncorrectModal()).toBe(true);
-        qcPage.clickContinue();
+        await qcPage.enterNumericalAnswer(answer);
+        await qcPage.submit();
+        expect(await qcPage.isIncorrectModal()).toBe(true);
+        await qcPage.clickContinue();
     });
 
-    it('should show a message that a grade was not submitted if it is past the due date', function() {
-        expect(qcPage.isQcFinished()).toBe(true);
-        expect(qcPage.isQcUngraded()).toBe(true);
+    it('should show a message that a grade was not submitted if it is past the due date', async function() {
+        expect(await qcPage.isQcFinished()).toBe(true);
+        expect(await qcPage.isQcUngraded()).toBe(true);
     });
 });
 
@@ -122,23 +117,20 @@ describe('Taking a manually graded quiz past the due date', function() {
 describe('Taking a quiz with responses hidden', function() {
     var qcName = data.sets.featuresAllOff.quickchecks.resultsNotReleased;
 
-    it('should show a message that the quiz was not graded but will be later when completing', function() {
-        common.switchToCanvas().then(function() {
-            canvasAssignmentsPage.goToAssignments();
-            canvasAssignmentsPage.openAssignment(qcName);
-            //refresh so we can test if empty attempts are actually hidden
-            browser2.refresh();
-         }).then(function() {
-            common.switchToLtiTool();
-         }).then(function() {
-            common.enterAngularPage();
-            //pick an incorrect answer
-            qcPage.selectMcOptionByIndex(0);
-            qcPage.submit();
-            qcPage.clickContinue();
-            expect(qcPage.isQcFinished()).toBe(true);
-            expect(qcPage.isQcPendingGrade()).toBe(true);
-         });
+    it('should show a message that the quiz was not graded but will be later when completing', async function() {
+        await common.switchToCanvas();
+        await canvasAssignmentsPage.goToAssignments();
+        await canvasAssignmentsPage.openAssignment(qcName);
+        //refresh so we can test if empty attempts are actually hidden
+        await browser2.refresh();
+        await common.switchToLtiTool();
+        await common.enterAngularPage();
+        //pick an incorrect answer
+        await qcPage.selectMcOptionByIndex(0);
+        await qcPage.submit();
+        await qcPage.clickContinue();
+        expect(await qcPage.isQcFinished()).toBe(true);
+        expect(await qcPage.isQcPendingGrade()).toBe(true);
     });
 });
 
@@ -148,29 +140,24 @@ describe('Taking a quiz with responses hidden', function() {
 describe('Taking a second graded quiz from QTI import', function() {
     var qcName = data.sets.featuresAllOn.quickchecks.qtiImportGraded;
 
-    it('should show a successfully graded message after completion', function() {
-        common.switchToCanvas().then(function() {
-            canvasAssignmentsPage.goToAssignments();
-            canvasAssignmentsPage.openAssignment(qcName);
-            //refresh so we can test if empty attempts are actually hidden
-            browser2.refresh();
-         }).then(function() {
-            common.switchToLtiTool();
-         }).then(function() {
-            common.enterAngularPage();
-            //really doesn't matter what we select here, just pick the first one
-            qcPage.getMcOptions().each(function(option, index) {
-                option.getText().then(function(text) {
-                    if (text.indexOf('B') > -1) {
-                        qcPage.selectMcOptionByIndex(index);
-                    }
-                });
-            });
-         }).then(function() {
-            qcPage.submit();
-            qcPage.clickContinue();
-            expect(qcPage.isQcFinished()).toBe(true);
-            expect(qcPage.isQcGraded()).toBe(true);
-         });
+    it('should show a successfully graded message after completion', async function() {
+        await common.switchToCanvas();
+        await canvasAssignmentsPage.goToAssignments();
+        await canvasAssignmentsPage.openAssignment(qcName);
+        //refresh so we can test if empty attempts are actually hidden
+        await browser2.refresh();
+        await common.switchToLtiTool();
+        await common.enterAngularPage();
+        //really doesn't matter what we select here, just pick the first one
+        await qcPage.getMcOptions().each(async function(option, index) {
+            const text = await option.getText();
+            if (text.indexOf('B') > -1) {
+                await qcPage.selectMcOptionByIndex(index);
+            }
+        });
+        await qcPage.submit();
+        await qcPage.clickContinue();
+        expect(await qcPage.isQcFinished()).toBe(true);
+        expect(await qcPage.isQcGraded()).toBe(true);
     });
 });
