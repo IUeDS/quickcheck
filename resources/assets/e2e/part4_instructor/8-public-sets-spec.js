@@ -8,110 +8,109 @@ var includes = require('../common/includes.js'),
 describe('Joining a public set', function() {
     var publicSet;
 
-    it('should show the set in the public set panel', function() {
+    it('should show the set in the public set panel', async function() {
         var publicSets;
 
-        viewSetsPage.togglePublicSets();
+        await viewSetsPage.togglePublicSets();
         publicSets = viewSetsPage.getPublicSets();
         publicSet = publicSets.get(0);
-        expect(publicSets.count()).toBe(1);
+        expect(await publicSets.count()).toBe(1);
     });
 
-    it('should show the public set name', function() {
-        expect(publicSet.getText()).toContain(data.sets.public.name.toUpperCase());
+    it('should show the public set name', async function() {
+        expect(await publicSet.getText()).toContain(data.sets.public.name.toUpperCase());
     });
 
-    it('should show a join button initially', function() {
+    it('should show a join button initially', async function() {
         var joinBtn = viewSetsPage.getPublicJoinBtn(publicSet);
 
-        expect(joinBtn.isPresent()).toBe(true);
-        joinBtn.click();
+        expect(await joinBtn.isPresent()).toBe(true);
+        await joinBtn.click();
     });
 
-    it('should show a button to view the collection after joining', function() {
+    it('should show a button to view the collection after joining', async function() {
         var viewBtn = viewSetsPage.getPublicViewBtn(publicSet);
-        expect(viewBtn.isDisplayed()).toBe(true);
-        viewBtn.click();
-        browser.sleep(1000);
+        expect(await viewBtn.isDisplayed()).toBe(true);
+        await viewBtn.click();
+        await browser.sleep(1000);
     });
 });
 
 describe('Viewing a public/read-only collection', function() {
-    it('should show a notice that the user has read-only permissions', function() {
-        setPage.initSubsets().then(function() {
-            expect(setPage.isReadOnly()).toBe(true);
+    it('should show a notice that the user has read-only permissions', async function() {
+        await setPage.initSubsets();
+        expect(await setPage.isReadOnly()).toBe(true);
+    });
+
+    it('should not show a list of users', async function() {
+        expect(await setPage.getUsersAccordion().isPresent()).toBe(false);
+    });
+
+    it('should show features that are enabled but not allow the user to toggle them', async function() {
+        await setPage.openFeaturesAccordion();
+        setPage.featurePanel.getFeatures().each(async function(feature) {
+            expect(await setPage.featurePanel.isFeatureToggleable(feature)).toBe(false);
         });
     });
 
-    it('should not show a list of users', function() {
-        expect(setPage.getUsersAccordion().isPresent()).toBe(false);
-    });
-
-    it('should show features that are enabled but not allow the user to toggle them', function() {
-        setPage.openFeaturesAccordion();
-        setPage.featurePanel.getFeatures().each(function(feature) {
-            expect(setPage.featurePanel.isFeatureToggleable(feature)).toBe(false);
-        });
-    });
-
-    it('should not allow the user to add, edit, or delete subsets', function() {
+    it('should not allow the user to add, edit, or delete subsets', async function() {
         //just one subset in here
         var subset = setPage.getSubset(0);
 
-        expect(setPage.getAddSubsetBtn().isPresent()).toBe(false);
-        expect(subset.getEditSubsetBtn().isPresent()).toBe(false);
-        expect(subset.getDeleteSubsetBtn().isPresent()).toBe(false);
+        expect(await setPage.getAddSubsetBtn().isPresent()).toBe(false);
+        expect(await subset.getEditSubsetBtn().isPresent()).toBe(false);
+        expect(await subset.getDeleteSubsetBtn().isPresent()).toBe(false);
     });
 
-    it('should not allow the user to add or delete quick checks', function() {
+    it('should not allow the user to add or delete quick checks', async function() {
         var subset = setPage.getSubset(0),
             quickcheck = subset.getQuickChecks().get(0);
 
-        expect(subset.getAddQcBtn().isPresent()).toBe(false);
-        expect(subset.getDeleteQcBtn(quickcheck).isPresent()).toBe(false);
-        subset.editQuickCheck(quickcheck);
+        expect(await subset.getAddQcBtn().isPresent()).toBe(false);
+        expect(await subset.getDeleteQcBtn(quickcheck).isPresent()).toBe(false);
+        await subset.editQuickCheck(quickcheck);
     });
 });
 
 //I was worried about having to check every single question type to make sure that a read-only user can't make edits,
 //but let's take a more macro look at this and loop through every type of input and make sure that it is disabled
 describe('Viewing a read-only quick check', function() {
-    it('should show a read-only notice', function() {
-        editQcPage.initQuestions();
-        expect(editQcPage.isReadOnly()).toBe(true);
+    it('should show a read-only notice', async function() {
+        await editQcPage.initQuestions();
+        expect(await editQcPage.isReadOnly()).toBe(true);
     });
 
-    it('should disable all input fields', function() {
-        expect(editQcPage.areInputsDisabled()).toBe(true);
+    it('should disable all input fields', async function() {
+        expect(await editQcPage.areInputsDisabled()).toBe(true);
     });
 
-    it('should hide delete question and delete option buttons', function() {
-        editQcPage.questions.forEach(function(question) {
-            expect(question.getDeleteBtn().isPresent()).toBe(false);
-            expect(question.getDeleteOptionBtns().count()).toBe(0);
-        });
+    it('should hide delete question and delete option buttons', async function() {
+        for (let question of editQcPage.questions) {
+            expect(await question.getDeleteBtn().isPresent()).toBe(false);
+            expect(await question.getDeleteOptionBtns().count()).toBe(0);
+        }
     });
 
-    it('should hide the save button', function() {
-        expect(editQcPage.getSaveBtn().isPresent()).toBe(false);
-        editQcPage.nav.goToSets();
+    it('should hide the save button', async function() {
+        expect(await editQcPage.getSaveBtn().isPresent()).toBe(false);
+        await editQcPage.nav.goToSets();
     });
 });
 
 describe('Opting out of a public set', function() {
     var publicSet;
 
-    it('should show an opt-out button after joining', function() {
+    it('should show an opt-out button after joining', async function() {
         var optOutBtn;
 
-        viewSetsPage.togglePublicSets();
+        await viewSetsPage.togglePublicSets();
         publicSet = viewSetsPage.getPublicSets().get(0);
         optOutBtn = viewSetsPage.getPublicOptOutBtn(publicSet);
-        expect(optOutBtn.isPresent()).toBe(true);
-        optOutBtn.click();
+        expect(await optOutBtn.isPresent()).toBe(true);
+        await optOutBtn.click();
     });
 
-    it('should show a join button after opting out', function() {
-        expect(viewSetsPage.getPublicJoinBtn(publicSet).isPresent()).toBe(true);
+    it('should show a join button after opting out', async function() {
+        expect(await viewSetsPage.getPublicJoinBtn(publicSet).isPresent()).toBe(true);
     });
 });
