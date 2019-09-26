@@ -180,10 +180,10 @@ describe('Viewing analytics for an assessment', function() {
             var responses;
 
             await analytics.toggleOtherResponses(5);
-            await responses = analytics.getOtherResponses();
+            responses = analytics.getOtherResponses();
             //I have no idea why, but angular flakes out intermittently here. doesn't with numerical.
             //works just fine manually. but here, requires a second click sometimes. maybe a focus issue?
-            const responseount = await responses.count();
+            const responseCount = await responses.count();
             if (responseCount === 0) {
                 await analytics.toggleOtherResponses(5);
                 responses = analytics.getOtherResponses();

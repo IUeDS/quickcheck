@@ -130,7 +130,7 @@ describe('Searching for attempts by quick check name', function() {
 });
 
 describe('Searching attempts by name', function() {
-    it('should filter attempts by last name when searched', asyc function() {
+    it('should filter attempts by last name when searched', async function() {
         var assessmentName = data.sets.featuresAllOn.quickchecks.featuresAllOn;
         await attemptOverviewPage.getAssessmentByName(assessmentName).click();
         await browser.sleep(1000);

@@ -123,7 +123,7 @@ describe('Embedding and taking a custom activity', function() {
         expect(await browser3.driver.findElement(by.className('question_area')).isDisplayed()).toBe(true);
     });
 
-    it('should allow answering 1 correct question and 1 incorrect question', asyc function() {
+    it('should allow answering 1 correct question and 1 incorrect question', async function() {
         // we're using the P101 brain drag and drop custom activity; no need to make this object-oriented, not reusable
         // drag and drop: http://stackoverflow.com/questions/25664551/how-to-simulate-a-drag-and-drop-action-in-protractor
         questionBox = browser3.driver.findElement(by.className('question_area'));

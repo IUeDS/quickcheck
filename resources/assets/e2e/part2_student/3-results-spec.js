@@ -13,7 +13,7 @@ describe('Viewing results as a student', function() {
     describe('on the home/overview page', async function() {
         var releases;
 
-        it('should show a list of all released quizzes where the student had made at least one attempt', function() {
+        it('should show a list of all released quizzes where the student had made at least one attempt', async function() {
             await common.switchToCanvas();
             await common.goToQuickCheck();
             await common.enterAngularPage();
@@ -65,7 +65,7 @@ describe('Viewing results as a student', function() {
 
             for (let [index, incorrectCount] of incorrectCounts.entries()) {
                 expect(await studentHomePage.attempts.getIncorrect(index)).toBe(incorrectCounts[index]);
-            });
+            }
         });
 
         it('should show the proper score for all attempts', async function() {
@@ -73,7 +73,7 @@ describe('Viewing results as a student', function() {
 
             for (let [index, score] of scores.entries()) {
                 expect(await studentHomePage.attempts.getScore(index)).toBe(scores[index]);
-            });
+            }
         });
 
         it('should show the complete checkmark for finished attempts', async function() {
@@ -81,13 +81,13 @@ describe('Viewing results as a student', function() {
 
             for (let [index, isComplete] of isCompletes.entries()) {
                 expect(await studentHomePage.attempts.isCompleted(index)).toBe(isCompletes[index]);
-            });
+            }
         });
 
         it('should not show the past due icon if the attempt was completed before the due date', async function() {
             var i;
 
-            for(i = 0; i < 3; i++) {
+            for (i = 0; i < 3; i++) {
                 expect(await studentHomePage.attempts.isPastDue(i)).toBe(false);
             }
         });
@@ -140,11 +140,11 @@ describe('Viewing results as a student', function() {
                 questionData = data.quizData.quiz1.question5,
                 select1 = correctAnswerSelects.get(0),
                 select2 = correctAnswerSelects.get(1),
-                await selectOption1 = studentHomePage.responses.getSelectedOptionFromDropdown(select1),
-                await selectOption2 = studentHomePage.responses.getSelectedOptionFromDropdown(select2);
+                selectOption1 = studentHomePage.responses.getSelectedOptionFromDropdown(select1),
+                selectOption2 = studentHomePage.responses.getSelectedOptionFromDropdown(select2);
 
-            expect(selectOption1).toBe(questionData.answer1);
-            expect(selectOption2).toBe(questionData.answer2);
+            expect(await selectOption1).toBe(questionData.answer1);
+            expect(await selectOption2).toBe(questionData.answer2);
         });
 
         it('should mark textmatch answers as incorrect', async function() {
@@ -237,19 +237,19 @@ describe('Viewing results as a student', function() {
             it('should show the rows correctly', async function() {
                 for (let [index, rowItem] of rowItems.entries()) {
                     expect(await rows.get(index).getText()).toBe(rowItem);
-                });
+                }
             });
 
             it('should show how the student responded', async function() {
                 for (let [index, answer] of answers.entries()) {
                     expect(await studentHomePage.responses.isOptionChecked(tableCells.get(answer))).toBe(true);
-                });
+                }
             });
 
             it('should indicate the correct answers', async function() {
                 for (let [index, answer] of answers.entries()) {
                     expect(await studentHomePage.responses.isMatrixOptionMarkedCorrect(tableCells.get(answer))).toBe(true);
-                });
+                }
             });
         });
 
@@ -264,19 +264,19 @@ describe('Viewing results as a student', function() {
             it('should show the prompts correctly', async function() {
                 for (let [index, promptItem] of promptItems.entries()) {
                     expect(await prompts.get(index).getText()).toBe(promptItem);
-                });
+                }
             });
 
             it('should show how the student responded', async function() {
                 for (let [index, correctAnswerItem] of correctAnswerItems.entries()) {
                     expect(await common.getSelectedText(selects.get(index))).toBe(correctAnswerItem);
-                });
+                }
             });
 
             it('should indicate the correct answers', async function() {
                 for (let [index, correctAnswer] of correctAnswers.entries()) {
                     expect(await correctAnswer.getText()).toBe(correctAnswerItems[index]);
-                });
+                }
             });
         });
 
@@ -290,13 +290,13 @@ describe('Viewing results as a student', function() {
             it('should show the dropdown prompts correctly', async function() {
                 for (let [index, promptItem] of promptItems.entries()) {
                     expect(await prompts.get(index).getText()).toBe(promptItem);
-                });
+                }
             });
 
             it('should show how the student responded', async function() {
                 for (let [index, correctAnswerItem] of correctAnswerItems.entries()) {
                     expect(await common.getSelectedText(selects.get(index))).toBe(correctAnswerItem);
-                });
+                }
             });
         });
 

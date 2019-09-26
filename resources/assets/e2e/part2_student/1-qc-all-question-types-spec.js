@@ -468,7 +468,7 @@ describe('Taking a graded quick check and getting all answers correct', function
         var questionData = quizData.question1;
 
         it('should mark the answer as correct when answered correctly', async function() {
-            qcPage.getMcOptions().each(function(option, index) {
+            qcPage.getMcOptions().each(async function(option, index) {
                 const text = await option.getText();
                 if (text.indexOf(questionData.answer) > -1) {
                     await qcPage.selectMcOptionByIndex(index);
