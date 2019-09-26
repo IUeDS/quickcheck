@@ -12,12 +12,12 @@ var ResponsesComponent = function(browserRef) {
     //string sub-references
     component.correctOptionClass = 'qc-correct-answer-marked';
     component.correctMatrixClass = '.qc-correct-text';
-    component.correctQuestionClass = '.panel-success';
+    component.correctQuestionClass = '.bg-success';
     component.dropdownCorrectArea = '.qc-correct-dropdown-answer';
     component.dropdownCorrectPrompts = 'label';
     component.dropdownCorrectSelects = 'select';
     component.dropdownPrompts = 'label';
-    component.incorrectQuestionClass = '.panel-danger';
+    component.incorrectQuestionClass = '.bg-danger';
     component.incorrectInputClass = 'qc-incorrect-answer-input';
     component.matchingCorrectAnswers = 'tbody tr td:last-of-type';
     component.matchingPrompts = 'label';
@@ -26,6 +26,7 @@ var ResponsesComponent = function(browserRef) {
     component.matrixColumns = '.qc-responses-matrix-column';
     component.matrixRows = 'tbody tr td:first-of-type';
     component.mcOptions = '.qc-responses-multiple-choice-option';
+    component.mCorrectOptions = '.qc-responses-multiple-correct-option';
     component.numericalAnswer = 'input';
     component.numericalCorrect = '.qc-correct-answer-input';
     component.numericalCorrectAnswers = '.qc-responses-numerical-option';
@@ -48,6 +49,7 @@ var ResponsesComponent = function(browserRef) {
     component.getMatrixOptionCells = getMatrixOptionCells;
     component.getMatrixRowLabels = getMatrixRowLabels;
     component.getMcOptions = getMcOptions;
+    component.getMCorrectOptions = getMCorrectOptions;
     component.getNumericalAnswer = getNumericalAnswer;
     component.getNumericalAnswers = getNumericalAnswers;
     component.getQuestions = getQuestions;
@@ -125,6 +127,11 @@ var ResponsesComponent = function(browserRef) {
     function getMcOptions(questionIndex) {
         var question = component.getQuestions().get(questionIndex);
         return question.all(by.css(component.mcOptions));
+    }
+
+    function getMCorrectOptions(questionIndex) {
+        var question = component.getQuestions().get(questionIndex);
+        return question.all(by.css(component.mCorrectOptions));
     }
 
     async function getNumericalAnswer(questionIndex) {

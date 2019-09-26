@@ -3,8 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import {environment} from '../../environments/environment';
 import * as moment from 'moment-timezone';
 import { Title } from '@angular/platform-browser';
-//const MathJax = require('mathjax');
-//import * as Mathjax from 'mathjax';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 @Injectable({
   providedIn: 'root'

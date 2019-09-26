@@ -19,8 +19,16 @@
         width: auto; //this doesn't need to be 100% width, which is the default
     }
 
+    label {
+        vertical-align: middle;
+    }
+
     select {
         min-width: 150px;
+    }
+
+    .fa {
+        margin-right: 10px; //extra spacing for incorrect X
     }
 }
 
@@ -41,6 +49,14 @@
             margin-left: 0;
             position: relative;
         }
+    }
+
+    .fa {
+        margin-right: 10px; //extra spacing for incorrect X
+    }
+
+    .qc-matrix-row-content {
+        vertical-align: middle;
     }
 }
 

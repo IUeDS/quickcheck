@@ -16,7 +16,7 @@ export class RandomizeCheckboxComponent implements OnInit {
   }
 
   isRandomized() {
-    if (this.question.randomized == 1) {
+    if (this.question.randomized == 'true') {
       return true;
     }
 
@@ -28,11 +28,11 @@ export class RandomizeCheckboxComponent implements OnInit {
   }
 
   toggleRandomized() {
-    if (this.question.randomized == 1) {
-      this.question.randomized = 0;
+    if (this.question.randomized == 'true') {
+      this.question.randomized = 'false';
     }
     else {
-      this.question.randomized = 1;
+      this.question.randomized = 'true';
     }
 
     this.onEdited();

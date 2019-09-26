@@ -136,7 +136,7 @@ function Common(browserRef) {
     async function saveOptionList(options) {
         var optionList = [];
 
-        options.each(async function(mcOption) {
+        await options.each(async function(mcOption) {
             const text = await mcOption.getText();
             optionList.push(text);
         });

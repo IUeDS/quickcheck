@@ -11,11 +11,11 @@
         <tbody>
             <tr *ngFor="let row of this.rows" [ngClass]="{'table-danger': !this.checkRowCorrectness(row)}">
                 <td>
-                    <span *ngIf="!this.checkRowCorrectness(row)">
+                    <span *ngIf="!this.checkRowCorrectness(row)" class="qc-matrix-row-content">
                         <span class="fa fa-remove fa-2x" aria-hidden="true"></span>
                         <span class="sr-only">This selection is incorrect</span>
                     </span>
-                    <span [innerHTML]="row.answer_text | safe: 'html'"></span>
+                    <span [innerHTML]="row.answer_text | safe: 'html'" class="qc-matrix-row-content"></span>
                 </td>
                 <td *ngFor="let column of row.columns">
                     <div class="form-check">

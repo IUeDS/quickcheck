@@ -13,9 +13,10 @@ var QcPage = function(browserRef) {
     page.finishedGradedMessage = page.browser.element(by.css('.qc-graded-msg'));
     page.finishedGradePendingMessage = page.browser.element(by.css('.qc-grade-pending-msg'));
     page.finishedUngradedMessage = page.browser.element(by.css('.qc-ungraded-msg'));
-    page.incorrectRows = page.browser.element.all(by.css('tr.danger'));
+    page.incorrectRows = page.browser.element.all(by.css('tr.table-danger'));
     page.matchingPrompts = page.browser.element.all(by.css('table tr td:first-of-type'));
     page.mcOptions = page.browser.element.all(by.css('.qc-assessment-multiple-choice-option'));
+    page.mCorrectOptions = page.browser.element.all(by.css('.qc-assessment-multiple-correct-option'));
     page.matrixCheckboxes = page.browser.element.all(by.css('table input'));
     page.matrixColumnCells = page.browser.element.all(by.css('table th'));
     page.matrixRowCells = page.browser.element.all(by.css('table tr td:first-of-type'));
@@ -46,7 +47,7 @@ var QcPage = function(browserRef) {
     page.correctHeader = 'Correct';
     page.incorrectHeader = 'Incorrect';
     page.mcInput = 'input';
-    page.selectablePicked = 'label-default';
+    page.selectablePicked = 'badge-secondary';
 
     //functions
     page.clickContinue = clickContinue;
@@ -62,6 +63,7 @@ var QcPage = function(browserRef) {
     page.getMatrixColumnCells = getMatrixColumnCells;
     page.getMatrixRowCells = getMatrixRowCells;
     page.getMcOptions = getMcOptions;
+    page.getMCorrectOptions = getMCorrectOptions;
     page.getNumericalInput = getNumericalInput;
     page.getPerResponseFeedback = getPerResponseFeedback;
     page.getQuestionProgress = getQuestionProgress;
@@ -91,6 +93,7 @@ var QcPage = function(browserRef) {
     page.selectIncorrectRandomMcOption = selectIncorrectRandomMcOption;
     page.selectMatrixCheckboxByIndex = selectMatrixCheckboxByIndex;
     page.selectMcOptionByIndex = selectMcOptionByIndex;
+    page.selectMCorrectOptionByIndex = selectMCorrectOptionByIndex;
     page.selectOption = selectOption;
     page.startOver = startOver;
     page.submit = submit;
@@ -152,6 +155,10 @@ var QcPage = function(browserRef) {
 
     function getMcOptions() {
         return page.mcOptions;
+    }
+
+    function getMCorrectOptions() {
+        return page.mCorrectOptions;
     }
 
     function getNumericalInput() {
@@ -329,6 +336,12 @@ var QcPage = function(browserRef) {
 
     async function selectMcOptionByIndex(index) {
         var option = page.mcOptions.get(index).element(by.css(page.mcInput));
+        await page.waitForModalClose(option);
+        await option.click();
+    }
+
+    async function selectMCorrectOptionByIndex(index) {
+        var option = page.mCorrectOptions.get(index).element(by.css(page.mcInput));
         await page.waitForModalClose(option);
         await option.click();
     }

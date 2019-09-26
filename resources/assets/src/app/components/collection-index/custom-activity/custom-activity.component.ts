@@ -68,7 +68,7 @@ export class CustomActivityComponent implements OnInit {
   }
 
   isGroupRequired() {
-    if (this.customActivity.group_required == 1) {
+    if (this.customActivity.group_required == 'true') {
       return true;
     }
 
@@ -85,11 +85,11 @@ export class CustomActivityComponent implements OnInit {
   }
 
   toggleCustomGroupRequired() {
-    if (this.editingData.group_required == 1) {
-      this.editingData.group_required = 0;
+    if (this.editingData.group_required == 'true') {
+      this.editingData.group_required = 'false';
     }
     else {
-      this.editingData.group_required = 1;
+      this.editingData.group_required = 'true';
     }
   }
 

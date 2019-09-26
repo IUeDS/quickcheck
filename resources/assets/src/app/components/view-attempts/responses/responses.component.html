@@ -91,7 +91,7 @@
                         <div class="qc-mcorrect-options" *ngIf="currentQuestion.question_type == 'multiple_correct'" >
                             <fieldset>
                                 <legend class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></legend>
-                                <div class="checkbox" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
+                                <div class="form-check qc-responses-multiple-correct-option" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
                                     <input type="checkbox" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" [checked]="answerOption.studentAnswer" disabled id="{{answerOption.id}}">
                                     <label for="{{answerOption.id}}">
                                         <span [innerHTML]="answerOption.answer_text | safe: 'html'"></span>

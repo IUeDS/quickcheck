@@ -27,7 +27,7 @@ export class ViewAttemptsComponent implements OnInit {
   release = false;
   responseAttempt = null;
   responseViewVisible = false;
-  search = { 'studentLastName': '' }; //for searching through students
+  search = { 'studentLastName': '', timer: null }; //for searching through students
   showUngradedOnly = false;
   studentResponses = [];
   submissions = [];
@@ -248,11 +248,18 @@ export class ViewAttemptsComponent implements OnInit {
   }
 
   searchStudentLastName() {
-    this.displayedAttempts = this.attempts.filter((attempt) => {
-      if (this.isSubstringFound(attempt.student.lis_person_name_family, this.search.studentLastName)) {
-        return true;
-      }
-    });
+    //debounce 500ms so it's not laggy
+    if (this.search.timer) {
+      clearTimeout(this.search.timer);
+    }
+
+    this.search.timer = setTimeout(() => {
+      this.displayedAttempts = this.attempts.filter((attempt) => {
+        if (this.isSubstringFound(attempt.student.lis_person_name_family, this.search.studentLastName)) {
+          return true;
+        }
+      });
+    }, 500);
   }
 
   //for infinite scrolling, need a bit of a scrollbar in iframe

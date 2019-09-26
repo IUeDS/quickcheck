@@ -3,7 +3,7 @@
     (click)="this.openForm()">
     <span class="fa fa-plus" aria-hidden="true"></span> Add custom activity
 </button>
-<div [hidden]="!this.isOpen" class="form-group">
+<div *ngIf="this.isOpen" class="form-group">
     <form ngNativeValidate (ngSubmit)="this.save()">
         <div class="form-group">
             <label for="name">Name of the activity </label>
@@ -23,7 +23,7 @@
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" [(ngModel)]="this.customActivityData.group_required" name="group-required"> Group required (get group the student belongs to, if applicable, and append as query string on launch)
+                <input type="checkbox" [checked]="this.customActivityData.group_required == 'true'" (click)="this.toggleCustomGroupRequired()" name="group-required"> Group required (get group the student belongs to, if applicable, and append as query string on launch)
             </label>
         </div>
         <button type="submit" class="btn btn-success qc-btn">Save custom activity</button>

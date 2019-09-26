@@ -178,6 +178,7 @@ describe('Adding a multiple correct question', function() {
     it('should allow marking multiple options as correct', async function() {
         var options = question.getOptions();
         await question.toggleMcOptionCorrect(options.get(0));
+        await browser.sleep(1000); //intermittent failures here to mark second as correct, seeing if sleep helps
         await question.toggleMcOptionCorrect(options.get(1));
         expect(await question.isMcOptionMarkedCorrect(options.get(0))).toBe(true);
         expect(await question.isMcOptionMarkedCorrect(options.get(1))).toBe(true);

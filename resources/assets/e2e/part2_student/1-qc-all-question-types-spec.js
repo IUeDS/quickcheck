@@ -18,6 +18,7 @@ describe('Navigating to the quick check', function() {
     it('should log in to Canvas and find the assignment', async function() {
         await common.enterNonAngularPage();
         await canvasLoginPage.login(creds.student.username, creds.student.password);
+        await common.enterNonAngularPage(); //9/26/19: for some reason protractor needed this a second time, otherwise failed right away
         await canvasAssignmentsPage.goToAssignments();
         await canvasAssignmentsPage.openAssignment(qcName);
     });
@@ -78,7 +79,7 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
                     questionData.option3,
                     questionData.option4
                 ];
-            options.each(async function(option) {
+            await options.each(async function(option) {
                 var optionFound = false;
                 const text = await option.getText();
                 textOptions.forEach(function(textOption) {
@@ -120,11 +121,11 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
 
         it('should properly show the question and options', async function() {
             expect(await qcPage.getQuestionText()).toBe(''); //no question text here
-            expect(await qcPage.getMcOptions().count()).toBe(4);
+            expect(await qcPage.getMCorrectOptions().count()).toBe(4);
         });
 
         it('should show the options in the order saved when the question is not randomized', async function() {
-            var options = qcPage.getMcOptions();
+            var options = qcPage.getMCorrectOptions();
             expect(await options.get(0).getText()).toBe(questionData.option1);
             expect(await options.get(1).getText()).toBe(questionData.option2);
             expect(await options.get(2).getText()).toBe(questionData.option3);
@@ -136,7 +137,7 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
         });
 
         it('should mark the question as incorrect when answered incorrectly', async function() {
-            await qcPage.selectMcOptionByIndex(0);
+            await qcPage.selectMCorrectOptionByIndex(0);
             await qcPage.submit();
             expect(await qcPage.isIncorrectModal()).toBe(true);
         });
@@ -227,7 +228,7 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
                 matchingDistractorFirst = true;
             }
 
-            qcPage.getSelects().each(async function(select) {
+            await qcPage.getSelects().each(async function(select) {
                 var options = select.all(by.css('option'));
                 expect(await options.get(0).getText()).toBe(''); //blank first option for answer-switching
                 if (matchingDistractorFirst) {
@@ -278,11 +279,10 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
         });
 
         it('should hide a matching option from future rows when the option has already been selected', async function() {
-            qcPage.getSelects().get(1).all(by.css('option')).each(async function(option) {
+            await qcPage.getSelects().get(1).all(by.css('option')).each(async function(option) {
                 const text = await option.getText();
                 if (text.indexOf(questionData.answer2) > -1) {
-                    //for some reason isDisplayed() was being funny with me, so had to check that ng-hide was activated on it
-                    expect(await option.getAttribute('class')).toContain('ng-hide');
+                    expect(await option.getAttribute('hidden')).toBe('true');
                 }
             });
         });
@@ -310,7 +310,7 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
             var prompts = qcPage.getDropdownPrompts(),
                 promptLabels = [ questionData.prompt1, questionData.prompt2 ];
 
-            prompts.each(async function(prompt, index) {
+            await prompts.each(async function(prompt, index) {
                 expect(await prompt.getText()).toBe(promptLabels[index]);
             });
         });
@@ -321,10 +321,10 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
 
             //this is a spot where the order may change for apparently no reason from Laravel, so
             //just making sure each answer is represented somewhere, rather than a specific order
-            selects.each(async function(select) {
-                answers.forEach(async function(answer) {
+            await selects.each(async function(select) {
+                for (let answer of answers) {
                     expect(await select.getText()).toContain(answer);
-                });
+                }
             });
         });
 
@@ -360,7 +360,7 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
         it('should gray out an option box after it has been selected but not the others', async function() {
             //once again, since order changes from Laravel, run through the whole list
             await qcPage.selectOption(0, questionData.answer2);
-            qcPage.getSelectables().each(async function(selectable, index) {
+            await qcPage.getSelectables().each(async function(selectable, index) {
                 const text = await selectable.getText();
 
                 if (text.indexOf(questionData.answer1) > -1) {
@@ -376,11 +376,10 @@ describe('Taking a graded quickcheck and getting all questions incorrect', funct
         });
 
         it('should hide an option from future rows when the option has already been selected', async function() {
-            qcPage.getSelects().get(1).all(by.css('option')).each(async function(option) {
+            await qcPage.getSelects().get(1).all(by.css('option')).each(async function(option) {
                 const text = await option.getText();
                 if (text.indexOf(questionData.answer2) > -1) {
-                    //for some reason isDisplayed() was being funny with me, so had to check that ng-hide was activated on it
-                    expect(await option.getAttribute('class')).toContain('ng-hide');
+                    expect(await option.getAttribute('hidden')).toBe('true');
                 }
             });
         });
@@ -456,7 +455,7 @@ describe('Taking a graded quick check and getting all answers correct', function
     it('should reinitialize the quiz after clicking the restart button', async function() {
         await qcPage.restart();
         expect(await qcPage.getQuestionProgress()).toBe('question 1 out of 7');
-        common.saveOptionList(qcPage.getMcOptions());
+        await common.saveOptionList(qcPage.getMcOptions());
     });
 
     //compare the option order in this one vs. the 2 previous attempts
@@ -468,7 +467,7 @@ describe('Taking a graded quick check and getting all answers correct', function
         var questionData = quizData.question1;
 
         it('should mark the answer as correct when answered correctly', async function() {
-            qcPage.getMcOptions().each(async function(option, index) {
+            await qcPage.getMcOptions().each(async function(option, index) {
                 const text = await option.getText();
                 if (text.indexOf(questionData.answer) > -1) {
                     await qcPage.selectMcOptionByIndex(index);
@@ -494,8 +493,8 @@ describe('Taking a graded quick check and getting all answers correct', function
         var questionData = quizData.question2;
 
         it('should mark the answer as correct when answered correctly', async function() {
-            await qcPage.selectMcOptionByIndex(questionData.answer1);
-            await qcPage.selectMcOptionByIndex(questionData.answer2);
+            await qcPage.selectMCorrectOptionByIndex(questionData.answer1);
+            await qcPage.selectMCorrectOptionByIndex(questionData.answer2);
             await qcPage.submit();
             expect(await qcPage.isCorrectModal()).toBe(true);
         });

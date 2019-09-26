@@ -74,7 +74,7 @@ var CanvasAssignmentsPage = function(browserRef) {
 
     async function goToAssignments() {
         var link = page.browser.element(by.css(page.assignmentsLink));
-        await page.browser.wait(EC.elementToBeClickable(link));
+        await page.browser.wait(EC.elementToBeClickable(link), page.maxWait);
         await link.click();
         await page.browser.sleep(2000); //was running into stale element errors without this
     }
@@ -97,12 +97,12 @@ var CanvasAssignmentsPage = function(browserRef) {
     }
 
     async function openAssignment(assignmentName) {
-        var link = await page.getAssignmentLink(assignmentName),
-            ltiContent;
-        await page.browser.wait(EC.elementToBeClickable(link));
+        const link = await page.getAssignmentLink(assignmentName);
+        let ltiContent;
+        await page.browser.wait(EC.elementToBeClickable(link), page.maxWait);
         await link.click();
         ltiContent = page.browser.element(by.css(page.ltiContent));
-        await page.browser.wait(EC.presenceOf(ltiContent));
+        await page.browser.wait(EC.presenceOf(ltiContent), page.maxWait);
     }
 
     async function saveEmbed() {

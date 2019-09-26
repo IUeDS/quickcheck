@@ -2,7 +2,8 @@ var browser2 = browser.params.browser2,
     includes = require('../common/includes.js'),
     data = includes.data,
     common = new includes.Common(browser2),
-    studentHomePage = new includes.StudentHomePage(browser2);
+    studentHomePage = new includes.StudentHomePage(browser2),
+    EC = protractor.ExpectedConditions;
 
 describe('Viewing results as a student', function() {
     var quiz1 = data.sets.featuresAllOn.quickchecks.featuresAllOn,
@@ -10,13 +11,14 @@ describe('Viewing results as a student', function() {
         quiz3 = data.sets.featuresAllOff.quickchecks.featuresAllOffPastDue,
         quiz4 = data.sets.featuresAllOff.quickchecks.resultsNotReleased;
 
-    describe('on the home/overview page', async function() {
+    describe('on the home/overview page', function() {
         var releases;
 
         it('should show a list of all released quizzes where the student had made at least one attempt', async function() {
             await common.switchToCanvas();
             await common.goToQuickCheck();
             await common.enterAngularPage();
+
             releases = studentHomePage.getReleases();
             expect(await releases.count()).toBe(3);
             expect(await releases.get(0).getText()).toBe(quiz1);
@@ -26,16 +28,20 @@ describe('Viewing results as a student', function() {
 
         it('should allow searching for a quiz regardless of case', async function() {
             await studentHomePage.search(quiz1.toUpperCase());
-            expect(await studentHomePage.getDisplayedReleases().count()).toBe(1);
+            const releases = await studentHomePage.getDisplayedReleases();
+            expect(releases.length).toBe(1);
         });
 
         it('should not show any quizzes when searching for text that does not match', async function() {
             await studentHomePage.search('random text here');
+            const releases = await studentHomePage.getDisplayedReleases();
+            expect(releases.length).toBe(0);
         });
 
-        it('should show all sets again after the search text has been erased', async function() {
+        it('should show all results again after the search text has been erased', async function() {
             await studentHomePage.clearSearch();
-            expect(await studentHomePage.getDisplayedReleases().count()).toBe(3);
+            const releases = await studentHomePage.getDisplayedReleases();
+            expect(releases.length).toBe(3);
         });
     });
 
@@ -196,7 +202,7 @@ describe('Viewing results as a student', function() {
 
         describe('for a multiple correct question', function() {
             var questionData = data.quizData.quiz1.question2,
-                options = studentHomePage.responses.getMcOptions(1),
+                options = studentHomePage.responses.getMCorrectOptions(1),
                 optionItems = [ questionData.option1, questionData.option2, questionData.option3, questionData.option4 ],
                 correctOptions = [ options.get(0), options.get(1) ];
 
@@ -274,9 +280,9 @@ describe('Viewing results as a student', function() {
             });
 
             it('should indicate the correct answers', async function() {
-                for (let [index, correctAnswer] of correctAnswers.entries()) {
+                await correctAnswers.each(async function(correctAnswer, index) {
                     expect(await correctAnswer.getText()).toBe(correctAnswerItems[index]);
-                }
+                });
             });
         });
 
@@ -305,7 +311,7 @@ describe('Viewing results as a student', function() {
                 answers = studentHomePage.responses.getTextMatchAnswers(5);
 
             it('should show how the student responded', async function() {
-                expect(await studentHomePage.responses.getTextmatchAnswer(5)).toBe(questionData.option1.toLowerCase() + '!');
+                expect(await studentHomePage.responses.getTextmatchAnswer(5)).toBe(questionData.option1.toLowerCase() + '!    ');
             });
 
             it('should indicate the student answer was correct', async function() {

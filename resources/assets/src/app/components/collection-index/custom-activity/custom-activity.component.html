@@ -52,7 +52,7 @@
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" id="edit-custom-group" name="edit-custom-group"
-                                [checked]="this.editingData.group_required == 1"
+                                [checked]="this.editingData.group_required == 'true'"
                                 (click)="this.toggleCustomGroupRequired()">
                             Group required (get group the student belongs to, if applicable, and append as query string on launch)
                         </label>

@@ -133,11 +133,11 @@ export class UsersComponent implements OnInit {
   }
 
   toggleReadOnly(user) {
-    if (user.readOnly) {
+    if (user.readOnly == 'true') {
       user.readOnly = null;
     }
     else {
-      user.readOnly = true;
+      user.readOnly = 'false';
     }
   }
 

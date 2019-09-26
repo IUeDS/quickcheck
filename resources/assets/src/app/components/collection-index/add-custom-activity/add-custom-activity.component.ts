@@ -16,15 +16,26 @@ export class AddCustomActivityComponent implements OnInit {
   constructor(private customActivityService: CustomActivityService) { }
 
   ngOnInit() {
+    this.resetData();
   }
 
   closeForm() {
     this.isOpen = false;
-    this.customActivityData = {}; //reset
+    this.resetData();
   }
 
   openForm() {
     this.isOpen = true;
+  }
+
+  resetData() {
+    this.customActivityData = {
+      name: null,
+      description: null,
+      url: null,
+      developer: null,
+      group_required: 'false'
+    };
   }
 
   async save() {
@@ -47,4 +58,12 @@ export class AddCustomActivityComponent implements OnInit {
     this.onSave.emit({ customActivity });
   }
 
+  toggleCustomGroupRequired() {
+    if (this.customActivityData.group_required == 'false') {
+      this.customActivityData.group_required = 'true';
+      return;
+    }
+
+    this.customActivityData.group_required = 'false';
+  }
 }

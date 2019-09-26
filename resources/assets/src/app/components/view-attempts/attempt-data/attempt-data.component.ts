@@ -121,7 +121,7 @@ export class AttemptDataComponent implements OnInit {
         attempt.isLate = true;
       }
       if (this.isStudent) { //skip the last part if a student
-        return;
+        continue;
       }
       if (this.isFirstRowForStudent(attempt)) {
         attempt.firstRowForStudent = true;

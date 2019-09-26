@@ -32,6 +32,7 @@ const routes: Routes = [
     { path: 'select', component: SelectComponent },
     { path: 'index.php/select', component: SelectComponent },
     { path: 'student', component: StudentViewComponent },
+    { path: 'index.php/student', component: StudentViewComponent },
     { path: 'manage', component: AttemptsOverviewComponent },
     { path: 'index.php/manage', component: AttemptsOverviewComponent },
     { path: 'assessment/:id/attempts', component: ViewAttemptsComponent },
