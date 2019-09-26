@@ -14,167 +14,163 @@ var browser3 = browser.params.browser3, //define browser instance from global va
 describe('Making a quick check a custom activity', function() {
     var customData = data.customActivity;
 
-    it('should show the button to make it a custom activity before questions are added', function() {
+    it('should show the button to make it a custom activity before questions are added', async function() {
         var set,
             subset,
             quickcheck;
 
-        viewSetsPage.toggleAdminViewAllSets();
+        await viewSetsPage.toggleAdminViewAllSets();
         set = viewSetsPage.getAdminSetTiles().get(0); //add to a set the instructor can access for testing
-        viewSetsPage.getGoToSetBtn(set).click();
-        browser3.sleep(1000);
-        setPage.initSubsets().then(function() {
-            subset = setPage.getSubset(0);
-            subset.addAndSaveQuickCheck(data.sets.featuresAllOn.quickchecks.custom);
-            quickcheck = subset.getQuickChecks().last();
-            subset.editQuickCheck(quickcheck);
-            expect(editQcPage.getCustomBtn().isDisplayed()).toBe(true);
-        });
-
+        await viewSetsPage.getGoToSetBtn(set).click();
+        await browser3.sleep(1000);
+        await setPage.initSubsets();
+        subset = setPage.getSubset(0);
+        await subset.addAndSaveQuickCheck(data.sets.featuresAllOn.quickchecks.custom);
+        quickcheck = subset.getQuickChecks().last();
+        await subset.editQuickCheck(quickcheck);
+        expect(await editQcPage.getCustomBtn().isDisplayed()).toBe(true);
     });
 
-    it('should hide the button to make it a custom activity after a question has been added', function() {
-        editQcPage.addQuestion(data.questionTypes.mc);
-        expect(editQcPage.getCustomBtn().isPresent()).toBe(false);
+    it('should hide the button to make it a custom activity after a question has been added', async function() {
+        await editQcPage.addQuestion(data.questionTypes.mc);
+        expect(await editQcPage.getCustomBtn().isPresent()).toBe(false);
     });
 
-    it('should show the button again after the question has been deleted', function() {
-        editQcPage.getQuestion(0).deleteQuestion();
-        expect(editQcPage.getCustomBtn().isDisplayed()).toBe(true);
+    it('should show the button again after the question has been deleted', async function() {
+        await editQcPage.getQuestion(0).deleteQuestion();
+        expect(await editQcPage.getCustomBtn().isDisplayed()).toBe(true);
     });
 
-    it('should show the proper form when the button is clicked', function() {
-        editQcPage.getCustomBtn().click();
-        expect(editQcPage.getCustomDropdown().isDisplayed()).toBe(true);
+    it('should show the proper form when the button is clicked', async function() {
+        await editQcPage.getCustomBtn().click();
+        expect(await editQcPage.getCustomDropdown().isDisplayed()).toBe(true);
     });
 
-    it('should show a list of all custom activities in the dropdown', function() {
+    it('should show a list of all custom activities in the dropdown', async function() {
         var customActivities = editQcPage.getCustomActivities();
-        expect(customActivities.count()).toBe(1);
-        expect(customActivities.get(0).getText()).toBe(customData.name);
+        expect(await customActivities.count()).toBe(1);
+        expect(await customActivities.get(0).getText()).toBe(customData.name);
     });
 
-    it('should display the custom activity information when one is selected from the dropdown', function() {
+    it('should display the custom activity information when one is selected from the dropdown', async function() {
         var customDropdown = editQcPage.getCustomDropdown();
-        customDropdown.sendKeys(customData.name);
-        expect(editQcPage.getCustomName()).toContain(customData.name);
+        await customDropdown.sendKeys(customData.name);
+        expect(await editQcPage.getCustomName()).toContain(customData.name);
     });
 
-    it('should delete the custom activity when the delete button is clicked', function() {
-        editQcPage.deleteCustom();
-        expect(editQcPage.getCustomBtn().isDisplayed()).toBe(true);
+    it('should delete the custom activity when the delete button is clicked', async function() {
+        await editQcPage.deleteCustom();
+        expect(await editQcPage.getCustomBtn().isDisplayed()).toBe(true);
     });
 
-    it('should keep the custom activity information when the quick check is saved', function() {
+    it('should keep the custom activity information when the quick check is saved', async function() {
         //re-add it and save
-        editQcPage.getCustomBtn().click();
-        editQcPage.getCustomDropdown().sendKeys(customData.name);
-        editQcPage.save();
-        expect(editQcPage.getSaveSuccess().isDisplayed()).toBe(true);
-        expect(editQcPage.getCustomName()).toContain(customData.name);
+        await editQcPage.getCustomBtn().click();
+        await editQcPage.getCustomDropdown().sendKeys(customData.name);
+        await editQcPage.save();
+        expect(await editQcPage.getSaveSuccess().isDisplayed()).toBe(true);
+        expect(await editQcPage.getCustomName()).toContain(customData.name);
     });
 
-    it('should show the proper custom activity when previewing', function() {
+    it('should show the proper custom activity when previewing', async function() {
         var subset,
             quickcheck;
 
-        editQcPage.goBackToSet();
-        setPage.initSubsets().then(function() {
-            subset = setPage.getSubset(0);
-            quickcheck = subset.getQuickChecks().last();
-            subset.previewQuickCheck(quickcheck);
-            common.enterNonAngularPage();
-            common.switchTab(1);
-            expect(browser3.driver.getCurrentUrl()).toContain(customData.url);
-        });
+        await editQcPage.goBackToSet();
+        await setPage.initSubsets();
+        subset = setPage.getSubset(0);
+        quickcheck = subset.getQuickChecks().last();
+        await subset.previewQuickCheck(quickcheck);
+        await common.enterNonAngularPage();
+        await common.switchTab(1);
+        expect(await browser3.driver.getCurrentUrl()).toContain(customData.url);
     });
 });
 
 
 describe('Embedding and taking a custom activity', function() {
     var customData = data.customActivity;
-    it('should only show personal memberships for admins in the select panel at first', function() {
 
-        browser3.close();
-        common.switchTab(0);
-        canvasAssignmentsPage.createAssignmentAndOpenEmbed(customData.name, '1').then(function() {
-            common.enterAngularPage();
-            expect(embedPage.getSets().count()).toBe(1);
-        });
+    it('should only show personal memberships for admins in the select panel at first', async function() {
+        await browser3.close();
+        await common.switchTab(0);
+        await canvasAssignmentsPage.createAssignmentAndOpenEmbed(customData.name, '1');
+        await common.enterAngularPage();
+        expect(await embedPage.getSets().count()).toBe(1);
     });
 
-    it('should show all sets in the system for admins in the select panel after toggling', function() {
-        embedPage.toggleAdminViewAll();
-        expect(embedPage.getAdminSets().count()).toBe(3);
+    it('should show all sets in the system for admins in the select panel after toggling', async function() {
+        await embedPage.toggleAdminViewAll();
+        expect(await embedPage.getAdminSets().count()).toBe(3);
     });
 
-    it('should show a custom icon next to the activity in the embed window', function() {
+    it('should show a custom icon next to the activity in the embed window', async function() {
         var qcName = data.sets.featuresAllOn.quickchecks.custom,
             quickcheck = embedPage.getQuickChecks().get(0);
-        expect(quickcheck.getText()).toContain('Custom');
+
+        expect(await quickcheck.getText()).toContain('Custom');
 
         //embed
-        embedPage.search(qcName);
-        embedPage.selectSearchedQuickCheckByIndex(0);
-        common.switchToCanvas().then(function() {
-            canvasAssignmentsPage.saveEmbed();
-            common.switchToLtiTool();
-        });
+        await embedPage.search(qcName);
+        await embedPage.selectSearchedQuickCheckByIndex(0);
+        await common.switchToCanvas();
+        await canvasAssignmentsPage.saveEmbed();
+        await common.switchToLtiTool();
     });
 
-    it('should show the correct custom activity', function() {
+    it('should show the correct custom activity', async function() {
         //tried getting the url, but was referencing parent iframe. Instead, just check for a class we know is in the activity.
-        expect(browser3.driver.findElement(by.className('question_area')).isDisplayed()).toBe(true);
+        expect(await browser3.driver.findElement(by.className('question_area')).isDisplayed()).toBe(true);
     });
 
-    it('should allow answering 1 correct question and 1 incorrect question', function() {
+    it('should allow answering 1 correct question and 1 incorrect question', asyc function() {
         // we're using the P101 brain drag and drop custom activity; no need to make this object-oriented, not reusable
         // drag and drop: http://stackoverflow.com/questions/25664551/how-to-simulate-a-drag-and-drop-action-in-protractor
         questionBox = browser3.driver.findElement(by.className('question_area'));
         answerArea = browser3.driver.findElement(by.css('.label_dropzone[data-label="Cerebellum"]'));
-        browser3.driver.actions().dragAndDrop(questionBox,answerArea).mouseUp().perform();
-        browser3.driver.sleep(500);
+        await browser3.driver.actions().dragAndDrop(questionBox,answerArea).mouseUp().perform();
+        await browser3.driver.sleep(500);
         submitBtn = browser3.driver.findElement(by.css('.submit_response'));
-        submitBtn.click();
-        browser3.driver.sleep(1000);
+        await submitBtn.click();
+        await browser3.driver.sleep(1000);
         nextBtn = browser3.driver.findElement(by.css('.btn.next'));
-        nextBtn.click();
-        browser3.driver.sleep(1000);
-        browser3.driver.actions().dragAndDrop(questionBox,answerArea).mouseUp().perform();
-        browser3.driver.sleep(500);
-        submitBtn.click();
-        browser3.driver.sleep(500);
-        browser3.driver.switchTo().defaultContent();
-        common.goToQuickCheck();
+        await nextBtn.click();
+        await browser3.driver.sleep(1000);
+        await browser3.driver.actions().dragAndDrop(questionBox,answerArea).mouseUp().perform();
+        await browser3.driver.sleep(500);
+        await submitBtn.click();
+        await browser3.driver.sleep(500);
+        await browser3.driver.switchTo().defaultContent();
+        await common.goToQuickCheck();
     });
 
-    it('should show the attempt data correctly in the results view', function() {
+    it('should show the attempt data correctly in the results view', async function() {
         var assessmentName = data.sets.featuresAllOn.quickchecks.custom;
 
-        common.enterAngularPage();
-        homePage.nav.goToResults();
-        attemptOverviewPage.getAssessmentByName(assessmentName).click();
-        browser3.sleep(1000);
-        expect(attemptsPage.attempts.getCorrect(0)).toBe('1');
-        expect(attemptsPage.attempts.getIncorrect(0)).toBe('1');
-        expect(attemptsPage.attempts.getScore(0)).toBe('10%');
+        await common.enterAngularPage();
+        await homePage.nav.goToResults();
+        await attemptOverviewPage.getAssessmentByName(assessmentName).click();
+        await browser3.sleep(1000);
+        expect(await attemptsPage.attempts.getCorrect(0)).toBe('1');
+        expect(await attemptsPage.attempts.getIncorrect(0)).toBe('1');
+        expect(await attemptsPage.attempts.getScore(0)).toBe('10%');
     });
 
-    it('should show a responses table in the results view', function() {
-        attemptsPage.attempts.getResponsesBtn(0).click();
-        expect(attemptsPage.customResponses.isResponseTable()).toBe(true);
+    it('should show a responses table in the results view', async function() {
+        await attemptsPage.attempts.getResponsesBtn(0).click();
+        expect(await attemptsPage.customResponses.isResponseTable()).toBe(true);
     });
 
-    it('should correctly show the response data in the results view', function() {
+    it('should correctly show the response data in the results view', async function() {
         var responses = attemptsPage.customResponses; //for easier typing
 
-        expect(responses.getQuestion(0)).toBe('This region allows you to balance while riding a bicycle.');
-        expect(responses.getAnswer(0)).toBe('Cerebellum');
-        expect(responses.getAnswerKey(0)).toBe('Cerebellum');
-        expect(responses.isCorrect(0)).toBe(true);
-        expect(responses.getQuestion(1)).toBe('This region is almost entirely dedicated to vision.');
-        expect(responses.getAnswer(1)).toBe('Cerebellum');
-        expect(responses.getAnswerKey(1)).toBe('Occipital Lobe');
-        expect(responses.isCorrect(1)).toBe(false);
+        expect(await responses.getQuestion(0)).toBe('This region allows you to balance while riding a bicycle.');
+        expect(await responses.getAnswer(0)).toBe('Cerebellum');
+        expect(await responses.getAnswerKey(0)).toBe('Cerebellum');
+        expect(await responses.isCorrect(0)).toBe(true);
+        expect(await responses.getQuestion(1)).toBe('This region is almost entirely dedicated to vision.');
+        expect(await responses.getAnswer(1)).toBe('Cerebellum');
+        expect(await responses.getAnswerKey(1)).toBe('Occipital Lobe');
+        expect(await responses.isCorrect(1)).toBe(false);
     });
 });

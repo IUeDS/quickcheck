@@ -9,49 +9,48 @@ var browser3 = browser.params.browser3, //define browser instance from global va
     viewSetsPage = new includes.ViewSetsPage(browser3);
 
 describe('An admin viewing the sets home page', function() {
-    it('should see no sets initially because the admin has not personally created any', function() {
-        common.enterNonAngularPage();
-        canvasLoginPage.login(creds.admin.username, creds.admin.password);
-        browser3.sleep(2000); //for some reason angular wasn't waiting, failed all tests, even though it works fine for instructor? argh.
-        common.goToQuickCheck().then(function() {
-            common.enterAngularPage();
-            homePage.nav.goToSets();
-            expect(viewSetsPage.getInitialInstructions().isDisplayed()).toBe(true);
-        });
+    it('should see no sets initially because the admin has not personally created any', async function() {
+        await common.enterNonAngularPage();
+        await canvasLoginPage.login(creds.admin.username, creds.admin.password);
+        await browser3.sleep(2000); //for some reason angular wasn't waiting, failed all tests, even though it works fine for instructor? argh.
+        await common.goToQuickCheck();
+        await common.enterAngularPage();
+        await homePage.nav.goToSets();
+        expect(await viewSetsPage.getInitialInstructions().isDisplayed()).toBe(true);
     });
 
     //this one is dependent on suite 1 and the previous sets that the instructor created
-    it('should see all sets created in the system after toggling to see them', function() {
-        viewSetsPage.toggleAdminViewAllSets();
-        expect(viewSetsPage.getAdminSetTiles().count()).toBe(2);
-        expect(viewSetsPage.getInitialInstructions().isPresent()).toBe(false);
+    it('should see all sets created in the system after toggling to see them', async function() {
+        await viewSetsPage.toggleAdminViewAllSets();
+        expect(await viewSetsPage.getAdminSetTiles().count()).toBe(2);
+        expect(await viewSetsPage.getInitialInstructions().isPresent()).toBe(false);
     });
 
 
-    it('should see no sets again after toggling the view for all sets back to off', function() {
-        viewSetsPage.toggleAdminViewAllSets();
-        expect(viewSetsPage.getAdminSetTiles().count()).toBe(0);
-        expect(viewSetsPage.getInitialInstructions().isDisplayed()).toBe(true);
+    it('should see no sets again after toggling the view for all sets back to off', async function() {
+        await viewSetsPage.toggleAdminViewAllSets();
+        expect(await viewSetsPage.getAdminSetTiles().count()).toBe(0);
+        expect(await viewSetsPage.getInitialInstructions().isDisplayed()).toBe(true);
     });
 });
 
 describe('Inviting an admin user', function() {
-    it('should show the proper form when the add admin user button is clicked', function() {
-        viewSetsPage.toggleAdminViewAllSets(); //toggle back on to view all sets
-        viewSetsPage.addAdminUser();
-        expect(viewSetsPage.getAdminUserInput().isDisplayed()).toBe(true);
+    it('should show the proper form when the add admin user button is clicked', async function() {
+        await viewSetsPage.toggleAdminViewAllSets(); //toggle back on to view all sets
+        await viewSetsPage.addAdminUser();
+        expect(await viewSetsPage.getAdminUserInput().isDisplayed()).toBe(true);
     });
 
-    it('should throw an error when the username is invalid', function() {
-        viewSetsPage.getAdminUserInput().sendKeys('Thisusernameistotallyinvalid');
-        viewSetsPage.submitAdminUser();
-        expect(viewSetsPage.getAdminUserValidationError().isDisplayed()).toBe(true);
+    it('should throw an error when the username is invalid', async function() {
+        await viewSetsPage.getAdminUserInput().sendKeys('Thisusernameistotallyinvalid');
+        await viewSetsPage.submitAdminUser();
+        expect(await viewSetsPage.getAdminUserValidationError().isDisplayed()).toBe(true);
     });
 
-    it('should show a success message when the user is valid', function() {
-        viewSetsPage.getAdminUserInput().clear();
-        viewSetsPage.getAdminUserInput().sendKeys(browser.params.inviteUser);
-        viewSetsPage.submitAdminUser();
-        expect(viewSetsPage.getAdminUserSuccess().isDisplayed()).toBe(true);
+    it('should show a success message when the user is valid', async function() {
+        await viewSetsPage.getAdminUserInput().clear();
+        await viewSetsPage.getAdminUserInput().sendKeys(browser.params.inviteUser);
+        await viewSetsPage.submitAdminUser();
+        expect(await viewSetsPage.getAdminUserSuccess().isDisplayed()).toBe(true);
     });
 });

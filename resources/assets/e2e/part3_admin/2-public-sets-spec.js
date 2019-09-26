@@ -19,21 +19,21 @@ describe('Adding a subset and quick check from the home page', function() {
         subsetName = set.subsets.group1,
         qcName = set.quickchecks.assessment1;
 
-    it('should create a set normally at first', function() {
-        viewSetsPage.clickAddSetBtn();
-        viewSetsPage.getAddSetNameField().sendKeys(setName);
-        viewSetsPage.saveNewSet();
-        viewSetsPage.nav.goToHome();
+    it('should create a set normally at first', async function() {
+        await viewSetsPage.clickAddSetBtn();
+        await viewSetsPage.getAddSetNameField().sendKeys(setName);
+        await viewSetsPage.saveNewSet();
+        await viewSetsPage.nav.goToHome();
     });
 
-    it('should show all sets in the dropdown that the user has a membership in', function() {
-        homePage.addQuickCheck();
-        expect(homePage.getSetOptions().count()).toBe(1);
-        homePage.selectSet(setName);
+    it('should show all sets in the dropdown that the user has a membership in', async function() {
+        await homePage.addQuickCheck();
+        expect(await homePage.getSetOptions().count()).toBe(1);
+        await homePage.selectSet(setName);
     });
 
-    it('should show no subsets in the dropdown if none are present', function() {
-        expect(homePage.getSubsetOptions().count()).toBe(0);
+    it('should show no subsets in the dropdown if none are present', async function() {
+        expect(await homePage.getSubsetOptions().count()).toBe(0);
     });
 
     //Just add a single question; I was thinking originally that I would add all question types and make
@@ -41,87 +41,86 @@ describe('Adding a subset and quick check from the home page', function() {
     //all questions have their inputs disabled and delete option buttons invisible, but you know what?
     //As long as the save button is hidden, it really doesn't matter, since the user can't make changes
     //regardless. We might want to go back and add this all in later, if it becomes an issue, but it's doubtful.
-    it('should redirect to the quick check after creating on the home page', function() {
-        homePage.selectNewSubset();
-        homePage.getNewSubsetInput().sendKeys(subsetName);
-        homePage.saveNewQuickCheck(qcName);
+    it('should redirect to the quick check after creating on the home page', async function() {
+        await homePage.selectNewSubset();
+        await homePage.getNewSubsetInput().sendKeys(subsetName);
+        await homePage.saveNewQuickCheck(qcName);
         //THIS IS SO STUPID: kept on telling me name was blank, even though this worked fine on previous
         //tests. So I had to add in an expected condition for the name to be there before running test. ugh.
-        browser3.wait(EC.textToBePresentInElementValue(editQcPage.getNameInput(), qcName), 10000);
-        expect(editQcPage.getAssessmentName()).toBe(qcName);
+        await browser3.wait(EC.textToBePresentInElementValue(editQcPage.getNameInput(), qcName), 10000);
+        expect(await editQcPage.getAssessmentName()).toBe(qcName);
     });
 
-    it('should show the created subset on the set page', function() {
+    it('should show the created subset on the set page', async function() {
         //add in questions, save, go back
         var options,
             question,
             subset;
 
-        editQcPage.addQuestion(data.questionTypes.mc);
+        await editQcPage.addQuestion(data.questionTypes.mc);
         question = editQcPage.getQuestion(0);
         options = question.getOptions();
         //we don't need to reference this question data later, so no need to store it centrally
-        question.enterMcTextOption(options.get(0), 'A');
-        question.enterMcTextOption(options.get(1), 'B');
-        question.enterMcTextOption(options.get(2), 'C');
-        question.enterMcTextOption(options.get(3), 'D');
-        question.toggleMcOptionCorrect(options.get(0));
-        editQcPage.save();
-        editQcPage.goBackToSet();
-        setPage.initSubsets().then(function() {
-            subset = setPage.getSubset(0);
-            expect(subset.getName()).toBe(subsetName.toUpperCase());
-            setPage.nav.goToSets();
-        });
+        await question.enterMcTextOption(options.get(0), 'A');
+        await question.enterMcTextOption(options.get(1), 'B');
+        await question.enterMcTextOption(options.get(2), 'C');
+        await question.enterMcTextOption(options.get(3), 'D');
+        await question.toggleMcOptionCorrect(options.get(0));
+        await editQcPage.save();
+        await editQcPage.goBackToSet();
+        await setPage.initSubsets();
+        subset = setPage.getSubset(0);
+        expect(await subset.getName()).toBe(subsetName.toUpperCase());
+        await setPage.nav.goToSets();
     });
 });
 
 describe('Making a set public', function() {
-    it('should initially show a notice that there are no public sets as of yet', function() {
-        viewSetsPage.togglePublicSets();
-        expect(viewSetsPage.getNoPublicSetsMsg().isDisplayed()).toBe(true);
+    it('should initially show a notice that there are no public sets as of yet', async function() {
+        await viewSetsPage.togglePublicSets();
+        expect(await viewSetsPage.getNoPublicSetsMsg().isDisplayed()).toBe(true);
     });
 
-    it('should initially show a button in a set to make a set public (initially it is private)', function() {
+    it('should initially show a button in a set to make a set public (initially it is private)', async function() {
         var set = viewSetsPage.getMembershipTiles().last(),
             toggleBtn;
 
-        viewSetsPage.getGoToSetBtn(set).click();
-        browser3.sleep(1000);
+        await viewSetsPage.getGoToSetBtn(set).click();
+        await browser3.sleep(1000);
         toggleBtn = setPage.getTogglePublicBtn();
-        expect(toggleBtn.isDisplayed()).toBe(true);
-        expect(toggleBtn.getText()).toContain('MAKE SET PUBLIC');
+        expect(await toggleBtn.isDisplayed()).toBe(true);
+        expect(await toggleBtn.getText()).toContain('MAKE SET PUBLIC');
     });
 
-    it('should offer a button that says to make a set private again after it has been made public', function() {
+    it('should offer a button that says to make a set private again after it has been made public', async function() {
         var toggleBtn = setPage.getTogglePublicBtn();
-        toggleBtn.click();
-        expect(toggleBtn.getText()).toContain('MAKE SET PRIVATE');
+        await toggleBtn.click();
+        expect(await toggleBtn.getText()).toContain('MAKE SET PRIVATE');
     });
 
-    it('should display that the set is public in the admin list of sets', function() {
+    it('should display that the set is public in the admin list of sets', async function() {
         var set;
 
-        setPage.nav.goToSets();
+        await setPage.nav.goToSets();
         set = viewSetsPage.getMembershipTiles().last();
-        expect(viewSetsPage.isSetPublic(set)).toBe(true);
+        expect(await viewSetsPage.isSetPublic(set)).toBe(true);
     });
 
-    it('should show the public set in the public set panel', function () {
+    it('should show the public set in the public set panel', async function () {
         var publicSet,
             publicSets;
 
-        viewSetsPage.togglePublicSets();
+        await viewSetsPage.togglePublicSets();
         publicSets = viewSetsPage.getPublicSets();
-        expect(publicSets.count()).toBe(1);
+        expect(await publicSets.count()).toBe(1);
         publicSet = publicSets.get(0);
-        expect(publicSet.getText()).toContain(data.sets.public.name.toUpperCase());
+        expect(await publicSet.getText()).toContain(data.sets.public.name.toUpperCase());
     });
 
-    it('should automatically have the admin enrolled since they created it/are a member', function() {
+    it('should automatically have the admin enrolled since they created it/are a member', async function() {
         var publicSet = viewSetsPage.getPublicSets().get(0);
 
-        expect(viewSetsPage.getPublicJoinBtn(publicSet).isPresent()).toBe(false);
-        expect(viewSetsPage.getPublicOptOutBtn(publicSet).isDisplayed()).toBe(true);
+        expect(await viewSetsPage.getPublicJoinBtn(publicSet).isPresent()).toBe(false);
+        expect(await viewSetsPage.getPublicOptOutBtn(publicSet).isDisplayed()).toBe(true);
     });
 });

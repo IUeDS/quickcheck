@@ -13,14 +13,14 @@ describe('Viewing set features as an admin', function() {
         standardFeatures = data.featureNames,
         featureCount = adminFeatures.length + standardFeatures.length;
 
-    it('should show both standard features and admin-only features', function() {
-        viewSetsPage.toggleAdminViewAllSets();
+    it('should show both standard features and admin-only features', async function() {
+        await viewSetsPage.toggleAdminViewAllSets();
         set = viewSetsPage.getAdminSetTiles().first();
-        viewSetsPage.getGoToSetBtn(set).click();
-        setPage.openFeaturesAccordion();
+        await viewSetsPage.getGoToSetBtn(set).click();
+        await setPage.openFeaturesAccordion();
         features = setPage.featurePanel.getFeatures();
-        expect(features.count()).toBe(featureCount);
-        setPage.nav.goToSets();
+        expect(await features.count()).toBe(featureCount);
+        await setPage.nav.goToSets();
     });
 
     // MM, 11/21/18: the timeout feature is no longer admin-only, but we may need this test
