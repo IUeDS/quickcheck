@@ -17,8 +17,6 @@ Quick Check is an LTI (Learning Tools Interoperability) tool for creating format
 
 ### Dev/local:
 * node/npm
-* yarn (preferred but not strictly required)
-* ruby and sass gem (for scss compilation; details in "getting started")
 
 ## Getting started
 
@@ -36,12 +34,10 @@ Quick Check is an LTI (Learning Tools Interoperability) tool for creating format
 3. Run `php artisan db:seed` to seed the database.
 
 ### Front-end setup
-1. In public/assets, run: `yarn install` to install front-end dependencies.
-    - Note: if you currently do not have yarn installed on your system, please see [yarn's installation directions](https://yarnpkg.com/lang/en/docs/install/). Alternatively, if yarn is not an option, `npm install` can also be used to install dependencies, but yarn is preferred.
-2. In public/assets/config, copy env.example.js to a new file called env.js and enter your front-end configuration information.
-3. If you do not have the grunt cli installed globally on your system, run `npm install -g grunt-cli` (or `yarn global add grunt-cli`)
-4. In public/assets, run `grunt` to compile the front-end assets.
-    - Compiling .scss files requires that Ruby and Sass are installed. For more information, see the [grunt-contrib-sass documentation](https://github.com/gruntjs/grunt-contrib-sass). If Ruby and/or Sass are not installed on your system, see the [Ruby installation directions](https://www.ruby-lang.org/en/downloads/) and the [Sass installation directions](http://sass-lang.com/install).
+1. Install dependencies with `npm install` (run at the root of the repo)
+2. The angular CLI is required to compile the scripts/styles. To install: `npm install -g @angular/cli`
+3. To build the scripts for local testing: `npm run build`
+4. To build the scripts for production use: `npm run build:prod`
 
 ### Running locally
 1. Run `php artisan serve` in the app root to fire up a local server.
