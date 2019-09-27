@@ -12,7 +12,7 @@ describe('Exporting a QTI package', function() {
         var names = data.sets.featuresAllOn.quickchecks,
             labels = ['All quick checks in this set', names.featuresAllOn, names.qtiImportGraded, names.qtiImportUngraded];
 
-        setPage.qtiExport.getCheckboxes().each(async function(checkbox, index) {
+        await setPage.qtiExport.getCheckboxes().each(async function(checkbox, index) {
             expect(await setPage.qtiExport.isQcSelected(checkbox)).toBeTruthy();
             expect(await checkbox.getText()).toContain(labels[index]);
         });
@@ -20,7 +20,7 @@ describe('Exporting a QTI package', function() {
 
     it('should uncheck all assessments when the select all checkbox is clicked', async function() {
         await setPage.qtiExport.toggleAllSelected();
-        setPage.qtiExport.getCheckboxes().each(async function(checkbox, index) {
+        await setPage.qtiExport.getCheckboxes().each(async function(checkbox, index) {
             expect(await setPage.qtiExport.isQcSelected(checkbox)).toBeFalsy();
         });
     });

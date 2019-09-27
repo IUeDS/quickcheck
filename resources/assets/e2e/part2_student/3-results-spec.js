@@ -120,7 +120,7 @@ describe('Viewing results as a student', function() {
         });
 
         it('should show all questions as being incorrect in the responses view with a red header and x', async function() {
-            studentHomePage.responses.getQuestions().each(async function(question) {
+            await studentHomePage.responses.getQuestions().each(async function(question) {
                 expect(await studentHomePage.responses.isResponseIncorrect(question)).toBe(true);
             });
         });
@@ -165,7 +165,7 @@ describe('Viewing results as a student', function() {
         it('should show all questions as being correct in the responses view', async function() {
             await studentHomePage.responses.goBack();
             await studentHomePage.attempts.getResponsesBtn(2).click();
-            studentHomePage.responses.getQuestions().each(async function(question, index) {
+            await studentHomePage.responses.getQuestions().each(async function(question, index) {
                 expect(await studentHomePage.responses.isResponseCorrect(question)).toBe(true);
             });
         });
@@ -184,7 +184,7 @@ describe('Viewing results as a student', function() {
                 var options = studentHomePage.responses.getMcOptions(0),
                     optionItems = [ questionData.option1, questionData.option2, questionData.option3, questionData.option4 ];
 
-                options.each(async function(option, index) {
+                await options.each(async function(option, index) {
                     expect(await option.getText()).toContain(optionItems[index]);
                 });
             });
@@ -207,7 +207,7 @@ describe('Viewing results as a student', function() {
                 correctOptions = [ options.get(0), options.get(1) ];
 
             it('should show the options correctly', async  function() {
-                options.each(async function(option, index) {
+                await options.each(async function(option, index) {
                     expect(await option.getText()).toContain(optionItems[index]);
                 });
             });

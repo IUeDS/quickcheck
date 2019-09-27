@@ -87,7 +87,8 @@ var EditQcPage = function(browserRef) {
             //add a matching/numerical option, etc. attempting to scroll to bottom of page to see if that helps?
             //await page.browser.executeScript('window.scrollTo(0,document.body.scrollHeight)');
             //testing: wait for tinymce iframe to load, maybe it's throwing off where protractor is clicking?
-            await page.common.getTinyMceIframeFromElement(newQuestion, true);
+            await page.common.waitForTinyMce(newQuestion);
+            await page.browser.sleep(500); //for good measure, still had intermittent issues
         }
         page.questions.push(questionObject);
     }

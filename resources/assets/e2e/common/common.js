@@ -14,6 +14,7 @@ function Common(browserRef) {
     common.acceptAlert = acceptAlert;
     common.areOptionsRandomized = areOptionsRandomized;
     common.closeTab = closeTab;
+    common.dragAndDrop = dragAndDrop;
     common.enterAngularPage = enterAngularPage;
     common.enterNonAngularPage = enterNonAngularPage;
     common.enterTinyMceIframeInElement = enterTinyMceIframeInElement;
@@ -26,12 +27,14 @@ function Common(browserRef) {
     common.leaveTinyMceIframe = leaveTinyMceIframe;
     common.refresh = refresh;
     common.saveOptionList = saveOptionList;
+    common.scrollToElement = scrollToElement;
     common.setBrowserSize = setBrowserSize;
     common.switchTab = switchTab;
     common.switchToCanvas = switchToCanvas;
     common.switchToLtiTool = switchToLtiTool;
     common.switchToLtiToolEmbed = switchToLtiToolEmbed;
     common.waitForAngular = waitForAngular;
+    common.waitForTinyMce = waitForTinyMce;
 
     async function acceptAlert() {
         const alert = await common.browser.driver.switchTo().alert();
@@ -61,6 +64,15 @@ function Common(browserRef) {
 
     async function closeTab() {
         await common.browser.close();
+    }
+
+    //drag and drop used before doesn't work with async/await
+    //source: https://stackoverflow.com/questions/48349429/protractor-browser-actions-draganddrop-async-await-not-working
+    async function dragAndDrop(elem1, elem2) {
+        await common.browser.actions().mouseMove(elem1).perform();
+        await common.browser.actions().mouseDown().perform();
+        await common.browser.actions().mouseMove(elem2).perform();
+        await common.browser.actions().mouseUp().perform();
     }
 
     async function enterAngularPage() {
@@ -144,6 +156,10 @@ function Common(browserRef) {
         common.randomizedOptionOrder.push(optionList);
     }
 
+    async function scrollToElement(element) {
+        await common.browser.actions().mouseMove(element).perform();
+    }
+
     function setBrowserSize(width, height) {
         if (!width) {
             width = common.browserWidth;
@@ -180,6 +196,11 @@ function Common(browserRef) {
         await common.browser.wait(function () {
             return browser.executeScript('return !!window.angular');
         }, 10000, 'Timed out waiting for angular');
+    }
+
+    async function waitForTinyMce(questionElement) {
+        const toolbar = questionElement.element(by.css('.tox-toolbar'));
+        await common.browser.wait(EC.visibilityOf(toolbar), 10000);
     }
 }
 

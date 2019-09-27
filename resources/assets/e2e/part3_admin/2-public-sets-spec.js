@@ -55,7 +55,8 @@ describe('Adding a subset and quick check from the home page', function() {
         //add in questions, save, go back
         var options,
             question,
-            subset;
+            subset,
+            correctOption;
 
         await editQcPage.addQuestion(data.questionTypes.mc);
         question = editQcPage.getQuestion(0);
@@ -65,7 +66,10 @@ describe('Adding a subset and quick check from the home page', function() {
         await question.enterMcTextOption(options.get(1), 'B');
         await question.enterMcTextOption(options.get(2), 'C');
         await question.enterMcTextOption(options.get(3), 'D');
-        await question.toggleMcOptionCorrect(options.get(0));
+        //for some god-forsaken reason, intermittent issues clicking the button, even with other measures in place to wait for load
+        await browser3.sleep(1000);
+        correctOption = options.get(0);
+        await question.toggleMcOptionCorrect(correctOption);
         await editQcPage.save();
         await editQcPage.goBackToSet();
         await setPage.initSubsets();
@@ -83,17 +87,20 @@ describe('Making a set public', function() {
 
     it('should initially show a button in a set to make a set public (initially it is private)', async function() {
         var set = viewSetsPage.getMembershipTiles().last(),
+            goToSetBtn,
             toggleBtn;
 
-        await viewSetsPage.getGoToSetBtn(set).click();
+        goToSetBtn = viewSetsPage.getGoToSetBtn(set);
+        await common.scrollToElement(goToSetBtn);
+        await goToSetBtn.click();
         await browser3.sleep(1000);
-        toggleBtn = setPage.getTogglePublicBtn();
+        toggleBtn = await setPage.getTogglePublicBtn();
         expect(await toggleBtn.isDisplayed()).toBe(true);
         expect(await toggleBtn.getText()).toContain('MAKE SET PUBLIC');
     });
 
     it('should offer a button that says to make a set private again after it has been made public', async function() {
-        var toggleBtn = setPage.getTogglePublicBtn();
+        var toggleBtn = await setPage.getTogglePublicBtn();
         await toggleBtn.click();
         expect(await toggleBtn.getText()).toContain('MAKE SET PRIVATE');
     });

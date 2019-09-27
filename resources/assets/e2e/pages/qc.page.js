@@ -318,7 +318,7 @@ var QcPage = function(browserRef) {
 
     async function selectIncorrectRandomMcOption(correctOption) {
         var answerSelected = false;
-        page.getMcOptions().each(async function(option) {
+        await page.getMcOptions().each(async function(option) {
             const text = await option.getText();
             if (text !== correctOption && !answerSelected) {
                 await option.element(by.css(page.mcInput)).click();

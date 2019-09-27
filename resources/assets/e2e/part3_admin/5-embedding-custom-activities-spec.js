@@ -16,12 +16,15 @@ describe('Making a quick check a custom activity', function() {
 
     it('should show the button to make it a custom activity before questions are added', async function() {
         var set,
+            goToSetBtn,
             subset,
             quickcheck;
 
         await viewSetsPage.toggleAdminViewAllSets();
         set = viewSetsPage.getAdminSetTiles().get(0); //add to a set the instructor can access for testing
-        await viewSetsPage.getGoToSetBtn(set).click();
+        goToSetBtn = viewSetsPage.getGoToSetBtn(set);
+        await common.scrollToElement(goToSetBtn);
+        await goToSetBtn.click();
         await browser3.sleep(1000);
         await setPage.initSubsets();
         subset = setPage.getSubset(0);
@@ -87,7 +90,6 @@ describe('Making a quick check a custom activity', function() {
     });
 });
 
-
 describe('Embedding and taking a custom activity', function() {
     var customData = data.customActivity;
 
@@ -128,18 +130,18 @@ describe('Embedding and taking a custom activity', function() {
         // drag and drop: http://stackoverflow.com/questions/25664551/how-to-simulate-a-drag-and-drop-action-in-protractor
         questionBox = browser3.driver.findElement(by.className('question_area'));
         answerArea = browser3.driver.findElement(by.css('.label_dropzone[data-label="Cerebellum"]'));
-        await browser3.driver.actions().dragAndDrop(questionBox,answerArea).mouseUp().perform();
-        await browser3.driver.sleep(500);
+        await common.dragAndDrop(questionBox, answerArea);
+        await browser3.driver.sleep(1000);
         submitBtn = browser3.driver.findElement(by.css('.submit_response'));
         await submitBtn.click();
         await browser3.driver.sleep(1000);
         nextBtn = browser3.driver.findElement(by.css('.btn.next'));
         await nextBtn.click();
         await browser3.driver.sleep(1000);
-        await browser3.driver.actions().dragAndDrop(questionBox,answerArea).mouseUp().perform();
-        await browser3.driver.sleep(500);
+        await common.dragAndDrop(questionBox, answerArea);
+        await browser3.driver.sleep(1000);
         await submitBtn.click();
-        await browser3.driver.sleep(500);
+        await browser3.driver.sleep(1000);
         await browser3.driver.switchTo().defaultContent();
         await common.goToQuickCheck();
     });

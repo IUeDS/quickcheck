@@ -107,7 +107,8 @@ var SetPage = function(browserRef) {
         return page.subsetPanels;
     }
 
-    function getTogglePublicBtn() {
+    async function getTogglePublicBtn() {
+        await page.browser.wait(EC.presenceOf(page.togglePublicBtn), 5000);
         return page.togglePublicBtn;
     }
 

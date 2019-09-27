@@ -1,5 +1,6 @@
 var ViewSetsPage = function(browserRef) {
-    var page = this;
+    var page = this,
+        EC = protractor.ExpectedConditions;
     page.browser = browserRef;
     page.includes = require('../common/includes.js');
 
@@ -190,6 +191,7 @@ var ViewSetsPage = function(browserRef) {
     }
 
     async function togglePublicSets() {
+        await page.browser.wait(EC.presenceOf(page.togglePublicSetsBtn), 5000);
         await page.togglePublicSetsBtn.click();
     }
 

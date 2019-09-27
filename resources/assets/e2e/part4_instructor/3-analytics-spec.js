@@ -101,7 +101,7 @@ describe('Viewing analytics for an assessment', function() {
         it('should have the correct percentages', async function() {
             var i = 0;
 
-            percentages.each(async function(percentage) {
+            await percentages.each(async function(percentage) {
                 expect(await percentage.getText()).toContain('50%');
             });
         });

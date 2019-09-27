@@ -48,7 +48,7 @@ describe('Viewing a public/read-only collection', function() {
 
     it('should show features that are enabled but not allow the user to toggle them', async function() {
         await setPage.openFeaturesAccordion();
-        setPage.featurePanel.getFeatures().each(async function(feature) {
+        await setPage.featurePanel.getFeatures().each(async function(feature) {
             expect(await setPage.featurePanel.isFeatureToggleable(feature)).toBe(false);
         });
     });
