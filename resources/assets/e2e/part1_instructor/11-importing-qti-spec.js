@@ -84,10 +84,14 @@ describe('Importing a QTI package', function() {
         //testing first QTI import quiz (they're in reverse order of import):
         describe('for total number of questions', function() {
             it('should have the correct question count', async function() {
-                await setPage.qtiImport.getImportLinks().get(1).click();
                 //NOTE: 8/29/19: failing here, protractor doesn't click for some reason, ugh
-                //browser.pause();
-                await browser.sleep(1000);
+                //try clicking twice only if necessary
+                const importLink = await setPage.qtiImport.getImportLinks().get(1);
+                await importLink.click();
+                const notClicked = await importLink.isPresent();
+                if (notClicked) {
+                    await importLink.click();
+                }
                 await editQcPage.initQuestions();
                 expect(await editQcPage.getQuestions().count()).toBe(8);
             });

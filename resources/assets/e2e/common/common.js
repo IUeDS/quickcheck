@@ -199,8 +199,10 @@ function Common(browserRef) {
     }
 
     async function waitForTinyMce(questionElement) {
-        const toolbar = questionElement.element(by.css('.tox-toolbar'));
-        await common.browser.wait(EC.visibilityOf(toolbar), 10000);
+        // const toolbar = questionElement.element(by.css('.tox-toolbar'));
+        // await common.browser.wait(EC.visibilityOf(toolbar), 10000);
+        const wordCount = questionElement.element(by.css('.tox-statusbar__wordcount'));
+        await common.browser.wait(EC.visibilityOf(wordCount), 10000);
     }
 }
 

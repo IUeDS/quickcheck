@@ -18,7 +18,7 @@ export class UsersComponent implements OnInit {
   isAddingUser = {
     init: false,
     checkUser: false,
-    readOnly: false,
+    readOnly: null,
     saveError: false,
     saveErrorReason: false,
     username: '',
@@ -73,7 +73,7 @@ export class UsersComponent implements OnInit {
     //reset
     this.isAddingUser.init = true;
     this.isAddingUser.checkUser = true;
-    this.isAddingUser.readOnly = false;
+    this.isAddingUser.readOnly = null;
     this.isAddingUser.username = '';
     this.isAddingUser.userAdded = false;
     this.isAddingUser.userValidated = false;
@@ -137,7 +137,7 @@ export class UsersComponent implements OnInit {
       user.readOnly = null;
     }
     else {
-      user.readOnly = 'false';
+      user.readOnly = 'true';
     }
   }
 

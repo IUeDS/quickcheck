@@ -133,7 +133,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
       'question_order': questionOrder,
       'question_text': '',
       'question_type': 'multiple_choice',
-      'randomized': 1,
+      'randomized': 'true',
       'multiple_correct': 'false',
       'options': []
     });
