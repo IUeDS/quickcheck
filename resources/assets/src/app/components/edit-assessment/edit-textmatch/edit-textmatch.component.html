@@ -1,0 +1,36 @@
+<div>
+    <p class="lead qc-edit-instructions">Note: Textmatch questions will accept answers regardless of capitalization, leading or trailing whitespace, and punctuation.</p>
+    <h3 *ngIf="this.question.options.length">Possible answers <span class="sr-only">for question #{{ question.question_order}}</span></h3>
+    <div *ngFor="let option of this.question.options; index as $index;" class="qc-edit-option">
+        <h4>Option #{{ $index+1 }}</h4>
+        <div class="qc-edit-textmatch-inline mb-2">
+            <label for="textmatch-answer-{{this.question.id}}-{{option.id}}">
+                Text
+                <span class="sr-only"> for question #{{ this.question.question_order }}, answer option #{{ $index+1 }}</span>:
+            </label>
+            <input type="text" class="form-control ml-2" id="textmatch-answer-{{this.question.id}}-{{option.id}}"
+                [(ngModel)]="option.textmatch_answer_text"
+                (ngModelChange)="this.onEdited()"
+                required
+                [disabled]="this.readOnly">
+            <qc-delete-option-btn
+                [index]="$index"
+                (onDelete)="this.deleteOption($event)"
+                [option]="option"
+                [optionTypeText]="'text match option'"
+                [question]="this.question"
+                *ngIf="!this.readOnly">
+            </qc-delete-option-btn>
+        </div>
+    </div>
+    <hr>
+    <button class="btn btn-sm btn-primary qc-btn" type="button" (click)="this.addOption()" *ngIf="!this.readOnly">
+        <span class="fa fa-plus" aria-hidden="true"></span> Add possible answer
+        <span class="sr-only">to question #{{ this.question.question_order }}</span>
+    </button>
+    <qc-custom-feedback *ngIf="!this.readOnly"
+        (onQuestionEdited)="this.onSubComponentEdited($event)"
+        [question]="this.question">
+    </qc-custom-feedback>
+    <hr>
+</div>

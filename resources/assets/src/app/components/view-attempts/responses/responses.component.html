@@ -1,0 +1,246 @@
+<p class="lead" *ngIf="!this.studentResponses.length">No responses were recorded for this attempt.</p>
+<table class="table table-sm qc-responses-table" *ngIf="this.showTableView">
+    <thead>
+        <th>Time</th>
+        <th class="text-center">Is Correct</th>
+        <th>Partial Credit</th>
+        <th>Retry #</th>
+        <th>Question</th>
+        <th>Answer</th>
+        <th>Answer Key</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let response of this.studentResponses"
+            [ngClass]="response.is_correct == '1' ? 'table-success' : 'table-danger'"
+            class="qc-responses-custom-response">
+            <td>{{ this.utilitiesService.formatTimeWithTimeZone(response.created_at, this.courseContext.time_zone) }}</td>
+            <td class="text-center response-is-correct">
+                <span *ngIf="response.is_correct == '1'">
+                    <span class="fa fa-check" aria-hidden="true"></span>
+                    <span class="sr-only">Correct</span>
+                </span>
+                <span *ngIf="response.is_correct != '1'">
+                    <span class="fa fa-remove" aria-hidden="true"></span>
+                    <span class="sr-only">Incorrect</span>
+                </span>
+            </td>
+            <td class="qc-response-partial-credit"><span *ngIf="response.partial_credit > 0">{{ response.partial_credit }}</span></td>
+            <td>{{ response.custom_responses[0].retry_count }}</td>
+            <td class="qc-response-question" [innerHTML]="response.custom_responses[0].question | safe: 'html'"></td>
+            <td class="qc-response-answer">{{ response.custom_responses[0].answer }}</td>
+            <td class="qc-response-answer-key">{{ response.custom_responses[0].answer_key }}</td>
+        </tr>
+    </tbody>
+</table>
+<div class="row qc-response-view" *ngIf="!this.showTableView">
+    <div class="col-12">
+        <div class="row text-center">
+            <div class="col-12">
+                <div class="qc-progress-wrapper">
+                    <round-progress
+                        class="qc-round-progress"
+                        [max]="100"
+                        [current]="this.attempt.score"
+                        [color]="'#449D44'"
+                        [background]="'#eaeaea'"
+                        [radius]="50"
+                        [stroke]="15"
+                        [animationDelay]="500"
+                        aria-hidden="true">
+                    </round-progress>
+                    <div class="text qc-attempt-percentage-score"><span class="sr-only">Score: </span>{{ this.attempt.score | number}}%</div>
+                </div>
+                <p class="lead qc-attempt-questions-correct">{{ this.getCountCorrect(this.attempt) }} / {{ this.questions.length }} correct</p>
+            </div>
+        </div>
+        <div class="row" *ngFor="let currentQuestion of this.questions; index as $index;" class="qc-responses-question">
+            <div class="col-12">
+                <div *ngIf="currentQuestion.error" class="alert alert-danger qc-error-message" role="alert" tabindex="-1" >
+                    <p class="lead">Error</p>
+                    <p>There were no student responses that matched the options for this question. Either there was an error recording the student response, or the quiz was edited after the student took the quiz (i.e., a question option the student selected was deleted, or a new question was added).</p>
+                </div>
+                <div class="card" *ngIf="currentQuestion.studentResponse">
+                    <div class="card-header text-white" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'bg-success' : 'bg-danger'">
+                        <h4 class="lead">
+                            <span *ngIf="currentQuestion.studentResponse.isCorrect">
+                                <span class="fa fa-check" aria-hidden="true"></span>
+                                <span class="sr-only"><span *ngIf="!this.isStudent">The student</span><span *ngIf="this.isStudent">You</span> answered the following question correctly: </span>
+                            </span>
+                            <span *ngIf="!currentQuestion.studentResponse.isCorrect">
+                                <span class="fa fa-remove" aria-hidden="true"></span>
+                                <span class="sr-only"><span *ngIf="!this.isStudent">The student</span><span *ngIf="this.isStudent">You</span> answered the following question incorrectly: </span>
+                            </span>
+                            <span>Question #{{ $index + 1 }}</span>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="qc-mc-options" *ngIf="currentQuestion.question_type == 'multiple_choice'" >
+                            <fieldset>
+                                <legend class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></legend>
+                                <div class="form-check qc-responses-multiple-choice-option" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
+                                    <input type="radio" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" disabled
+                                        [checked]="answerOption.studentAnswer" id="{{answerOption.id}}">
+                                    <label class="qc-mc-option-response" for="{{answerOption.id}}">
+                                        <span [innerHTML]="answerOption.answer_text | safe: 'html'"></span>
+                                        <span *ngIf="answerOption.correct === 'true'" class="qc-correct-text"> <span class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></span> Correct answer</span>
+                                    </label>
+                                </div>
+                            </fieldset>
+                            <span *ngIf="currentQuestion.multiple_correct == 'true'">(<em>Note: more than one response is considered correct for this multiple choice question. All possible correct responses have been marked.</em>)</span>
+                        </div>
+                        <div class="qc-mcorrect-options" *ngIf="currentQuestion.question_type == 'multiple_correct'" >
+                            <fieldset>
+                                <legend class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></legend>
+                                <div class="form-check qc-responses-multiple-correct-option" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
+                                    <input type="checkbox" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" [checked]="answerOption.studentAnswer" disabled id="{{answerOption.id}}">
+                                    <label for="{{answerOption.id}}">
+                                        <span [innerHTML]="answerOption.answer_text | safe: 'html'"></span>
+                                        <span *ngIf="answerOption.correct === 'true'" class="qc-correct-text"> <span class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></span> Correct answer</span>
+                                    </label>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="qc-matrix-options" *ngIf="currentQuestion.question_type == 'matrix'" >
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
+                            <p *ngIf="currentQuestion.studentResponse.partial_credit">Partial credit: {{ currentQuestion.studentResponse.partial_credit * 100 | number }}%</p>
+                            <table class="table table-striped">
+                                <caption class="sr-only">Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.</caption>
+                                <thead>
+                                    <tr>
+                                        <th><span class="sr-only">Row label</span></th>
+                                        <th *ngFor="let column of currentQuestion.columns" class="qc-responses-matrix-column">
+                                            <span [innerHTML]="column.answer_text | safe: 'html'"></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of currentQuestion.rows">
+                                        <td>
+                                            <span [innerHTML]="row.answer_text | safe: 'html'"></span>
+                                        </td>
+                                        <td *ngFor="let column of currentQuestion.columns" [ngClass]="{'qc-correct-answer-marked': this.isMatrixAnswerCorrect(row, column)}">
+                                            <div class="checkbox">
+                                                <label class="sr-only" for="matrixrow-{{row.id}}-column-{{column.id}}">Check this box to match {{row.answer_text}} to {{column.answer_text}}</label>
+                                                <input type="checkbox" name="{{row.id}}" value="{{column.answer_text}}" disabled
+                                                [checked]="row.studentAnswer.id == column.id"
+                                                id="matrixrow-{{row.id}}-column-{{column.id}}">
+                                                <span *ngIf="this.isMatrixAnswerCorrect(row, column)" class="qc-correct-text"> <span class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></span> Correct answer</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="qc-matching-options" *ngIf="currentQuestion.question_type == 'matching'" >
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
+                            <p *ngIf="currentQuestion.studentResponse.partial_credit">Partial credit: {{ currentQuestion.studentResponse.partial_credit * 100 | number }}%</p>
+                            <div class="row">
+                                <table class="table table-striped">
+                                    <caption class="sr-only">Student respones for matching question #{{$index + 1}}.</caption>
+                                    <tr>
+                                        <th>Prompt</th>
+                                        <th><span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student's</span> answer</th>
+                                        <th>Correct Answer <span class="fa fa-check qc-correct-icon" aria-hidden="true"></span></th>
+                                    </tr>
+                                    <tr *ngFor="let prompt of currentQuestion.prompts">
+                                        <td>
+                                            <label [innerHTML]="prompt.option_text | safe: 'html'" for="{{'select-matching-' + prompt.id}}"></label>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" id="{{'select-matching-' + prompt.id}}" disabled>
+                                                <option value=""></option> <!-- blank option -->
+                                                <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
+                                                        value="{{selectableAnswer.id}}"
+                                                        [innerHTML]="selectableAnswer.option_text | safe: 'html'"
+                                                        [selected]="selectableAnswer.id == prompt.studentAnswer.id">
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <span>{{prompt.matching_answer_text}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="dropdown-options" *ngIf="currentQuestion.question_type == 'dropdown'" >
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
+                            <div class="row student-dropdown-answer">
+                                <div class="col-12">
+                                    <p *ngIf="!currentQuestion.studentResponse.isCorrect"><span class="fa fa-remove qc-incorrect-icon" aria-hidden="true"></span> <span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student's</span> Answer:</p>
+                                    <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section">
+                                        <label [innerHTML]="prompt.answer_text | safe: 'html'" for="{{'select-dropdown-' + prompt.id}}"></label>
+                                        <select class="form-control"
+                                                id="{{'select-dropdown-' + prompt.id}}" disabled>
+                                            <option></option> <!-- blank option -->
+                                            <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
+                                                value="{{selectableAnswer.id}}"
+                                                [innerHTML]="selectableAnswer.answer_text | safe: 'html'"
+                                                [selected]="selectableAnswer.id == prompt.studentAnswer.id">
+                                            </option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row qc-correct-dropdown-answer" *ngIf="!currentQuestion.studentResponse.isCorrect">
+                                <div class="col-12">
+                                    <hr>
+                                    <p><span class="fa fa-check qc-correct-icon" aria-hidden="true"></span> Correct Answer:</p>
+                                    <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section">
+                                        <label [innerHTML]="prompt.answer_text | safe: 'html'" for="{{'select-dropdown-correct-' + prompt.id}}"></label>
+                                        <select class="form-control"
+                                                id="{{'select-dropdown-correct-' + prompt.id}}" disabled>
+                                            <option></option> <!-- blank option -->
+                                            <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
+                                                value="{{selectableAnswer.id}}"
+                                                [innerHTML]="selectableAnswer.answer_text | safe: 'html'"
+                                                [selected]="prompt.dropdown_answer_text == selectableAnswer.answer_text">
+                                            </option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="textmatch" *ngIf="currentQuestion.question_type == 'textmatch'" >
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
+                            <div class="form-group has-feedback" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'is-valid' : 'is-invalid'">
+                                <label for="textmatch-answer-box"><span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student</span> answer <span class="sr-only">for question #{{ $index + 1 }}</span>:</label>
+                                <input type="text" class="form-control" disabled [value]="currentQuestion.studentAnswer" id="textmatch-answer-box"
+                                    [ngClass]="currentQuestion.studentResponse.isCorrect ? 'qc-correct-answer-input' : 'qc-incorrect-answer-input'">
+                            </div>
+                            <div class="card card-body bg-light textmatch-correct-answers">
+                                <p>Correct answers: </p>
+                                <ul class="fa-ul">
+                                    <li *ngFor="let option of currentQuestion.options" class="qc-responses-textmatch-option">
+                                        <span class="fa-li fa fa-check qc-correct-icon qc-correct-icon-list" aria-hidden="true"></span> {{ option.textmatch_answer_text }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="numerical" *ngIf="currentQuestion.question_type == 'numerical'" >
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
+                            <div class="form-group">
+                                <label for="numerical-answer-box"><span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student</span>  answer:</label>
+                                <input type="number" step="any" class="form-control" disabled [value]="currentQuestion.studentAnswer" id="numerical-answer-box" [ngClass]="currentQuestion.studentResponse.isCorrect ? 'qc-correct-answer-input' : 'qc-incorrect-answer-input'">
+                            </div>
+                            <div class="card card-body bg-light numerical-correct-answers">
+                                <p>Correct answers: </p>
+                                <ul class="fa-ul">
+                                    <li *ngFor="let option of currentQuestion.options" class="qc-responses-numerical-option">
+                                        <span class="fa-li fa fa-check qc-correct-icon qc-correct-icon-list" aria-hidden="true"></span>
+                                        <span *ngIf="option.answer_type === 'exact'">
+                                            {{ option.numerical_answer }}, with margin of error of {{ option.margin_of_error }}
+                                        </span>
+                                        <span *ngIf="option.answer_type === 'range'">
+                                            Between {{ option.range_min }} and {{ option.range_max }}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,382 @@
+<qc-nav [hidden]="!this.isLoggedIn" [currentPage]="this.currentPage"></qc-nav>
+<div class="row">
+    <div class="col-12">
+        <h1>Documentation</h1>
+        <p *ngIf="this.isIU">If you have a question or problem that is not addressed by the documentation on this page, please <a href="https://kb.iu.edu/d/abxl" target="_blank">contact the Support Center</a>.</p>
+        <p *ngIf="this.isIU">If you have a feature request or feedback on how Quick Check can be improved, please <a href="mailto:elearn@iu.edu" target="_blank">contact us</a>.</p>
+        <h2>Topics</h2>
+        <!-- nested list group source: http://stackoverflow.com/questions/29063244/consistent-styling-for-nested-lists-with-bootstrap -->
+        <div class="just-padding">
+            <div class="card card-body bg-light list-group list-group-root">
+                <a href="#about" target="_self" class="list-group-item list-group-item-action">About</a>
+                <div class="list-group">
+                    <a href="#overview-video" target="_self" class="list-group-item list-group-item-action" *ngIf="this.isIU">Overview video</a>
+                    <a href="#who-made" target="_self" class="list-group-item list-group-item-action">Who made this application?</a>
+                    <a href="#what-purpose" target="_self" class="list-group-item list-group-item-action">What purpose does this application serve?</a>
+                    <a href="#why-should" target="_self" class="list-group-item list-group-item-action">Why should I use this application?</a>
+                    <a href="#what-learning" target="_self" class="list-group-item list-group-item-action">What learning management systems are compatible?</a>
+                </div>
+                <a href="#creating-assessments" target="_self" class="list-group-item list-group-item-action">Creating quick checks</a>
+                <div class="list-group">
+                    <a href="#where-to-start" target="_self" class="list-group-item list-group-item-action">Where to start</a>
+                    <a href="#creating-a-collection" target="_self" class="list-group-item list-group-item-action">Creating a set</a>
+                    <a href="#assessment-groups" target="_self" class="list-group-item list-group-item-action">Subsets</a>
+                    <a href="#creating-assessments" target="_self" class="list-group-item list-group-item-action">Creating and editing quick checks</a>
+                    <a href="#question-text" target="_self" class="list-group-item list-group-item-action">Question text</a>
+                    <a href="#equation-editor" target="_self" class="list-group-item list-group-item-action">Equation editor</a>
+                    <a href="#images" target="_self" class="list-group-item list-group-item-action">Embedding images</a>
+                    <a href="#question-types" target="_self" class="list-group-item list-group-item-action">Question types</a>
+                    <a href="#feedback" target="_self" class="list-group-item list-group-item-action">Custom feedback</a>
+                    <a href="#rich-content-toggle" target="_self" class="list-group-item list-group-item-action">Rich content toggle</a>
+                    <a href="#copying-quick-checks" target="_self" class="list-group-item list-group-item-action">Copying quick checks</a>
+                    <a href="#search" target="_self" class="list-group-item list-group-item-action">Search</a>
+                    <a href="#qti-import" target="_self" class="list-group-item list-group-item-action">QTI import</a>
+                    <a href="#qti-export" target="_self" class="list-group-item list-group-item-action">QTI export</a>
+                </div>
+                <a href="#custom-activities" target="_self" class="list-group-item list-group-item-action">Custom Activities</a>
+                <div class="list-group">
+                    <a href="#what-is-custom" target="_self" class="list-group-item list-group-item-action">What is a custom activity?</a>
+                    <a href="#how-to-custom" target="_self" class="list-group-item list-group-item-action">How do I use an existing custom activity as an quick check?</a>
+                </div>
+                <a href="#embedding-assessments" target="_self" class="list-group-item list-group-item-action">Embedding quick checks</a>
+                <div class="list-group">
+                    <a href="#workflow-embedding" target="_self" class="list-group-item list-group-item-action">Workflow for embedding a quick check</a>
+                    <a href="#across-courses" target="_self" class="list-group-item list-group-item-action">Using quick checks across courses</a>
+                    <a href="#embedding-best-practices" target="_self" class="list-group-item list-group-item-action">Best practices for embedding</a>
+                </div>
+                <a href="#results-and-grading" target="_self" class="list-group-item list-group-item-action">Results and Grading</a>
+                <div class="list-group">
+                    <a href="#viewing-attempts" target="_self" class="list-group-item list-group-item-action">Viewing student attempts and responses</a>
+                    <a href="#individual-student-results" target="_self" class="list-group-item list-group-item-action">Viewing individual student results</a>
+                    <a href="#grading" target="_self" class="list-group-item list-group-item-action">Grading</a>
+                    <a href="#automatic-vs-manual" target="_self" class="list-group-item list-group-item-action">Automatic vs. manual grade passback</a>
+                    <a href="#ungraded" target="_self" class="list-group-item list-group-item-action">Ungraded quick checks</a>
+                    <a href="#auto-grade" target="_self" class="list-group-item list-group-item-action">Auto-grade</a>
+                    <a href="#analytics" target="_self" class="list-group-item list-group-item-action">Analytics</a>
+                    <a href="#csv-downloads" target="_self" class="list-group-item list-group-item-action">CSV downloads</a>
+                    <a href="#large-class-sizes" target="_self" class="list-group-item list-group-item-action">Large class sizes</a>
+                </div>
+                <a href="#releasing-results" target="_self" class="list-group-item list-group-item-action">Releasing results to students</a>
+                <div class="list-group">
+                    <a href="#releasing" target="_self" class="list-group-item list-group-item-action">Releasing results</a>
+                    <a href="#rolling-back" target="_self" class="list-group-item list-group-item-action">Rolling back a release</a>
+                </div>
+                <a href="#users-and-permissions" target="_self" class="list-group-item list-group-item-action">Users and Permissions</a>
+                <div class="list-group">
+                    <a href="#inviting" target="_self" class="list-group-item list-group-item-action">Inviting another user</a>
+                    <a href="#permissions" target="_self" class="list-group-item list-group-item-action">Permissions</a>
+                </div>
+                <a href="#feature-options" target="_self" class="list-group-item list-group-item-action">Feature Options</a>
+                <div class="list-group">
+                    <a href="#how-do-feature" target="_self" class="list-group-item list-group-item-action">How do feature options work?</a>
+                    <a href="#automatic-grade" target="_self" class="list-group-item list-group-item-action">Automatic grade passback</a>
+                    <a href="#hide-empty-attempts" target="_self" class="list-group-item list-group-item-action">Hide Empty Attempts</a>
+                    <a href="#show-responses" target="_self" class="list-group-item list-group-item-action">Show responses in student view</a>
+                    <a href="#timeout" target="_self" class="list-group-item list-group-item-action">Timeout for excessive attempts</a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h2 id="overview-video" *ngIf="this.isIU">Overview Video</h2>
+        <iframe *ngIf="this.isIU" src="https://cdnapisec.kaltura.com/p/1751071/sp/175107100/embedIframeJs/uiconf_id/26683571/partner_id/1751071?iframeembed=true&playerId=kaltura_player_1489789936&entry_id=1_c9mx20l5&flashvars[streamerType]=auto" width="560" height="395" allowfullscreen webkitallowfullscreen mozAllowFullScreen frameborder="0" title="Quick Check Overview Video"></iframe>
+        <h2 id="about">About</h2>
+        <h3 id="who-made">Who made this application?</h3>
+        <p>The developers at eLearning Design and Services at Indiana University created this application. eLearning Design and Services is a unit devoted to support <a href="http://online.iu.edu/" target="_blank">IU Online</a> in creating quality learning experiences.</p>
+        <hr>
+        <h3 id="what-purpose">What purpose does this application serve?</h3>
+        <p>Instructors have reached out to us many times requesting an LTI (Learning Tools Interoperability) tool suited for frequent, low-stakes quizzes in online courses. We have spent years (yes, years) looking for suitable tools and have yet to find a tool that meets all of our qualifications. After spending so much time and energy on a fruitless search, we decided to go ahead and make the tool ourselves.</p>
+        <hr>
+        <h3 id="why-should">Why should I use this application?</h3>
+        <p>We believe that frequent, low-stakes assessment in an online course is a very useful method for instructors teaching online. When a course offers many opportunities for students to demonstrate their learning and earn points, there is less temptation to cheat. Having only a few high stakes quizzes in a course increases pressure on students. Providing a mix of higher and lower stakes assessments can help you get to know your students’ work, provide multiple opportunities for feedback, deter cheating, and ensure a robust course.</p>
+        <p>However, the quizzing tool in Canvas is not necessarily well-suited to frequent, low-stakes assessment. The workflow required to start, complete, and review a quiz can be lengthy and intimidating. It is also difficult to combine content and assessment within a Canvas quiz. Using this application as an external tool assignment, with content placed in the assignment description, allows a near-seamless integration of content and assessment.</p>
+        <hr>
+        <h3 id="what-learning">What learning management systems are compatible?</h3>
+        <p>At the moment, only Canvas is supported, due to the application being reliant on Canvas-only functionality in order to perform up to our standards. We hope that as LTI 2 becomes more widespread, that the functionality we rely on in Canvas will be available in other learning management systems and allow us to make this tool available for any LTI 2 consumer.</p>
+        <hr>
+        <h2 id="creating-assessments">Creating Quick Checks</h2>
+        <h3 id="where-to-start">Where to start</h3>
+        <p>Not sure where to begin? Just follow the steps below to create your first quick check: </p>
+        <ol>
+            <li>From the home page, click the button to add a new quick check</li>
+            <li>From the "sets" dropdown, select the option to add a new set, and type in a name. A set is any large grouping of quick checks, but most of the time, a set correlates to a course.</li>
+            <li>From the "subsets" dropdown, select the option to add a new subset, and type in a name. A subset allows you to organize your quick checks within a set. For example, you might want to make a subset for a module or unit in your course.</li>
+            <li>Type in a name for your quick check and save</li>
+            <li>Add questions and answers on the quick check editing page and save</li>
+            <li>You did it! Pat yourself on the back.</li>
+        </ol>
+        <p>Not sure what all these terms mean? Read on to learn more about sets, subsets, and quick checks.</p>
+        <hr>
+        <h3 id="creating-a-collection">Creating a Set</h3>
+        <p>A set is a group of quick checks that you would like to organize together for use in a course or series of related courses. Typically, a set is only used for a single course. However, there are no hard-and-fast rules for how sets are used to organize. A set contains its own group of users with permissions to access/edit, its own feature options that can be turned on and off, and typically contains many subsets.</p>
+        <hr>
+        <h3 id="assessment-groups">Subsets</h3>
+        <p>Subsets are purely an organizational tool for grouping quick checks together. There is no functionality specific to subsets. Rather, subsets can be used to organize quick checks that correspond to course modules/units, or any other organizational system that would be appropriate for you and your needs. Every quick check must belong to a subset.</p>
+        <hr>
+        <h3 id="creating-assessments">Creating and Editing Quick Checks</h3>
+        <p>To create a quick check, click the button to add it to the subset where you would like to keep it. After saving the new quick check, you can click the edit button next to the quick check to add your questions. By default, when you add a new question, the system assumes a multiple choice question with 4 options, because this is the most common question configuration. Otherwise, you can change the question type by selecting a different type from the dropdown menu.</p>
+        <p>Questions can be reordered by clicking the up/down arrows on the right-hand side of the question accordion header.</p>
+        <hr>
+        <h3 id="question-text">Question Text</h3>
+        <p>Question text is optional. You'll probably want to include question text for something like a multiple choice question, but it's not always necessary when adding something like a matching question, for instance.</p>
+        <p>Question text is entered in a WYSIWYG (what you see is what you get) editor. You can add text formatting, headers, links, etc. using the WYSIWYG editor. <em>Our system does not accept image, video, or audio uploads.</em> However, you're welcome to embed images, video, and audio from other sources using an external URL. Do make sure that your content is accessible&mdash;all images should have alternative text, and video should be captioned, if possible.</p>
+        <hr>
+        <h3 id="equation-editor">Equation Editor</h3>
+        <p>When editing a question, an equation editor is made available by clicking the "fx" button in the tool panel. The plugin automatically formats LaTeX as it is typed. Tapping the space bar while typing fractions, exponents, etc. will pre-format the output before entering the numbers. When finished, the LaTeX is output to the question text. It can be edited again within the question text by highlighting the LaTeX with the cursor and clicking the equation editor button in the tool panel. If LaTeX is needed in an answer option, it can be copied and pasted from the question editor, and it will still display as formatted math to the students. The only exception is that dropdown answer options in matching and multiple dropdown question types will not accept equations, as only plain text is allowed in an html select option.</p>
+        <p>For more information, you can reference a <a href="https://en.wikipedia.org/wiki/Wikipedia:LaTeX_symbols" target="_blank">list of LaTeX symbols</a>, as well as the <a href="http://mathquill.com/" target="_blank">MathQuill documentation</a> for a deeper understanding of how the equation editor plugin works.</p>
+        <hr>
+        <h3 id="images">Embedding Images</h3>
+        <p>Quick Check does not provide image-hosting services, so embedded images must come from elsewhere. You are free to use any image-hosting service that you prefer to get the link to an image. Our recommendation would be Box. (We do not recommend using Canvas files, as file permissions can be an issue for students when Quick Checks are used in multiple courses or semesters.) An embedded image can be used from Box by taking the following steps:</p>
+        <ul>
+            <li>Upload the image to Box</li>
+            <li>Click the “share” link next to the file</li>
+            <li>In the modal window that pops up, click the toggle for "Enable shared link"</li>
+            <li>At the bottom, a blue link that reads "Invited people only" will appear; click on it</li>
+            <li>Select the option "People with the link"</li>
+            <li>Click the words "Link Settings" in the upper right</li>
+            <li>Copy the link at the bottom labeled as “Direct Link”</li>
+            <li>Use that link to embed the image in Quick Check</li>
+        </ul>
+        <hr>
+        <h3 id="question-types">Question Types</h3>
+        <ul>
+            <li>Multiple choice
+                <ul>
+                    <li>Users are presented with a radio button for each option. Only one option may be selected as the correct answer by the student.</li>
+                    <li>Click the green checkmark next to an option to mark it as correct.</li>
+                    <li>The "randomize options" textbox will shuffle the options each time the quick check is accessed. This checkbox is selected by default. It's a good idea to uncheck this box if your question has the option of "all of the above," so that option always appears on bottom.</li>
+                    <li>The "multiple correct" checkbox will allow for multiple options to be counted as correct. However, students can still only select one answer. So for instance, if the question were "2 + 2 = ?" then you could mark both "4" and "4.0" as correct, but "3" would be incorrect.</li>
+                </ul>
+            </li>
+            <li>Multiple correct
+                <ul>
+                    <li>Users are presented with a checkbox for each option. Students may select as many options as they wish.</li>
+                    <li>Click the green checkmark next to an option to mark it as correct.</li>
+                    <li>The "randomize options" checkbox will shuffle the options each time the quick check is accessed. This checkbox is selected by default. It's a good idea to uncheck this box if your question has the option of "all of the above," so that option always appears on bottom.</li>
+                </ul>
+            </li>
+            <li>Matching
+                <ul>
+                    <li>Click the "add matching pair" button to add the prompt text and the answer option that matches it. Answer options appear in a table, with text prompts on the left and a dropdown with all answer options to the right in each row. The system will automatically exclude chosen options from the dropdown each time the student makes a selection.</li>
+                    <li>Distractor options can be added that will appear in the dropdown as a possible answer, but that does not match any of the prompts.</li>
+                    <li>The "randomize options" checkbox will shuffle the options each time the quick check is accessed.</li>
+                </ul>
+            </li>
+            <li>Matrix
+                <ul>
+                    <li>Matrix questions are formatted as a table, with answer options in a grid of columns and rows. Each row must match to a column. Only one column option may be selected by the student for each row. However, column options can be used multiple times in different rows.</li>
+                    <li>The "randomize options" checkbox will shuffle the options each time the quick check is accessed.</li>
+                </ul>
+            </li>
+            <li>Multiple dropdowns
+                <ul>
+                    <li>Add dropdown pairs in the order that you would like for them to appear. The text will be displayed with a dropdown appearing inline. Distractor options can be added to the dropdown that appears after each block of text.</li>
+                    <li>Multiple dropdowns cannot be randomized, because the meaning of the question is dependent on the order, in most cases (i.e., adding multiple dropdowns inside of a sentence means that the sentence needs to be in the same logical order each time).</li>
+                </ul>
+            </li>
+            <li>Textmatch
+                <ul>
+                    <li>Students enter text in a text input box, and their answer is assessed for correctness regardless of capitalization, trailing punctuation, or trailing whitespace.</li>
+                    <li>Add as many options as you like for possible matches.</li>
+                </ul>
+            </li>
+            <li>Numerical
+                <ul>
+                    <li>Students enter a number in a numerical input box. Correct answer options may be an exact number, an exact number within a margin of error (inclusive), or a number within a range (inclusive).</li>
+                    <li>Add as many options as you like for possible matches.</li>
+                    <li>Answers can be up to 15 digits, with 6 decimal places</li>
+                </ul>
+            </li>
+        </ul>
+        <hr>
+        <h3 id="feedback">Custom Feedback</h3>
+        <p>Custom feedback can be added to questions beyond "Correct" and "Incorrect" by clicking the "add custom feedback" button when editing a question. All questions can include feedback that appears when the question is answered correctly and when it is answered incorrectly. (Both are required if using custom feedback.) Multiple choice and multiple correct questions can include per-response feedback. In the case of multiple correct, multiple lines of feedback may appear if the student selected several options.</p>
+        <hr>
+        <h3 id="rich-content-toggle">Rich Content Toggle</h3>
+        <p>The rich content toggle allows for entering rich content into custom feedback, multiple choice question options, and multiple correct question options. Enabling the toggle will change the text input boxes into rich content editors.</p>
+        <p>The toggle is not available in other question types because rich content would either be incompatible or break the formatting for how questions appear.</p>
+        <p>However, raw html is accepted for some of these remaining question option types. Matching prompts, dropdown prompts, matrix column names, and matrix row names will all accept raw html. Raw html is NOT accepted in matching/dropdown answers, matching/dropdown distractors, text match answers, and numerical answers. Nested html in dropdown (AKA select) options is not accepted by most browsers, and it is non-applicable to text match/numerical answers.</p>
+        <hr>
+        <h3 id="copying-quick-checks">Copying Quick Checks</h3>
+        <p>Quick Checks can be copied with the click of a button. When viewing a set of quick checks, clicking the copy icon (the icon to the far right of the quick check title) will open a panel that allows you to select the set, subset, and name of the copy. The form will default to the current set and subset, but this can be changed to any other sets/subsets where you are a member.</p>
+        <p>Please keep in mind that <em>copying a quick check is not necessary to use the same quick check in multiple courses</em>. The sets of quick checks that you have created or have been invited to are tied to your username, and you can embed them in any course where you are an instructor. The functionality to copy a quick check is intended for cases where the same quick check may need to have slight variations (such as a graduate and undergraduate version, that both have the same questions but may need to be worded slightly differently in places), or where the same quick check can be used as a template for future building (for example, if you would like to include 10 true/false questions at the end of each module, it may be faster to copy and alter a dozen of these quick checks rather than create all of them from scratch).</p>
+        <hr>
+        <h3 id="search">Search</h3>
+        <p>When viewing a set, type into the search box at the top of the page to search through data within the set. The search includes all quick check names, question text, question options, and feedback. A list of links to quick checks where the search term was found will be returned. If the search term was discovered within a question, that question will be listed beneath its quick check. Search functionality is not case-sensitive.</p>
+        <hr>
+        <h3 id="qti-import">QTI Import</h3>
+        <p>Quizzes can be exported from Canvas in a QTI-formatted .zip file. A QTI package can include one or many quizzes. The quick check application can ingest a QTI package and create quick checks from it. Note that not all question types are supported. The following question types are not supported: </p>
+        <ul>
+            <li>Fill in multiple blanks</li>
+            <li>Formula</li>
+            <li>Essay</li>
+            <li>File upload</li>
+            <li>Text</li>
+        </ul>
+        <p>LMS-specific links or media also cannot be imported. For instance, a link to a Canvas assignment that is embedded in a question's text will be removed when imported into the quick check application. This is because such links are relative to the course that they are embedded in, and may not be accessible from an external tool, or in a different course.</p>
+        <hr>
+        <h3 id="qti-export">QTI export</h3>
+        <p>Quick checks in a set can be exported as a QTI-formatted .zip file. A QTI package contains one or more quick checks, with all associated question, answer, and feedback text. When exporting, it is possible to select the specific quick checks that need to be included in the QTI package. The QTI export tool has been optimized for Canvas, so that quick checks can easily be converted into Canvas quizzes. There are some canveats to keep in mind, however:
+            <ul>
+                <li>Because Quick Check contains a matrix question type, but Canvas does not, matrix question types are converted into a series of multiple choice questions, with each row of the matrix as a separate question, and the matrix columns as possible answers.</li>
+                <li>Canvas is not as flexible with embedded html in question options. If you have html, embedded images, embedded video, etc., in an answer option, it's a good idea to check that it is appearing as intended in Canvas.</li>
+                <li>Note that when importing into Canvas, Canvas-specific information that falls outside of the QTI standard (such as the number of points assigned to a quiz or the due date of the quiz) cannot be imported and will have to be set manually.</li>
+            </ul>
+        <hr>
+        <h2 id="custom-activities">Custom Activities</h2>
+        <h3 id="what-is-custom">What is a custom activity?</h3>
+        <p>A custom activity is an interactive built independently that can feed question and answer data in a format that is compatible with the quick check application. Custom activities must be developed in accordance with specifications set by the creators of this application.</p>
+        <hr>
+        <h3 id="how-to-custom">How do I use an existing custom activity as a quick check?</h3>
+        <p>If you would like to add your own custom activity, or make changes to existing custom activities, you must contact a system admin. Instructors cannot add custom activities to their sets, for conformance and security reasons.</p>
+        <hr>
+        <h2 id="embedding-assessments">Embedding Quick Checks</h2>
+        <h3 id="workflow-embedding">Workflow for embedding a quick check</h3>
+        <p>After creating a quick check, take the following steps to embed it in a course and make it available to students:</p>
+        <ul>
+            <li>Create an assignment in Canvas</li>
+            <li>Select "external tool" as the submission type</li>
+            <li>Click "find" next to the link field</li>
+            <li>Select "Quick Check" from the window that appears (there should be a magnifying glass icon next to the tool name)</li>
+            <li>A selector window will appear with all of your quick checks. Select the quick check you would like to embed and save.</li>
+        </ul>
+        <hr>
+        <h3 id="across-courses">Using quick checks across courses</h3>
+        <p>All of the sets, subsets, and quick checks that you create are tied to your username rather than to a specific course. This means that you can easily use quick checks across multiple courses, without any additional setup on your end. Quick Check is designed to be as flexible as possible in terms of transferring your course from one semester to another, or for reusing quick checks where applicable. Keep in mind that the feature toggles in a set will apply to all quick checks that belong to that set, regardless of which course they are embedded in. (For example, if automatic grade passback is turned on, it is not possible for a quick check to be automatically graded in one course and manually graded in another.)</p>
+        <hr>
+        <h3 id="embedding-best-practices">Best practices for embedding</h3>
+        <ul>
+            <li>An individual quick check should only be embedded in a single place within a course. If the same quick check is embedded in multiple places in a course (i.e., the same quick check in two separate assignments in the same course), there may be discrepancies in the data, especially with regard to grade passback. Canvas uses unique identifiers for assignment grade passback, which are specific to a single assignment and cannot be shared across multiple assignments.</li>
+            <li>Although quick checks can be embedded both as assignments and as external tool links in a module, it is a best practice to embed as an assignment. Assignments allow for placing content above the quick check, whereas external tool links do not. One of the biggest advantages quick checks have over contentional quizzes is that they can be placed within the flow of course content. Students can conveniently retrieve relevant information and are encouraged to review course content when completing a quick check. Embedding as an external tool link is available primarily for instructors who wish to have an ungraded quick check with no corresponding column in the gradebook. For more information, see the <a href="#ungraded" target="_self">section on ungraded quick checks</a>.</li>
+            <li>Generally, quick checks should be shorter rather than longer. Quick Check is a tool for formative assessment, and so the questions are a means to help students learn the content, as opposed to summative assessment (the category most conventional quizzes fall under), which test what students already know. Chunking course content into smaller pieces, with short quick checks after each section, lends itself better to formative assessment. A quick check with 50 questions could easily become overwhelming if the goal is to help students learn through formative assessment.</li>
+        </ul>
+        <h2 id="results-and-grading">Results and Grading</h2>
+        <h3 id="viewing-attempts">Viewing student attempts and responses</h3>
+        <p>Click "View Student Results" from the home page to see student results. This page will list all quick checks, in alphabetical order, where a user has made at least one attempt. (Note: if you would like to see what the results data looks like but don't want to open the assignment to students just yet, remember that attempts can be made by instructors as well. Of course, no grade will be passed back, but you will be able to see the question and answer data you submitted in your attempt.)</p>
+        <p>When viewing attempts for a single quick check, you can see a summary of each attempt made, as well as individual responses by clicking the "view responses" button. By default, you can see all attempts that students have made, even when they only accessed the assignment but did not answer any questions. If you would prefer to hide attempts where the student has not answered any questions, simply toggle this feature on for the set. (For more detail, see the <a href="#feature-options" target="_self">feature options section</a>.)</p>
+        <p>Note that if a student has not made an attempt, their name will not appear in this view.</p>
+        <hr>
+        <h3 id="individual-student-results">Viewing individual student results</h3>
+        <p>In addition to viewing all attempts made on a quick check in a course, it is also possible to view all attempts that an individual student has made. To do so, click the "view results by student" toggle in the results view. A list will populate with all students, in alphabetical order, who have made an attempt in the current course. If a student has not yet made an attempt on a quick check, their name will not appear.</p>
+        <p>Clicking on the student's name will show an accordion list of all quick checks that the student has attempted in the course, in the order that the student first attempted them.</p>
+        <p>Click the "view analytics" button to see analytics on how the student has performed (such as total number of attempts, average score, etc.). A CSV can also be downloaded that contains information on all student attempts made in the course.</p>
+        <hr>
+        <h3 id="grading">Grading</h3>
+        <p>In Quick Check, grades are passed as percentages to Canvas. The point value of the assignment in Canvas is automatically converted as a percentage based on the percentage of questions that the student answered correctly. This means that the point value of the Canvas assignment does not necessarily need to be the same as the number of questions in the quick check. For instance, if a quick check with 10 questions had a point value of 5 in Canvas, and a student answered 5/10 questions correctly, the student would receive 2.5/5 points for the Canvas assignment.</p>
+        <p>In the results view, if a student's assignment has not yet been graded, a blank box will appear in the grade column next to the student's name. If you would like to edit an existing grade, clicking on the grade will allow you to change the grade in the gradebook. This is equivalent to changing the grade in the Canvas gradebook.</p>
+        <hr>
+        <h3 id="automatic-vs-manual">Automatic vs. manual grade passback</h3>
+        <p>By default, the quick check application will automatically pass a student's grade back to the gradebook as soon as the student completes the assignment. Only the student's highest score before the due date (if applicable) is kept. If you would prefer to manually grade student submissions, you can toggle this feature off on the set home page that the quick check belongs to. (For more detail, see the <a href="#feature-options" target="_self">feature options section</a>.)</p>
+        <hr>
+        <h3 id="ungraded">Ungraded quick checks</h3>
+        <p>In the majority of cases, a quick check is embedded in a Canvas assignment and includes grade passback. However, for instructors interested in including ungraded quick checks, there are a couple of options. Unfortunately, Canvas has, for reasons unbeknownst to us, made it the case that in a Canvas assignment, when the option is selected to make the assignment ungraded, to not allow embedding an external tool like Quick Check. There are a couple of alternative approaches, however:</p>
+        <ol>
+            <li>Embed as external tool module item: if a quick check is embedded as a module item, it will not be graded or appear in the gradebook. Unfortunately, this option does not allow for including course content above the quick check&mdash;only the quick check will be visible.</li>
+            <li>Assign 0 points/do not count towards final grade: embedding a quick check in an assignment for 0 points would not impact a student's grade. (Alternatively, it is possible to check the box "do not count the assignment towards the final grade" when creating the assignment.) The downside, however, is that the entry would still appear in the gradebook. For instructors with many assignments, adding additional clutter to the gradebook may not be ideal.</li>
+        </ol>
+        <p>Although these alternatives may not be ideal for all instructors, it is the extent of what is allowable in Canvas at the moment. If in the future Canvas allows an ungraded assignment to include an external tool, this documentation will be updated.</p>
+        <hr>
+        <h3 id="auto-grade">Auto-grade</h3>
+        <p>Clicking the auto-grade button will search for all students who have made an attempt but do not have a grade in the gradebook, and pass the highest score each student earned before the due date (if applicable) back to the gradebook. This feature can be used to award partial credit to students who began a quick check but did not complete it, or to grade all students if automatic grade passback is turned off. If you have a large class (200+ students) and have automatic grade passback turned off, the auto-grade process to grade all student attempts can take some time to complete. We recommend in this circumstance to have automatic grade passback turned on, and to only use the auto-grade feature to award partial credit for students who did not finish the assignment before the due date.</p>
+        <p>Please note that if a student has not made an attempt, a grade will not be passed to the gradebook when using the auto-grade feature. If a student has made an attempt but not answered any questions, the student will receive a 0.</p>
+        <hr>
+        <h3 id="analytics">Analytics</h3>
+        <p>When viewing results for a quick check, analytics can be viewed by clicking the "View Analytics" button. The following information is included:</p>
+        <ul>
+            <li>Total number of attempts</li>
+            <li>Median score</li>
+            <li>Average number of attempts per student</li>
+            <li>Average time spent on quick check</li>
+            <li>Question-level analytics, including:
+                <ul>
+                    <li>Percentage of students who correctly answered the question</li>
+                    <li>Percentage of students who selected a specific answer option</li>
+                    <li>For textmatch and numerical questions, a list of all specific responses that were incorrect</li>
+                </ul>
+            </li>
+        </ul>
+        <p>Additionally, it is possible to download a CSV file with all attempts, as well as a CSV file with all responses, to allow instructors to perform custom analytics on student result data.</p>
+        <hr>
+        <h3 id="csv-downloads">CSV downloads</h3>
+        <p>Student attempts and responses can be downloaded as CSV files. CSV exports are course-specific. Attempts can be downloaded either for an entire course, or specific to a single quick check. Responses cannot be downloaded at the course-level, but instead need to be specific to a single quick check. The following data is included in CSV exports:</p>
+        <ul>
+            <li>Attempts
+                <ul>
+                    <li>ID</li>
+                    <li>Assessment ID</li>
+                    <li>Canvas assignment ID</li>
+                    <li>Canvas section ID</li>
+                    <li>Last milestone in quick check (LTI launch, complete, etc.)</li>
+                    <li>Count correct</li>
+                    <li>Count incorrect</li>
+                    <li>Calculated score</li>
+                    <li>Complete</li>
+                    <li>Canvas assignment title</li>
+                    <li>Due at</li>
+                    <li>Assessment name (within Quick Check)</li>
+                    <li>Given name</li>
+                    <li>Family name</li>
+                    <li>LTI user ID</li>
+                    <li>Canvas username</li>
+                    <li>Canvas user ID</li>
+                    <li>LTI context ID</li>
+                    <li>Canvas course ID</li>
+                    <li>Course timezone</li>
+                    <li>Created at</li>
+                    <li>Updated at</li>
+                </ul>
+            </li>
+            <li>Responses
+                <ul>
+                    <li>ID</li>
+                    <li>Attempt ID</li>
+                    <li>Question ID</li>
+                    <li>Is correct</li>
+                    <li>Partial credit</li>
+                    <li>Created at</li>
+                    <li>Question text</li>
+                    <li>Question type</li>
+                    <li>Answer</li>
+                    <li>Given name</li>
+                    <li>Family name</li>
+                    <li>Canvas username</li>
+                </ul>
+            </li>
+        </ul>
+        <hr>
+        <h3 id="large-class-sizes">Large class sizes</h3>
+        <p>In classes with more than 1000 students, slowness from the Canvas gradebook results in connection timeouts and other not very fun issues when reviewing attempts in Quick Check. For this reason, grading functionality is disabled for large courses when reviewing attempts in Quick Check.</p>
+        <hr>
+        <h2 id="releasing-results">Releasing results to students</h2>
+        <h3 id="releasing">Releasing results</h3>
+        <p>As a student, the link to Quick Check in the Canvas navigation menu will show the student their results on Quick Checks that they have attempted and that an instructor in the course has released to allow students to view. By default, students cannot see their Quick Check results, such as number of attempts made, answers to specific questions, etc. Results are hidden by default because some instructors may not wish to make results visible until later, if at all. An instructor must release the results to a quick check to make the results visible to students in a course. If no results have been released, a message will appear to let the student know that this is the case.</p>
+        <p>As an instructor, viewing attempts made on a quick check in a course will show a button to release student results in the course. Clicking the button to release results to students will make attempt information visible to students when a student clicks on the Quick Check tool in the left navigation menu in Canvas. Students will be able to see all aspects of their attempts that the instructor sees, except for grade information. (Students are encouraged to use the Canvas gradebook to see their grades.) Optionally, an instructor can hide the "view responses" button from students. This feature can be useful if an instructor does not want students to see the answer key. (For more detail, see the <a href="#feature-options" target="_self">feature options section</a>.)</p>
+        <hr>
+        <h3 id="rolling-back">Rolling back a release</h3>
+        <p>If you released student attempt results in error, clicking the button to rollback a release will remove this quick check's result data from the student view.</p>
+        <hr>
+        <h2 id="users-and-permissions">Users and Permissions</h2>
+        <h3 id="inviting">Inviting another user</h3>
+        <p>When on a set home page, you can view all users who are members of the set by clicking the link near the top of the page, and also invite other users. The username will be validated against Canvas before the user is invited. You cannot invite users outside of the university to be members of a set, unless they have a valid guest account.</p>
+        <p>Guest accounts and group accounts can also be invited to a set, but the account owner must first login to Canvas using the account, in order to register the username with Canvas.</p>
+        <hr>
+        <h3 id="permissions">Permissions</h3>
+        <p>Inviting another user to a set enables the user to have all the same permissions that you do&mdash;creating quick checks and subsets, editing existing questions, inviting other users, etc. The default role is ideal for co-instructors or course designers whom you are collaborating with. Optionally, you can invite a user with read-only permissions, so that the user can only view quick check questions and answers but not create or edit quick check, or invite other users. This role would be ideal for a teaching assistant who needs access to the answer key, or a course observer.</p>
+        <hr>
+        <h2 id="feature-options">Feature Options</h2>
+        <h3 id="how-do-feature">How do feature options work?</h3>
+        <p>Feature options are set-specific. They can be viewed and edited on the page belonging to a particular set. Features can be turned on or off at any time. Features will affect all quick checks within a set, and features cannot be applied differently to individual quick checks within a set. This limitation is in place to encourage consistency for the student experience in a course.</p>
+        <hr>
+        <h3 id="automatic-grade">Automatic grade passback</h3>
+        <p>This feature is turned on by default. When students complete a quick check, the grade will automatically be passed to the gradebook when this feature is enabled. When this feature is disabled, an instructor will have to manually grade all assignments. </p>
+        <hr>
+        <h3 id="hide-empty-attempts">Hide empty attempts</h3>
+        <p>This feature is turned off by default. When an instructor reviews student attempts, this feature will change what attempts are visible. If a student accesses a quick check but does not answer any questions, then their attempt will be hidden when this feature is enabled. If this feature is disabled, all attempts will be shown, even if the student did not answer any questions. Turning this feature on may be helpful if an instructor has a large number of student attempts and wants to focus more exclusively on student responses.</p>
+        <hr>
+        <h3 id="show-responses">Show responses in student view</h3>
+        <p>This feature is turned on by default. After an instructor releases quick check results to students, students will be able to see their responses to individual questions, along with the answer key, if this feature is enabled. If this feature is disabled, students will only be able to see information associated with their attempt, such as score, count correct, count incorrect, etc.</p>
+        <hr>
+        <h3 id="timeout">Timeout for excessive attempts</h3>
+        <p>This feature is turned on by default. When the system detects excessive attempts made by a student (more than 2 attempts in 1 minute, where at least one question has been answered per attempt, and on a graded assignment before the due date), the student will receive a 2 minute timeout, to deter random guessing of answers. An instructor previewing a quick check will not see a timeout message (unless in student view).</p>
+        <hr>
+    </div>
+</div>

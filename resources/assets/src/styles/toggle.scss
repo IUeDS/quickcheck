@@ -1,0 +1,153 @@
+//Credit to the developer, Mauricio Allende, for iOS-style SCSS toggles
+//http://codepen.io/mallendeo/pen/eLIiG
+//I made a few minor adjustments for our app, as well as linting
+//sass-lint:disable nesting-depth
+
+.tg-list-wrapper {
+    display: flex;
+    margin-bottom: 20px;
+
+    p {
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.1;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+}
+
+.tg-list-item {
+    flex: 1;
+    margin: 0 2em;
+}
+
+.tgl {
+
+    &::selection {
+        background: none;
+    }
+
+    + .tgl-btn {
+        cursor: pointer;
+        display: block;
+        height: 2em;
+        outline: 0;
+        position: relative;
+        width: 4em;
+
+        &::after,
+        &::before {
+            content: '';
+            display: block;
+            height: 100%;
+            position: relative;
+            width: 50%;
+        }
+
+        &::after {
+            left: 0;
+        }
+
+        &::before {
+            display: none;
+        }
+    }
+
+    &:checked {
+        + .tgl-btn {
+            &::after {
+                left: 50%;
+            }
+        }
+    }
+
+    //M. Mallon -- make focus visible
+    &:focus {
+        + .tgl-btn {
+            outline: solid $toggle-green 1px; //testing
+        }
+    }
+}
+
+// theme for ios toggle
+.tgl-ios {
+    + .tgl-btn {
+        background: $dark-gray;
+        border: 1px solid $toggle-grey-border;
+        border-radius: 2em;
+        padding: 2px;
+        transition: all .4s ease;
+        vertical-align: middle; //added by MM
+
+        &::after {
+            background: $toggle-grey-background;
+            border-radius: 2em;
+            box-shadow: 0 0 0 1px $ten-percent-opaque, 0 4px 0 $eight-percent-opaque;
+            transition: left .3s cubic-bezier(.175, .885, .32, 1.275), padding .3s ease, margin .3s ease;
+        }
+
+        &:hover {
+            &::after {
+                will-change: padding;
+            }
+        }
+
+        &:active {
+            box-shadow: inset 0 0 0 2em $toggle-grey-border;
+
+            &::after {
+                padding-right: .8em;
+            }
+        }
+    }
+
+    &:checked {
+        + .tgl-btn {
+            background: $toggle-green;
+
+            &:active {
+                box-shadow: none;
+
+                &::after {
+                    margin-left: -.8em;
+                }
+            }
+        }
+    }
+}
+
+//hover on disable
+.toggle-disabled {
+    &:hover {
+        cursor: not-allowed !important;
+    }
+}
+
+//text next to the admin-only input toggle to view all sets, and html toggles
+.qc-toggle-view-all-text,
+.qc-toggle-rich-content-text,
+.qc-toggle-student-results-text {
+    display: inline-block;
+    font-family: 'BentonSansCompBook';
+    font-size: 1.2em;
+    margin-right: 10px;
+    text-transform: uppercase;
+}
+
+.qc-rich-content-toggle,
+.qc-student-results-toggle {
+    display: inline-block;
+    margin-left: 20px;
+    padding-bottom: 20px;
+
+    p {
+        font-size: 1em;
+        margin-left: 10px;
+    }
+
+    .tgl-btn {
+        height: 1.5em;
+        vertical-align: middle;
+        width: 40px;
+    }
+}

@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-12">
+        <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+        <div [hidden]="this.utilitiesService.loading">
+            <h1>Select a quick check</h1>
+            <p>See the <a href="/documentation#embedding-assessments" target="_blank">embedding section in the documentation</a> for more information on embedding quick checks.</p>
+            <div class="row">
+                <div class="col-10 qc-select-search">
+                    <label for="assessment-search" class="sr-only">Search for quick checks</label>
+                    <input type="text" class="form-control qc-search-box" id="assessment-search" [(ngModel)]="this.search.searchText" (ngModelChange)="this.updateSearch()" placeholder="Search">
+                    <span role="button" class="qc-select-clear-search" (click)="this.clearSearch()">
+                        <span class="fa fa-remove fa-lg" aria-hidden="true"></span>
+                        <span class="sr-only">Clear search</span>
+                    </span>
+                </div>
+            </div>
+            <div [hidden]="this.search.searchActivated" aria-live="polite">
+                <h2>Sets</h2>
+                <div *ngIf="!this.memberships.length && !this.adminCollectionData.collections.length">
+                    <h3>Woops!</h3>
+                    <p class="lead">Looks like you haven't added any sets yet. You can add sets by clicking on the quick check tool in the course navigation.</p>
+                </div>
+                <div *ngIf="this.admin">
+                    <qc-view-all-collections-toggle [collectionData]="this.adminCollectionData" [utilitiesService]="this.utilitiesService"></qc-view-all-collections-toggle>
+                </div>
+                <div id="accordion-collections" role="tablist" aria-multiselectable="true">
+                    <div *ngIf="this.adminCollectionData.viewAll">
+                        <qc-select-collection-panel
+                            *ngFor="let collection of this.adminCollectionData.collections"
+                            [collection]="collection"
+                            [launchUrlStem]="this.launchUrlStem"
+                            [redirectUrl]="this.redirectUrl">
+                        </qc-select-collection-panel>
+                    </div>
+                    <div *ngIf="!this.adminCollectionData.viewAll">
+                        <qc-select-collection-panel
+                            *ngFor="let membership of this.memberships"
+                            [membership]="membership"
+                            [collection]="membership.collection"
+                            [launchUrlStem]="this.launchUrlStem"
+                            [redirectUrl]="this.redirectUrl">
+                        </qc-select-collection-panel>
+                    </div>
+                </div>
+            </div>
+            <div [hidden]="!this.search.searchActivated" aria-live="polite">
+                <h2>Search results:</h2>
+                <h3 *ngIf="!this.search.searchResults.length">No results found.</h3>
+                <div class="row admin-assessment-row qc-select-search-assessment" *ngFor="let assessment of this.search.searchResults">
+                    <div class="col-6 qc-select-row">
+                        <h5 class="admin-assessment-name">
+                            {{ assessment.name }}
+                            <span *ngIf="assessment.custom_activity_id" class="badge badge-info qc-label-custom">Custom</span>
+                        </h5>
+                    </div>
+                    <div class="col-6 qc-select-row">
+                        <form ngNoForm class="row" method="POST" [action]="this.redirectUrl | safe: 'resourceUrl'">
+                            <!-- hidden form input for content item embed -->
+                            <input type="hidden" name="lti_message_type" value="ContentItemSelection">
+                            <input type="hidden" name="lti_version" value="LTI-1p0">
+                            <input type="hidden" name="content_items" [value]="this.createContentItemJson(assessment)">
+
+                            <!-- submit button to select embed -->
+                            <button class="btn btn-success qc-btn qc-select-btn" type="submit">
+                                <span class="fa fa-hand-pointer-o fa-lg" aria-hidden="true"></span> Select <span class="sr-only"> quick check {{ assessment.name }}</span>
+                            </button>
+
+                            <a [href]="'../assessment/' + assessment.id + '?preview=true'" target="_blank" class="qc-view-btn qc-select-preview-btn">
+                                <qc-preview-icon aria-hidden="true"></qc-preview-icon>
+                                <span class="sr-only">Preview quick check {{ assessment.name }}</span>
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

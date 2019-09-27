@@ -1,0 +1,49 @@
+<!-- slightly different navs for home and for the other pages, as home needs to show header tags for app name -->
+<div class="row qc-nav" *ngIf="this.currentPage != 'home'">
+    <div class="col-sm-4 col-12">
+        <div class="logo">Quick Check</div>
+        <div class="logo-sub-header">Inline Question Tool</div>
+    </div>
+    <nav class="col-sm-8 col-12">
+        <ul>
+            <li class="qc-nav-home"
+                [ngClass]="{'qc-nav-current' : this.currentPage === 'home'}">
+                <a routerLink="/home" queryParamsHandling="preserve" target="_self">Home</a>
+            </li>
+            <li class="qc-nav-sets"
+                [ngClass]="{'qc-nav-current' : this.currentPage === 'sets'}">
+                <a routerLink="/collection" queryParamsHandling="preserve" target="_self">View &amp; Edit Sets</a>
+            </li>
+            <li *ngIf="this.utilitiesService.isLti" class="qc-nav-results"
+                [ngClass]="{'qc-nav-current' : this.currentPage === 'results'}">
+                <a routerLink="/manage" queryParamsHandling="preserve" target="_self">View Student Results</a>
+            </li>
+            <!-- open help in new tab, since the scroll to links functionality doesn't work well with iframes; this also allows for users to reference the help while in Canvas app -->
+            <li class="qc-nav-help"
+                [ngClass]="{'qc-nav-current' : this.currentPage === 'help'}">
+                <a routerLink="/documentation" queryParamsHandling="preserve" target="_blank">Help</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="row" *ngIf="this.currentPage == 'home'">
+    <div class="col-12 col-sm-5">
+        <h1>Quick Check</h1>
+        <h2>Inline Question Tool</h2>
+    </div>
+    <nav class="col-12 col-sm-7 qc-nav">
+        <ul>
+            <li class="qc-nav-current qc-nav-home">Home</li>
+            <li class="qc-nav-sets">
+                <a routerLink="/collection" queryParamsHandling="preserve" target="_self">View &amp; Edit Sets</a>
+            </li>
+            <li *ngIf="this.utilitiesService.isLti" class="qc-nav-results">
+                <a routerLink="/manage" queryParamsHandling="preserve" target="_self">View Student Results</a>
+            </li>
+            <!-- open help in new tab, since the scroll to links functionality doesn't work well with iframes; this also allows for users to reference the help while in Canvas app -->
+            <li class="qc-nav-help">
+                <a routerLink="/documentation" queryParamsHandling="preserve" target="_blank">Help</a>
+            </li>
+        </ul>
+    </nav>
+</div>

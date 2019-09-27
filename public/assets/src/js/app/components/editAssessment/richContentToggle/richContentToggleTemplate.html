@@ -1,8 +1,0 @@
-<div class="qc-rich-content-toggle">
-    <input class="tgl tgl-ios sr-only" type="checkbox" id="rich-content-toggle-{{vm.question.id}}-{{vm.toggleType}}"
-        ng-model="vm.isToggled"
-        ng-checked="vm.isToggled == 'true'"
-        ng-click="vm.toggle()">
-    <label class="tgl-btn inline-block" for="rich-content-toggle-{{vm.question.id}}-{{vm.toggleType}}"><span class="sr-only">Rich content toggle for {{ vm.toggleType }} for question #{{ vm.question.question_order }}</span></label>
-    <p class="qc-toggle-rich-content-text">{{ vm.isToggled == 'true' ? 'Disable' : 'Enable' }} rich content editor</p>
-</div>

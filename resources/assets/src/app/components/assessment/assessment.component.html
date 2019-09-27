@@ -1,0 +1,70 @@
+<div class="qc-quiz-view">
+    <div class="row section-white">
+        <div class="col-12">
+            <h1 *ngIf="this.assessmentTitle" class="qc-assessment-title">{{ this.assessmentTitle }}</h1>
+            <!-- if no title, make a generic h1 header for accessibility, to maintain semantic header structure -->
+            <h1 *ngIf="!this.assessmentTitle" class="sr-only">Take the quick check</h1>
+            <p *ngIf="this.assessmentDescription" class="qc-assessment-description" [innerHTML]="this.assessmentDescription | safe: 'html'"></p>
+            <h2 *ngIf="this.currentQuestionIndex + 1 <= this.pointsPossible"
+                class="qc-question-number"
+                tabindex="-1" aria-live="assertive" aria-atomic="true">
+                Question {{ this.currentQuestionIndex + 1 }} out of {{ this.pointsPossible }}
+            </h2>
+            <div *ngIf="this.currentQuestion" [attr.aria-hidden]="this.modalVisible ? 'true' : 'false'">
+                <qc-multiple-choice *ngIf="this.isQuestionType('multiple_choice')"
+                    [currentQuestion]="this.currentQuestion"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
+                </qc-multiple-choice>
+
+                <qc-multiple-correct *ngIf="this.isQuestionType('multiple_correct')"
+                    [currentQuestion]="this.currentQuestion"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
+                </qc-multiple-correct>
+
+                <qc-matrix *ngIf="this.isQuestionType('matrix')"
+                    [currentQuestion]="this.currentQuestion"
+                    [incorrectRows]="this.incorrectRows"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
+                </qc-matrix>
+
+                <qc-matching *ngIf="this.isQuestionType('matching')"
+                    [currentQuestion]="this.currentQuestion"
+                    [incorrectRows]="this.incorrectRows"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
+                </qc-matching>
+
+                <qc-dropdowns *ngIf="this.isQuestionType('dropdown')"
+                    [currentQuestion]="this.currentQuestion"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
+                </qc-dropdowns>
+
+                <qc-textmatch *ngIf="this.isQuestionType('textmatch')"
+                    [currentQuestion]="this.currentQuestion"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
+                </qc-textmatch>
+
+                <qc-numerical *ngIf="this.isQuestionType('numerical')"
+                    [currentQuestion]="this.currentQuestion"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
+                </qc-numerical>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="qc-assessment-button-area">
+                <qc-row-feedback *ngIf="this.incorrectRows"
+                    [feedback]="this.feedback"
+                    [incorrectRows]="this.incorrectRows"
+                    [isCorrect]="this.isCorrect"
+                    [isNextBtnDisabled]="this.isNextBtnDisabled"
+                    (onContinue)="this.nextQuestion()"
+                    [partialCredit]="this.partialCredit">
+                </qc-row-feedback>
+                <button class="qc-submit-response" [disabled]="this.isSubmitDisabled()" (click)="this.submitAnswer()">Submit</button>
+                <div class="qc-current-score" aria-live="assertive" aria-atomic="true">{{ this.score }} / {{ this.pointsPossible }} questions correct</div>
+                <button class="qc-restart" (click)="this.restart()">Start Over</button>
+            </div>
+        </div>
+    </div>
+</div>

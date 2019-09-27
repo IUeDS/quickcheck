@@ -21,7 +21,7 @@ class CollectionController extends \BaseController
 
     public function indexView(Request $request)
     {
-        return view('collections/index');
+        return displaySPA();
     }
 
 
@@ -34,14 +34,12 @@ class CollectionController extends \BaseController
     public function selectLink(Request $request)
     {
         //check POST variable first for the success return URL
-        $redirectUrl = $request->input('content_item_return_url');
+        $redirectUrl = urlencode($request->input('content_item_return_url'));
 
+        //redirect with input vars added as query params to make them available to the front-end
         if ($redirectUrl) {
-            $launchUrlStem = env('APP_URL') . '/index.php/assessment?id=';
-            return view('collections/select', [
-                'redirectUrl' => $redirectUrl,
-                'launchUrlStem' => $launchUrlStem
-            ]);
+            $launchUrlStem = urlencode(env('APP_URL') . '/index.php/assessment?id=');
+            return redirect('/select?redirectUrl=' . $redirectUrl . '&launchUrlStem=' . $launchUrlStem);
         }
 
         abort(500, 'A valid LTI context is required to access this resource.');
@@ -56,7 +54,26 @@ class CollectionController extends \BaseController
 
     public function show($id)
     {
-        return view('collections/show');
+        return displaySPA();
+    }
+
+    /**
+    * Display a single collection.
+    *
+    * @param  int  $id
+    * @return View
+    */
+
+    public function viewSelectLink(Request $request)
+    {
+        $redirectUrl = $request->get('redirectUrl');
+        $launchUrlStem = $request->get('launchUrlStem');
+
+        if (!$redirectUrl || !$launchUrlStem) {
+            abort(500, 'Redirect url and launch url are required.');
+        }
+
+        return displaySPA();
     }
 
     /************************************************************************/

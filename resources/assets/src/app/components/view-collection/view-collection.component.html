@@ -1,0 +1,111 @@
+<qc-nav [currentPage]="this.currentPage"></qc-nav>
+<qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
+<div class="row">
+    <div class="col-12">
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+        <div *ngIf="this.collection">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="qc-view-set-header">View Set</h1>
+                    <h2 class="qc-view-set-subheader">{{ this.collection.name }}</h2>
+                    <small *ngIf="collection.description" class="text-muted">Description: {{ this.collection.description }}</small>
+                    <qc-read-only-notice *ngIf="this.readOnly"></qc-read-only-notice>
+                </div>
+                <div class="col-6 text-right" *ngIf="!this.readOnly">
+                    <div class="form-group">
+                        <button class="btn btn-light qc-btn-qti-import" type="button"
+                            (click)="this.initQtiImport()"
+                            [disabled]="this.isImportingQti">
+                            <span class="fa fa-cloud-upload fa-2x" aria-hidden="true"></span>
+                            <span> Import <strong>QTI Package</strong></span>
+                        </button>
+                        <button class="btn btn-light qc-btn-qti-export" type="button"
+                            (click)="this.initQtiExport()"
+                            [disabled]="this.isExportingQti">
+                            <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span>
+                            <span> Export <strong>QTI Package</strong></span>
+                        </button>
+                    </div>
+                    <qc-toggle-public-collection
+                        *ngIf="this.admin && this.collection"
+                        [collection]="this.collection"
+                        [utilitiesService]="this.utilitiesService">
+                    </qc-toggle-public-collection>
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-4 col-md-3">
+                    <div class="form-group" *ngIf="this.assessmentGroups.length">
+                        <label for="search-box" class="sr-only">Search set: </label>
+                        <input type="text" class="form-control qc-search-box" id="search-box"
+                            placeholder="Search set"
+                            [(ngModel)]="this.searchTerm"
+                            (ngModelChange)="this.search()">
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="this.searchTerm && !this.utilitiesService.loading">
+                <div class="col-12 col-sm-6">
+                    <h3>Search results:</h3>
+                    <div class="card card-body bg-light text-center" *ngIf="!this.searchResults">
+                        <h4>No results found</h4>
+                    </div>
+                    <div *ngIf="this.searchResults">
+                        <ul>
+                            <li *ngFor="let assessment of this.searchResults" class="qc-search-assessment-result">
+                                <strong><a [routerLink]="'/assessment/' + assessment.id + '/edit'" queryParamsHandling="preserve" target="_self">{{ assessment.name }}</a></strong>
+                                <ul>
+                                    <li *ngFor="let question of assessment.questionSearchResults" class="qc-search-question-result">Question #{{ question.question_order }}</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <qc-qti-import [hidden]="!this.isImportingQti"
+                [assessmentGroups]="this.assessmentGroups"
+                [isImportingQti]="this.isImportingQti"
+                (onQtiImportCancel)="this.onQtiImportCancel($event)">
+            </qc-qti-import>
+
+            <qc-qti-export [hidden]="!this.isExportingQti"
+                [assessmentGroups]="this.assessmentGroups"
+                [isExportingQti]="this.isExportingQti"
+                (onQtiExportCancel)="this.onQtiExportCancel($event)">
+            </qc-qti-export>
+        </div>
+        <div>
+            <qc-users
+                [collectionId]="this.collectionId"
+                [currentUser]="this.currentUser"
+                [readOnly]="this.readOnly"
+                [utilitiesService]="this.utilitiesService">
+            </qc-users>
+            <qc-features
+                [collectionId]="this.collectionId"
+                [readOnly]="this.readOnly"
+                [utilitiesService]="this.utilitiesService">
+            </qc-features>
+            <h2 class="qc-h1-style">Subsets</h2>
+            <qc-add-assessment-group
+                *ngIf="!this.readOnly"
+                [collectionId]="this.collectionId"
+                (onSave)="this.onAssessmentGroupSaved($event)"
+                [utilitiesService]="this.utilitiesService">
+            </qc-add-assessment-group>
+            <p *ngIf="!this.assessmentGroups.length && !this.readOnly && !this.utilitiesService.loading" class="lead qc-subset-instructions">Looks like you haven't added a subset yet. A subset is a way to organize your quick checks. All quick checks must belong to a subset group. Click the button to add a new subset to get started.</p>
+            <div class="card-group qc-panel-group" *ngIf="this.assessmentGroups.length">
+                <qc-assessment-group
+                    *ngFor="let assessmentGroup of this.assessmentGroups; index as $index;"
+                    class="w-100"
+                    [assessmentGroup]="assessmentGroup"
+                    [assessmentGroupIndex]="$index"
+                    (onAssessmentCopy)="this.onAssessmentCopy($event)"
+                    (onDelete)="this.onAssessmentGroupDeleted($event)"
+                    [readOnly]="this.readOnly"
+                    [utilitiesService]="this.utilitiesService">
+                </qc-assessment-group>
+            </div>
+        </div>
+    </div>
+</div>

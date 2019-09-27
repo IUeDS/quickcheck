@@ -1,0 +1,121 @@
+<div class="card qc-question-panel">
+    <div class="card-header qc-question-panel-heading" role="button"
+        [attr.data-target]="'#question-data-' + this.question.id"
+        [attr.aria-expanded]="false"
+        [attr.aria-controls]="'question-data-' + this.question.id"
+        (click)="this.toggleQuestionClosed()">
+        <span class="qc-accordion-arrow fa fa-lg"
+            [ngClass]="this.question.questionClosed ? 'fa-caret-right' : 'fa-caret-down'"
+            aria-hidden="true">
+        </span>
+        <h2 id="question-header-{{this.question.question_order}}" tabindex="-1"
+            class="qc-question-header-number">Question #{{this.question.question_order}}</h2>
+
+        <!-- delete question button -->
+        <span class="qc-delete-btn qc-delete-question-btn" role="button" tabindex="0"
+            (click)="this.deleteQuestion($event)"
+            *ngIf="!this.readOnly">
+            <qc-delete-icon aria-hidden="true"></qc-delete-icon>
+            <span class="sr-only">Delete question #{{this.question.question_order}}</span>
+        </span>
+
+        <!-- arrows to reorder question -->
+        <span class="qc-reorder-btn-group">
+            <span class="qc-reorder-up-btn" role="button" tabindex="0"
+                (click)="this.reorderQuestionUp($event)"
+                *ngIf="!this.readOnly && !this.isFirstQuestion()">
+                <qc-arrow-up-icon aria-hidden="true"></qc-arrow-up-icon>
+                <span class="sr-only">Move question #{{this.question.question_order}} up in order></span>
+            </span>
+            <span class="qc-reorder-down-btn" role="button" tabindex="0"
+                (click)="this.reorderQuestionDown($event)"
+                *ngIf="!this.readOnly && !this.isLastQuestion()">
+                <qc-arrow-down-icon aria-hidden="true"></qc-arrow-down-icon>
+                <span class="sr-only">Move question #{{this.question.question_order}} down in order></span>
+            </span>
+        </span>
+    </div>
+    <div class="card-body collapse in" id="question-data-{{this.question.id}}" [collapse]="this.question.questionClosed" [isAnimated]="true">
+        <!-- question type -->
+        <label for="question-type-{{this.question.id}}">
+            <h3>Question type <span class="sr-only">for question # {{this.question.question_order}}</span></h3>
+        </label>
+        <select class="form-control qc-edit-question-type" id="question-type-{{this.question.id}}"
+            [(ngModel)]="this.question.question_type"
+            (ngModelChange)="this.onQuestionTypeChanged(this.question.question_type, this.question.question_type)"
+            [disabled]="this.readOnly">
+            <option *ngFor="let item of this.questionTypes | keyvalue"
+                [ngValue]="item.value.constantName">{{ item.value.displayName }}</option>
+        </select>
+        <hr>
+
+        <!-- question text -->
+        <label id="question-text-label-{{this.question.id}}">
+            <h3>Question text <span class="sr-only">for question # {{this.question.question_order}}, using a rich text editor</span></h3>
+        </label>
+
+        <!-- WYSIWYG editor -->
+        <editor [init]="this.tinymceOptions" *ngIf="!this.readOnly"
+            [(ngModel)]="this.question.question_text"
+            (ngModelChange)="this.onEdited()"
+            [attr.aria-labelledby]="'question-text-label-' + this.question.id">
+        </editor>
+
+        <!-- for read-only users, show the text in a disabled form field -->
+        <div *ngIf="this.readOnly" [innerHTML]="this.question.question_text | safe: 'html'"
+            class="form-control"
+            [attr.aria-labelledby]="'question-text-label-' + this.question.id"
+            [attr.disabled]="true">
+        </div>
+
+        <!-- show question options based on question type -->
+        <qc-edit-multiple-choice *ngIf="this.isQuestionType('multipleChoice')"
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
+        </qc-edit-multiple-choice>
+
+        <qc-edit-multiple-correct *ngIf="this.isQuestionType('multipleCorrect')"
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
+        </qc-edit-multiple-correct>
+
+        <qc-edit-matching *ngIf="this.isQuestionType('matching')"
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
+        </qc-edit-matching>
+
+        <qc-edit-dropdowns *ngIf="this.isQuestionType('dropdowns')"
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
+        </qc-edit-dropdowns>
+
+        <qc-edit-matrix *ngIf="this.isQuestionType('matrix')"
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
+        </qc-edit-matrix>
+
+        <qc-edit-textmatch *ngIf="this.isQuestionType('textmatch')"
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
+        </qc-edit-textmatch>
+
+        <qc-edit-numerical *ngIf="this.isQuestionType('numerical')"
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
+        </qc-edit-numerical>
+    </div>
+</div>

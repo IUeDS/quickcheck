@@ -1,0 +1,42 @@
+<!-- show only if we have received data back from server -->
+<div class="card card-body bg-light col-12 qc-public-collection-container" *ngIf="this.publicCollections">
+    <p class="lead">Public sets allow any instructor to embed quick checks that have been made publicly available. All public sets are read-only. Sets can only be made public by a system administrator.</p>
+    <p class="lead text-danger qc-no-public-sets" *ngIf="!this.publicCollections.length">
+        <span class="fa fa-hand-o-right" aria-hidden="true"></span>
+        There are no public sets in the system at this time. When a public set is added, it will appear here in the future.
+    </p>
+    <ul class="qc-public-collections-list list-group" *ngIf="this.publicCollections.length">
+        <li *ngFor="let collection of this.publicCollections" class="collections-row list-group-item qc-public-collection">
+            <h3 class="collection-header uppercase" id="collection-header-{{collection.id}}" tabindex="-1">{{ collection.name }}</h3>
+            <p *ngIf="collection.description">Description: {{ collection.description }}</p>
+            <!-- only show these buttons if the user is a member of the collection-->
+            <div class="row" *ngIf="collection.user_membership">
+                <div class="col-3">
+                    <a target="_self" id="goto-collection-{{collection.id}}"
+                        [routerLink]="'/collection/' + collection.id" queryParamsHandling="preserve">
+                        <button type="button" class="btn qc-view-set-btn qc-btn">
+                            Go to set <span class="sr-only">{{ collection.name }}</span>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-3">
+                    <button role="button" class="btn qc-opt-out-btn qc-btn"
+                        (click)="this.optOutPublicCollection(collection)">
+                        <span class="fa fa-remove" aria-hidden="true"></span>
+                        Opt-out <span class="sr-only">of public set {{ collection.name }}</span>
+                    </button>
+                </div>
+            </div>
+            <!-- show if user has not joined the collection -->
+            <div class="row" *ngIf="!collection.user_membership">
+                <div class="col-3">
+                    <button role="button" class="btn btn-success qc-join-btn qc-btn"
+                        (click)="this.joinPublicCollection(collection)">
+                        <span class="fa fa-plus" aria-hidden="true"></span>
+                        Join <span class="sr-only">public set {{ collection.name }}</span>
+                    </button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

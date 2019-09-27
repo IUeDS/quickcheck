@@ -1,0 +1,111 @@
+<qc-nav [currentPage]="this.currentPage"></qc-nav>
+<qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
+<div class="row qc-edit-assessment">
+    <div class="col-12">
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+        <form ngNativeValidate (ngSubmit)="this.saveAssessment()" *ngIf="this.assessment">
+            <a [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_self" >
+                <span class="fa fa-angle-double-left" aria-hidden="true"></span> Back
+            </a>
+            <h1>{{ this.readOnly ? 'View' : 'Edit' }} Quick Check</h1>
+            <qc-read-only-notice *ngIf="this.readOnly"></qc-read-only-notice>
+            <div class="row form-group">
+                <div class="col-5">
+                    <h2>Basic information:</h2>
+                    <div class="row">
+                        <div class="col-12 form-group">
+                            <label for="name">Quick Check Name (required)</label>
+                            <input type="text" class="form-control qc-edit-name" id="name" name="name" required
+                                [(ngModel)]="this.assessment.name"
+                                (ngModelChange)="this.onEdited()"
+                                [disabled]="this.readOnly">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 form-group">
+                            <label for="assessment_group_id">Subset</label>
+                            <select id="assessment_group_id" name="assessment_group_id" class="form-control qc-edit-group"
+                                [(ngModel)]="this.assessment.assessment_group_id"
+                                (ngModelChange)="this.onEdited()"
+                                [disabled]="this.readOnly">
+                                <option *ngFor="let assessmentGroup of this.assessmentGroups" value="{{assessmentGroup.id}}">{{assessmentGroup.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="shuffle-question-order"
+                                    (click)="this.toggleShuffled()"
+                                    [disabled]="this.readOnly"
+                                    [checked]="this.assessment.shuffled == 'true'">
+                                <label for="shuffle-question-order">Shuffle question order</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 offset-1">
+                    <h2>Optional: </h2>
+                    <div class="form-group">
+                        <label for="title">Title (appears as top-level header when taking quiz)</label>
+                        <input type="text" class="form-control qc-edit-title" id="title" name="title"
+                            [(ngModel)]="this.assessment.title"
+                            (ngModelChange)="this.onEdited()"
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description (appears as top-level paragraph when taking quiz)</label>
+                        <textarea class="form-control qc-edit-description" id="description" name="description" rows="4"
+                            [(ngModel)]="this.assessment.description"
+                            (ngModelChange)="this.onEdited()"
+                            [disabled]="this.readOnly"></textarea>
+                    </div>
+                </div>
+            </div>
+            <qc-edit-question *ngFor="let question of this.questions; index as $index;"
+                [questionIndex]="$index"
+                (onDelete)="this.onQuestionDeleted($event)"
+                (onQuestionEdited)="this.onQuestionEdited($event)"
+                (onQuestionReordered)="this.onQuestionReordered($event)"
+                [question]="question"
+                [readOnly]="this.readOnly"
+                [totalQuestionCount]="this.getQuestionCount()"
+                [utilitiesService]="this.utilitiesService">
+            </qc-edit-question>
+            <qc-custom-activity-selection
+                *ngIf="!this.isQuestionAdded() && this.canViewCustomActivity()"
+                [admin]="this.admin"
+                [assessment]="this.assessment"
+                [customActivity]="this.customActivity"
+                [customActivityAdded]="this.customActivityAdded"
+                [readOnly]="this.readOnly"
+                [utilitiesService]="this.utilitiesService">
+            </qc-custom-activity-selection>
+            <!-- if custom activity added, then can't add questions to quiz -->
+            <div [hidden]="this.customActivityAdded" class="form-group" *ngIf="!this.readOnly">
+                <hr>
+                <button class="btn qc-btn qc-btn-add qc-btn-add-question" type="button" (click)="this.addQuestion()">
+                    <span class="fa fa-plus" aria-hidden="true"></span> Add question</button>
+                <hr>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-lg qc-btn qc-btn-save-quiz" *ngIf="!this.readOnly">Save quick check</button>
+            </div>
+            <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
+            <div *ngIf="this.validationError" class="alert alert-danger" id="qc-validation-error" role="alert" tabindex="-1" >
+                <span class="fa fa-thumbs-o-down fa-3x" aria-hidden="true"></span>
+                <span class="sr-only">Error</span>
+                <h2>There was a validation error in saving your quick check.</h2>
+                <ul>
+                    <li *ngFor="let error of this.validationErrorList">{{ error }}</li>
+                </ul>
+            </div>
+            <div *ngIf="this.saved && this.edited" class="alert alert-success" role="alert" tabindex="-1" id="qc-save-success">
+                <span class="fa fa-thumbs-o-up fa-3x" aria-hidden="true"></span>
+                <span class="sr-only">Success</span>
+                <h2 id="assessment-save-success" tabindex="-1">Quick check saved</h2>
+                <a [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_self">Return to set "{{ this.collection.name }}"</a>
+            </div>
+        </form>
+    </div>
+</div>

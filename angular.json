@@ -1,0 +1,195 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "quickcheck": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "resources/assets/src",
+      "prefix": "qc",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "public/assets/dist",
+            "index": "resources/assets/src/index.html",
+            "main": "resources/assets/src/main.ts",
+            "polyfills": "resources/assets/src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "deployUrl": "/assets/dist/",
+            "aot": false,
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "../../../node_modules/font-awesome/fonts",
+                "output": "./assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce/skins",
+                "output": "/tinymce/skins/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce/themes",
+                "output": "/tinymce/themes/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce/plugins",
+                "output": "/tinymce/plugins/"
+              },
+              {
+                "glob": "**/*",
+                "input": "resources/assets/src/vendor/tinymce_plugins/mathquill",
+                "output": "/tinymce/plugins/mathquill"
+              },
+              {
+                "glob": "mathquill.css",
+                "input": "node_modules/mathquill/build",
+                "output": "/tinymce/plugins/mathquill"
+              }
+            ],
+            "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/animate.css/animate.min.css",
+              "resources/assets/src/styles.scss"
+            ],
+            "scripts": [
+              "./node_modules/tinymce/tinymce.min.js",
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/mathquill/build/mathquill.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "resources/assets/src/environments/environment.ts",
+                  "with": "resources/assets/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "reg": {
+              "fileReplacements": [
+                {
+                  "replace": "resources/assets/src/environments/environment.ts",
+                  "with": "resources/assets/src/environments/environment.reg.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "quickcheck:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "quickcheck:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "quickcheck:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "resources/assets/src/test.ts",
+            "polyfills": "resources/assets/src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "resources/assets/e2e/conf.js",
+            "devServerTarget": "quickcheck:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "quickcheck:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "quickcheck"
+}

@@ -20,7 +20,7 @@ class ReleaseController extends \BaseController
 
     public function contextReleaseIndex()
     {
-        return view('student/releases');
+        return displaySPA();
     }
 
     /************************************************************************/

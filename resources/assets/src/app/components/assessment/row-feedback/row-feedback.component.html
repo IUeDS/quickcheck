@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card card-body bg-light well-lg qc-row-feedback" tabindex="-1" role="alertdialog">
+            <div class="sr-only"><h1>Quick Check question feedback</h1></div>
+            <h2 *ngIf="this.isCorrect">Correct</h2>
+            <h2 *ngIf="!this.isCorrect">Incorrect. <span *ngIf="this.partialCredit">Partial credit assigned.</span></h2>
+            <p class="custom-feedback" *ngFor="let feedbackItem of this.feedback" [innerHTML]="feedbackItem.feedback_text | safe: 'html'"></p>
+            <div class="sr-only" *ngIf="!this.isCorrect">
+                <ul>
+                    <li *ngFor="let incorrectRow of this.incorrectRows">
+                        {{ incorrectRow.text }} was incorrect
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-lg qc-btn"
+                [ngClass]="{'btn-success': this.isCorrect, 'btn-danger': !this.isCorrect}"
+                (click)="this.next()"
+                [disabled]="this.isNextBtnDisabled">
+                Click to continue <span class="sr-only">the quick check</span>
+            </button>
+        </div>
+    </div>
+</div>

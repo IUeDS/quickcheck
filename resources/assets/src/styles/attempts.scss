@@ -1,0 +1,283 @@
+@import './colors';
+
+.qc-attempts-table {
+    thead {
+        th {
+            font-family: 'BentonSansComp';
+            text-transform: uppercase;
+        }
+    }
+}
+
+//make correct/incorrect coloring accessible
+.qc-attempts-table,
+.qc-responses-table {
+    .edit-grade {
+        text-decoration: underline;
+    }
+
+    //I try not to use !important, but needed to override bootstrap's
+    //insane amount of specificity for these attributes
+    .success {
+        background-color: $bg-success !important;
+        color: $text-success !important;
+    }
+
+    .danger {
+        background-color: $bg-danger !important;
+        color: $text-danger !important;
+    }
+}
+
+.qc-btn.qc-btn-view-responses {
+    font-size: 0.8em;
+}
+
+.qc-autograde-btn,
+.qc-release-btn
+{
+    @include respond-to('xs') {
+        width: 100%;
+    }
+
+    @include respond-to('medium') {
+        width: 100%;
+    }
+
+    padding: 5px 25px;
+}
+
+.qc-autograde-btn {
+    background-color: $electric-blue;
+    color: $white;
+
+    &:hover {
+        background-color: $dark-blue;
+        color: $white;
+    }
+}
+
+.qc-correct-icon,
+.qc-incorrect-icon {
+    display: inline-block;
+    padding: 5px;
+}
+
+.qc-correct-icon {
+    color: $green;
+}
+
+.qc-incorrect-icon {
+    color: $darkred;
+}
+
+.qc-correct-icon-list {
+    padding: 0; //if icons are in an unordered list, the padding throws off alignment
+}
+
+.qc-correct-text {
+    color: $green;
+    padding-left: 10px;
+}
+
+.qc-correct-answer-input {
+    background-color: $bootstrap-contextual-success !important;
+}
+
+.qc-incorrect-answer-input {
+    background-color: $bootstrap-contextual-danger !important;
+}
+
+.qc-correct-bar,
+.qc-incorrect-bar {
+    color: $white;
+    height: 38px; //center text inside vertically
+    min-width: 40px; //otherwise, really small numbers get cut off
+    padding: 3px 10px 5px 0;
+    text-align: right;
+}
+
+.qc-correct-bar {
+    background-color: $analytics-green;
+}
+
+.qc-incorrect-bar {
+    background-color: $iron-gray-lighter;
+}
+
+.qc-edit-grade {
+    text-decoration: underline;
+}
+
+.qc-attempt-edit-grade {
+    .btn {
+        font-size: 0.8em;
+    }
+}
+
+.qc-edit-grade-input {
+    margin-bottom: 0.5rem;
+
+    label {
+        display: block;
+        font-size: 0.9em;
+    }
+}
+
+.qc-grade-submit-input {
+    width: 75px;
+}
+
+.qc-graded-message {
+    color: $bootstrap-green-text;
+    font-family: 'BentonSansComp';
+    text-transform: uppercase;
+}
+
+//make the graph bars inside the table, but don't LOOK like they're in the table
+.qc-graph-cell {
+    background-color: $white !important;
+    border: 0 !important;
+}
+
+.qc-mc-option-response {
+    max-width: 80%; //make sure there's enough room for the checkmark icon to appear to the left
+}
+
+.qc-no-top-border {
+    td {
+        border-top: 0 !important;
+    }
+}
+
+.qc-none-found-well {
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.qc-other-responses-btn {
+    margin-left: 25px;
+}
+
+//text inside circle of angular progress
+.qc-progress-wrapper {
+    position: relative;
+
+    .text {
+        left: 0;
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        z-index: 1;
+    }
+
+    .qc-round-progress {
+        display: table;
+        margin: 10px auto;
+    }
+}
+
+.qc-release-btn {
+    background-color: $muted-purple;
+    color: $white;
+
+    &:hover {
+        background-color: $muted-purple-darker;
+        color: $white;
+    }
+}
+
+.qc-response-view {
+    line-height: 1.5; //taller line height was throwing off alignment of correct checkmark icons
+
+    legend {
+        font-size: inherit; //default font-size of 21px was too big
+    }
+
+    .qc-matrix-options {
+        .checkbox {
+            input {
+                position: static; //originally was position:absolute, but then it didn't line up with the checkmarks
+            }
+        }
+    }
+
+    .bg-danger {
+        background-color: $danger-red !important; //darken for accessibility
+    }
+
+    .bg-success {
+        background-color: $success-green !important; //darken for accessibility
+    }
+
+    h4 {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+}
+
+.qc-results-quiz-name {
+    margin-bottom: 30px;
+}
+
+.qc-student-analytics-blurb {
+    background-color: $light-gray;
+    border: solid $white 10px;
+    padding: 40px;
+
+    p {
+        font-size: 2em;
+        font-weight: 700;
+    }
+}
+
+.qc-student-analytics-total-attempts {
+    .qc-student-analytics-number {
+        border-bottom: solid $seafoam-green 5px;
+    }
+}
+
+.qc-student-analytics-avg-score {
+    .qc-student-analytics-number {
+        border-bottom: solid $seafoam-green 5px;
+    }
+}
+
+.qc-student-analytics-total-questions {
+    .qc-student-analytics-number {
+        border-bottom: solid $seafoam-green 5px;
+    }
+}
+
+.qc-student-analytics-avg-retries {
+    .qc-student-analytics-number {
+        border-bottom: solid $seafoam-green 5px;
+    }
+}
+
+.qc-student-analytics-number {
+    display: inline-block;
+    overflow: hidden;
+    width: 125px;
+}
+
+.qc-student-analytics-table {
+    margin: 50px 0;
+}
+
+.qc-student-attempts-panel {
+    .panel-body {
+        background-color: $white !important;
+    }
+
+    .qc-student-attempts-panel-heading {
+        background-color: $dark-gray;
+        border-left: solid $muted-purple 10px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

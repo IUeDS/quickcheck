@@ -76,7 +76,7 @@ class Handler extends ExceptionHandler
                 $this->logNotice($message, $errorId);
                 $message .= $this->addErrorIdMessage($errorId); //add error ID for user
                 $newException = new LtiLaunchDataMissingException($message);
-                return response()->view('errors.500', ['exception' => $newException]);
+                return $this->displayError($newException->getMessage());
                 break;
             case ($e instanceof SessionMissingAssessmentDataException):
                 $message = $e->getMessage();
@@ -97,12 +97,12 @@ class Handler extends ExceptionHandler
                 $this->logNotice($message, $errorId);
                 $message .= $this->addErrorIdMessage($errorId); //add error ID for user
                 $newException = new OAuthExpiredTimestampException($message);
-                return response()->view('errors.500', ['exception' => $newException]);
+                return $this->displayError($newException->getMessage());
                 break;
             case ($e instanceof OAuthException):
                 $message = $e->getMessage();
                 $this->logError($message, $errorId, $e->getTrace());
-                return response()->view('errors.500', ['exception' => $e]);
+                return $this->displayError($exception->getMessage());
                 break;
             case ($e instanceof DeletedCollectionException):
                 $message = $e->getMessage();
@@ -111,8 +111,12 @@ class Handler extends ExceptionHandler
             case ($e instanceof NotFoundHttpException):
                 $message = '404 for path: ' . $request->path();
                 $this->logNotice($message, $errorId);
+                return $this->displayError('Route not found, please double check your URL.');
                 break;
             case ($e instanceof HttpException):
+                if ($e->getStatusCode() === 503) {
+                    return $this->displayError('Quick Check is currently unavailable. Maintenance updates are currently being performed on the system, please try again later.');
+                }
                 $message = $e->getMessage();
                 $this->logError($message, $errorId, $e->getTrace());
                 break;
@@ -128,7 +132,7 @@ class Handler extends ExceptionHandler
             return response()->error($statusCode, [ $message ]);
         }
 
-        return parent::render($request, $e);
+        return $this->displayError($e->getMessage());
     }
 
     /**
@@ -141,6 +145,18 @@ class Handler extends ExceptionHandler
     private function addErrorIdMessage($errorId)
     {
         return ' Your error ID is: ' . $errorId . '.';
+    }
+
+    /**
+    * Display error in front-end SPA
+    *
+    * @param  string  $errorMessage
+    * @return redirect
+    */
+    private function displayError($errorMessage)
+    {
+        $message = urlencode($errorMessage);
+        return redirect('error?error=' . $message);
     }
 
     /**

@@ -1,0 +1,94 @@
+<qc-nav [currentPage]="this.currentPage"></qc-nav>
+<qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
+<div class="row qc-sets-page">
+    <div class="col-12">
+        <h1>Sets</h1>
+        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+        <qc-admin-panel *ngIf="this.admin"
+            [collectionData]="this.adminCollectionData"
+            [utilitiesService]="this.utilitiesService">
+        </qc-admin-panel>
+        <div class="row">
+            <div class="col-4 col-md-3">
+                <div class="form-group" *ngIf="this.memberships.length">
+                    <label for="search-name" class="sr-only">Filter by set name: </label>
+                    <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.collectionName" (ngModelChange)="this.searchUpdated()" placeholder="Filter by set name">
+                </div>
+            </div>
+            <div class="col-2 offset-4 col-md-3 offset-md-6">
+                <div class="form-group">
+                    <button class="btn btn-lg btn-outline-dark qc-btn qc-view-public-btn" (click)="this.togglePublicCollectionVisibility()">
+                        <span *ngIf="!this.publicCollectionsVisible">Show </span>
+                        <span *ngIf="this.publicCollectionsVisible">Hide </span>
+                        public sets
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <qc-public-collections [hidden]="!this.publicCollectionsVisible"
+                [user]="this.user"
+                [utilitiesService]="this.utilitiesService">
+            </qc-public-collections>
+            <div *ngIf="!this.adminCollectionData.viewAll">
+                <div *ngIf="!this.memberships.length && !this.utilitiesService.loading">
+                    <h2>Looks like you haven't created a set yet.</h2>
+                    <p class="lead qc-collection-instructions">A set is a group of Quick Checks that you would like to organize together for use in a course or series of related courses.</p>
+                </div>
+                <div *ngIf="this.memberships.length">
+                    <div *ngFor="let membership of this.searchedMemberships; index as i;">
+                        <!-- bootstrap 4's grid system requires "row" and will screw up layout if not included -->
+                        <!-- the logic here has to be a lot funnier that it needs to be because of this, unfortunately -->
+                        <div class="row" *ngIf="i % 2 == 0">
+                            <qc-collection-tile
+                                class="col-12 col-sm-5"
+                                [collection]="membership.collection"
+                                [membership]="membership"
+                                [index]="i"
+                                [utilitiesService]="this.utilitiesService">
+                            </qc-collection-tile>
+                            <qc-collection-tile
+                                *ngIf="this.searchedMemberships[i + 1]"
+                                class="col-12 col-sm-5 offset-sm-1"
+                                [collection]="this.searchedMemberships[i + 1].collection"
+                                [membership]="this.searchedMemberships[i + 1]"
+                                [index]="i + 1"
+                                [utilitiesService]="this.utilitiesService">
+                            </qc-collection-tile>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="this.adminCollectionData.viewAll" [hidden]="this.utilitiesService.loading">
+                <div *ngIf="!this.adminCollectionData.collections.length">
+                    <h2>There are currently no sets saved in the system.</h2>
+                    <p class="lead">Add one below!</p>
+                </div>
+                <div *ngIf="this.adminCollectionData.collections.length">
+                    <div *ngFor="let collection of this.searchedAdminCollections; index as i;">
+                        <!-- bootstrap 4's grid system requires "row" and will screw up layout if not included -->
+                        <!-- the logic here has to be a lot funnier that it needs to be because of this, unfortunately -->
+                        <div class="row" *ngIf="i % 2 == 0">
+                            <qc-collection-tile
+                                class="col-12 col-sm-5"
+                                [collection]="collection"
+                                [index]="i"
+                                [utilitiesService]="this.utilitiesService">
+                            </qc-collection-tile>
+                            <qc-collection-tile
+                                class="col-12 col-sm-5 offset-sm-1"
+                                [collection]="this.searchedAdminCollections[i + 1]"
+                                [index]="i + 1"
+                                [utilitiesService]="this.utilitiesService">
+                            </qc-collection-tile>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<qc-add-collection
+    (onSave)="this.onCollectionAdded($event)"
+    [utilitiesService]="this.utilitiesService">
+</qc-add-collection>

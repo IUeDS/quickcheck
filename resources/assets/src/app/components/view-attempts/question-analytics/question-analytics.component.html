@@ -1,0 +1,204 @@
+<div class="row">
+    <div class="col-12">
+        <div class="row text-center">
+            <div class="col-12">
+                <div class="qc-progress-wrapper">
+                    <round-progress
+                        class="qc-round-progress"
+                        [max]="100"
+                        [current]="this.correctPercentage"
+                        [color]="'#449D44'"
+                        [background]="'#eaeaea'"
+                        [radius]="75"
+                        [stroke]="15"
+                        [animationDelay]="500">
+                    </round-progress>
+                    <div class="text question-percentage-score lead"><span class="fa fa-lg fa-check qc-correct-icon" aria-hidden="true"></span><br>{{ this.correctPercentage }}% <span class="sr-only">answered correctly</span></div>
+                </div>
+            </div>
+        </div>
+        <p [innerHTML]="this.question.question_text | safe: 'html'" class="lead qc-analytics-question-text"></p>
+        <div *ngIf="this.question.question_type == 'multiple_choice' || this.question.question_type == 'multiple_correct'">
+            <table class="table">
+                <thead class="sr-only">
+                    <tr>
+                        <th>Option</th>
+                        <th>Percentage who chose this option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let option of this.question.options | keyvalue" [ngClass]="option.value.correct == 'true' ? 'table-success' : ''">
+                        <td class="qc-analytics-mc-option table-active">{{ option.value.answer_text }}</td>
+                        <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
+                            <div [ngClass]="option.value.correct == 'true' ? 'qc-correct-bar' : 'qc-incorrect-bar'" [style.width]="option.value.responseAnalytics.percentSelected / 100 * this.fullBarWidth + 'px'">
+                                <span class="qc-analytics-percentage">{{ option.value.responseAnalytics.percentSelected }}% <span class="sr-only">selected this option</span></span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="this.question.question_type == 'matching'">
+            <ng-container *ngFor="let option of this.question.options | keyvalue">
+                <div *ngIf="option.value.prompt_or_answer == 'prompt'">
+                    <p class="qc-analytics-matching-prompt">{{ option.value.option_text }}:</p>
+                    <table class="table">
+                        <thead class="sr-only">
+                            <tr>
+                                <th>Option</th>
+                                <th>Percentage who chose this option</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let answer of option.value.answers | keyvalue" [ngClass]="option.value.matching_answer_text == answer.value.option_text ? 'table-success' : ''">
+                                <td class="qc-analytics-matching-answer table-active">{{ answer.value.option_text }}</td>
+                                <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
+                                    <div [ngClass]="option.value.matching_answer_text == answer.value.option_text ? 'qc-correct-bar' : 'qc-incorrect-bar'" [style.width]="answer.value.responseAnalytics.percentSelected / 100 * this.fullBarWidth + 'px'">
+                                        <span class="qc-analytics-percentage">{{ answer.value.responseAnalytics.percentSelected }}% <span class="sr-only">selected this option</span></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+        </div>
+        <div *ngIf="this.question.question_type == 'dropdown'">
+            <ng-container *ngFor="let option of this.question.options | keyvalue">
+                <div *ngIf="option.value.prompt_or_answer == 'prompt'">
+                    <p class="qc-analytics-dropdown-prompt">{{ option.value.answer_text }}:</p>
+                    <table class="table">
+                        <thead class="sr-only">
+                            <tr>
+                                <th>Option</th>
+                                <th>Percentage who chose this option</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let answer of option.value.answers | keyvalue" [ngClass]="option.value.dropdown_answer_text == answer.value.answer_text ? 'table-success' : ''">
+                                <td class="qc-analytics-dropdown-answer table-active">{{answer.value.answer_text}}</td>
+                                <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
+                                    <div [ngClass]="option.value.dropdown_answer_text == answer.value.answer_text ? 'qc-correct-bar' : 'qc-incorrect-bar'" [style.width]="answer.value.responseAnalytics.percentSelected / 100 * this.fullBarWidth + 'px'">
+                                        <span class="qc-analytics-percentage">{{ answer.value.responseAnalytics.percentSelected }}% <span class="sr-only">selected this option</span></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+        </div>
+        <div *ngIf="this.question.question_type == 'matrix'">
+            <ng-container *ngFor="let option of this.question.options | keyvalue">
+                <div *ngIf="option.value.row_or_column == 'row'">
+                    <p class='qc-analytics-matrix-row'>{{ option.value.answer_text }}:</p>
+                    <table class="table">
+                        <thead class="sr-only">
+                            <tr>
+                                <th>Option</th>
+                                <th>Percentage who chose this option</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let column of option.value.columns | keyvalue" [ngClass]="option.value.matrix_answer_text == column.value.answer_text ? 'table-success' : ''">
+                                <td class="qc-analytics-matrix-column table-active">{{ column.value.answer_text }}</td>
+                                <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
+                                    <div [ngClass]="option.value.matrix_answer_text == column.value.answer_text ? 'qc-correct-bar' : 'qc-incorrect-bar'" [style.width]="column.value.responseAnalytics.percentSelected / 100 * this.fullBarWidth + 'px'">
+                                        <span class="qc-analytics-percentage">{{ column.value.responseAnalytics.percentSelected }}% <span class="sr-only">selected this option</span></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+        </div>
+        <div *ngIf="this.question.question_type == 'textmatch'">
+            <table class="table">
+                <thead class="sr-only">
+                    <tr>
+                        <th>Option</th>
+                        <th>Percentage who chose this option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- correct options -->
+                    <tr *ngFor="let option of this.question.options | keyvalue" class="table-success">
+                        <td class="qc-analytics-textmatch-answer">{{ option.value.textmatch_answer_text }}</td>
+                        <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
+                            <div class="qc-correct-bar" [style.width]="option.value.responseAnalytics.percentSelected / 100 * this.fullBarWidth + 'px'">
+                                <span class="qc-analytics-percentage">{{ option.value.responseAnalytics.percentSelected }}% <span class="sr-only">selected this option</span></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- all other student responses -->
+                    <tr *ngIf="this.question.questionAnalytics.otherResponses.length" class="table-active">
+                        <td>
+                            <div class="form-group">
+                                Other responses&nbsp;
+                                <button type="button" class="btn btn-outline-dark btn-sm qc-btn qc-other-responses-btn" (click)="this.toggleResponses(this.question)">See list of other responses</button>
+                            </div>
+                            <div class="card card-body bg-light" *ngIf="this.question.responsesVisible">
+                                <ul>
+                                    <li *ngFor="let response of this.question.questionAnalytics.otherResponses; index as $index;" class="qc-analytics-other-responses">{{ response }}</li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
+                            <div class="qc-incorrect-bar" [style.width]="this.getOtherResponsesPercentage(this.question) / 100 * this.fullBarWidth + 'px'">
+                                <span class="qc-analytics-percentage">{{ this.getOtherResponsesPercentage(this.question) }}% <span class="sr-only">selected this option</span></span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="this.question.question_type == 'numerical'">
+            <table class="table">
+                <thead class="sr-only">
+                    <tr>
+                        <th>Option</th>
+                        <th>Percentage who chose this option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- correct options -->
+                    <tr *ngFor="let option of this.question.options | keyvalue" class="table-success">
+                        <td class="qc-analytics-numerical-answer">
+                            <span *ngIf="option.value.answer_type === 'exact'">
+                                {{option.value.numerical_answer}}, with margin of error of {{ option.value.margin_of_error }}
+                            </span>
+                            <span *ngIf="option.value.answer_type === 'range'">
+                                Between {{ option.value.range_min }} and {{ option.value.range_max }}
+                            </span>
+                        </td>
+                        <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
+                            <div class="qc-correct-bar" [style.width]="option.value.responseAnalytics.percentSelected / 100 * this.fullBarWidth + 'px'">
+                                <span class="qc-analytics-percentage">{{ option.value.responseAnalytics.percentSelected }}% <span class="sr-only">selected this option</span></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- all other student responses -->
+                    <tr *ngIf="this.question.questionAnalytics.otherResponses.length" class="table-active">
+                        <td>
+                            <div class="form-group">
+                                Other responses&nbsp;
+                                <button type="button" class="btn btn-outline-dark btn-sm qc-btn qc-other-responses-btn" (click)="this.toggleResponses(this.question)">See list of other responses</button>
+                            </div>
+                            <div class="card card-body bg-light" *ngIf="this.question.responsesVisible">
+                                <ul>
+                                    <li *ngFor="let response of this.question.questionAnalytics.otherResponses; index as $index;" class="qc-analytics-other-responses">{{ response }}</li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
+                            <div class="qc-incorrect-bar" [style]="this.getOtherResponsesPercentage(this.question) / 100 * this.fullBarWidth + 'px'">
+                                <span class="qc-analytics-percentage">{{ this.getOtherResponsesPercentage(this.question) }}% <span class="sr-only">selected this option</span></span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
