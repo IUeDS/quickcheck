@@ -1,0 +1,10 @@
+<div class="textmatch">
+    <p class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></p>
+    <div class="form-group">
+        <label for="textmatch-answer-box">Type your answer here</label>
+        <input type="text" class="form-control"
+            [(ngModel)]="this.answer"
+            (ngModelChange)="this.onInput()"
+            id="textmatch-answer-box">
+    </div>
+</div>

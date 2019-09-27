@@ -1,0 +1,234 @@
+@import '../../../styles/colors';
+
+::ng-deep .qc-edit-assessment {
+    .form-check {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        padding-left: 0;
+
+        input {
+            margin-left: 0;
+            position: initial; //remove absolute positioning
+        }
+
+        label {
+            display: inline;
+            padding-left: 5px; //less padding
+        }
+    }
+
+    .qc-btn-add-question {
+        margin-bottom: 0;
+    }
+
+    .qc-btn-save-quiz {
+        font-size: 2em;
+    }
+
+    .qc-correct-symbol {
+        float: left;
+        margin: 12px 5px 0 0;
+        padding: 2px;
+
+        &:focus {
+            color: $electric-blue;
+        }
+    }
+
+    .qc-delete-option-btn-inline {
+        svg {
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+    }
+
+    .qc-distractor-btn {
+        background-color: $golden-yellow;
+        border-color: $golden-yellow-darker;
+        color: $black;
+
+        &:hover {
+            background-color: $golden-yellow-darker;
+        }
+    }
+
+    .qc-edit-assessment-inline {
+        .form-control {
+            display: inline-block;
+            vertical-align: middle;
+            width: 50%;
+        }
+    }
+
+    //add a bit more space around parts where we explain how question types work, etc.
+    .qc-edit-instructions {
+        margin: 30px 0;
+    }
+
+    .qc-edit-dropdowns-inline,
+    .qc-edit-matching-inline {
+        .form-control {
+            display: inline-block;
+            vertical-align: middle;
+            width: 70%;
+        }
+    }
+
+    .qc-edit-numerical-option {
+        .qc-edit-numerical-option-header,
+        .qc-delete-btn {
+            display: inline-block;
+        }
+
+        .qc-edit-numerical-option-header {
+            font-size: 1.2rem;
+        }
+    }
+
+    .qc-edit-textmatch-inline {
+        .form-control {
+            display: inline-block;
+            vertical-align: middle;
+            width: 60%;
+        }
+    }
+
+    //make space between table and question text input
+    .qc-matrix-entry-table {
+        margin-top: 20px;
+
+        input {
+            &[type='checkbox'] {
+                margin-left: 0; //originally was -20px, not lining up with th headers
+                position: static;
+            }
+
+            &[type='text'] {
+                width: auto; //cut out 100% width on form-control
+            }
+        }
+
+        .form-check {
+            label {
+                padding-left: 0;
+            }
+        }
+
+        .qc-matrix-header-container {
+            display: flex;
+
+            input {
+                flex-grow: 8;
+            }
+
+            .qc-delete-btn {
+                flex-grow: 2;
+            }
+        }
+    }
+
+    .qc-question-options-header,
+    .qc-feedback-header {
+        display: inline-block;
+    }
+
+    .qc-question-panel {
+        margin-bottom: 40px;
+
+        .qc-question-panel-heading {
+            border-left: solid 10px $muted-purple;
+        }
+
+        h2 {
+            display: inline-block;
+            margin-bottom: 10px;
+            margin-left: 5px;
+            margin-top: 10px;
+        }
+
+        .card-body {
+            padding-left: 60px; //indent question data so it's easier to differentiate between questions
+        }
+    }
+
+    .qc-question-panel-heading {
+        .qc-delete-btn {
+            float: right;
+            margin-right: 10px;
+            margin-top: 10px;
+
+            svg {
+                height: 30px;
+                width: 30px;
+            }
+        }
+
+        .qc-reorder-btn-group {
+            float: right;
+            margin-right: 25px;
+            margin-top: 10px;
+        }
+
+        .qc-reorder-down-btn,
+        .qc-reorder-up-btn {
+            svg {
+                height: 25px;
+                width: 25px;
+
+                &:hover {
+                    path {
+                        fill: $seafoam-green;
+                    }
+                }
+            }
+        }
+
+        //adjusts the up arrow to be vertically aligned above the down arrow
+        .qc-reorder-up-btn {
+            display: inline-block;
+            overflow: hidden;
+        }
+    }
+
+    .qc-rich-content-toggled {
+        .mce-tinymce { //extra space between options
+            margin-bottom: 30px;
+        }
+
+        .qc-correct-symbol { //align with label text
+            margin: .3em .3em 0 0;
+        }
+
+        .qc-delete-btn { //sit the delete btn far to the right so not grouped with label
+            float: right;
+        }
+    }
+
+    .qc-selected-correct {
+        color: $green;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .qc-selected-incorrect {
+        color: $dark-gray;
+
+        &:hover {
+            color: $green;
+            cursor: pointer;
+        }
+    }
+
+    .qc-settings-btn {
+        background-color: $light-gray;
+        margin-bottom: 15px;
+    }
+
+    #qc-validation-error {
+        ul {
+            color: $black; //ensure proper color contrast
+        }
+    }
+}

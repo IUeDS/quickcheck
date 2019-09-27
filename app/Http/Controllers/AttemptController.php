@@ -33,7 +33,7 @@ class AttemptController extends \BaseController
 
     public function manageAttempts($assessmentId)
     {
-        return view('manage/attempts');
+        return displaySPA();
     }
 
     /**
@@ -45,7 +45,7 @@ class AttemptController extends \BaseController
 
     public function manageOverview()
     {
-        return view('manage/overview');
+        return displaySPA();
     }
 
     /**
@@ -57,7 +57,7 @@ class AttemptController extends \BaseController
 
     public function viewAttemptsForStudent()
     {
-        return view('manage/attemptsforstudent');
+        return displaySPA();
     }
 
     /************************************************************************/

@@ -1,0 +1,50 @@
+@import '../../../../styles/colors';
+
+.qc-collection-tile {
+    background: linear-gradient(to bottom, transparent 0%, $light-gray 30%);
+    border-radius: 10px;
+    margin-bottom: 30px;
+    padding: 20px;
+
+    h2 {
+        display: inline-block;
+        font-family: 'BentonSansCompBook';
+        font-style: normal;
+        padding-right: 20px;
+        vertical-align: middle;
+    }
+
+    h3 {
+        text-transform: uppercase;
+    }
+
+    .qc-owner-name {
+        font-family: 'BentonSansComp';
+        font-weight: 700;
+        text-transform: none;
+    }
+
+    .qc-view-set-btn,
+    .qc-view-new-tab-btn {
+        margin-top: 50px; //make the tiles a bit bigger by plumping up space between this and stuff above
+    }
+}
+
+//each new row of 2 sets needs to clear both, so that when editing in the row above, it doesn't float up
+body main .qc-new-row {
+    clear: both;
+}
+
+::ng-deep .qc-collection-edit-btn,
+::ng-deep .qc-collection-delete-btn {
+    svg {
+        margin-bottom: 10px;
+        vertical-align: middle;
+    }
+}
+
+::ng-deep .qc-collection-edit-btn {
+    svg {
+        margin-right: 10px;
+    }
+}

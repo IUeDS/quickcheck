@@ -1,0 +1,13 @@
+$fa-font-path: '/assets/fonts';
+
+@import '../../../node_modules/font-awesome/scss/font-awesome.scss';
+@import 'styles/colors';
+@import 'styles/buttons';
+@import 'styles/typography';
+@import 'styles/mixins';
+@import 'styles/general';
+@import 'styles/loader';
+@import 'styles/panels';
+@import 'styles/questions';
+@import 'styles/toggle';
+@import 'styles/attempts';

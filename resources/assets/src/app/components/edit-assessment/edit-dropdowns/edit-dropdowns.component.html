@@ -1,0 +1,90 @@
+<div>
+    <p class="lead qc-edit-instructions">Enter the desired text and the accompanying answer that follows for each part of the question. The question will be displayed inline, as a single block of text, with dropdowns of all answer options displayed inline after each prompt.</p>
+    <table class="table table-bordered table-striped" *ngIf="this.question.prompts.length">
+        <thead class="sr-only">
+            <tr>
+                <th>Prompt</th>
+                <th>Answer</th>
+                <th>Delete this dropdown pair?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let prompt of this.question.prompts; index as $index;" class="qc-edit-dropdown-prompt">
+                <td class="qc-edit-dropdowns-inline">
+                    <label for="dropdown-prompt-{{this.question.id}}-{{prompt.id}}">
+                        Prompt
+                        <span class="sr-only"> for question #{{ this.question.question_order }}, dropdown pair #{{ $index+1 }}</span>:
+                    </label>
+                    <input type="text" id="dropdown-prompt-{{this.question.id}}-{{prompt.id}}"
+                        class="form-control ml-2"
+                        [(ngModel)]="prompt.answer_text"
+                        (ngModelChange)="this.onEdited()"
+                        required
+                        [disabled]="this.readOnly">
+                </td>
+                <td class="qc-edit-dropdowns-inline">
+                    <label for="dropdown-answer-{{this.question.id}}-{{prompt.id}}">
+                        Answer
+                        <span class="sr-only"> for question #{{ this.question.question_order }}, dropdown pair #{{ $index+1 }}</span>:
+                    </label>
+                    <input type="text" id="dropdown-answer-{{this.question.id}}-{{prompt.id}}"
+                        class="form-control ml-2"
+                        [(ngModel)]="prompt.dropdown_answer_text"
+                        (ngModelChange)="this.onEdited();"
+                        required
+                        [disabled]="this.readOnly">
+                </td>
+                <td>
+                    <qc-delete-option-btn
+                        [index]="$index"
+                        (onDelete)="this.deletePrompt($event)"
+                        [option]="prompt"
+                        [optionTypeText]="'dropdown pair'"
+                        [question]="this.question"
+                        *ngIf="!this.readOnly">
+                    </qc-delete-option-btn>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <button class="btn btn-sm btn-primary qc-btn" (click)="this.addPrompt()" type="button" *ngIf="!this.readOnly">
+        <span class="fa fa-plus" aria-hidden="true"></span> Add dropdown pair (text and its accompanying answer)
+        <span class="sr-only">for question #{{ this.question.question_order }}</span>
+    </button>
+    <hr>
+    <div *ngIf="this.question.distractors.length">
+        <h3>Distractor answer options <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
+        <p>These will appear as available answer options to the student, even though they are not correct answers.</p>
+    </div>
+    <div *ngFor="let distractor of this.question.distractors; index as $index;" class="row form-group qc-edit-assessment-inline qc-edit-dropdown-distractor">
+        <div class="col-12">
+            <label for="dropdown-distractor-{{this.question.id}}-{{distractor.id}}">
+                Distractor
+                <span class="sr-only"> #{{ $index+1 }} for question #{{ this.question.question_order }}</span>:
+            </label>
+            <input type="text" id="dropdown-distractor-{{this.question.id}}-{{distractor.id}}"
+                [(ngModel)]="distractor.answer_text"
+                (ngModelChange)="this.onEdited()"
+                class="form-control ml-2"
+                required
+                [disabled]="this.readOnly">
+            <qc-delete-option-btn
+                [index]="$index"
+                (onDelete)="this.deleteDistractor($event)"
+                [option]="distractor"
+                [optionTypeText]="'dropdown distractor'"
+                [question]="this.question"
+                *ngIf="!this.readOnly">
+            </qc-delete-option-btn>
+        </div>
+    </div>
+    <button class="btn btn-sm qc-btn qc-distractor-btn" (click)="this.addDistractor()" type="button" *ngIf="!this.readOnly">
+        <span class="fa fa-plus" aria-hidden="true"></span> Add distractor
+        <span class="sr-only">for question #{{ this.question.question_order }}</span>
+    </button>
+    <qc-custom-feedback *ngIf="!this.readOnly"
+        (onQuestionEdited)="this.onSubComponentEdited($event)"
+        [question]="this.question">
+    </qc-custom-feedback>
+</div>

@@ -1,0 +1,51 @@
+<div class="card qc-accordion-panel qc-student-attempts-panel">
+    <div class="card-header qc-student-attempts-panel-heading"
+        role="tab" role="button"
+        id="heading-group-{{this.assessment.id}}"
+        [attr.aria-expanded]="this.isAccordionClosed() ? 'false' : 'true'"
+        [attr.aria-controls]="'collapse-group-' + this.assessment.id"
+        (click)="this.toggleAccordion()">
+        <span class="fa fa-lg qc-accordion-arrow" [ngClass]="this.isAccordionClosed() ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true"></span>
+        <h3>{{ this.assessment.name }}</h3>
+    </div>
+    <div id="collapse-group-{{this.assessment.id}}" class="collapse" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.assessment.id" [collapse]="this.isAccordionClosed()" [isAnimated]="true">
+        <div class="card-body">
+            <div *ngIf="!this.responseViewVisible">
+                <p *ngIf="this.dueAt" class="qc-due-at">Due at: {{ this.dueAt }}</p>
+                <qc-attempt-data *ngIf="!this.isAccordionClosed()"
+                    [attempts]="this.attempts"
+                    [courseContext]="this.courseContext"
+                    [gradesLoading]="this.gradesLoading"
+                    [isStudent]="false"
+                    [isVisible]="false"
+                    [largeClassSize]="false"
+                    [pointsPossible]="this.pointsPossible"
+                    [showResponses]="true"
+                    [submissions]="this.submission"
+                    [users]="this.user"
+                    [utilitiesService]="this.utilitiesService"
+                    (onViewResponses)="this.viewResponses($event)">
+                </qc-attempt-data>
+            </div>
+            <div *ngIf="this.responseViewVisible">
+                <a href='javascript:;' (click)="this.hideResponses()">
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                    Back to attempts
+                </a>
+                <h1 id="response-header" tabindex="-1">Responses for {{ this.responseAttempt.student.lis_person_name_given }} {{ this.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
+                <p class="lead">Starting at {{ this.utilitiesService.formatTimeWithTimeZone(this.responseAttempt.created_at, this.courseContext.time_zone) }}</p>
+                <qc-responses
+                    [attempt]="this.responseAttempt"
+                    [courseContext]="this.courseContext"
+                    [isStudent]="false"
+                    [questions]="this.questions"
+                    [responses]="this.studentResponses">
+                </qc-responses>
+                <span class="sr-only">
+                    <!-- screenreader user will be moving down the page, so easier for the back button to be down here -->
+                    <a href='javascript:;' (click)="this.hideResponses()">Back to attempts</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

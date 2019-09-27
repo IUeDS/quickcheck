@@ -1,0 +1,10 @@
+<div class="numerical">
+    <p class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></p>
+    <div class="form-group">
+        <label for="numerical-answer-box">Type your answer here</label>
+        <input type="number" step="any" class="form-control"
+            [(ngModel)]="this.answer"
+            (ngModelChange)="this.onInput()"
+            id="numerical-answer-box">
+    </div>
+</div>

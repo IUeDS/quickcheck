@@ -1,0 +1,34 @@
+<div class="qc-matrix-options">
+    <p class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></p>
+    <table class="table table-striped">
+        <caption class="sr-only">Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.</caption>
+        <thead>
+            <th><span class="sr-only">Row name</span></th>
+            <th *ngFor="let column of this.columns">
+                <span [innerHTML]="column.answer_text | safe: 'html'"></span>
+            </th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of this.rows" [ngClass]="{'table-danger': !this.checkRowCorrectness(row)}">
+                <td>
+                    <span *ngIf="!this.checkRowCorrectness(row)" class="qc-matrix-row-content">
+                        <span class="fa fa-remove fa-2x" aria-hidden="true"></span>
+                        <span class="sr-only">This selection is incorrect</span>
+                    </span>
+                    <span [innerHTML]="row.answer_text | safe: 'html'" class="qc-matrix-row-content"></span>
+                </td>
+                <td *ngFor="let column of row.columns">
+                    <div class="form-check">
+                        <label class="sr-only" for="matrixrow-{{row.id}}-column-{{column.id}}">Check this box to match {{row.answer_text}} to {{column.answer_text}}</label>
+                        <input type="checkbox" name="{{row.id}}" value="{{column.answer_text}}"
+                            [checked]="false"
+                            [(ngModel)]="column.selected"
+                            (click)='this.onAnswerSelected(row, column)'
+                            [attr.aria-invalid]="!this.checkRowCorrectness(row) ? 'true' : 'false'"
+                            id="matrixrow-{{row.id}}-column-{{column.id}}">
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

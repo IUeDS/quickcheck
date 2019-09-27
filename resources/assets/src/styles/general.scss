@@ -1,0 +1,62 @@
+.alert {
+    margin-top: 20px;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+//don't automatically bold labels
+label {
+    font-weight: 400;
+}
+
+//set max-width the same as Canvas's, so that the layout doesn't get funky in a new tab
+main {
+    max-width: 1366px;
+}
+
+//add back in bottom border that bootstrap v4 took out
+legend {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+//darken the blindingly bright blue that bootstrap 4 added in
+.badge-primary {
+    background-color: $primary-blue-darker;
+}
+
+.section-white {
+    background-color: $white;
+    padding-top: 20px;
+}
+
+.inline-block {
+    display: inline-block !important;
+}
+
+//bootstrap was making text in cells smaller than necessary
+td,
+th {
+    font-size: 100%;
+}
+
+//for accessibility, we sometimes need to bring focus to a header when something is added/altered,
+//but we don't want the visible outline for sighted users
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.qc-collection-header,
+.qc-row-feedback,
+.qc-question-number {
+    &:focus {
+        outline: none;
+    }
+}
+
+.qc-search-box {
+    background-color: $light-gray;
+}

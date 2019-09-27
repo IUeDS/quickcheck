@@ -1,0 +1,94 @@
+<div>
+    <h3 *ngIf="this.question.prompts.length">Matching pairs <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
+    <table class="table table-bordered table-striped">
+        <thead class="sr-only">
+                <tr>
+                    <th>Prompt</th>
+                    <th>Answer</th>
+                    <th>Delete matching pair?</th>
+                </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let prompt of this.question.prompts; index as $index;" class="qc-edit-matching-prompt">
+                <td class="qc-edit-matching-inline">
+                    <label for="matching-prompt-{{this.question.id}}-{{prompt.id}}">
+                        Prompt
+                        <span class="sr-only"> for question #{{ this.question.question_order }}, matching pair #{{ $index + 1 }}</span>:
+                    </label>
+                    <input type="text" id="matching-prompt-{{this.question.id}}-{{prompt.id}}"
+                        [(ngModel)]="prompt.option_text"
+                        (ngModelChange)="this.onEdited()"
+                        class="form-control ml-2"
+                        required
+                        [disabled]="this.readOnly">
+                </td>
+                <td class="qc-edit-matching-inline">
+                    <label for="matching-answer-{{this.question.id}}-{{prompt.id}}">
+                        Answer
+                        <span class="sr-only"> for question #{{ this.question.question_order }}, matching pair #{{ $index + 1 }}</span>: </label>
+                    <input type="text" id="matching-answer-{{this.question.id}}-{{prompt.id}}"
+                        class="form-control ml-2"
+                        [(ngModel)]="prompt.matching_answer_text"
+                        (ngModelChange)="this.onEdited()"
+                        required
+                        [disabled]="this.readOnly">
+                </td>
+                <td>
+                    <qc-delete-option-btn
+                        [index]="$index"
+                        (onDelete)="this.deletePrompt($event)"
+                        [option]="prompt"
+                        [optionTypeText]="'matching pair'"
+                        [question]="this.question"
+                        *ngIf="!this.readOnly">
+                    </qc-delete-option-btn>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <button class="btn btn-sm btn-primary qc-btn" (click)="this.addPrompt()" type="button" *ngIf="!this.readOnly">
+        <span class="fa fa-plus" aria-hidden="true"></span> Add matching pair
+        <span class="sr-only">to question #{{ this.question.question_order }}</span>
+    </button>
+    <div *ngIf="this.question.distractors.length">
+        <h3>Distractor answer options <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
+        <p>These will appear as available answer options to the student, even though they are not correct answers.</p>
+    </div>
+    <div *ngFor="let distractor of this.question.distractors; index as $index;" class="row qc-edit-assessment-inline qc-edit-matching-distractor">
+        <div class="form-group col-12">
+            <label for="matching-distractor-{{this.question.id}}-{{distractor.id}}">
+                Distractor
+                <span class="sr-only">#{{ $index + 1 }} for question #{{this.question.question_order}}</span>:
+            </label>
+            <input type="text" id="matching-distractor-{{this.question.id}}-{{distractor.id}}"
+                [(ngModel)]="distractor.option_text"
+                (ngModelChange)="this.onEdited()"
+                class="form-control ml-2"
+                required
+                [disabled]="this.readOnly">
+            <qc-delete-option-btn
+                [index]="$index"
+                (onDelete)="this.deleteDistractor($event)"
+                [option]="distractor"
+                [optionTypeText]="'matching distractor'"
+                [question]="this.question"
+                *ngIf="!this.readOnly">
+            </qc-delete-option-btn>
+        </div>
+    </div>
+    <hr>
+    <button class="btn btn-sm qc-btn qc-distractor-btn" (click)="this.addDistractor()" type="button" *ngIf="!this.readOnly">
+        <span class="fa fa-plus" aria-hidden="true"></span> Add distractor
+        <span class="sr-only">for question #{{ this.question.question_order }}</span>
+    </button>
+    <qc-custom-feedback *ngIf="!this.readOnly"
+        (onQuestionEdited)="this.onSubComponentEdited($event)"
+        [question]="this.question">
+    </qc-custom-feedback>
+    <qc-randomize-checkbox
+        (onQuestionEdited)="this.onSubComponentEdited($event)"
+        [question]="this.question"
+        [readOnly]="this.readOnly">
+    </qc-randomize-checkbox>
+</div>

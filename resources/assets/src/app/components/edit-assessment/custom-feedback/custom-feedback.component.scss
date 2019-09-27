@@ -1,0 +1,55 @@
+@import '../../../../styles/colors';
+
+.qc-btn-add-feedback {
+    margin-left: 10px;
+}
+
+.qc-custom-feedback-container {
+    margin-top: 10px;
+}
+
+::ng-deep .qc-custom-feedback-container {
+    .card-header {
+        padding-left: 60px;
+    }
+
+    .qc-rich-content-toggle {
+        padding-bottom: 0;
+    }
+
+    h3 {
+        margin-top: 10px;
+    }
+}
+
+.qc-custom-feedback-correct {
+    color: $success-green;
+
+    textarea {
+        border: 1px solid $success-green;
+    }
+}
+
+.qc-custom-feedback-incorrect {
+    color: $danger-red;
+
+    textarea {
+        border: 1px solid $danger-red;
+    }
+}
+
+.qc-custom-feedback-general {
+    .form-group {
+        float: left;
+        margin-right: 20px;
+        width: 35%;
+    }
+}
+
+.qc-custom-feedback-response-checkbox {
+    clear: both;
+}
+
+.qc-delete-feedback-btn {
+    float: right;
+}

@@ -1,0 +1,69 @@
+<div class="card qc-accordion-panel qc-custom-activity-panel">
+    <div class="card-header" role="tab" id="qc-custom-activity-{{this.customActivity.id}}"
+        role="button"
+        [attr.href]="'#collapse-group-' + this.customActivity.id"
+        [attr.aria-expanded]="this.customActivity.closed ? 'false' : 'true'"
+        [attr.aria-controls]="'collapse-group-' + this.customActivity.id"
+        (click)="this.toggleAccordion()">
+        <span class="fa fa-lg qc-accordion-arrow"
+            [ngClass]="this.customActivity.closed ? 'fa-caret-right' : 'fa-caret-down'"
+            aria-hidden="true">
+        </span>
+        <h5 class="qc-custom-activity-name">{{ this.customActivity.name }}</h5>
+        <span class="qc-edit-btn qc-custom-activity-edit-btn" role="button" (click)="this.edit($event)" [hidden]="this.isEditing">
+            <qc-edit-icon aria-hidden="true"></qc-edit-icon>
+            <span class="sr-only">Edit custom activity {{this.customActivity.name}}</span>
+        </span>
+        <span class="qc-delete-btn qc-custom-activity-delete-btn" role="button" (click)="this.deleteCustomActivity($event)">
+            <qc-delete-icon aria-hidden="true"></qc-delete-icon>
+            <span class="sr-only">Delete custom activity {{this.customActivity.name}}</span>
+        </span>
+    </div>
+     <div id="collapse-group-{{this.customActivity.id}}" class="collapse"
+        role="tabpanel"
+        [attr.aria-labelledby]="'qc-custom-activity-' + this.customActivity.id"
+        [collapse]="this.customActivity.closed"
+        [isAnimated]="true">
+        <div class="card-body">
+            <div class="form-group" *ngIf="!this.isEditing">
+                <p class="qc-custom-acitvity-description">Description: {{ this.customActivity.description }}</p>
+                <p class="qc-custom-activity-url">Url: {{ this.customActivity.url }}</p>
+                <p class="qc-custom-activity-developer">Developer: {{ this.customActivity.developer }}</p>
+                <p *ngIf="this.isGroupRequired()">Group required</p>
+            </div>
+            <form ngNativeValidate *ngIf="this.isEditing" (ngSubmit)="this.update()">
+                <div class="form-group">
+                    <label for="edit-custom-name">Name of the activity</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.editingData.name" id="edit-custom-name" name="edit-custom-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-custom-description">Description</label>
+                    <textarea class="form-control" [(ngModel)]="this.editingData.description" id="edit-custom-description" name="edit-custom-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-custom-url">Url of the activity where it can be launched, relative to the "public/customActivities/" folder in app root (i.e., foldername/filename.html)</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.editingData.url" id="edit-custom-url" name="edit-custom-url" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-custom-developer">Primary developer of the activity</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.editingData.developer" id="edit-custom-developer" name="edit-custom-developer" required>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="edit-custom-group" name="edit-custom-group"
+                                [checked]="this.editingData.group_required == 'true'"
+                                (click)="this.toggleCustomGroupRequired()">
+                            Group required (get group the student belongs to, if applicable, and append as query string on launch)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-sm btn-success qc-btn" type="submit">Update</button>
+                    <button class="btn btn-sm btn-outline-dark qc-btn" type="button" (click)="this.cancelEdit()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
