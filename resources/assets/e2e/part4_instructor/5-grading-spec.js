@@ -14,12 +14,16 @@ describe('Toggling ungraded assessments', function() {
         await attemptOverviewPage.getAssessmentByName(assessmentName).click();
         await browser.sleep(1000);
 
-        attemptsVisible = attemptsPage.attempts.getAttemptsVisible();
-        expect(await attemptsVisible.count()).toBe(6);
+        attemptsVisible = await attemptsPage.attempts.getAttemptsVisible();
+        expect(attemptsVisible.length).toBe(6);
+
         await attemptsPage.toggleUngraded();
-        expect(await attemptsVisible.count()).toBe(5);
+        attemptsVisible = await attemptsPage.attempts.getAttemptsVisible();
+        expect(await attemptsVisible.length).toBe(5);
+
         await attemptsPage.toggleUngraded();
-        expect(await attemptsVisible.count()).toBe(6);
+        attemptsVisible = await attemptsPage.attempts.getAttemptsVisible();
+        expect(await attemptsVisible.length).toBe(6);
     });
 });
 
@@ -40,7 +44,7 @@ describe('Grading an assessment', function() {
     it('should show the correct grade after it has been entered using a 0-100 grading scale', async function() {
         await gradeInput.sendKeys('100');
         await attemptsPage.attempts.submitGrade(attemptIndex);
-        displayedGrade = attemptsPage.attempts.getEditGradeLink(attemptIndex);
+        displayedGrade = await attemptsPage.attempts.getEditGradeLink(attemptIndex);
         expect(await displayedGrade.getText()).toContain('100');
     });
 
@@ -59,7 +63,8 @@ describe('Grading an assessment', function() {
     });
 
     it('should correctly change the grade when it has been edited using a 1-100 grading scale', async function() {
-        await gradeInput.clear().sendKeys('1');
+        await gradeInput.clear();
+        await gradeInput.sendKeys('1');
         await attemptsPage.attempts.submitGrade(attemptIndex);
         expect(await displayedGrade.getText()).toContain('1');
         //make sure the 1 is not converted as a decimal to 100, which our system used to do
@@ -68,14 +73,16 @@ describe('Grading an assessment', function() {
 
     it('should accept float values between 1-100', async function() {
         await displayedGrade.click();
-        await gradeInput.clear().sendKeys('33.97');
+        await gradeInput.clear();
+        await gradeInput.sendKeys('33.97');
         await attemptsPage.attempts.submitGrade(attemptIndex);
         expect(await displayedGrade.getText()).toContain('33.97');
     });
 
     it('should accept a grade of 0', async function() {
         await displayedGrade.click();
-        await gradeInput.clear().sendKeys('0');
+        await gradeInput.clear();
+        await gradeInput.sendKeys('0');
         await attemptsPage.attempts.submitGrade(attemptIndex);
         expect(await displayedGrade.getText()).toContain('0');
         await attemptsPage.goBack();
@@ -91,7 +98,8 @@ describe('Auto-grading an assessment', function() {
         await attemptOverviewPage.getAssessmentByName(assessmentName).click();
         await browser.sleep(2000);
         await attemptsPage.autoGrade();
-        expect(await attemptsPage.attempts.getEditGradeLink(attemptIndex).getText()).toContain('0');
+        const gradeLink = await attemptsPage.attempts.getEditGradeLink(attemptIndex);
+        expect(await gradeLink.getText()).toContain('0');
         await attemptsPage.nav.goToResults();
     });
 });

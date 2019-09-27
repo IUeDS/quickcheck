@@ -44,7 +44,7 @@ var AttemptsTableComponent = function(browserRef) {
     }
 
     async function getAttemptsVisible() {
-        return component.attempts.filter(async function(attempt) {
+        return await component.attempts.filter(async function(attempt) {
             return await attempt.isDisplayed();
         });
     }

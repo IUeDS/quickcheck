@@ -2,6 +2,7 @@ var AttemptsPage = function(browserRef) {
     var page = this;
     page.browser = browserRef;
     page.includes = require('../common/includes.js');
+    page.common = new page.includes.Common(page.browser);
 
     //subcomponents
     page.analytics = new page.includes.AnalyticsComponent(page.browser);
@@ -45,6 +46,10 @@ var AttemptsPage = function(browserRef) {
 
     async function clearSearch() {
         await page.searchBox.clear();
+        //9/26/19: apparently clear() was not enough to trigger the angular model! so frustrating!
+        //seems to waiting for some sort of keyup stroke or something that isn't triggered by selenium
+        await page.searchBox.sendKeys('a');
+        await page.searchBox.sendKeys(protractor.Key.BACK_SPACE);
     }
 
     function getDueDate() {
@@ -60,8 +65,10 @@ var AttemptsPage = function(browserRef) {
     }
 
     async function goBack() {
+        //9/27/19: sometimes tests fail because link supposedly clicked but nothing happened, trying scrolling to fix
+        await page.common.scrollToElement(page.goBackLink);
         await page.goBackLink.click();
-        await page.browser.sleep(1000);
+        await page.browser.sleep(1500);
     }
 
     async function isReleaseBtnDisplayed() {

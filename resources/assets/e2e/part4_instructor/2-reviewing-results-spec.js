@@ -64,7 +64,8 @@ describe('Viewing attempts for an assessment', function() {
     });
 
     it('should show a grade for the student if automatic grade passback is enabled', async function() {
-        expect(await attemptsPage.attempts.getEditGradeLink(0).isPresent()).toBe(true);
+        const editGradeLink = await attemptsPage.attempts.getEditGradeLink(0);
+        expect(await editGradeLink.isPresent()).toBe(true);
     });
 
     it('should only show a grade in the first row but not for any subsequent attempts', async function() {
@@ -72,7 +73,8 @@ describe('Viewing attempts for an assessment', function() {
     });
 
     it('should show the higher of the student grades if multiple attempts were made', async function() {
-        expect(await attemptsPage.attempts.getEditGradeLink(0).getText()).toContain('100');
+        const editGradeLink = await attemptsPage.attempts.getEditGradeLink(0);
+        expect(await editGradeLink.getText()).toContain('100');
     });
 
     it('should show the due date if one is present', async function() {

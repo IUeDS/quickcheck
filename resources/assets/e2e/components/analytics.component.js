@@ -1,12 +1,14 @@
 var AnalyticsComponent = function(browserRef) {
     var component = this;
     component.browser = browserRef;
+    component.includes = require('../common/includes.js');
+    component.common = new component.includes.Common(component.browser);
 
     //elements
     component.attemptsCsvBtn = component.browser.element(by.css('.qc-btn-attempts-csv'));
     component.avgAttempts = component.browser.element(by.css('.qc-analytics-average-attempts'));
     component.avgTime = component.browser.element(by.css('.qc-analytics-average-time'));
-    component.backBtn = component.browser.element.all(by.partialLinkText('Back')).filter(function(link) { return link.isDisplayed(); });
+    component.backBtn = component.browser.element(by.css('.qc-analytics-back-btn'));
     component.medianScore = component.browser.element(by.css('.qc-analytics-median-score'));
     component.otherResponses = component.browser.element.all(by.css('.qc-analytics-other-responses'));
     component.questions = component.browser.element.all(by.css('.qc-analytics-question'));
@@ -133,7 +135,10 @@ var AnalyticsComponent = function(browserRef) {
     }
 
     async function goBack() {
+        //9/27/19: sometimes tests fail because link supposedly clicked but nothing happened, trying scrolling to fix
+        await component.common.scrollToElement(component.backBtn);
         await component.backBtn.click();
+        await component.browser.sleep(1500);
     }
 
     async function toggleOtherResponses(index) {

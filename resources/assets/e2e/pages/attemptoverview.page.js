@@ -1,5 +1,6 @@
 var AttemptOverviewPage = function(browserRef) {
-    var page = this;
+    var page = this,
+        EC = protractor.ExpectedConditions;
     page.browser = browserRef;
 
     //elements
@@ -23,6 +24,10 @@ var AttemptOverviewPage = function(browserRef) {
 
     async function clearSearch() {
         await page.searchBox.clear();
+        //9/26/19: apparently clear() was not enough to trigger the angular model! so frustrating!
+        //seems to waiting for some sort of keyup stroke or something that isn't triggered by selenium
+        await page.searchBox.sendKeys('a');
+        await page.searchBox.sendKeys(protractor.Key.BACK_SPACE);
     }
 
     async function clickStudentToggle() {
@@ -37,7 +42,8 @@ var AttemptOverviewPage = function(browserRef) {
         return page.attempts;
     }
 
-    function getStudentResultsToggle() {
+    async function getStudentResultsToggle() {
+        await page.browser.wait(EC.presenceOf(page.studentResultsToggle), 5000);
         return page.studentResultsToggle;
     }
 

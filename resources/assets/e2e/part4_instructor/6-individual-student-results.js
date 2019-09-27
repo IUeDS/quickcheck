@@ -7,7 +7,8 @@ var includes = require('../common/includes.js'),
 
 describe('Reviewing individual results from the attempts overview page', function() {
     it('should show a toggle for results by student', async function() {
-        expect(await attemptOverviewPage.getStudentResultsToggle().isDisplayed()).toBe(true);
+        const toggle = await attemptOverviewPage.getStudentResultsToggle();
+        expect(await toggle.isDisplayed()).toBe(true);
     });
 
     it('should default to showing results by quick check first', async function() {
@@ -64,7 +65,8 @@ describe('Viewing results for an individual student', function() {
     });
 
     it('should show accurate grade data', async function() {
-        expect(await studentResultsPage.attempts.getEditGradeLink(0).getText()).toContain('100');
+        const gradeLink = await studentResultsPage.attempts.getEditGradeLink(0);
+        expect(await gradeLink.getText()).toContain('100');
     });
 
     it('should show student responses', async function() {

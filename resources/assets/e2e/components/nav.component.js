@@ -24,11 +24,21 @@ var NavComponent = function(browserRef) {
 
     async function goToResults() {
         await component.resultsLink.click();
+        //see note above, sometimes second click is necessary
+        const resultspage = await component.browser.element(by.css('.qc-results-page'));
+        if (!await resultspage.isPresent()) {
+            await component.resultsLink.click();
+        }
         //await component.browser.sleep(1500);
     }
 
     async function goToSets() {
         await component.setsLink.click();
+        //see note above, sometimes second click is necessary
+        const setspage = await component.browser.element(by.css('.qc-sets-page'));
+        if (!await setspage.isPresent()) {
+            await component.setsLink.click();
+        }
         //await component.browser.sleep(1500);
     }
 };

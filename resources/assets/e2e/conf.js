@@ -1,6 +1,5 @@
 exports.config = {
     framework: 'jasmine2',
-    //seleniumAddress: 'http://localhost:4444/wd/hub',
     directConnect: true,
     useAllAngular2AppRoots: true,
     specs: [
@@ -37,7 +36,6 @@ exports.config = {
         'part4_instructor/9-timeout-feature-spec.js'
     ],
     SELENIUM_PROMISE_MANAGER: false,
-    rootElement: 'main',
     params: {
         'inviteUser': 'mmallon',
         'browser2': null,
@@ -49,26 +47,8 @@ exports.config = {
         includeStackTrace: false,
         defaultTimeoutInterval: 30000
     },
-    // capabilities: {
-    //     browserName: 'chrome',
-    //     chromeOptions: {
-    //         'w3c': false
-    //     }
-    // },
-//     capabilities: {
-//         "browserName": "chrome",
-//         "chromeOptions": {
-//             "binary": "/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary"
-//         }
-//     },
-    // capabilities: {
-    //     "browserName": "chrome",
-    //     "chromeOptions": {
-    //         "binary": "/Applications/Google\ Chrome\ Beta.app/Contents/MacOS/Google\ Chrome"
-    //     }
-    // },
     onPrepare: function() {
-        var width = 1200,
+        var width = 1400,
   		    height = 1200;
         browser.driver.manage().window().setSize(width, height);
         var SpecReporter = require('jasmine-spec-reporter').SpecReporter;

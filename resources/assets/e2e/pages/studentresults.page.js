@@ -49,6 +49,10 @@ var StudentResultsPage = function(browserRef) {
 
     async function clearSearch() {
         await page.searchBox.clear();
+        //9/26/19: apparently clear() was not enough to trigger the angular model! so frustrating!
+        //seems to waiting for some sort of keyup stroke or something that isn't triggered by selenium
+        await page.searchBox.sendKeys('a');
+        await page.searchBox.sendKeys(protractor.Key.BACK_SPACE);
     }
 
     function getAttemptTable() {

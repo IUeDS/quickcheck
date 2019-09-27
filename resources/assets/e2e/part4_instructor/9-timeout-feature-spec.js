@@ -13,7 +13,7 @@ describe('Taking an assessment with the timeout feature turned on', function() {
         await canvasAssignmentsPage.openAssignment(data.sets.featuresAllOn.quickchecks.featuresAllOn);
         await common.switchToLtiTool();
         await common.enterAngularPage();
-        expect(await qcPage.getTimeoutModal().isDisplayed()).toBe(false);
+        expect(await qcPage.getTimeoutModal().isPresent()).toBe(false);
     });
 
     it('should not include page views as part of the attempt count', async function() {
@@ -23,7 +23,7 @@ describe('Taking an assessment with the timeout feature turned on', function() {
         await browser.sleep(500); //wait for modal to disappear
         await qcPage.startOver();
         await qcPage.startOver();
-        expect(await qcPage.getTimeoutModal().isDisplayed()).toBe(false);
+        expect(await qcPage.getTimeoutModal().isPresent()).toBe(false);
     });
 
     it('should show a timeout message after two attempts with at least one response', async function() {
@@ -32,7 +32,8 @@ describe('Taking an assessment with the timeout feature turned on', function() {
         await qcPage.clickContinue();
         await browser.sleep(500); //wait for modal to disappear
         await qcPage.startOver();
-        await browser.wait(EC.presenceOf(qcPage.getTimeoutModal()), 5000);
+        await common.enterNonAngularPage(); //interval timer messes with angular change detection, freezes waiting for it to end
+        await browser.wait(EC.visibilityOf(qcPage.getTimeoutModal()), 5000);
         expect(await qcPage.getTimeoutModal().isDisplayed()).toBe(true);
     });
 
@@ -44,7 +45,8 @@ describe('Taking an assessment with the timeout feature turned on', function() {
         await common.switchToCanvas();
         await browser.refresh();
         await common.switchToLtiTool();
-        await common.enterAngularPage();
+        await common.enterNonAngularPage(); //interval timer messes with angular change detection, freezes waiting for it to end
+        await browser.wait(EC.visibilityOf(qcPage.getTimeoutModal()), 5000);
         expect(await qcPage.getTimeoutModal().isDisplayed()).toBe(true);
     });
 
@@ -57,7 +59,7 @@ describe('Taking an assessment with the timeout feature turned on', function() {
     it('should not show a timeout when refreshed after timeout period ends', async function() {
         await qcPage.getTimeoutRestartBtn().click();
         await browser.sleep(1000);
-        expect(await qcPage.getTimeoutModal().isDisplayed()).toBe(false);
+        expect(await qcPage.getTimeoutModal().isPresent()).toBe(false);
     });
 
     it('should not be in effect with instructors, when a grade is not involved', async function() {
@@ -76,6 +78,6 @@ describe('Taking an assessment with the timeout feature turned on', function() {
             await browser.sleep(500); //wait for modal to disappear
             await qcPage.startOver();
         }
-        expect(await qcPage.getTimeoutModal().isDisplayed()).toBe(false);
+        expect(await qcPage.getTimeoutModal().isPresent()).toBe(false);
     });
 });

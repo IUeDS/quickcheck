@@ -25,7 +25,7 @@ describe('Searching for sets', function() {
     });
 
     it('should show all sets again after the search text has been erased', async function() {
-        await searchBox.clear();
+        await viewSetsPage.clearSearch();
         expect(await viewSetsPage.getMembershipTiles().count()).toBe(2);
     });
 });
@@ -135,17 +135,20 @@ describe('Searching attempts by name', function() {
         await attemptOverviewPage.getAssessmentByName(assessmentName).click();
         await browser.sleep(1000);
         await attemptsPage.search(creds.student.last);
-        expect(await attemptsPage.attempts.getAttemptsVisible().count()).toBe(2);
+        const attempts = await attemptsPage.attempts.getAttemptsVisible();
+        expect(attempts.length).toBe(2);
     });
 
     it('should not show any attempts if the last name text does not match', async function() {
         await attemptsPage.clearSearch();
         await attemptsPage.search('Gandalf');
-        expect(await attemptsPage.attempts.getAttemptsVisible().count()).toBe(0);
+        const attempts = await attemptsPage.attempts.getAttemptsVisible();
+        expect(attempts.length).toBe(0);
     });
 
     it('should show all attempts again after the search text has been erased', async function() {
         await attemptsPage.clearSearch();
-        expect(await attemptsPage.attempts.getAttemptsVisible().count()).toBe(2);
+        const attempts = await attemptsPage.attempts.getAttemptsVisible();
+        expect(attempts.length).toBe(2);
     });
 });

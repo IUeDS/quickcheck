@@ -44,6 +44,7 @@ var ViewSetsPage = function(browserRef) {
     //functions
     page.addAdminUser = addAdminUser;
     page.cancelSetEdit = cancelSetEdit;
+    page.clearSearch = clearSearch;
     page.clickAddSetBtn = clickAddSetBtn;
     page.deleteSet = deleteSet;
     page.editSet = editSet;
@@ -79,6 +80,14 @@ var ViewSetsPage = function(browserRef) {
 
     async function cancelSetEdit(setElement) {
         await setElement.element(by.partialButtonText(page.cancelSetEditText)).click();
+    }
+
+    async function clearSearch() {
+        await page.searchBox.clear();
+        //9/26/19: apparently clear() was not enough to trigger the angular model! so frustrating!
+        //seems to waiting for some sort of keyup stroke or something that isn't triggered by selenium
+        await page.searchBox.sendKeys('a');
+        await page.searchBox.sendKeys(protractor.Key.BACK_SPACE);
     }
 
     async function clickAddSetBtn() {
