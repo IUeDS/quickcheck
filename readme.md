@@ -10,7 +10,7 @@ Quick Check is an LTI (Learning Tools Interoperability) tool for creating format
 
 ## Requirements
 
-* PHP >= 7.0.0
+* PHP >= 7.1.3
 * MySQL >= 5.5
 * Composer
 * Canvas

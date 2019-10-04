@@ -48,6 +48,8 @@ RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/
 WORKDIR ${WORK_DIR}
 RUN npm install
 RUN npm run build:prod
+#copy hashed css output to non-hashed file for inclusion with tinymce editor (which has a set config and can't guess the hash)
+RUN cp public/assets/dist/styles.*.css public/assets/dist/styles.css
 RUN composer install
 
 # Set document root for apache
