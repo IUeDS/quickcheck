@@ -149,7 +149,7 @@ class MCAnswer extends QuestionOption {
         }
         else {
             //prevent errors on front-end if no choice-specific feedback present (null array creates problems)
-            if (!count($this->McOptionFeedback)) {
+            if (!$this->McOptionFeedback) {
                 unset($this->McOptionFeedback);
             }
         }
