@@ -32,6 +32,12 @@ ARG TZ=US/Eastern
 ENV TZ ${TZ}
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# Set up php.ini
+# Use the default production configuration
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+# Override with custom settings
+COPY resources/php.ini $PHP_INI_DIR/conf.d/
+
 ARG WORK_DIR=/var/www/html
 #add the (optional) .env to the directory to access variables
 ADD *.env ${WORK_DIR}
