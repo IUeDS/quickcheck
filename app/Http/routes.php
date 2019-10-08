@@ -15,6 +15,9 @@
 /****** PUBLIC VIEWS ************************************************/
 /********************************************************************/
 
+//health check
+Route::get('health', function() { return response('OK', 200); });
+
 //taking an assessment
 Route::get('assessment/{id?}', 'AssessmentController@show'); //option to include id as query param instead of in route
 Route::post('assessment/', 'AssessmentController@showLTI'); //id included as query param for LTI tool
