@@ -20,6 +20,7 @@ import { CanDeactivateGuard } from './guards/can-deactivate-guard.service';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
+    { path: 'index.php', component: HomeComponent },
     { path: 'home', component: HomeComponent },
     { path: 'index.php/home', component: HomeComponent }, //if index.php included (as is in LTI routes), separate rule needed
     { path: 'collection', component: CollectionIndexComponent },
