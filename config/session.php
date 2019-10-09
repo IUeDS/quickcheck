@@ -16,8 +16,7 @@ return [
     |
     */
 
-    //'driver' => env('SESSION_DRIVER', 'file'),
-    'driver' => 'database',
+    'driver' => env('SESSION_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -149,6 +148,6 @@ return [
     |
     */
 
-    'secure' => env('APP_ENV', 'local') === 'local' ? false : true,
+    'secure' => (env('APP_ENV', 'local') === 'local' || env('APP_ENV', 'local') === 'dev') ? false : true,
 
 ];
