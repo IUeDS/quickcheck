@@ -24,7 +24,7 @@ class CASFilter
     {
         $appUrl = env('APP_URL');
         $currentEnvironment = env('APP_ENV');
-        if (strpos($appUrl, 'iu.edu') !== false || $currentEnvironment === 'local') {
+        if (strpos($appUrl, 'iu.edu') !== false || $currentEnvironment === 'local' || $currentEnvironment === 'dev') {
             return true;
         }
 

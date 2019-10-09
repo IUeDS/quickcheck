@@ -46,12 +46,11 @@ class Handler extends ExceptionHandler
             return;
         }
 
-        //TEMP commenting out
         //include additional request data and url as info in log for any
         //exceptions that are thrown by default exception in Laravel.
-        //$info = $e->getMessage();
-        //$info .= $this->getErrorRequest();
-        //Log::info($info);
+        $info = $e->getMessage();
+        $info .= $this->getErrorRequest();
+        Log::info($info);
 
         return parent::report($e);
     }
@@ -65,9 +64,6 @@ class Handler extends ExceptionHandler
     */
     public function render($request, Exception $e)
     {
-        //TEMP:
-        dd($e);
-
         $errorId = uniqid();
         $message = '';
         $statusCode = 500; //default
