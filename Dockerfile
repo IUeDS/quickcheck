@@ -58,6 +58,11 @@ RUN npm run build:prod
 RUN cp public/assets/dist/styles.*.css public/assets/dist/styles.css
 RUN composer install
 
+# Set file permissions for www-data user (otherwise app will error out after a fresh install)
+# See: https://laracasts.com/discuss/channels/general-discussion/laravel-framework-file-permission-security
+RUN chgrp -R www-data storage bootstrap/cache
+RUN chmod -R ug+rwx storage bootstrap/cache
+
 # Set document root for apache
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
