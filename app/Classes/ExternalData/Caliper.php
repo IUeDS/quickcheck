@@ -75,11 +75,6 @@ class Caliper
 
     public function isEnabled()
     {
-        //only enabled if in production environment
-        if (!App::environment('prod')) {
-            return false;
-        }
-
         if (!$this->isEnabled) {
             return false;
         }
