@@ -7,6 +7,7 @@ phases:
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=783293427012.dkr.ecr.us-east-2.amazonaws.com/elearn/qc-dev
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - cp -r $CODEBUILD_SRC_DIR_customActivities $CODEBUILD_SRC_DIR/public/customActivities
   build:
     commands:
       - echo Build started on `date`

@@ -1,5 +1,5 @@
-#used this as my starting point: https://dev.to/mstrsobserver/how-would-you-dockerize-php-app-382i
-#and referenced Laradock implementation to further optimize
+# Used this as starting point: https://dev.to/mstrsobserver/how-would-you-dockerize-php-app-382i
+# and referenced Laradock implementation to further optimize
 
 # Use an official PHP runtime as a parent image
 FROM php:7.3-apache-stretch
@@ -39,7 +39,8 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY resources/php.ini $PHP_INI_DIR/conf.d/
 
 ARG WORK_DIR=/var/www/html
-#add the (optional) .env to the directory to access variables
+ARG LABS_DIR=/var/www/html/public/customActivities/jsomelec/labs
+# Add the (optional) .env to the directory to access variables
 ADD *.env ${WORK_DIR}
 # Copy source files into working directory (only public directory exposed)
 COPY . ${WORK_DIR}
@@ -50,12 +51,19 @@ ENV PATH ./vendor/bin:/composer/vendor/bin:$PATH
 ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
-# Install front-end and back-end dependencies
+# Install front-end dependencies
 WORKDIR ${WORK_DIR}
 RUN npm install
 RUN npm run build:prod
 #copy hashed css output to non-hashed file for inclusion with tinymce editor (which has a set config and can't guess the hash)
 RUN cp public/assets/dist/styles.*.css public/assets/dist/styles.css
+# Delete node modules after compiling front-end assets to save disk space
+RUN rm -rf node_modules
+
+# Specific to IU: install/compile dependencies for custom activity angular project; if not present, will skip
+RUN bash -c 'if [ -d "${LABS_DIR}" ]; then echo "Installing labs dependencies"; cd ${LABS_DIR}; npm install; ng build --prod --base-href="/customActivities/jsomelec/labs/dist/"; rm -rf node_modules; cd ${WORK_DIR}; fi'
+
+# Install back-end dependencies
 RUN composer install
 
 # Set file permissions for www-data user (otherwise app will error out after a fresh install)
