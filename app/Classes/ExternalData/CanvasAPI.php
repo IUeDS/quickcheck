@@ -526,7 +526,7 @@ class CanvasAPI
         foreach( $fields as $field ) {
             if( preg_match('/([^:]+): (.+)/m', $field, $match) ) {
                 $match[1] = preg_replace_callback('/(?<=^|[\x09\x20\x2D])./',
-                    create_function ('$matches', 'return strtoupper($matches[0]);'), strtolower(trim($match[1])));
+                    function($matches) { return strtoupper($matches[0]); }, strtolower(trim($match[1])));
                 if( isset($retVal[$match[1]]) ) {
                     $retVal[$match[1]] = array($retVal[$match[1]], $match[2]);
                 } else {

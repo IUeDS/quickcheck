@@ -120,6 +120,7 @@ describe('Taking a quiz with responses hidden', function() {
     it('should show a message that the quiz was not graded but will be later when completing', async function() {
         await common.switchToCanvas();
         await canvasAssignmentsPage.goToAssignments();
+        await browser2.sleep(5000); //every once in a while would hit the timeout limit for too many attempts, slow down as a precaution
         await canvasAssignmentsPage.openAssignment(qcName);
         //refresh so we can test if empty attempts are actually hidden
         await browser2.refresh();
