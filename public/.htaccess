@@ -48,8 +48,9 @@ AddOutputFilterByType DEFLATE text/xml
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # If non-SSL request, force redirect to https
+    # If non-SSL request, force redirect to https (except for basic http health check)
     RewriteCond %{HTTPS} off
+    RewriteCond %{REQUEST_URI} !/health
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # Catch URLs that start with www, remove it, redirect to https
