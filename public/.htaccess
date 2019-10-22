@@ -46,9 +46,8 @@ AddOutputFilterByType DEFLATE text/xml
 </IfModule>
 
 # Catch URLs that start with www, remove it, redirect to https
-# TEMP: commenting out for testing
-#RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-#RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
 # Allow SVGs to be displayed as images
 AddType image/svg+xml .svg .svgz
