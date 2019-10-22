@@ -45,18 +45,9 @@ AddOutputFilterByType DEFLATE text/xml
   Header set Content-Security-Policy "frame-ancestors https://*.instructure.com https://www.indiana.edu; https://*.sitehost.iu.edu"
 </IfModule>
 
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-
-    # If non-SSL request, force redirect to https (except for basic http health check)
-    RewriteCond %{HTTPS} off
-    RewriteCond %{REQUEST_URI} !/health
-    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-    # Catch URLs that start with www, remove it, redirect to https
-    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-</IfModule>
+# Catch URLs that start with www, remove it, redirect to https
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
 # Allow SVGs to be displayed as images
 AddType image/svg+xml .svg .svgz
