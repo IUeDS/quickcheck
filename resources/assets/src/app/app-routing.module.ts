@@ -41,7 +41,8 @@ const routes: Routes = [
     { path: 'usernotfound', component: UsernotfoundComponent },
     { path: 'sessionnotvalid', component: SessionnotvalidComponent },
     { path: 'ltisessionnotvalid', component: LtisessionnotvalidComponent },
-    { path: 'error', component: ErrorComponent }
+    { path: 'error', component: ErrorComponent },
+    { path: 'index.php/error', component: ErrorComponent }
 ];
 
 @NgModule({
