@@ -82,5 +82,8 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     rm /var/log/lastlog /var/log/faillog
 
+# Remove Apache access logs from output, leads to a lot of clutter, harder to find errors
+RUN rm /var/log/apache2/access.log
+
 # Apache will run commands as non-privileged user
 RUN usermod -u 1000 www-data
