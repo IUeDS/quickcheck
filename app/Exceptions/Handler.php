@@ -68,6 +68,11 @@ class Handler extends ExceptionHandler
         $message = '';
         $statusCode = 500; //default
 
+        //if in development, render the default
+        if (env('APP_ENV') === 'local') {
+            return parent::render($request, $e);
+        }
+
         switch($e) {
             case ($e instanceof LtiLaunchDataMissingException):
                 //error is thrown before the page loads rather than through the API;

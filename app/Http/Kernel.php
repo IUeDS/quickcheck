@@ -13,11 +13,13 @@ class Kernel extends HttpKernel
     */
     //updated middleware -- removed CSRF token middleware so app works in LTI iframe
     protected $middleware = [
-        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \App\Http\Middleware\TrustProxies::class,
+        \App\Http\Middleware\HttpsProtocol::class,
+        \App\Http\Middleware\CheckForMaintenanceMode::class,
         \App\Http\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
     ];
 
     /**

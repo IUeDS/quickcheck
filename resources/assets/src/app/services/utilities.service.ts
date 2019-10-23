@@ -275,7 +275,7 @@ export class UtilitiesService {
   }
 
   isRegressionEnv() {
-    if (environment.regression) {
+    if (environment.regression || (window.location.href.indexOf('quickcheck-reg') > -1)) {
       return true;
     }
 

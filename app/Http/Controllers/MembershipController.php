@@ -80,14 +80,14 @@ class MembershipController extends \BaseController {
 
         $user = User::where('username', '=', $username)->first();
         //if the user is not yet in the system, store the user
-        if (!count($user)) {
+        if (!$user) {
             $user = User::saveUser($username);
         }
         $existingMembership = Membership::where('user_id', '=', $user->id)
             ->where('collection_id', '=', $collectionId)
             ->first();
 
-        if (count($existingMembership)) {
+        if ($existingMembership) {
             return response()->error(500, ['This user already has access to this collection']);
         }
 

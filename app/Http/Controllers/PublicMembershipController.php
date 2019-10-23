@@ -25,7 +25,7 @@ class PublicMembershipController extends \BaseController
         $membership = Membership::where('collection_id', '=', $collectionId)
             ->where('user_id', '=', $userId)
             ->first();
-        if (!count($membership)) {
+        if (!$membership) {
             return response()->error(500, ['This user is not a member of this collection']);
         }
         $membership->delete();
@@ -45,7 +45,7 @@ class PublicMembershipController extends \BaseController
         $membership = Membership::where('collection_id', '=', $collectionId)
             ->where('user_id', '=', $userId)
             ->first();
-        if (count($membership)) {
+        if ($membership) {
             return response()->error(500, ['This user already has access to this collection']);
         }
 

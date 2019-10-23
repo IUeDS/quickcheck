@@ -70,7 +70,7 @@ class UserController extends \BaseController
 
         $username = $request->input('username');
         $user = User::where('username', '=', $username)->first();
-        if (!count($user)) {
+        if (!$user) {
             $user = User::saveUser($username);
         }
         $user->admin = 'true';

@@ -373,7 +373,8 @@ class Attempt extends Eloquent {
         }
 
         $caliper = new Caliper();
-        if ($caliper->isEnabled()) {
+        $caliperEnabled = $caliper->isEnabled();
+        if ($caliperEnabled) {
             $caliperData = $caliper->buildAssessmentStartedEventData($attempt);
         }
 

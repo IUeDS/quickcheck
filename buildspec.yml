@@ -1,0 +1,31 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - REPOSITORY_URI=783293427012.dkr.ecr.us-east-2.amazonaws.com/elearn/qc-prod
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - cp -r $CODEBUILD_SRC_DIR_customActivities $CODEBUILD_SRC_DIR/public/customActivities
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - touch .env
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions files...
+      - printf '[{"name":"elearn-qc-prod-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsserver.json
+      - printf '[{"name":"elearn-qc-prod-artisan","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsartisan.json
+      - echo Finish post build tasks
+artifacts:
+    files:
+      - imagedefinitionsserver.json
+      - imagedefinitionsartisan.json
