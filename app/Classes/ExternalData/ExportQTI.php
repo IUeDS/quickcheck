@@ -513,7 +513,7 @@ class ExportQti {
         //getting per-response feedback. Maybe something to do with the continue="No" attribute?
         $mcAnswers = MCAnswer::where('question_id', '=', $question->id)->get();
         $mcOptionFeedback = $mcAnswers[0]->McOptionFeedback;
-        if (count($mcOptionFeedback)) {
+        if ($mcOptionFeedback) {
             $mcOptionFeedbackItems = [];
             foreach ($mcAnswers as $mcAnswer) {
                 array_push($mcOptionFeedbackItems, $mcAnswer->McOptionFeedback);

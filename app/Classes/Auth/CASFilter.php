@@ -24,7 +24,7 @@ class CASFilter
     {
         $appUrl = env('APP_URL');
         $currentEnvironment = env('APP_ENV');
-        if (strpos($appUrl, 'iu.edu') !== false || $currentEnvironment === 'local') {
+        if (strpos($appUrl, 'iu.edu') !== false || $currentEnvironment === 'local' || $currentEnvironment === 'dev') {
             return true;
         }
 
@@ -127,7 +127,7 @@ class CASFilter
         $path = $route->uri();
         $param = $route->parameter('id');
         $newPath = str_replace('{id}', $param, $path);
-        $appUrl = $baseUrl . "/index.php/" . $newPath;
+        $appUrl = $baseUrl . $newPath;
         return $appUrl;
     }
 

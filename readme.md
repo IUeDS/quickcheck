@@ -8,30 +8,33 @@ Quick Check is an LTI (Learning Tools Interoperability) tool for creating format
 
 **This application was built primarily for use by faculty, staff, and students at Indiana University, and this will continue to be our main priority. Investing the resources necessary to ensure Quick Check meets the use cases of other institutions falls outside the scope of this project. The decision was made to release this tool as an open source project so that it might benefit other institutions with a similar instructional need. Ensuring that the tool works for every institution's specific hosting setup or instructional use case is not the responsibility of this project's maintainers. Although the project maintainers will do their best to respond to questions and issues, it may not always be possible to guarantee a response. We appreciate your interest in the project and hope that you understand our resources are limited. Thank you.**
 
-## Requirements
-
-* PHP >= 7.0.0
-* MySQL >= 5.5
-* Composer
-* Canvas
-
-### Dev/local:
-* node/npm
-
 ## Getting started
 
-### PHP setup
-1. In the root directory, run: `composer install` to install Laravel PHP dependencies
-2. Copy the .example.env file in the root directory to a new file called .env
-3. Run `php artisan key:generate` to generate an app key
-4. Enter the rest of your configuration information in the .env file.
-    - The initial values default to running the application locally, using MAMP for a MySQL database, but these values of course can be configured otherwise, depending on your setup.
-    - Note: values in the .env file that contain spaces must be contained within quotes, i.e., "my passphrase." Otherwise, quotes are not necessary.
+The application can be run within a docker container or locally in a LAMP environment. Regardless of setup, the application will rely on an external mysql database, and the following steps should be taken first:
 
-### Database setup
-1. Create a database in your environment that matches the name in the .env file you are using. If running locally, you may need to alter the database credentials in .env. They are based off of the default MAMP settings.
-2. Run `php artisan migrate` to run database migrations.
-3. Run `php artisan db:seed` to seed the database.
+1. Create a mysql database in your local environment
+2. Copy the .example.env file in the root directory to a new file called .env
+3. Enter configuration information in the .env file, such as DB access creds, but wait to fill in `APP_KEY`, which will be generated later
+
+## Docker install (recommended)
+
+1. Make sure that Docker for Mac/Windows is running. To build the image: `docker build -t quickcheck:1.0 .`
+2. Once built, the image can be run with the following command (replacing PATH_TO_APP with the absolute path to the application on your local filesystem, and assuming that the default port of 8000 is being used): `docker run -p 8000:80 -v PATH_TO_APP:/var/www/html:delegated -v /var/www/html/node_modules -v /var/www/html/vendor -v /var/www/html/public/assets/dist --rm quickcheck:1.0`
+  -The `-v` flags are for mapping volumes from your local system to the docker container. The first volume argument allows for making changes to the code in your local filesystem and having the changes reflected inside the docker container. The remaining volume arguments ensure that all dependencies are isolated within the docker container instead of being on the local filesystem.
+3. One-time setup is required for the app key and database: `exec` inside the running container, and run `php artisan key:generate` to generate an app key. (Alternatively, the command can be passed as the last argument to the `run` command to pass to the container on startup.)
+4. Next, run `php artisan migrate --seed` to run database migrations/seeds.
+5. The application should be ready and available at localhost:8000.
+
+A `php.ini` file is located in `resources/php.ini`, which is copied into the docker container. Additional ini setup can be added to that file to suit additional configuration needs. An `.htaccess` file is located in the `public` folder for additional configuration.
+
+## Local install
+
+If installing locally, PHP >= 7.1.3 is required, as is [Composer](https://getcomposer.org). For front-end dependencies, node/npm is required.
+
+### Back-end setup
+1. In the root directory, run: `composer install` to install Laravel PHP dependencies
+2. Run `php artisan key:generate` to generate an app key
+3. Run `php artisan migrate --seed` to run database migrations/seeds
 
 ### Front-end setup
 1. Install dependencies with `npm install` (run at the root of the repo)
@@ -41,7 +44,7 @@ Quick Check is an LTI (Learning Tools Interoperability) tool for creating format
 
 ### Running locally
 1. Run `php artisan serve` in the app root to fire up a local server.
-2. To use the app locally, enter the url home page in your browser (the default is http://localhost:8000 but can be altered in the .env and env.js files).
+2. To use the app locally, enter the url home page in your browser (the default is http://localhost:8000 but can be altered in the .env file).
     - LTI-specific functionality, such as viewing student results, is not available locally. The application must be installed in a secure https environment and installed as an LTI tool in Canvas for all functionality to be available.
 
 ## Production use
@@ -82,7 +85,7 @@ Canvas API functionality is contained within the CanvasAPI class, which can be f
 
 ## Environments
 
-Required environments are "local" and "prod" but there are others that may also be defined. A "dev" environment can be created for development, and a "preview" environment can be created for testing out new functionality with faculty before moving to production. Updating the .env and env.js files in each new environment is required for these additional environments to function properly.
+Required environments are "local" and "prod" but there are others that may also be defined. A "dev" environment can be created for development, and a "preview" environment can be created for testing out new functionality with faculty before moving to production. Updating the .env file in each new environment is required for these additional environments to function properly.
 
 ## App releases
 
@@ -90,41 +93,7 @@ Whenever a new version of the app is released, the following commands should be 
 
  * Run `composer dump-autoload` in the app root to update the autoloaded classmap
  * Run `php artisan migrate` to run new database migrations, if any were added in the release
- * In public/assets, run `grunt` to compile front-end assets
-
-## Helpful tips for server configuration
-
-Server/host configuration needs may vary, and we are not attempting to anticipate every scenario. You may have additional needs than what we have specified here. However, the following configuration rules have proven helpful in our experience running the application in an Apache environment:
-
-### php.ini
-
-```
-# up the session max lifetime to 6 hours
-session.gc_maxlifetime = 21600;
-
-# for saving large quick checks/QTI imports, more POST input vars may be needed
-max_input_vars = 2500;
-```
-
-### .htaccess
-
-```
-#allow SVGs to be displayed as images
-AddType image/svg+xml .svg .svgz
-
-#catch URLs that start with www, remove it, redirect to https
-RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-
-#Added safeguard: Deny all requests for *.env files where sensitive credentials are stored.
-<Files "*.env">
-Order Allow,Deny
-Deny from all
-</Files>
-
-```
-
-The proper location of these files will depend on how your host is configured, and may vary.
+ * In public/assets, run `ng build --prod` to compile front-end assets
 
 ## License
 Quick Check is open-sourced software licensed under the [Educational Community License, Version 2.0](https://opensource.org/licenses/ECL-2.0).
