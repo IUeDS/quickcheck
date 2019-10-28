@@ -92,8 +92,10 @@ class Attempt extends Eloquent {
                 }
                 $attempt['count_correct'] = $countCorrect;
                 $attempt['count_incorrect'] = $countIncorrect;
-                if (count($attempt['assessment']['questions'])) {
-                    $attempt['calculated_score'] = $countCorrect / count($attempt['assessment']['questions']) * 100;
+                if ($attempt['assessment']['questions']) {
+                    if (count($attempt['assessment']['questions'])) {
+                        $attempt['calculated_score'] = $countCorrect / count($attempt['assessment']['questions']) * 100;
+                    }
                 }
             }
             //assessment, student, and course context information
