@@ -16,7 +16,10 @@
 /********************************************************************/
 
 //health check
-Route::get('health', function() { return response('OK', 200); });
+Route::get('health', function() {
+    config()->set('session.driver', 'array'); //disable sessions on health check
+    return response('OK', 200);
+});
 
 //taking an assessment
 Route::get('assessment/{id?}', 'AssessmentController@show'); //option to include id as query param instead of in route
