@@ -10,6 +10,7 @@ import { ManageService } from '../../services/manage.service';
 export class AttemptsOverviewComponent implements OnInit {
   attempts = [];
   currentPage = 'results';
+  embeds = {}; //if same assessment is embedded in multiple assignments, split into separate entries
   isResultsByStudentToggled = false;
   sessionStorageKey = 'iu-eds-quickcheck-student-results-toggle';
   search = {
@@ -44,10 +45,43 @@ export class AttemptsOverviewComponent implements OnInit {
       return;
     }
 
+    //if assessment is embedded in multiple assignments (or assignment + module item), separate results view for each
+    for (let attempt of data.attempts) {
+      const assessmentId = attempt.assessment_id.toString();
+      let assignmentId = attempt.lti_custom_assignment_id; //note: may be NULL if a module item
+
+      let embeds = this.embeds[assessmentId];
+      if (!embeds) {
+         embeds = [];
+      }
+
+      embeds.push(assignmentId);
+      this.embeds[assessmentId] = embeds;
+    }
+
     //attempts are grouped by unique assessment id, so we're not getting ALL attempts;
     //each attempt comes with the unique assessment, for us to put onto the page
     this.attempts = data.attempts;
     this.utilitiesService.loadingFinished();
+  }
+
+  getDuplicateEmbedName(attempt) {
+    const embeds = this.embeds[attempt.assessment_id.toString()];
+
+    if (!embeds) {
+      return '';
+    }
+
+    if (embeds.length > 1) {
+      let assignmentTitle = attempt.assignment_title;
+      if (!assignmentTitle) {
+        assignmentTitle = 'module item';
+      }
+
+      return `(embedded in: ${assignmentTitle})`;
+    }
+
+    return '';
   }
 
   async getStudents() {

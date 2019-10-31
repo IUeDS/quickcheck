@@ -233,11 +233,12 @@ class Attempt extends Eloquent {
     *
     * @param  int  $assessment_id
     * @param  int  $context_id
+    * @param  int  $assignment_id
     * @param  bool $emptyAttemptsHidden
     * @return []   $attempts
     */
 
-    public static function getAttemptsForAssessment($assessment_id, $context_id, $emptyAttemptsHidden) {
+    public static function getAttemptsForAssessment($assessment_id, $context_id, $assignment_id, $emptyAttemptsHidden) {
         //get all attempts; sort by last name, but sort by user ID secondarily in case two users
         //have the same last name; for each user, sort attempts chronologically. this query is
         //a bit more involved, since we need to sort by student name, which is on a separate model.
@@ -251,6 +252,13 @@ class Attempt extends Eloquent {
             ->orderBy('lis_person_name_family', 'ASC')
             ->orderBy('lti_custom_user_id', 'ASC')
             ->orderBy('attempts.created_at', 'ASC');
+
+        if ($assignment_id) {
+            $attempts = $attempts->where('lti_custom_assignment_id', '=', $assignment_id);
+        }
+        else {
+            $attempts = $attempts->whereNull('lti_custom_assignment_id');
+        }
 
         if ($emptyAttemptsHidden) {
             $attempts = $attempts->has('studentResponses');
