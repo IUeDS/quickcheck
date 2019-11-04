@@ -2,6 +2,7 @@
 
 use App\Classes\ExternalData\QTI as QTI;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Http\Request;
 
 class QtiController extends \BaseController
 {
@@ -16,8 +17,8 @@ class QtiController extends \BaseController
     * @return Response
     */
 
-    public function createImportedQuizzes() {
-        $input = Input::all();
+    public function createImportedQuizzes(Request $request) {
+        $input = $request->all();
         $qti = new QTI();
         $response = $qti->saveImportedQuizzes($input);
         return response()->success($response);
@@ -29,9 +30,9 @@ class QtiController extends \BaseController
     * @return Response (download, .zip file)
     */
 
-    public function exportQTI() {
+    public function exportQTI(Request $request) {
         //NOTE: assuming that on the front-end, only non-custom-assessments were selectable
-        $input = Input::all();
+        $input = $request->all();
         $qti = new QTI();
         $downloadLocation = $qti->exportQTI($input);
         if ($downloadLocation) {
@@ -48,11 +49,11 @@ class QtiController extends \BaseController
     * @return Response
     */
 
-    public function importQTI() {
+    public function importQTI(Request $request) {
         $zipName = 'importFile';
-        if (Input::file($zipName)->getClientOriginalExtension() === 'zip') {
-            $input = Input::all();
-            $zipFile = Input::file($zipName);
+        if ($request->file($zipName)->getClientOriginalExtension() === 'zip') {
+            $input = $request->all();
+            $zipFile = $request->file($zipName);
             $qti = new QTI();
             $response = $qti->importQTI($input, $zipFile);
             return response()->success($response);
