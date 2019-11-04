@@ -29,7 +29,8 @@ class Handler extends ExceptionHandler
         SessionMissingAssessmentDataException::class,
         SessionMissingStudentDataException::class,
         SessionMissingLtiContextException::class,
-        OAuthExpiredTimestampException::class
+        OAuthExpiredTimestampException::class,
+        GradePassbackException::class
     ];
 
     /**
@@ -93,7 +94,8 @@ class Handler extends ExceptionHandler
                 break;
             case ($e instanceof SessionMissingLtiContextException):
                 $message = $e->getMessage();
-                $this->logNotice($message, $errorId);
+                $data = $this->getErrorRequest();
+                $this->logNotice($message . $data, $errorId);
                 break;
             case ($e instanceof OAuthExpiredTimestampException):
                 //this error is thrown before the page loads rather than through the API;
@@ -128,6 +130,11 @@ class Handler extends ExceptionHandler
             case ($e instanceof ModelNotFoundException):
                 $message = $e->getMessage();
                 $e = new NotFoundHttpException($message, $e);
+                break;
+            case ($e instanceof GradePassbackException):
+                $message = $e->getMessage();
+                $data = $this->getErrorRequest();
+                $this->logNotice($message . $data, $errorId);
                 break;
         }
 

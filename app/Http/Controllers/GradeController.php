@@ -98,13 +98,20 @@ class GradeController extends \BaseController
         $attemptId = $request->input('attemptId');
         $attempt = Attempt::find($attemptId);
         $grade = new Grade($attempt, $request);
-        if ($grade->isReadyForGrade()) {
-            if ($grade->isGradePassbackEnabled()) {
-                $grade->submitGrade();
-                $attemptGraded = 'graded';
+
+        if (!$grade->isReadyForGrade()) {
+            $attemptGraded = false;
+        }
+        else if (!$grade->isGradePassbackEnabled()) {
+            $attemptGraded = 'pending';
+        }
+        else {
+            $result = $grade->submitGrade();
+            if ($result !== true) {
+                return response()->error(500, [$result]);
             }
             else {
-                $attemptGraded = 'pending';
+                $attemptGraded = 'graded';
             }
         }
 

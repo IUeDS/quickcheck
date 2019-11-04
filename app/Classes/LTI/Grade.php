@@ -67,17 +67,7 @@ class Grade {
     public function submitGrade()
     {
         $gradePassbackResult = $this->doGradePassback();
-
-        if ($gradePassbackResult !== true) { //explicitly check for true, otherwise, could be error msg
-            $logMsg = "A problem was encountered while passing grade back to gradebook for attempt id " .
-                $this->id . ". Result: $gradePassbackResult";
-            $errorMsg = "A problem was encountered while passing grade to gradebook for attempt id " . $this->id . ". Please try again.";
-            Log::error($logMsg);
-            abort(500, $errorMsg);
-            return false;
-        }
-
-        return true;
+        return $gradePassbackResult;
     }
 
     /************************************************************************/
@@ -98,22 +88,13 @@ class Grade {
         $sourcedID = $this->attempt->getSourcedId();
         $outcome = new Outcome;
 
-        if (!$sourcedID) {
-            Log::error('doGradePassback(): lis_result_sourcedid missing from session.');
-            return false;
-        }
-
         $gradeToSubmit = $this->formatGradeToSubmit($score);
         if (!$this->isHighestScore($gradeToSubmit, $sourcedID, $outcome)) {
             return true;
         }
 
         $gradeSendResult = $outcome->sendGrade($sourcedID, $this->attempt, $gradeToSubmit, $this->request);
-        if ($gradeSendResult !== TRUE) {
-            return "api.php: doGradePassback() failed. Grade to submit: $gradeToSubmit. Outcome model returned: $gradeSendResult";
-        }
-
-        return true;
+        return $gradeSendResult;
     }
 
     /**
