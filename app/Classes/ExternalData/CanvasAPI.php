@@ -2,6 +2,7 @@
 
 namespace App\Classes\ExternalData;
 use App;
+use Log;
 
 class CanvasAPI
 {
@@ -221,7 +222,7 @@ class CanvasAPI
         $errorMessage = $this->getApiError($user);
 
         if ($errorMessage) {
-            abort(500, 'Error retrieving user from the Canvas API. Canvas API returned: ' . $errorMessage);
+            Log::info('Error retrieving user from the Canvas API. Canvas API returned: ' . $errorMessage);
         }
 
         return $user;

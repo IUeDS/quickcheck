@@ -64,25 +64,25 @@ class GradeController extends \BaseController
     *
     * @param  int  $assessment_id
     * @param  string  $context_id
+    * @param  int     $assignment_id
     * @return Response (includes: submissions in an associative array, indexed by user ID)
     */
 
-    public function index($assessment_id, $context_id, Request $request)
+    public function index($assessment_id, $context_id, $assignment_id = null, Request $request)
     {
         if (!$assessment_id || !$context_id) {
             return response()->error(400, ['An LTI context ID and/or assessment ID was not supplied in this request.']);
         }
 
         $courseContext = CourseContext::where('lti_context_id', '=', $context_id)->first();
-        $assignmentId = Attempt::getAssignmentIdFromAttempts($courseContext, $assessment_id);
 
-        if (!$assignmentId) { //ungraded
+        if (!$assignment_id) { //ungraded
             return response()->success(['submissions' => null]);
         }
 
         $courseId = $courseContext->getCourseId();
         $canvasAPI = new CanvasAPI;
-        $submissions = $canvasAPI->getSubmissionsFromAPI($courseId, $assignmentId);
+        $submissions = $canvasAPI->getSubmissionsFromAPI($courseId, $assignment_id);
         return response()->success(['submissions' => $submissions]);
     }
 
@@ -98,13 +98,20 @@ class GradeController extends \BaseController
         $attemptId = $request->input('attemptId');
         $attempt = Attempt::find($attemptId);
         $grade = new Grade($attempt, $request);
-        if ($grade->isReadyForGrade()) {
-            if ($grade->isGradePassbackEnabled()) {
-                $grade->submitGrade();
-                $attemptGraded = 'graded';
+
+        if (!$grade->isReadyForGrade()) {
+            $attemptGraded = false;
+        }
+        else if (!$grade->isGradePassbackEnabled()) {
+            $attemptGraded = 'pending';
+        }
+        else {
+            $result = $grade->submitGrade();
+            if ($result !== true) {
+                return response()->error(500, [$result]);
             }
             else {
-                $attemptGraded = 'pending';
+                $attemptGraded = 'graded';
             }
         }
 

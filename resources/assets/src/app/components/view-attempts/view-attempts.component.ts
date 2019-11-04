@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../services/utilities.service';
 import { ManageService } from '../../services/manage.service';
 import { Submission } from '../../classes/submission';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'qc-view-attempts',
@@ -13,6 +14,7 @@ export class ViewAttemptsComponent implements OnInit {
   analyticsViewVisible = false;
   assessment = null;
   assessmentId = '';
+  assignmentId = '';
   assignment = null;
   attempts = []; //all attempts
   canvasCourse = null;
@@ -20,6 +22,7 @@ export class ViewAttemptsComponent implements OnInit {
   currentPage = 'results';
   displayedAttempts = []; //those shown to user (after filters, etc.)
   dueAt = null;
+  fatalError = null;
   gradesLoading = true;
   largeClassSize = false;
   pointsPossible = 0;
@@ -34,19 +37,21 @@ export class ViewAttemptsComponent implements OnInit {
   ungradedAttempts = [];
   users = [];
 
-  constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
+  constructor(public utilitiesService: UtilitiesService, private manageService: ManageService, private route: ActivatedRoute) { }
 
   async ngOnInit() {
     let data;
-    this.assessmentId = this.getAssessmentIdFromUrl();
+    this.assessmentId = this.route.snapshot.paramMap.get('assessmentId');
+    this.assignmentId = this.route.snapshot.paramMap.get('assignmentId');
     this.utilitiesService.loadingStarted();
 
     try {
-      const resp = await this.manageService.getAttemptsAndResponses(this.assessmentId, this.utilitiesService.contextId);
+      const resp = await this.manageService.getAttemptsAndResponses(this.assessmentId, this.assignmentId, this.utilitiesService.contextId);
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
       this.utilitiesService.showError(error);
+      this.fatalError = true;
       return;
     }
 
@@ -71,15 +76,6 @@ export class ViewAttemptsComponent implements OnInit {
         'attemptId': currentBestAttempt.id
       });
     }
-  }
-
-  getAssessmentIdFromUrl() {
-    var url = window.location.href,
-      splitUrl = url.split('/assessment/'),
-      idSplit = splitUrl[1].split('/'),
-      assessmentId = idSplit[0];
-
-    return assessmentId;
   }
 
   //loop through all attempts in O(N) time to get highest calculated score before the
@@ -124,7 +120,7 @@ export class ViewAttemptsComponent implements OnInit {
     let data;
 
     try {
-      const resp = await this.manageService.getAttemptSubmissions(this.assessmentId, this.utilitiesService.contextId);
+      const resp = await this.manageService.getAttemptSubmissions(this.assessmentId, this.assignmentId, this.utilitiesService.contextId);
       data  = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {

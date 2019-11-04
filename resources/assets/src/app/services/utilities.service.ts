@@ -187,12 +187,21 @@ export class UtilitiesService {
   getError(resp) {
     let error = 'There was an error processing your request.'; //default
     let errors;
+    let data = null;
 
-    if (!resp.data) {
+    if (resp.data) {
+      data = resp.data;
+    }
+
+    if (resp.error) {
+      data = resp.error;
+    }
+
+    if (!data) {
       return error;
     }
 
-    errors = resp.data.errorList;
+    errors = data.errorList;
 
     if (errors) {
       error = '';
@@ -205,9 +214,17 @@ export class UtilitiesService {
   }
 
   getQuizError(resp) {
+    let data = null;
     if (resp.data) {
-      if (resp.data.errorList) {
-        return resp.data.errorList[0]; //should really only be a single error point here
+      data = resp.data;
+    }
+    if (resp.error) {
+      data = resp.error;
+    }
+
+    if (data) {
+      if (data.errorList) {
+        return data.errorList[0]; //should really only be a single error point here
       }
     }
 

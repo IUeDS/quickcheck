@@ -4,6 +4,7 @@ namespace App\Classes\LTI;
 use Log;
 use App\Models\Attempt;
 use App\Classes\Oauth\Oauth;
+use App\Exceptions\GradePassbackException;
 
 class Outcome
 {
@@ -122,6 +123,36 @@ class Outcome
     /************************************************************************/
 
     /**
+    * Determine if response in grade read/passback is due to error
+    *
+    * @param  string $response
+    * @return void
+    */
+
+    public function checkForErrors($response = null)
+    {
+        if ($this->isCanvasDown($response)) {
+            $errorMessage = 'The Canvas gradebook is currently unresponsive. Please try again later.';
+            throw new GradePassbackException($errorMessage);
+        }
+
+        if ($this->isUserNotInCourse($response)) {
+            $errorMessage = 'Canvas indicates that you are no longer enrolled in this course and cannot receive a grade.';
+            throw new GradePassbackException($errorMessage);
+        }
+
+        if ($this->isAssignmentInvalid($response)) {
+            $errorMessage = 'Canvas indicates that this assignment is invalid. It may have been closed, deleted, or unpublished after the quick check was opened.';
+            throw new GradePassbackException($errorMessage);
+        }
+
+        if (strpos($response,'success') === FALSE) {
+            Log::error("Outcome.php: Grade was not sent to LMS. LMS returned: " . $response);
+            abort(500, 'Error sending grade to LMS.');
+        }
+    }
+
+    /**
     * Initialize outcome for grade passback
     *
     * @param  string  sourcedId
@@ -139,6 +170,61 @@ class Outcome
     }
 
     /**
+    * Determine if response in grade read/passback is due to invalid assignment,
+    * which doesn't require error logging
+    *
+    * @param  string $response
+    * @return boolean
+    */
+
+    public function isAssignmentInvalid($response)
+    {
+        $message = 'Assignment is invalid';
+        if (strpos($response, $message) !== false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+    * Determine if grade read/passback error is due to unresponsive LMS,
+    * which doesn't require error logging
+    *
+    * @param  string $response
+    * @return boolean
+    */
+    public function isCanvasDown($response)
+    {
+        if (!$response) {
+            return true;
+        }
+
+        if (strpos($response, 'Gateway Time-out')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+    * Determine if response in grade read/passback is due to user not in course,
+    * which doesn't require error logging
+    *
+    * @param  string $response
+    * @return boolean
+    */
+    public function isUserNotInCourse($response)
+    {
+        $message = 'User is no longer in course';
+        if (strpos($response, $message) !== false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
     * Send grade to gradebook
     *
     * @param  string  $sourcedid
@@ -148,9 +234,14 @@ class Outcome
 
     public function sendGrade($sourcedid, $attempt, $grade, $request)
     {
-        if (is_null($grade) || is_null($sourcedid)) {
-            Log::error("Outcome.php: Grade and/or sourcedid missing. grade: $grade, sourcedid: $sourcedid");
-            return 'Grade or Sourced ID missing.';
+        if (is_null($grade)) {
+            $errorMessage = 'No grade was supplied in this request.';
+            throw new GradePassbackException($errorMessage);
+        }
+
+        if (is_null($sourcedid)) {
+            $errorMessage = 'No sourced ID was supplied in this request.';
+            throw new GradePassbackException($errorMessage);
         }
 
         $this->initialize($sourcedid, $attempt, $grade);
@@ -174,13 +265,8 @@ class Outcome
             Log::notice('Send grade cURL request took over 10 seconds. Attempt: ' . json_encode($attempt));
         }
 
-        if (strpos($response,'success') !== FALSE) {
-            return true;
-        }
-        else {
-            Log::error("Outcome.php: Grade was not sent to LMS. LMS returned: " . $response);
-            abort(500, 'Error sending grade to LMS.');
-        }
+        $this->checkForErrors($response); //will throw an exception if an error occurred
+        return true;
     }
 
     /**
@@ -192,8 +278,9 @@ class Outcome
 
     public function readGrade($sourcedid, $attempt, $request)
     {
-        if (!$sourcedid) {
-            return false;
+        if (is_null($sourcedid)) {
+            $errorMessage = 'No sourced ID was supplied in this request.';
+            throw new GradePassbackException($errorMessage);
         }
 
         $this->initialize($sourcedid, $attempt);
@@ -217,11 +304,7 @@ class Outcome
             Log::notice('Read grade cURL request took over 10 seconds. Attempt: ' . json_encode($attempt));
         }
 
-        if (strpos($response,'success') === false) {
-            Log::error("Outcome.php: Grade was not retrieved from the LMS. LMS returned: " . $response);
-            return false;
-            exit();
-        }
+        $this->checkForErrors($response); //will throw an exception if an error occurred
 
         $xml = simplexml_load_string($response);
         //E. Scull: xpath expression is trickier than "//resultScore" due to namespace

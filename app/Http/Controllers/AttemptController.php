@@ -28,10 +28,11 @@ class AttemptController extends \BaseController
     *
     * @param  string  context (query string param)
     * @param  int  $assessmentId
+    * @param  int  $assignmentId
     * @return success or error in a JSON Response
     */
 
-    public function manageAttempts($assessmentId)
+    public function manageAttempts($assessmentId, $assignmentId = null)
     {
         return displaySPA();
     }
@@ -67,12 +68,13 @@ class AttemptController extends \BaseController
     /**
     * Get all attempts for an assessment
     *
-    * @param  int  $assessment_id,
+    * @param  int     $assessment_id,
     * @param  string  $context_id
+    * @param  int     $assignment_id
     * @return success (with attempts, assessment info, and user list) or error in a JSON Response
     */
 
-    public function getAttemptsForAssessment($assessment_id, $context_id, Request $request)
+    public function getAttemptsForAssessment($assessment_id, $context_id, $assignment_id = null, Request $request)
     {
         $attempts = [];
         $assessment = null;
@@ -89,7 +91,7 @@ class AttemptController extends \BaseController
         //fetch all attempts and tack on student responses, so we can determine count correct/incorrect. etc.
         //note that we are using a foreach() rather than a with() in the query because of the performance cost
         //with large numbers of attempts; foreach() is over twice as fast
-        $attempts = Attempt::getAttemptsForAssessment($assessment_id, $context_id, $emptyAttemptsHidden);
+        $attempts = Attempt::getAttemptsForAssessment($assessment_id, $context_id, $assignment_id, $emptyAttemptsHidden);
         foreach($attempts as $attempt) {
             $responses = StudentResponse::getResponsesForAttempt($attempt['id']);
             $student = Student::find($attempt['student_id']);
@@ -98,9 +100,20 @@ class AttemptController extends \BaseController
         }
         $assessment = Assessment::find($assessment_id);
         $courseContext = CourseContext::where('lti_context_id', '=', $context_id)->first();
-        $assignment = $this->getCanvasAssignmentFromAttempts($attempts, $courseContext->lti_custom_course_id);
         $canvasCourse = $this->getCanvasCourse($courseContext->lti_custom_course_id);
         $release = $this->getReleaseForAssessment($assessment_id, $courseContext->id);
+
+        //get related assignment (or return NULL if a module item), but return error response if assignment deleted
+        $canvasAPI = new CanvasAPI;
+        $assignment = null;
+        if ($assignment_id) {
+            try {
+                $assignment = $canvasAPI->getAssignment($courseContext->lti_custom_course_id, $assignment_id);
+            }
+            catch (\Exception $e) {
+                return response()->error(400, ['This quick check was embedded in an assignment that has since been deleted. Results are unavailable.']);
+            }
+        }
 
         return response()->success([
             'attempts' => $attempts,
@@ -128,7 +141,7 @@ class AttemptController extends \BaseController
         $courseContext = CourseContext::where('lti_context_id', '=', $context_id)->first();
         $attempts = Attempt::with('assessment')
                 ->where('course_context_id', '=', $courseContext->id)
-                ->groupBy('assessment_id')
+                ->groupBy('assessment_id', 'lti_custom_assignment_id') //if embedded in multiple assignments, separate out
                 ->get();
 
         //not possible to sort by eager loaded relationship in Laravel without a join;
@@ -258,36 +271,6 @@ class AttemptController extends \BaseController
     /************************************************************************/
     /* PRIVATE FUNCTIONS ****************************************************/
     /************************************************************************/
-
-    /**
-    * When interacting with Canvas API, need to get the canvas assignment from the
-    * attempts made in an LTI context. Find assignment ID from attempts in database first.
-    *
-    * @param   array  $attempts
-    * @return  object  $assignment (from Canvas API)
-    */
-
-    private function getCanvasAssignmentFromAttempts($attempts, $courseId) {
-        $canvasAPI = new CanvasAPI;
-        $assignment = null;
-        $assignmentId = null;
-        //if the assessment was embedded as a module item rather than an assignment, then there
-        //may not be an assignment ID; look through all of the attempts to see if an assignment
-        //ID exists to determine if we need to query the Canvas API or not; in most cases, we
-        //could probably just check the first one, but let's be sure in case something's off
-        foreach ($attempts as $attempt) {
-            if ($attempt->lti_custom_assignment_id) {
-                $assignmentId = $attempt->lti_custom_assignment_id;
-                break;
-            }
-        }
-
-        if ($assignmentId) {
-            $assignment = $canvasAPI->getAssignment($courseId, $assignmentId);
-        }
-
-        return $assignment;
-    }
 
     /**
     * Get Canvas course from API

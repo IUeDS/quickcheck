@@ -107,7 +107,7 @@ Route::group(array('middleware' => array('auth')), function() {
     //instructor manage view to see overview of student results; includes query param for LTI context ID
     Route::get('manage', 'AttemptController@manageOverview');
     //instructor manage view to see attempts for a specific assessment in an LTI context
-    Route::get('assessment/{id}/attempts', 'AttemptController@manageAttempts');
+    Route::get('assessment/{id}/attempts/{assignmentId?}', 'AttemptController@manageAttempts');
     //instructor manage view to see attempts for a specific student in an LTI context
     Route::get('student/{studentId}/attempts', 'AttemptController@viewAttemptsForStudent');
 
@@ -171,7 +171,7 @@ Route::group(array('middleware' => array('auth')), function() {
         Route::delete('customActivity/{id}', 'CustomActivityController@destroy');
 
         //grade endpoints
-        Route::get('assessment/{id}/attempts/{context_id}/submissions', 'GradeController@index');
+        Route::get('assessment/{id}/attempts/context/{context_id}/submissions/{assignmentId?}', 'GradeController@index');
         Route::get('assessment/{assessmentId}/attempts/{contextId}/submission/{studentId}', 'GradeController@show');
         Route::post('attempts/gradepassback', 'GradeController@store');
         Route::post('attempts/autograde', 'GradeController@autoGrade');
@@ -186,7 +186,7 @@ Route::group(array('middleware' => array('auth')), function() {
 
         //results endpoints
         Route::get('attempts/{id}', 'AttemptController@getAttemptsForContext');
-        Route::get('assessment/{id}/attempts/{context_id}', 'AttemptController@getAttemptsForAssessment');
+        Route::get('assessment/{id}/attempts/context/{context_id}/{assignmentId?}', 'AttemptController@getAttemptsForAssessment');
         Route::get('attempt/{id}/responses', 'StudentResponseController@getAttemptResponses');
         Route::get('responses/analytics/assessment/{id}/context/{context_id}', 'StudentResponseController@calculateAnalytics');
         Route::get('attempts/{contextId}/student/{studentId}', 'AttemptController@getAttemptsForStudentInCourse');

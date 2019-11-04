@@ -11,7 +11,7 @@
             <div class="col-6">
                 <h1 [hidden]="!this.isAttemptsView()">Attempts</h1>
             </div>
-            <div class="col-6 text-right" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()">
+            <div class="col-6 text-right" *ngIf="!this.fatalError" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()">
                 <button class="btn btn-light qc-btn qc-btn-analytics" type="button" (click)="this.toggleAnalytics()">
                     <span class="fa fa-bar-chart fa-2x" aria-hidden="true"></span>
                     <span>View <strong>Analytics</strong></span>
@@ -29,7 +29,7 @@
         </div>
         <h2 *ngIf="this.isAttemptsView() && this.assessment" class="qc-results-quiz-name" >{{ this.assessment.name }}</h2>
         <p *ngIf="this.dueAt && this.isAttemptsView()" class="qc-due-at">Due at: {{ this.dueAt }}</p>
-        <div [hidden]="this.utilitiesService.loading || !this.isAttemptsView()" >
+        <div *ngIf="!this.fatalError" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()" >
             <div class="row">
                 <div class="col-6 col-md-4">
                     <label for="search-name" *ngIf="this.attempts.length" class="sr-only">Search by last name: </label>
