@@ -34,7 +34,19 @@ export class UtilitiesService {
   }
 
   areCookiesEnabled() {
-    if (navigator.cookieEnabled) {
+    if (!navigator.cookieEnabled) {
+      return false;
+    }
+
+    let cookies = document.cookie;
+    if (cookies) {
+      return true;
+    }
+
+    document.cookie = 'qccookie=enabled';
+    cookies = document.cookie;
+
+    if (cookies) {
       return true;
     }
 
@@ -173,10 +185,11 @@ export class UtilitiesService {
   }
 
   getCookieErrorMsg() {
-    var errorMessage = 'Error: cookies (including third-party cookies) need to be enabled. For instructions, ' +
+    var errorMessage = 'Error: cookies (including third-party cookies and cross-site tracking) need to be enabled. For instructions, ' +
     '<a href="https://support.google.com/accounts/answer/61416?hl=en" target="_blank">read this article for Chrome</a>, ' +
-    ' and <a href="https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences" target="_blank">' +
-    'read this article for Firefox</a>. You may need to restart your browser for the changes to take effect.';
+    '<a href="https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences" target="_blank">' +
+    'read this article for Firefox</a>, and <a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac"' +
+    ' target="_blank">read this article for Safari</a> (un-check the box to prevent cross-site tracking). You may need to restart your browser for the changes to take effect.';
 
     return errorMessage;
   }
