@@ -85,6 +85,12 @@ describe('Editing custom activities', function() {
         await custom.getEditedGroupRequired(activity).click();
         await custom.submitEdited(activity);
 
+        //M. Mallon, 11/7/19, intermittent errors here with button not being clicked, try a second time if needed
+        const name = await custom.getName(activity);
+        if (name != customData.name.toUpperCase()) {
+            await custom.submitEdited(activity);
+        }
+
         expect(await custom.getName(activity)).toBe(customData.name.toUpperCase());
     });
 

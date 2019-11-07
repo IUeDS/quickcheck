@@ -188,7 +188,7 @@ Route::group(array('middleware' => array('auth')), function() {
         Route::get('attempts/{id}', 'AttemptController@getAttemptsForContext');
         Route::get('assessment/{id}/attempts/context/{context_id}/{assignmentId?}', 'AttemptController@getAttemptsForAssessment');
         Route::get('attempt/{id}/responses', 'StudentResponseController@getAttemptResponses');
-        Route::get('responses/analytics/assessment/{id}/context/{context_id}', 'StudentResponseController@calculateAnalytics');
+        Route::get('responses/analytics/assessment/{id}/context/{context_id}/{assignment_id?}', 'StudentResponseController@calculateAnalytics');
         Route::get('attempts/{contextId}/student/{studentId}', 'AttemptController@getAttemptsForStudentInCourse');
         Route::get('analytics/context/{contextId}/student/{studentId}', 'StudentController@calculateStudentAnalytics');
 

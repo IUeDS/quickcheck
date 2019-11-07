@@ -25,13 +25,14 @@ class Analytics {
     *
     * @param  int  $assessmentId
     * @param  string  $contextId
+    * @param  int  $assignmentId
     * @return []  $responseAnalytics
     */
 
-    public function getResponseAnalytics($assessmentId, $contextId)
+    public function getResponseAnalytics($assessmentId, $contextId, $assignmentId = null)
     {
         $assessment = Assessment::find($assessmentId);
-        $this->attempts = $this->getAttempts($assessmentId, $contextId);
+        $this->attempts = $this->getAttempts($assessmentId, $contextId, $assignmentId);
         $this->assessmentAnalytics = $this->getAssessmentLevelAnalytics();
 
         if (!$assessment->isCustomAssessment()) {
@@ -253,13 +254,14 @@ class Analytics {
     *
     * @param  int  $assessmentId
     * @param  string  $contextId
+    * @param  int  $assignmentId
     * @return [] $attempts
     */
 
-    private function getAttempts($assessmentId, $contextId)
+    private function getAttempts($assessmentId, $contextId, $assignmentId = null)
     {
         $emptyAttemptsHidden = false;
-        return Attempt::getAttemptsForAssessment($assessmentId, $contextId, $emptyAttemptsHidden);
+        return Attempt::getAttemptsForAssessment($assessmentId, $contextId, $assignmentId, $emptyAttemptsHidden);
     }
 
     /**

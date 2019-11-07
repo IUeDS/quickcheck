@@ -42,12 +42,12 @@ var DropdownsQuestionComponent = function(browserRef, question) {
         return distractor.element(by.css(component.distractorInputElement));
     }
 
-    function getDropdownPrompts() {
-        return component.dropdownPrompts;
+    async function getDropdownPrompts() {
+        return await component.dropdownPrompts;
     }
 
-    function getDropdownTextInputs() {
-        return component.dropdownTextInputs;
+    async function getDropdownTextInputs() {
+        return await component.dropdownTextInputs;
     }
 }
 
