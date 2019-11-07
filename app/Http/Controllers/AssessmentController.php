@@ -52,7 +52,7 @@ class AssessmentController extends \BaseController
             $assessmentId = intval($request->input("id"));
         }
         else { //abort if no ID found in either route param or query param
-            abort(500, 'Assessment ID is missing from query string.');
+            return response()->error(400, ['Assessment ID is missing from url query string.']);
         }
 
         $anonymousContext = new AnonymousContext();
@@ -82,7 +82,7 @@ class AssessmentController extends \BaseController
             $assessmentId = intval($request->input("id"));
         }
         else { //abort if no ID found in either route param or query param
-            abort(500, 'Assessment ID is missing from query string.');
+            return response()->error(400, ['Assessment ID is missing from url query string.']);
         }
 
         $ltiContext = new LtiContext();

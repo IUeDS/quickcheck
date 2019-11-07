@@ -275,11 +275,11 @@ describe('Importing a QTI package', function() {
             });
 
             it('should have the correct options', async function() {
-                var inputs = question.getDropdownTextInputs();
-                expect(await inputs.get(0).getAttribute('value')).toBe('The sky is ');
-                expect(await inputs.get(1).getAttribute('value')).toBe('blue');
-                expect(await inputs.get(2).getAttribute('value')).toBe(' and the grass is ');
-                expect(await inputs.get(3).getAttribute('value')).toBe('green');
+                var inputs = await question.getDropdownTextInputs();
+                expect(await inputs[0].getAttribute('value')).toBe('The sky is ');
+                expect(await inputs[1].getAttribute('value')).toBe('blue');
+                expect(await inputs[2].getAttribute('value')).toBe(' and the grass is ');
+                expect(await inputs[3].getAttribute('value')).toBe('green');
             });
         });
 

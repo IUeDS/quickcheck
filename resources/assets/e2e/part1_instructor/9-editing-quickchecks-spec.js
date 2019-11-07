@@ -175,12 +175,15 @@ describe('Adding a multiple correct question', function() {
         expect(await editQcPage.getSaveError().getText()).toContain(data.validateNoCorrectMessage);
     });
 
+    //intermittent failures here, adding lots of sleep as I can't pinpoint the exact spot where the issue is!
     it('should allow marking multiple options as correct', async function() {
+        await browser.sleep(1500);
         var options = question.getOptions();
+        await browser.sleep(1500);
         await question.toggleMcOptionCorrect(options.get(0));
-        await browser.sleep(1500); //intermittent failures here to mark second as correct, seeing if sleep helps
+        await browser.sleep(1500);
         await question.toggleMcOptionCorrect(options.get(1));
-        await browser.sleep(1500); //intermittent failures here to mark second as correct, seeing if sleep helps
+        await browser.sleep(1500);
         expect(await question.isMcOptionMarkedCorrect(options.get(0))).toBe(true);
         expect(await question.isMcOptionMarkedCorrect(options.get(1))).toBe(true);
     });
@@ -405,7 +408,8 @@ describe('Adding a multiple dropdowns question', function() {
 
     it('should allow adding dropdown pairs', async function() {
         await question.addDropdownPair();
-        expect(await question.getDropdownPrompts().count()).toBe(1);
+        const prompts = await question.getDropdownPrompts();
+        expect(await prompts.length).toBe(1);
     });
 
     it('should throw a validation error if a dropdown pair field isn\'t filled', async function() {
@@ -416,16 +420,17 @@ describe('Adding a multiple dropdowns question', function() {
     it('should allow deleting dropdown pairs', async function() {
         //add in the valid data
         await question.addDropdownPair();
-        question.getDropdownTextInputs().then(async function(textInputs) {
-            await textInputs[0].sendKeys(questionData.prompt1);
-            await textInputs[1].sendKeys(questionData.answer1);
-            await textInputs[2].sendKeys(questionData.prompt2);
-            await textInputs[3].sendKeys(questionData.answer2);
-        });
+        const textInputs = await question.getDropdownTextInputs();
+        await textInputs[0].sendKeys(questionData.prompt1);
+        await textInputs[1].sendKeys(questionData.answer1);
+        await textInputs[2].sendKeys(questionData.prompt2);
+        await textInputs[3].sendKeys(questionData.answer2);
 
         await question.addDropdownPair();
-        await question.deleteOption(question.getDropdownPrompts().get(2));
-        expect(await question.getDropdownPrompts().count()).toBe(2);
+        let prompts = await question.getDropdownPrompts();
+        await question.deleteOption(prompts[2]);
+        prompts = await question.getDropdownPrompts();
+        expect(await prompts.length).toBe(2);
     });
 
     it('should allow adding distractors', async function() {
@@ -483,6 +488,7 @@ describe('Adding a textmatch question', function() {
 
     it('should allow deleting a possible answer', async function() {
         await question.addTextmatchAnswer();
+        await browser.sleep(1000);
         await question.deleteOption(question.getOptions().get(1));
         expect(await question.getOptions().count()).toBe(1);
     });
@@ -747,24 +753,40 @@ describe('Adding the rest of the quick checks for testing purposes', function() 
         //1. exact answer with 0 as margin of error; note that the answer itself is 0 in this case,
         //so we can also ensure that 0 is accepted as an answer (previous bug fix)
         await currentQuestion.addNumericalAnswer();
-        await browser.sleep(1000); //would fail inconsistently at this point, saying no options added
+        await browser.sleep(2000); //would fail inconsistently at this point, saying no options added
         //NOTE: at this point, there were no numerical options present, hrm; also an issue intermittently with text match in previous test so maybe related
         option1 = currentQuestion.getOptions().get(0);
         await currentQuestion.enterNumericalExactOption(option1, questionData.option1.exact, questionData.option1.margin);
 
         //2. exact answer with margin of error
         await currentQuestion.addNumericalAnswer();
+        await browser.sleep(2000);
         option2 = currentQuestion.getOptions().get(1);
         await currentQuestion.enterNumericalExactOption(option2, questionData.option2.exact, questionData.option2.margin);
 
         //3. range answer
         await currentQuestion.addNumericalAnswer();
+        await browser.sleep(2000);
+
+        //MM, 11/5/19: repeated error in this part where protractor seemed to think last option was not there,
+        //make sure to click it again if not clicked the first time
+        const count = await currentQuestion.getOptions().count();
+        if (count !== 3) {
+            await currentQuestion.addNumericalAnswer();
+            await browser.sleep(2000);
+        }
+
         option3 = currentQuestion.getOptions().get(2);
         await currentQuestion.setOptionAsRange(option3);
         await currentQuestion.enterNumericalRangeOption(option3, questionData.option3.rangeMin, questionData.option3.rangeMax);
 
         //save, go back to set page, and double check that the subset and quick check were properly added
+        //MM, 11/5/19: erroring out here randomly, seems like save button is not being clicked, try a second time if not
         await editQcPage.save();
+        const isSaved = await editQcPage.getSaveSuccess().isDisplayed();
+        if (!isSaved) {
+            await editQcPage.save();
+        }
         await editQcPage.goBackToSet();
         await setPage.initSubsets();
         subset = setPage.getSubset(0);

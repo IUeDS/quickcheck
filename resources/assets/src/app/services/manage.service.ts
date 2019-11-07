@@ -28,9 +28,12 @@ export class ManageService {
       .toPromise();
   }
 
-  async getAttemptsAndResponses(id, contextId) {
+  async getAttemptsAndResponses(assessmentId, assignmentId, contextId) {
     const timeoutLength = this.httpService.getCrazyLongTimeout();
-    const path = this.httpService.getApiRoute() + '/assessment/' + id + '/attempts/' + contextId;
+    let path = this.httpService.getApiRoute() + '/assessment/' + assessmentId + '/attempts/context/' + contextId;
+    if (assignmentId) {
+      path += ('/' + assignmentId);
+    }
 
     return await this.httpClient.get(path)
       .pipe(timeout(timeoutLength))
@@ -46,9 +49,12 @@ export class ManageService {
       .toPromise();
   }
 
-  async getAttemptSubmissions(id, contextId) {
+  async getAttemptSubmissions(assessmentId, assignmentId, contextId) {
     const timeoutLength = this.httpService.getCrazyLongTimeout();
-    const path = this.httpService.getApiRoute() + '/assessment/' + id + '/attempts/' + contextId + '/submissions';
+    let path = this.httpService.getApiRoute() + '/assessment/' + assessmentId + '/attempts/context/' + contextId + '/submissions';
+    if (assignmentId) {
+      path += ('/' + assignmentId);
+    }
 
     return await this.httpClient.get(path)
       .pipe(timeout(timeoutLength))
@@ -73,9 +79,13 @@ export class ManageService {
       .toPromise();
   }
 
-  async getResponseAnalytics(id, contextId) {
+  async getResponseAnalytics(id, contextId, assignmentId = null) {
     const timeoutLength = this.httpService.getCrazyLongTimeout();
-    const path = this.httpService.getApiRoute() + '/responses/analytics/assessment/' + id + '/context/' + contextId;
+    let path = this.httpService.getApiRoute() + '/responses/analytics/assessment/' + id + '/context/' + contextId;
+
+    if (assignmentId) {
+      path += ('/' + assignmentId);
+    }
 
     return await this.httpClient.get(path)
       .pipe(timeout(timeoutLength))

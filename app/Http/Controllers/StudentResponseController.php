@@ -20,17 +20,18 @@ class StudentResponseController extends \BaseController
     *
     * @param int assessmentId
     * @param string contextId
+    * @param int assignmentId
     * @return Response
     */
 
-    public function calculateAnalytics($assessmentId, $contextId)
+    public function calculateAnalytics($assessmentId, $contextId, $assignmentId = null)
     {
         if (!$assessmentId || ! $contextId) {
             return response()->error(400, ['Assessment ID and context ID are required']);
         }
 
         $analytics = new Analytics;
-        $responseAnalytics = $analytics->getResponseAnalytics($assessmentId, $contextId);
+        $responseAnalytics = $analytics->getResponseAnalytics($assessmentId, $contextId, $assignmentId);
         return response()->success(['analytics' => $responseAnalytics]);
     }
 

@@ -142,7 +142,7 @@ class UserController extends \BaseController
         $user = $canvasAPI->getUserFromAPIBySISLogin($username);
         if (array_key_exists('errors', $user)) {
             //NOTE: returning 200 status here instead of a 500, because the response is just saying the username isn't valid
-            return response()->error(200, ['reason' => 'Error validating username, please ensure this is the correct user login ID and try again.']);
+            return response()->error(200, ['reason' => 'Error validating username, please ensure this is the correct user login ID and try again. If you entered an email address, please only include the username.']);
         }
         else {
             return response()->success(['user' => $user]);
