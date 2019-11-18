@@ -96,7 +96,7 @@ class GradeController extends \BaseController
     {
         $attemptGraded = false;
         $attemptId = $request->input('attemptId');
-        $attempt = Attempt::find($attemptId);
+        $attempt = Attempt::findOrFail($attemptId);
         $grade = new Grade($attempt, $request);
 
         if (!$grade->isReadyForGrade()) {
