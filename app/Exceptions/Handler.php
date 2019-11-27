@@ -53,6 +53,10 @@ class Handler extends ExceptionHandler
         $info .= $this->getErrorRequest();
         Log::info($info);
 
+        if (app()->bound('sentry') && $this->shouldReport($e)) {
+            app('sentry')->captureException($e);
+        }
+
         return parent::report($e);
     }
 
