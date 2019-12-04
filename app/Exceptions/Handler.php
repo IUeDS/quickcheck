@@ -11,6 +11,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\Classes\LTI\LtiContext;
+use Sentry\State\Scope;
+use Sentry\Severity;
 
 class Handler extends ExceptionHandler
 {
@@ -43,17 +45,21 @@ class Handler extends ExceptionHandler
     */
     public function report(Exception $e)
     {
-        if (!$this->shouldReport($e)) {
-            return;
-        }
-
         //include additional request data and url as info in log for any
         //exceptions that are thrown by default exception in Laravel.
         $info = $e->getMessage();
         $info .= $this->getErrorRequest();
         Log::info($info);
 
-        if (app()->bound('sentry') && $this->shouldReport($e)) {
+        //if sentry is being used, then send error info
+        if (app()->bound('sentry') && env('APP_ENV') === 'prod') {
+            //capture as either error or info depending on severity
+            if (!$this->shouldReport($e)) {
+                app('sentry')->configureScope(function (Scope $scope) {
+                  $scope->setLevel(Severity::info());
+                });
+            }
+
             app('sentry')->captureException($e);
         }
 

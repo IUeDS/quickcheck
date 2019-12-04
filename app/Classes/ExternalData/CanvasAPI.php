@@ -293,6 +293,10 @@ class CanvasAPI
     {
         $errorMessage = '';
 
+        if (!$response) {
+            return 'No response returned from Canvas. Canvas servers may be experiencing issues.';
+        }
+
         if (array_key_exists('errors', $response)) {
             foreach ($response['errors'] as $error) {
                 $errorMessage .= $error['message'];
