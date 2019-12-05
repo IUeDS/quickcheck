@@ -6,10 +6,11 @@
     "type": "project",
     "require": {
         "php": ">=7.3.0",
+        "doctrine/dbal": "^2.6",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
-        "doctrine/dbal": "^2.6",
-        "predis/predis": "~1.0"
+        "predis/predis": "~1.0",
+        "sentry/sentry-laravel": "1.5.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
