@@ -23,7 +23,7 @@ RUN docker-php-ext-configure gd
 RUN docker-php-ext-install gd
 
 # Install node/npm/angular CLI
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
 RUN apt-get update && apt-get install -y nodejs
 RUN npm install -g @angular/cli
 
@@ -53,8 +53,7 @@ RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/
 
 # Install front-end dependencies
 WORKDIR ${WORK_DIR}
-RUN pwd
-RUN sudo npm install
+RUN npm install
 RUN ng build --prod
 #copy hashed css output to non-hashed file for inclusion with tinymce editor (which has a set config and can't guess the hash)
 RUN cp public/assets/dist/styles.*.css public/assets/dist/styles.css
