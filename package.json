@@ -33,6 +33,7 @@
     "angular-svg-round-progressbar": "^3.0.1",
     "animate.css": "latest",
     "bootstrap": "^4.4.1",
+    "es-abstract": "^1.14.2",
     "font-awesome": "~4.6.3",
     "jquery": "~3.4.0",
     "lodash": "^4.17.15",
