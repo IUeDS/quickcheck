@@ -125,7 +125,9 @@ class NumericalAnswer extends QuestionOption {
         if (array_key_exists('deletedOptions', $updatedQuestion)) {
             foreach ($updatedQuestion['deletedOptions'] as $deletedOption) {
                 $option = $this->find($deletedOption['id']);
-                $option->delete();
+                if ($option) {
+                    $option->delete();
+                }
             }
         }
     }
