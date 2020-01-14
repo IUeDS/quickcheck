@@ -148,7 +148,7 @@ return [
     |
     */
 
-    'secure' => (env('APP_ENV', 'local') === 'local' || env('APP_ENV', 'local') === 'dev') ? false : true,
+    'secure' => (env('APP_ENV', 'local') === 'local' ? false : true,
 
     /*
     |--------------------------------------------------------------------------
