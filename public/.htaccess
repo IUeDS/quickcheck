@@ -41,8 +41,10 @@ AddOutputFilterByType DEFLATE text/xml
 </IfModule>
 
 # Only allow iframing in Canvas and webserve content pages
+# Also, allow third party cookies
 <IfModule mod_headers.c>
   Header set Content-Security-Policy "frame-ancestors https://*.instructure.com https://www.indiana.edu; https://*.sitehost.iu.edu"
+  Header always edit Set-Cookie (.*) "$1; Secure; SameSite=None"
 </IfModule>
 
 # Catch URLs that start with www, remove it, redirect to https
