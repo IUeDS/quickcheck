@@ -15,6 +15,7 @@ import { UsernotfoundComponent } from './components/errors/usernotfound/usernotf
 import { SessionnotvalidComponent } from './components/errors/sessionnotvalid/sessionnotvalid.component';
 import { LtisessionnotvalidComponent } from './components/errors/ltisessionnotvalid/ltisessionnotvalid.component';
 import { ErrorComponent } from './components/errors/error/error.component';
+import { EstablishCookieTrustComponent } from './components/shared/establish-cookie-trust/establish-cookie-trust.component';
 import * as cloneDeep from 'lodash/cloneDeep';
 import { CanDeactivateGuard } from './guards/can-deactivate-guard.service';
 
@@ -43,7 +44,9 @@ const routes: Routes = [
     { path: 'sessionnotvalid', component: SessionnotvalidComponent },
     { path: 'ltisessionnotvalid', component: LtisessionnotvalidComponent },
     { path: 'error', component: ErrorComponent },
-    { path: 'index.php/error', component: ErrorComponent }
+    { path: 'index.php/error', component: ErrorComponent },
+    { path: 'establishcookietrust', component: EstablishCookieTrustComponent },
+    { path: 'index.php/establishcookietrust', component: EstablishCookieTrustComponent }
 ];
 
 @NgModule({

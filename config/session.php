@@ -31,7 +31,7 @@ return [
 
     'lifetime' => 360,
 
-    'expire_on_close' => true,
+    'expire_on_close' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -148,6 +148,34 @@ return [
     |
     */
 
-    'secure' => (env('APP_ENV', 'local') === 'local' || env('APP_ENV', 'local') === 'dev') ? false : true,
+    //if app url is NOT localhost, make cookies secure (localhost is not served over SSL, otherwise SSL is required)
+    'secure' => strpos(env('APP_URL', 'http://localhost:8000'), 'localhost') !== false ? false : true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | HTTP Access Only
+    |--------------------------------------------------------------------------
+    |
+    | Setting this value to true will prevent JavaScript from accessing the
+    | value of the cookie and the cookie will only be accessible through
+    | the HTTP protocol. You are free to modify this option if needed.
+    |
+    */
+    'http_only' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Same-Site Cookies
+    |--------------------------------------------------------------------------
+    |
+    | This option determines how your cookies behave when cross-site requests
+    | take place, and can be used to mitigate CSRF attacks. By default, we
+    | do not enable this as other CSRF protection services are in place.
+    |
+    | Supported: "lax", "strict"
+    |
+    */
+
+    'same_site' => "none",
 
 ];

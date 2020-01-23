@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../services/utilities.service';
 import { AssessmentService } from '../../services/assessment.service';
 import { CaliperService } from '../../services/caliper.service';
+import { UserService } from '../../services/user.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { CompletionModalComponent } from './completion-modal/completion-modal.component';
 import { ErrorModalComponent } from './error-modal/error-modal.component';
@@ -45,7 +46,8 @@ export class AssessmentComponent implements OnInit {
     public utilitiesService: UtilitiesService,
     private assessmentService: AssessmentService,
     private caliperService: CaliperService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private userService: UserService
   )
   {
     //subscribe to changes in feedback modal
@@ -55,15 +57,18 @@ export class AssessmentComponent implements OnInit {
   async ngOnInit() {
     this.getAssessmentIdFromUrl();
     this.preview = this.isPreview();
+    let data;
 
-    if (!this.utilitiesService.areCookiesEnabled()) {
+    this.utilitiesService.loadingStarted();
+
+    const thirdPartyCookiesEnabled = await this.areCookiesEnabled();
+    if (!thirdPartyCookiesEnabled) {
       const errorMessage = this.utilitiesService.getCookieErrorMsg();
-      this.showErrorModal(errorMessage);
+      const showRestartBtn = false; //student must refresh entire page to get new LTI launch
+      this.showErrorModal(errorMessage, showRestartBtn);
+      this.utilitiesService.loadingFinished();
       return;
     }
-
-    let data;
-    this.utilitiesService.loadingStarted();
 
     try {
       const resp = await this.assessmentService.initAttempt(this.assessmentId, this.preview.toString());
@@ -82,6 +87,21 @@ export class AssessmentComponent implements OnInit {
     this.parseTimeoutData(data);
     this.utilitiesService.loadingFinished();
     await this.initQuestions();
+  }
+
+  async areCookiesEnabled() {
+    //in Safari, if third party cookies are disabled, the sameSite=none policy that works in Chrome
+    //unfortunately does not work on Safari 13 and earlier in Mojave and earlier versions of mac OS.
+    //in this case, we check to see if a session exists immediately after the LTI launch, and if not,
+    //we can assume cookies are disabled and require the user to open in a new tab to establish first
+    //party trust. should only be necessary the first time the user accesses the site.
+    try {
+      await this.userService.checkCookies();
+      return true;
+    }
+    catch (error) {
+      return false;
+    }
   }
 
   //get the assessment id from the Laravel url, /assessment/{id} and separate from query strings at the end, if necessary;
@@ -270,10 +290,11 @@ export class AssessmentComponent implements OnInit {
     window.location.reload();
   }
 
-  showErrorModal(errorMessage) {
+  showErrorModal(errorMessage, showRestartBtn = true) {
     this.errorMessage = errorMessage;
     const initialState = {
-      errorMessage: this.errorMessage
+      errorMessage: this.errorMessage,
+      showRestartBtn
     };
     this.modalService.show(ErrorModalComponent, {initialState, backdrop: 'static', keyboard: false});
     this.modalVisible = true;

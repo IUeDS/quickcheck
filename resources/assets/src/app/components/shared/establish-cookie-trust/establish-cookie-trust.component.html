@@ -1,0 +1,8 @@
+<div class="row section-white">
+    <div class="col-12">
+        <h1>Establish trust for storing cookies</h1>
+        <p *ngIf="this.trustPending">Please wait...</p>
+        <p *ngIf="this.trustEstablished">Success! Please close this tab, return to Canvas, and reload the page in Canvas for the change to take effect.</p>
+        <p *ngIf="this.trustError">Process failed.</p>
+    </div>
+</div>

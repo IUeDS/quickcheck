@@ -20,6 +20,24 @@ export class UserService {
       .toPromise();
   }
 
+  async checkCookies() {
+    const timeoutLength = this.httpService.getDefaultTimeout();
+    const path = this.httpService.getApiRoute() + '/checkcookies';
+
+    return await this.httpClient.get(path)
+      .pipe(timeout(timeoutLength))
+      .toPromise();
+  }
+
+  async establishCookieTrust() {
+    const timeoutLength = this.httpService.getDefaultTimeout();
+    const path = this.httpService.getApiRoute() + '/establishcookietrust';
+
+    return await this.httpClient.get(path)
+      .pipe(timeout(timeoutLength))
+      .toPromise();
+  }
+
   async getUser() {
     const timeoutLength = this.httpService.getDefaultTimeout();
     const path = this.httpService.getApiRoute() + '/user';

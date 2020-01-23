@@ -8,6 +8,7 @@ import { UtilitiesService } from '../../../services/utilities.service';
 })
 export class ErrorModalComponent implements OnInit {
   @Input() errorMessage;
+  @Input() showRestartBtn;
 
   constructor(public utilitiesService: UtilitiesService,) { }
 
