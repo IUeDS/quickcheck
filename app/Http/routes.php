@@ -41,6 +41,11 @@ Route::get('documentation', function() {
     return displaySPA();
 });
 
+//establish cookie trust (in Safari)
+Route::get('establishcookietrust', function() {
+    return displaySPA();
+});
+
 /********************************************************************/
 /****** PUBLIC API **************************************************/
 /********************************************************************/
@@ -62,6 +67,10 @@ Route::group(['prefix' => 'api'], function() {
 
     //API error for instructors with an expired session
     Route::get('sessionnotvalid', 'UserController@apiSessionNotValid');
+
+    //Third party cookie check
+    Route::get('checkcookies', 'UserController@checkCookies');
+    Route::get('establishcookietrust', 'UserController@establishCookieTrust');
 });
 
 /********************************************************************/

@@ -31,7 +31,7 @@ return [
 
     'lifetime' => 360,
 
-    'expire_on_close' => true,
+    'expire_on_close' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -148,7 +148,8 @@ return [
     |
     */
 
-    'secure' => (env('APP_ENV', 'local') === 'local' ? false : true,
+    //if app url is NOT localhost, make cookies secure (localhost is not served over SSL, otherwise SSL is required)
+    'secure' => strpos(env('APP_URL', 'http://localhost:8000'), 'localhost') !== false ? false : true,
 
     /*
     |--------------------------------------------------------------------------
@@ -175,6 +176,6 @@ return [
     |
     */
 
-    'same_site' => null,
+    'same_site' => "none",
 
 ];

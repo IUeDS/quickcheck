@@ -99,6 +99,7 @@ import { UsernotfoundComponent } from './components/errors/usernotfound/usernotf
 import { SessionnotvalidComponent } from './components/errors/sessionnotvalid/sessionnotvalid.component';
 import { LtisessionnotvalidComponent } from './components/errors/ltisessionnotvalid/ltisessionnotvalid.component';
 import { ErrorComponent } from './components/errors/error/error.component';
+import { EstablishCookieTrustComponent } from './components/shared/establish-cookie-trust/establish-cookie-trust.component';
 
 
 @NgModule({
@@ -186,6 +187,7 @@ import { ErrorComponent } from './components/errors/error/error.component';
     SessionnotvalidComponent,
     LtisessionnotvalidComponent,
     ErrorComponent,
+    EstablishCookieTrustComponent,
   ],
   imports: [
     BrowserModule,

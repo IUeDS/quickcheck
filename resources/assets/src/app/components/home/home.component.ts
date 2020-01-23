@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../services/utilities.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'qc-home',
@@ -11,14 +12,25 @@ export class HomeComponent implements OnInit {
   isAddingAssessment = false;
   sessionExpired = false;
 
-  constructor(public utilitiesService: UtilitiesService) { }
+  constructor(public utilitiesService: UtilitiesService, public userService: UserService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.utilitiesService.setTitle('Quick Check - Home');
-    this.checkForExpiredSession();
+    this.utilitiesService.loadingStarted();
 
-    if (!this.utilitiesService.areCookiesEnabled()) {
-      var errorMessage = this.utilitiesService.getCookieErrorMsg();
+    //in Safari, if third party cookies are disabled, the sameSite=none policy that works in Chrome
+    //unfortunately does not work on Safari 13 and earlier in Mojave and earlier versions of mac OS.
+    //in this case, we check to see if a session exists immediately after the LTI launch, and if not,
+    //we can assume cookies are disabled and require the user to open in a new tab to establish first
+    //party trust. should only be necessary the first time the user accesses the site.
+    try {
+      await this.userService.checkCookies();
+      //if cookies are not working, the expired session error message will show up and
+      //create confusion; only check for expired session if we know cookies are working.
+      this.checkForExpiredSession();
+    }
+    catch (error) {
+      const errorMessage = this.utilitiesService.getCookieErrorMsg();
       this.utilitiesService.setError(errorMessage);
     }
 

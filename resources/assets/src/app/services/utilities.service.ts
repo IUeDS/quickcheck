@@ -185,13 +185,12 @@ export class UtilitiesService {
   }
 
   getCookieErrorMsg() {
-    var errorMessage = 'Error: cookies (including third-party cookies and cross-site tracking) need to be enabled. For instructions, ' +
-    '<a href="https://support.google.com/accounts/answer/61416?hl=en" target="_blank">read this article for Chrome</a>, ' +
-    '<a href="https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences" target="_blank">' +
-    'read this article for Firefox</a>, and <a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac"' +
-    ' target="_blank">read this article for Safari</a> (un-check the box to prevent cross-site tracking). You may need to restart your browser for the changes to take effect.';
-
-    return errorMessage;
+    return `Due to the way in which some browsers (such as Safari) handle third-party
+    cookies, Quick Check requires you to open in a new tab the first time you are accessing the
+    tool, to establish trust. You will need to refresh this page after opening in a new tab.
+    In the future when accessing Quick Check, the tool will function normally without requiring this step.
+    Please click the following link to <a href="/establishcookietrust" target="_blank">open in a new tab</a>.
+    Alternatively, a different browser can be used. Thank you.`;
   }
 
   //for cases where the error is in a non-centralized location (i.e., showing an error
@@ -312,6 +311,12 @@ export class UtilitiesService {
     return false;
   }
 
+  isSafari() {
+    //https://stackoverflow.com/questions/49872111/detect-safari-and-stop-script
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    return isSafari;
+  }
+
   isSessionExpired() {
     return this.sessionExpired;
   }
@@ -370,7 +375,7 @@ export class UtilitiesService {
   //for custom/front-end errors, manually set the error message
   setError(error) {
     //mock the back-end format so it can be passed in to the same centralized function
-    var errorResponse = { data: { errorList: [ error ]}};
+    var errorResponse = { error: { errorList: [ error ]}};
     this.showError(errorResponse);
   }
 
