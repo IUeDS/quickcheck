@@ -125,15 +125,6 @@ class UserController extends \BaseController
 
     public function establishCookieTrust(Request $request)
     {
-        //put a dummy value, and necessary LTI values will be added later when tool is re-launched;
-        //set dummy cookie to max expiration value, so user does not have to re-establish trust for new LTI launches;
-        //we can change session lifetime in the config for just this request rather than all requests.
-        //see: https://stackoverflow.com/questions/41333527/whats-the-highest-possible-value-for-the-laravel-lifetime-config-variable-in-se
-        //and: https://stackoverflow.com/questions/24317313/laravel-cookie-session-lifetime
-        //config(['session.lifetime' => 35791394]);
-        //$request->session()->put('cookieTrust', true);
-        //$storedValue = $request->session()->get('cookieTrust');
-
         //put a dummy value, and necessary LTI values will be added later when tool is re-launched.
         //set dummy cookie to max expiration value, so user does not have to re-establish trust for new LTI launches.
         //tried to use Laravel session driver for this but couldn't, session lifetime is set globally for all cookies.
