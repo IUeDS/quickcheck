@@ -212,6 +212,7 @@ export class AssessmentComponent implements OnInit {
 
   nextQuestion() {
     this.isNextBtnDisabled = true; //disable next button to prevent double clicking (skips a question)
+    this.modalVisible = false;
     this.currentQuestionIndex++;
 
     if (this.isComplete()) {
@@ -318,7 +319,7 @@ export class AssessmentComponent implements OnInit {
       this.modalService.show(FeedbackModalComponent, {initialState, backdrop: 'static', keyboard: false});
       this.modalVisible = true;
       this.utilitiesService.formatMath(); //if equations are shown in the feedback
-      this.utilitiesService.focusToElement('.qc-continue-btn');
+      this.utilitiesService.focusToElement('.qc-feedback-modal');
     }
   }
 

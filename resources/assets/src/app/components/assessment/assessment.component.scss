@@ -56,9 +56,12 @@
 
     //visual indication of focus for buttons
     .qc-restart,
-    .qc-submit-response {
+    .qc-submit-response,
+    .qc-continue-btn,
+    .qc-row-continue-btn,
+    .qc-btn-restart-assessment {
         &:focus {
-            border: solid $iron-gray 5px;
+            border: solid $iron-gray 3px;
         }
     }
 
