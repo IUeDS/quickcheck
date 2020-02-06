@@ -11,7 +11,7 @@ export class CollectionService {
   constructor(private httpClient: HttpClient, private httpService: HttpService) {}
 
   async copyAssessment(id, copyData) {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getMediumTimeout();
     const path = this.httpService.getApiRoute() + '/assessment/' + id + '/copy';
 
     return await this.httpClient.post(path, copyData)
@@ -38,7 +38,7 @@ export class CollectionService {
   }
 
   async createImportedQuizzes(data) {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getMediumTimeout();
     const path = this.httpService.getApiRoute() + '/createImportedQuizzes';
 
     return await this.httpClient.post(path, data)
@@ -74,7 +74,7 @@ export class CollectionService {
   }
 
   async getCollection(id) {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getMediumTimeout();
     const path = this.httpService.getApiRoute() + '/collection/' + id;
 
     return await this.httpClient.get(path)
@@ -92,7 +92,7 @@ export class CollectionService {
   }
 
   async getCollectionsWithAssessments() {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getLongTimeout();
     const path = this.httpService.getApiRoute() + '/collections/assessments';
 
     return await this.httpClient.get(path)
@@ -119,7 +119,7 @@ export class CollectionService {
   }
 
   async getMemberships() {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getLongTimeout();
     const path = this.httpService.getApiRoute() + '/memberships';
 
     return await this.httpClient.get(path)
@@ -128,7 +128,7 @@ export class CollectionService {
   }
 
   async getMembershipsWithAssessments() {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getLongTimeout();
     const path = this.httpService.getApiRoute() + '/memberships/assessments';
 
     return await this.httpClient.get(path)
@@ -169,7 +169,7 @@ export class CollectionService {
   }
 
   async search(id, searchTerm) {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getLongTimeout();
     const path = this.httpService.getApiRoute() + '/collection/' + id + '/search';
 
     return await this.httpClient.post(path, { searchTerm })
