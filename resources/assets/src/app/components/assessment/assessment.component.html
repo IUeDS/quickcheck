@@ -1,4 +1,4 @@
-<div class="qc-quiz-view">
+<div class="qc-quiz-view" [attr.aria-hidden]="this.modalVisible ? 'true' : 'false'">
     <div class="row section-white">
         <div class="col-12">
             <h1 *ngIf="this.assessmentTitle" class="qc-assessment-title">{{ this.assessmentTitle }}</h1>
@@ -10,7 +10,7 @@
                 tabindex="-1" aria-live="assertive" aria-atomic="true">
                 Question {{ this.currentQuestionIndex + 1 }} out of {{ this.pointsPossible }}
             </h2>
-            <div *ngIf="this.currentQuestion" [attr.aria-hidden]="this.modalVisible ? 'true' : 'false'">
+            <div *ngIf="this.currentQuestion">
                 <qc-multiple-choice *ngIf="this.isQuestionType('multiple_choice')"
                     [currentQuestion]="this.currentQuestion"
                     (onAnswerSelection)="this.onAnswerSelection($event)">
@@ -61,9 +61,9 @@
                     (onContinue)="this.nextQuestion()"
                     [partialCredit]="this.partialCredit">
                 </qc-row-feedback>
-                <button class="qc-submit-response" [disabled]="this.isSubmitDisabled()" (click)="this.submitAnswer()">Submit</button>
+                <button class="qc-submit-response" [disabled]="this.isSubmitDisabled()" [attr.tabindex]="this.modalVisible ? -1 : 0" (click)="this.submitAnswer()">Submit</button>
                 <div class="qc-current-score" aria-live="assertive" aria-atomic="true">{{ this.score }} / {{ this.pointsPossible }} questions correct</div>
-                <button class="qc-restart" (click)="this.restart()">Start Over</button>
+                <button class="qc-restart" [attr.tabindex]="this.modalVisible ? -1 : 0" (click)="this.restart()">Start Over</button>
             </div>
         </div>
     </div>
