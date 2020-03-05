@@ -29,8 +29,18 @@ class CustomActivity extends Eloquent {
     */
 
     public function getRedirectUrl(Request $request, $assessmentId) {
+        $redirectUrl = '';
+
+        //redirect can be to an absolute url not hosted within QC or can be inside the custom activities folder
+        if (strpos($this->url, 'http') !== false) {
+            $redirectUrl = $this->url;
+        }
+        else {
+            $redirectUrl = URL::asset('customActivities') . '/' . $this->url;
+        }
+
         //in the redirect url, include the assessment id as a query param, so an attempt can be initialized
-        $redirectUrl = URL::asset('customActivities') . '/' . $this->url . '?id=' . $assessmentId;
+        $redirectUrl .= '?id=' . $assessmentId;
 
         //if previewing as an instructor
         if ($request->has('preview')) {
