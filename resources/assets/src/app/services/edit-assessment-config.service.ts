@@ -61,7 +61,8 @@ export class EditAssessmentConfigService {
       table_default_attributes: {
         class: 'table table-bordered'
       },
-      height: 300
+      height: 300,
+      images_upload_url: '/api/assessment/imageupload'
     };
   }
 }

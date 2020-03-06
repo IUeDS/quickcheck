@@ -139,6 +139,7 @@ Route::group(array('middleware' => array('auth')), function() {
         Route::delete('assessment/{id}', 'AssessmentController@destroy');
         Route::post('assessment', 'AssessmentController@store');
         Route::post('assessment/{id}/copy', 'AssessmentController@copy');
+        Route::post('assessment/imageupload', 'AssessmentController@imageUpload');
 
         //assessment group endpoints
         Route::post('assessmentgroup', 'AssessmentGroupController@store');
