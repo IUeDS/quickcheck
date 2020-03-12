@@ -207,6 +207,40 @@ class AssessmentController extends \BaseController
     }
 
     /**
+    * Upload an image to be embedded in an assessment.
+    *
+    * @param  file tmp_name
+    * @return Response
+    */
+
+    public function imageUpload(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|image',
+        ]);
+        if ($validator->fails()) {
+            return response()->error(400, ['Image file not included.']);
+        }
+
+        $fileDriver = env('IMAGE_UPLOAD_FILE_DRIVER', 'local');
+        $path = null;
+
+        //for local file system, build absolute path; otherwise, if using S3, we should already have it
+        if ($fileDriver === 'local') {
+            $path = $request->file->store('public/images', $fileDriver);
+            $path = str_replace('public', 'storage', $path); //change to public symlink path rather than internal path
+            $path = env('APP_URL') . '/' . $path;
+        }
+        else if ($fileDriver === 's3') {
+            $path = $request->file->store('uploads', $fileDriver);
+            $path = 'https://' . env('S3_BUCKET') . '.s3.' . env('S3_REGION') . '.amazonaws.com/' . $path;
+        }
+
+        //tinymce expects response in specific format, giving url of file location, can't
+        //use our typical success() response macro because it's not in the same format
+        return response()->json(['location' => $path]);
+    }
+
+    /**
     * Store a new assessment.
     *
     * @param  string  name

@@ -95,6 +95,10 @@ Whenever a new version of the app is released, the following commands should be 
  * Run `php artisan migrate` to run new database migrations, if any were added in the release
  * In public/assets, run `ng build --prod` to compile front-end assets
 
+## Image uploads
+
+Instructors are allowed to upload images to embed in quick checks. By default, the storage driver is "local" and is stored on the local disk in a public directory. The storage driver can also be set to "s3" for AWS S3 cloud storage. If using the local driver, a public directory must be symlinked with the command `php artisan storage:link` before users can upload public images.
+
 ## License
 Quick Check is open-sourced software licensed under the [Educational Community License, Version 2.0](https://opensource.org/licenses/ECL-2.0).
 
