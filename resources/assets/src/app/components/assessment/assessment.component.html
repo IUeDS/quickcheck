@@ -61,9 +61,9 @@
                     (onContinue)="this.nextQuestion()"
                     [partialCredit]="this.partialCredit">
                 </qc-row-feedback>
-                <button class="qc-submit-response" [disabled]="this.isSubmitDisabled()" [attr.tabindex]="this.modalVisible ? -1 : 0" (click)="this.submitAnswer()">Submit</button>
+                <button class="qc-submit-response" [disabled]="this.isSubmitDisabled()" [attr.tabindex]="this.modalVisible ? -1 : 0" (click)="this.submitAnswer()" type="submit">Submit</button>
                 <div class="qc-current-score" aria-live="assertive" aria-atomic="true">{{ this.score }} / {{ this.pointsPossible }} questions correct</div>
-                <button class="qc-restart" [attr.tabindex]="this.modalVisible ? -1 : 0" (click)="this.restart()">Start Over</button>
+                <button class="qc-restart" [attr.tabindex]="this.modalVisible ? -1 : 0" (click)="this.restart()" type="button">Start Over</button>
             </div>
         </div>
     </div>
