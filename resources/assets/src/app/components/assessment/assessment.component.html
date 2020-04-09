@@ -13,11 +13,13 @@
             <div *ngIf="this.currentQuestion">
                 <qc-multiple-choice *ngIf="this.isQuestionType('multiple_choice')"
                     [currentQuestion]="this.currentQuestion"
+                    [modalVisible]="this.modalVisible"
                     (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-multiple-choice>
 
                 <qc-multiple-correct *ngIf="this.isQuestionType('multiple_correct')"
                     [currentQuestion]="this.currentQuestion"
+                    [modalVisible]="this.modalVisible"
                     (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-multiple-correct>
 
@@ -35,16 +37,19 @@
 
                 <qc-dropdowns *ngIf="this.isQuestionType('dropdown')"
                     [currentQuestion]="this.currentQuestion"
+                    [modalVisible]="this.modalVisible"
                     (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-dropdowns>
 
                 <qc-textmatch *ngIf="this.isQuestionType('textmatch')"
                     [currentQuestion]="this.currentQuestion"
+                    [modalVisible]="this.modalVisible"
                     (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-textmatch>
 
                 <qc-numerical *ngIf="this.isQuestionType('numerical')"
                     [currentQuestion]="this.currentQuestion"
+                    [modalVisible]="this.modalVisible"
                     (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-numerical>
             </div>
