@@ -35,7 +35,7 @@
     "bootstrap": "^4.4.1",
     "es-abstract": "^1.14.2",
     "font-awesome": "~4.6.3",
-    "jquery": "~3.4.0",
+    "jquery": "~3.5.0",
     "lodash": "^4.17.15",
     "mathquill": "^0.10.1-a",
     "moment-timezone": "^0.5.27",
