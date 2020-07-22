@@ -129,7 +129,7 @@ class UserController extends \BaseController
         //set dummy cookie to max expiration value, so user does not have to re-establish trust for new LTI launches.
         //tried to use Laravel session driver for this but couldn't, session lifetime is set globally for all cookies.
         //see: https://stackoverflow.com/questions/3290424/set-a-cookie-to-never-expire/3290474
-        setcookie("cookieTrust", true, 2147483647);
+        setcookie("cookieTrust", true, ["expires" => 2147483647, "secure" => true, "samesite" => "none", "httponly" => true]);
         return response()->success();
     }
 
