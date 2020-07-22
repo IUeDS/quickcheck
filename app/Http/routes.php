@@ -70,7 +70,6 @@ Route::group(['prefix' => 'api'], function() {
 
     //Third party cookie check
     Route::get('checkcookies', 'UserController@checkCookies');
-    Route::get('establishcookietrust', 'UserController@establishCookieTrust');
 });
 
 /********************************************************************/
