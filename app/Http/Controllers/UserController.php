@@ -90,9 +90,7 @@ class UserController extends \BaseController
     }
 
     /**
-    * In Safari (and potentially other browsers), if third party cookies are disabled, using SameSite=none does
-    * not have an effect and first party trust must be established. This function checks to see if the session is
-    * valid and cookies are being set by checking for an existing session immediately after launch.
+    * Ensure that user does not have third party cookies blocked
     *
     * @return JSON response
     */
@@ -101,36 +99,13 @@ class UserController extends \BaseController
     {
         $sessionData = $request->session()->all();
 
-        //if user is not in Safari and never had to establish first party trust, just check
-        //to make sure that a session exists at all rather than the specific test cookie value.
         //a "_token" value will be set on subsequent requests even if cookies are disabled,
-        //so we're checking to make sure that more than just "_token" is set
+        //so we're checking to make sure that more than just "_token" is set in the session
         if (count($sessionData) > 1) {
             return response()->success();
         }
 
-        //otherwise, if using Safari, check to see if the test cookie that never expires is set
-        if (array_key_exists('cookieTrust', $_COOKIE)) {
-            return response()->success();
-        }
-
         return response()->error(400, ['Third party cookies disabled.']);
-    }
-
-    /**
-    * Set a test cookie value to allow third party cookies and an LTI session to be established
-    *
-    * @return JSON response
-    */
-
-    public function establishCookieTrust(Request $request)
-    {
-        //put a dummy value, and necessary LTI values will be added later when tool is re-launched.
-        //set dummy cookie to max expiration value, so user does not have to re-establish trust for new LTI launches.
-        //tried to use Laravel session driver for this but couldn't, session lifetime is set globally for all cookies.
-        //see: https://stackoverflow.com/questions/3290424/set-a-cookie-to-never-expire/3290474
-        setcookie("cookieTrust", true, ["expires" => 2147483647, "secure" => true, "samesite" => "none", "httponly" => true]);
-        return response()->success();
     }
 
     /**
