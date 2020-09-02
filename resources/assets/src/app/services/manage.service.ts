@@ -11,7 +11,7 @@ export class ManageService {
   constructor(private httpClient: HttpClient, private httpService: HttpService) { }
 
   async autoGrade(data) {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getLongTimeout();
     const path = this.httpService.getApiRoute() + '/attempts/autograde';
 
     return await this.httpClient.post(path, data)
@@ -156,7 +156,7 @@ export class ManageService {
   }
 
   async submitGrade(data) {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getLongTimeout();
     const path = this.httpService.getApiRoute() + '/attempts/gradepassback';
 
     return await this.httpClient.post(path, data)
