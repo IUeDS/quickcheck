@@ -39,7 +39,7 @@
     "lodash": "^4.17.15",
     "mathquill": "^0.10.1-a",
     "moment-timezone": "^0.5.27",
-    "ngx-bootstrap": "^5.2.0",
+    "ngx-bootstrap": "^6.1.0",
     "popper.js": "^1.16.0",
     "rxjs": "~6.6.3",
     "tinymce": "^5.1.4",
