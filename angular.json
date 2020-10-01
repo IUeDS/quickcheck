@@ -23,7 +23,7 @@
             "polyfills": "resources/assets/src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "deployUrl": "/assets/dist/",
-            "aot": false,
+            "aot": true,
             "assets": [
               {
                 "glob": "**/*",
@@ -80,7 +80,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -109,7 +108,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
