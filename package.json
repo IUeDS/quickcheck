@@ -30,7 +30,7 @@
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
     "@tinymce/tinymce-angular": "^3.3.1",
-    "angular-svg-round-progressbar": "^4.0.0",
+    //"angular-svg-round-progressbar": "^4.0.0",
     "animate.css": "latest",
     "bootstrap": "^4.4.1",
     "es-abstract": "^1.14.2",
