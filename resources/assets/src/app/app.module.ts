@@ -203,12 +203,6 @@ import { EstablishCookieTrustComponent } from './components/shared/establish-coo
     RoundProgressModule,
     RouterModule
   ],
-  entryComponents: [
-      CompletionModalComponent,
-      ErrorModalComponent,
-      FeedbackModalComponent,
-      TimeoutModalComponent
-  ],
   providers: [
       HttpClientModule,
       Title,
