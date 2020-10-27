@@ -411,12 +411,6 @@ export class UtilitiesService {
         height = document.querySelector('body').clientHeight - this.scrollingLtiHeight;
       }
 
-      //for regression testing, keep height constant and large enough to accommodate any view
-      //to prevent protractor errors
-      if (this.isRegressionEnv()) {
-        height = 20000;
-      }
-
       window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
     }, 0);
   }
