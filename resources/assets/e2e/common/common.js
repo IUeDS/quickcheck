@@ -77,8 +77,8 @@ function Common(browserRef) {
 
     async function enterAngularPage() {
         await common.browser.driver.sleep(2000);
-        common.browser.ignoreSynchronization = false;
         await common.browser.waitForAngularEnabled(true);
+        common.browser.ignoreSynchronization = false;
     }
 
     async function enterNonAngularPage() {
@@ -130,7 +130,8 @@ function Common(browserRef) {
 
     async function goToQuickCheck() {
         await common.browser.driver.findElement(by.linkText(common.toolName)).click();
-        return await common.switchToLtiTool();
+        await common.switchTab(1);
+        await common.enterAngularPage();
     }
 
     async function leaveStudentView() {
