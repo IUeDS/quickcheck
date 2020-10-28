@@ -189,8 +189,9 @@ function Common(browserRef) {
         var iframe = '#resource_selection_iframe';
         //I really hate to use sleep(), but inconsistent errors with the iframe not showing up, and also was
         //getting errors with not finding bindings using EC since we are outside of an angular context
+        await common.browser.driver.sleep(5000);
+        await common.browser.driver.switchTo().frame(common.browser.driver.findElement(by.css(iframe)));
         await common.browser.driver.sleep(2000);
-        return await common.browser.driver.switchTo().frame(common.browser.driver.findElement(by.css(iframe)));
     }
 
     async function waitForAngular() {
