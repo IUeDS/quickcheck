@@ -28,7 +28,8 @@
             "database",
             "app/Http/Controllers",
             "app/Models",
-            "app/Classes"
+            "app/Classes",
+            "app/Exceptions"
         ],
         "psr-4": {
             "App\\": "app/"
