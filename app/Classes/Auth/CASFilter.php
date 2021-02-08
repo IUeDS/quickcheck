@@ -8,6 +8,22 @@ use App\Models\User;
 
 class CASFilter
 {
+    private $casProdUrl;
+    private $casTestUrl;
+    private $casUrl;
+
+    public function __construct() {
+        $casProdUrl = 'https://idp.login.iu.edu';
+        $casTestUrl = 'https://idp-stg.login.iu.edu';
+
+        $currentEnvironment = env('APP_ENV');
+        if ($currentEnvironment === 'prod') {
+            $this->casUrl = $casProdUrl;
+        }
+        else {
+            $this->casUrl = $casTestUrl;
+        }
+    }
 
     /************************************************************************/
     /* PUBLIC FUNCTIONS *****************************************************/
@@ -32,6 +48,32 @@ class CASFilter
     }
 
     /**
+    * Parse XML response returned from CAS to validate username with ticket
+    *
+    * @param  string  $casAnswer
+    * @return string  $username
+    */
+
+    public function getCasUsername($casAnswer)
+    {
+        $xml = simplexml_load_string(stripslashes($casAnswer));
+        $cas = $xml->children('http://www.yale.edu/tp/cas');
+        $casErrorMsg = 'Unable to authenticate through IU CAS. ';
+
+        if (!isset($cas->authenticationSuccess)) {
+            abort(401, $casErrorMsg . 'Authentication success was not returned.');
+        }
+
+        $authenticationSuccess = $cas->authenticationSuccess;
+        if (!isset($authenticationSuccess->user)) {
+            abort(401, $casErrorMsg . 'User was not returned.');
+        }
+
+        $username = (string) $authenticationSuccess->user;
+        return $username;
+    }
+
+    /**
     * Redirect for CAS authentication
     *
     * @param  Route  $route
@@ -40,11 +82,7 @@ class CASFilter
 
     public function getRedirectUrl($route)
     {
-        //See this page for the example: https://github.iu.edu/UITS-IMS/CasIntegrationExamples/blob/master/php_cas_example%203.php
-        //KB on CAS: https://kb.iu.edu/d/atfc
-
         $authenticated = Session::has('CAS');
-        $permissionCode = "ANY";
         $baseUrl = env('APP_URL');
         $appUrl = $this->getAppUrl($baseUrl, $route);
 
@@ -56,19 +94,13 @@ class CASFilter
             return false;
         }
 
-        if (!$authenticated || !isset($_GET["casticket"])) {
-            return $this->redirectCasLogin($permissionCode, $appUrl);
+        if (!$authenticated || !isset($_GET["ticket"])) {
+            return $this->redirectCasLogin($appUrl);
         }
 
-        $casAnswer = $this->getCasAnswer($permissionCode, $appUrl);
-        //split CAS answer into access and user
-        list($access,$username) = explode("\n",$casAnswer,2);
-        $access = trim($access);
-        $username = trim($username);
-
-        if ($access !== "yes") {
-            return $baseUrl;
-        }
+        $ticket = $_GET["ticket"];
+        $casAnswer = $this->getCasAnswer($ticket, $appUrl);
+        $username = $this->getCasUsername($casAnswer);
 
         if (!User::doesUserExist($username)) {
             return 'usernotfound';
@@ -85,24 +117,23 @@ class CASFilter
     /**
     * Send cURL request for CAS answer
     *
-    * @param  string  $permissionCode
+    * @param  string  $ticket
     * @param  string  $rootUrl
     * @return [] $casAnswer
     */
 
-    private function getCasAnswer($permissionCode, $rootUrl)
+    private function getCasAnswer($ticket, $rootUrl)
     {
         //set up validation URL to ask CAS if ticket is good
-        $_url = 'https://cas.iu.edu/cas/validate';
-        $cassvc = $permissionCode;
-        $casurl = $rootUrl;
-        $params = "cassvc=$cassvc&casticket=$_GET[casticket]&casurl=$casurl";
-        $urlNew = "$_url?$params";
+        $url = $this->casUrl . '/idp/profile/cas/serviceValidate';
+        $ticketParam = '?ticket=' . $ticket;
+        $serviceParam = '&service=' . $rootUrl;
+        $requestUrl = $url . $ticketParam . $serviceParam;
 
         //CAS sending response on 2 lines. First line contains "yes" or "no". If "yes", second line contains username (otherwise, it is empty).
         $ch = curl_init();
         $timeout = 5; // set to zero for no timeout
-        curl_setopt ($ch, CURLOPT_URL, $urlNew);
+        curl_setopt ($ch, CURLOPT_URL, $requestUrl);
         curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         ob_start();
         curl_exec($ch);
@@ -157,15 +188,14 @@ class CASFilter
     /**
     * Redirect to the CAS login page if the user is not currently logged in
     *
-    * @param  string  $permissionCode
     * @param  string  $rootUrl
     * @return string $redirectUrl
     */
 
-    private function redirectCasLogin($permissionCode, $rootUrl)
+    private function redirectCasLogin($rootUrl)
     {
         Session::put('CAS', true);
-        $redirectUrl = 'https://cas.iu.edu/cas/login?cassvc=' . $permissionCode . '&casurl=' . $rootUrl;
+        $redirectUrl = $this->casUrl . '/idp/profile/cas/login?service=' . $rootUrl;
         return $redirectUrl;
     }
 
