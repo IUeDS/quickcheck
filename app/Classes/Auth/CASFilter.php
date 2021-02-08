@@ -56,27 +56,20 @@ class CASFilter
 
     public function getCasUsername($casAnswer)
     {
-        $xml = simplexml_load_string($casAnswer);
-        $casErrorMsg = 'Unable to authenticate through IU CAS.';
+        $xml = simplexml_load_string(stripslashes($casAnswer));
+        $cas = $xml->children('http://www.yale.edu/tp/cas');
+        $casErrorMsg = 'Unable to authenticate through IU CAS. ';
 
-        if (!$xml) {
-            abort(401, $casErrorMsg);
-        }
-        if (!isset($xml->{'cas:serviceResponse'})) {
-            abort(401, $casErrorMsg);
+        if (!isset($cas->authenticationSuccess)) {
+            abort(401, $casErrorMsg . 'Authentication success was not returned.');
         }
 
-        $serviceResponse = $xml->{'cas:serviceResponse'};
-        if (!isset($serviceResponse->{'cas:authenticationSuccess'})) {
-            abort(401, $casErrorMsg);
+        $authenticationSuccess = $cas->authenticationSuccess;
+        if (!isset($authenticationSuccess->user)) {
+            abort(401, $casErrorMsg . 'User was not returned.');
         }
 
-        $authenticationSuccess = $serviceResponse->{'cas:authenticationSuccess'};
-        if (!isset($authenticationSuccess->{'cas:user'})) {
-            abort(401, $casErrorMsg);
-        }
-
-        $username = $authenticationSuccess->{'cas:user'};
+        $username = $authenticationSuccess->user;
         return $username;
     }
 
