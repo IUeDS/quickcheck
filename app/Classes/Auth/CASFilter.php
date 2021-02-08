@@ -69,7 +69,7 @@ class CASFilter
             abort(401, $casErrorMsg . 'User was not returned.');
         }
 
-        $username = $authenticationSuccess->user;
+        $username = (string) $authenticationSuccess->user;
         return $username;
     }
 
@@ -82,9 +82,6 @@ class CASFilter
 
     public function getRedirectUrl($route)
     {
-        //See this page for the example: https://github.iu.edu/UITS-IMS/CasIntegrationExamples/blob/master/php_cas_example%203.php
-        //KB on CAS: https://kb.iu.edu/d/atfc
-
         $authenticated = Session::has('CAS');
         $baseUrl = env('APP_URL');
         $appUrl = $this->getAppUrl($baseUrl, $route);
