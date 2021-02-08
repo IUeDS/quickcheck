@@ -105,7 +105,7 @@ class CASFilter
         }
 
         if (!$authenticated || !isset($_GET["ticket"])) {
-            return $this->redirectCasLogin($permissionCode, $appUrl);
+            return $this->redirectCasLogin($appUrl);
         }
 
         $ticket = $_GET["ticket"];
