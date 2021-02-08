@@ -18,10 +18,10 @@ class CASFilter
 
         $currentEnvironment = env('APP_ENV');
         if ($currentEnvironment === 'prod') {
-            $casUrl = $casProdUrl;
+            $this->casUrl = $casProdUrl;
         }
         else {
-            $casUrl = $casTestUrl;
+            $this->casUrl = $casTestUrl;
         }
     }
 
