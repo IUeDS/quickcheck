@@ -205,7 +205,7 @@ class CASFilter
     private function redirectCasLogin($rootUrl)
     {
         Session::put('CAS', true);
-        $redirectUrl = $this->casUrl . '/idp/profile/cas/login?service=' . $rootUrl
+        $redirectUrl = $this->casUrl . '/idp/profile/cas/login?service=' . $rootUrl;
         return $redirectUrl;
     }
 
