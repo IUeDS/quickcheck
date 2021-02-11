@@ -126,7 +126,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
   addQuestion() {
     var question,
       questionOrder = this.getQuestionCount() + 1,
-      tempId = questionOrder.toString() + '-temp';
+      tempId = questionOrder.toString() + Date.now() + '-temp'; //Date in ms for additional randomness to prevent mistaken overlaps when questions are added/removed
 
     this.questions.push({
       'id': tempId,
