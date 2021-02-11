@@ -29,7 +29,8 @@ export class EditMultipleCorrectComponent implements OnInit {
   }
 
   addOption() {
-    var tempId = (this.question.options.length + 1).toString() + '-temp';
+    //Date in ms for additional randomness to prevent mistaken overlaps when questions are added/removed
+    var tempId = (this.question.options.length + 1).toString() + Date.now() + '-temp';
 
     this.question.options.push({
       'id': tempId,
