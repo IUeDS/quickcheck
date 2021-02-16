@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TimeoutModalComponent } from './timeout-modal.component';
 
@@ -6,7 +6,7 @@ describe('TimeoutModalComponent', () => {
   let component: TimeoutModalComponent;
   let fixture: ComponentFixture<TimeoutModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TimeoutModalComponent ]
     })

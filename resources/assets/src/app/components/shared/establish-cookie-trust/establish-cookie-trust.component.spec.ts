@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EstablishCookieTrustComponent } from './establish-cookie-trust.component';
 
@@ -6,7 +6,7 @@ describe('EstablishCookieTrustComponent', () => {
   let component: EstablishCookieTrustComponent;
   let fixture: ComponentFixture<EstablishCookieTrustComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ EstablishCookieTrustComponent ]
     })

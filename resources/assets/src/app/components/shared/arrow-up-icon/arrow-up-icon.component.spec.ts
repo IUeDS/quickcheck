@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ArrowUpIconComponent } from './arrow-up-icon.component';
 
@@ -6,7 +6,7 @@ describe('ArrowUpIconComponent', () => {
   let component: ArrowUpIconComponent;
   let fixture: ComponentFixture<ArrowUpIconComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ArrowUpIconComponent ]
     })

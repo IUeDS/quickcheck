@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CustomFeedbackComponent } from './custom-feedback.component';
 
@@ -6,7 +6,7 @@ describe('CustomFeedbackComponent', () => {
   let component: CustomFeedbackComponent;
   let fixture: ComponentFixture<CustomFeedbackComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CustomFeedbackComponent ]
     })

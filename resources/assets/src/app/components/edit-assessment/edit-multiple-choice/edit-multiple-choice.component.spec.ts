@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EditMultipleChoiceComponent } from './edit-multiple-choice.component';
 
@@ -6,7 +6,7 @@ describe('EditMultipleChoiceComponent', () => {
   let component: EditMultipleChoiceComponent;
   let fixture: ComponentFixture<EditMultipleChoiceComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ EditMultipleChoiceComponent ]
     })

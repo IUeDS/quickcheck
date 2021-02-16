@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ReadOnlyNoticeComponent } from './read-only-notice.component';
 
@@ -6,7 +6,7 @@ describe('ReadOnlyNoticeComponent', () => {
   let component: ReadOnlyNoticeComponent;
   let fixture: ComponentFixture<ReadOnlyNoticeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ReadOnlyNoticeComponent ]
     })
