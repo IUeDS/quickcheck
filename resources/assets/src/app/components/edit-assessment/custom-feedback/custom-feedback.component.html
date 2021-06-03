@@ -65,8 +65,8 @@
         </div>
         <div *ngIf="this.isPerResponseFeedbackAvailable()" class="form-check qc-custom-feedback-response-checkbox">
             <p>Multiple choice and multiple correct questions can include feedback for each possible response. Feedback is required for each possible response.</p>
-            <input type="checkbox" (click)="this.toggleOptionFeedback()" [checked]="this.perResponseFeedback" id="qc-per-response-checkbox">
-            <label for="qc-per-response-checkbox">
+            <input type="checkbox" (click)="this.toggleOptionFeedback()" [checked]="this.perResponseFeedback" id="qc-per-response-checkbox-{{this.question.id}}">
+            <label for="qc-per-response-checkbox-{{this.question.id}}">
                  Use per-response feedback
                 <span class="sr-only">for question #{{ this.question.question_order }} </span>
                 (<em>Note that checking this box this will remove general correct/incorrect feedback.</em>)
