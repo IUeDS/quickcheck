@@ -10,10 +10,14 @@ export class SelectCollectionPanelComponent implements OnInit {
   @Input() membership;
   @Input() redirectUrl;
   @Input() launchUrlStem;
+  @Input() collapseAccordion;
 
   constructor() { }
 
   ngOnInit() {
+    if (this.collapseAccordion) {
+      this.collection.closed = true;
+    }
   }
 
   createContentItemJson(assessment) {

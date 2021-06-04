@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LtisessionnotvalidComponent } from './ltisessionnotvalid.component';
 
@@ -6,7 +6,7 @@ describe('LtisessionnotvalidComponent', () => {
   let component: LtisessionnotvalidComponent;
   let fixture: ComponentFixture<LtisessionnotvalidComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LtisessionnotvalidComponent ]
     })

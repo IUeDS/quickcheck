@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FeedbackModalComponent } from './feedback-modal.component';
 
@@ -6,7 +6,7 @@ describe('FeedbackModalComponent', () => {
   let component: FeedbackModalComponent;
   let fixture: ComponentFixture<FeedbackModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FeedbackModalComponent ]
     })

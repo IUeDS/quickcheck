@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RandomizeCheckboxComponent } from './randomize-checkbox.component';
 
@@ -6,7 +6,7 @@ describe('RandomizeCheckboxComponent', () => {
   let component: RandomizeCheckboxComponent;
   let fixture: ComponentFixture<RandomizeCheckboxComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RandomizeCheckboxComponent ]
     })

@@ -25,6 +25,7 @@ export class SelectComponent implements OnInit {
     'viewAll': false,
     'collections': []
   };
+  collapseAccordion = false; 
 
   constructor(
   public utilitiesService: UtilitiesService,
@@ -105,6 +106,13 @@ export class SelectComponent implements OnInit {
     }
 
     this.memberships = data.memberships;
+    //average number of sets per user is 5, so if > 5 because the user is an
+    //instructional designer, etc., then collapse set accordions by default 
+    //for easier browsing
+    if (this.memberships.length > 5) {
+      this.collapseAccordion = true;
+    }
+
     this.utilitiesService.loadingFinished();
     await this.getUser(); //display admin features if an admin
   }

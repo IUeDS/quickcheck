@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EditIconComponent } from './edit-icon.component';
 
@@ -6,7 +6,7 @@ describe('EditIconComponent', () => {
   let component: EditIconComponent;
   let fixture: ComponentFixture<EditIconComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ EditIconComponent ]
     })

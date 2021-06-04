@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SessionnotvalidComponent } from './sessionnotvalid.component';
 
@@ -6,7 +6,7 @@ describe('SessionnotvalidComponent', () => {
   let component: SessionnotvalidComponent;
   let fixture: ComponentFixture<SessionnotvalidComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SessionnotvalidComponent ]
     })

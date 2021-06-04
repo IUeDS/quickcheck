@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TogglePublicCollectionComponent } from './toggle-public-collection.component';
 
@@ -6,7 +6,7 @@ describe('TogglePublicCollectionComponent', () => {
   let component: TogglePublicCollectionComponent;
   let fixture: ComponentFixture<TogglePublicCollectionComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TogglePublicCollectionComponent ]
     })
