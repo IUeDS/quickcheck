@@ -30,7 +30,8 @@
                             *ngFor="let collection of this.adminCollectionData.collections"
                             [collection]="collection"
                             [launchUrlStem]="this.launchUrlStem"
-                            [redirectUrl]="this.redirectUrl">
+                            [redirectUrl]="this.redirectUrl"
+                            [collapseAccordion]="this.collapseAccordion">
                         </qc-select-collection-panel>
                     </div>
                     <div *ngIf="!this.adminCollectionData.viewAll">
@@ -39,7 +40,8 @@
                             [membership]="membership"
                             [collection]="membership.collection"
                             [launchUrlStem]="this.launchUrlStem"
-                            [redirectUrl]="this.redirectUrl">
+                            [redirectUrl]="this.redirectUrl"
+                            [collapseAccordion]="this.collapseAccordion">
                         </qc-select-collection-panel>
                     </div>
                 </div>
