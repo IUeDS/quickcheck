@@ -40,6 +40,7 @@ COPY resources/php.ini $PHP_INI_DIR/conf.d/
 
 ARG WORK_DIR=/var/www/html
 ARG LABS_DIR=/var/www/html/public/customActivities/jsomelec/labs
+ARG DRAG_DIR=/var/www/html/public/customActivities/drag-and-drop
 # Add the (optional) .env to the directory to access variables
 ADD *.env ${WORK_DIR}
 # Copy source files into working directory (only public directory exposed)
@@ -60,8 +61,9 @@ RUN cp public/assets/dist/styles.*.css public/assets/dist/styles.css
 # Delete node modules after compiling front-end assets to save disk space
 RUN rm -rf node_modules
 
-# Specific to IU: install/compile dependencies for custom activity angular project; if not present, will skip
+# Specific to IU: install/compile dependencies for custom activity angular projects; if not present, will skip
 RUN bash -c 'if [ -d "${LABS_DIR}" ]; then echo "Installing labs dependencies"; cd ${LABS_DIR}; npm install; ng build --prod --base-href="/customActivities/jsomelec/labs/dist/"; rm -rf node_modules; cd ${WORK_DIR}; fi'
+RUN bash -c 'if [ -d "${DRAG_DIR}" ]; then echo "Installing drag and drop dependencies"; cd ${DRAG_DIR}; npm install; ng build --prod --base-href="/customActivities/drag-and-drop/dist/drag-and-drop/"; rm -rf node_modules; cd ${WORK_DIR}; fi'
 
 # Install back-end dependencies
 RUN composer install
