@@ -15,7 +15,8 @@ return [
         'MATRIX' => 'matrix',
         'TEXTMATCH' => 'textmatch',
         'NUMERICAL' => 'numerical',
-        'DROPDOWN' => 'dropdown'
+        'DROPDOWN' => 'dropdown',
+        'DRAGDROP' => 'drag_and_drop'
     ]
 
 ];

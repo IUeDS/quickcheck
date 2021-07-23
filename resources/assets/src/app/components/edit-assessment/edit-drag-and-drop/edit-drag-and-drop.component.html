@@ -1,0 +1,10 @@
+<div>
+    <div class="alert alert-danger" role="alert">
+        This question type does not meet accessibility requirements and should not be used in public-facing courses. For all other courses, an accessible alternative should be provided to students.
+    </div>
+    <h3 class="qc-question-options-header">Question options <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
+    <qc-custom-feedback *ngIf="!this.readOnly"
+        (onQuestionEdited)="this.onSubComponentEdited($event)"
+        [question]="this.question">
+    </qc-custom-feedback>
+</div>

@@ -7,6 +7,7 @@ use App\Models\ResponseTypes\StudentDropdownResponse;
 use App\Models\ResponseTypes\StudentMatrixResponse;
 use App\Models\ResponseTypes\StudentNumericalResponse;
 use App\Models\ResponseTypes\StudentTextmatchResponse;
+use App\Models\ResponseTypes\StudentDragAndDropResponse;
 use App\Models\Student;
 
 class StudentResponse extends Eloquent {
@@ -126,6 +127,9 @@ class StudentResponse extends Eloquent {
             case 'textmatch_responses':
                 return new StudentTextmatchResponse();
                 break;
+            case 'drag_and_drop_responses':
+                return new StudentDragAndDropResponse();
+                break;
         }
 
         //if nothing found -- might happen in the rare case that a previously used
@@ -167,6 +171,8 @@ class StudentResponse extends Eloquent {
                 return 'numericalResponses';
             case config('constants.questionTypes.TEXTMATCH'):
                 return 'textmatchResponses';
+            case config('constants.questiontypes.DRAGDROP'):
+                return 'draganddropResponses';
             default:
                 return false;
         }
@@ -185,7 +191,8 @@ class StudentResponse extends Eloquent {
             'matching_responses',
             'matrix_responses',
             'numerical_responses',
-            'textmatch_responses'
+            'textmatch_responses',
+            'drag_and_drop_responses'
         ];
         return $responseTypes;
     }
@@ -281,6 +288,8 @@ class StudentResponse extends Eloquent {
                 return new StudentNumericalResponse;
             case config('constants.questionTypes.TEXTMATCH'):
                 return new StudentTextmatchResponse;
+            case config('constants.questionTypes.DRAGDROP'):
+                return new StudentDragAndDropResponse;
             default:
                 return false;
         }

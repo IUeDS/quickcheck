@@ -117,5 +117,12 @@
             [question]="this.question"
             [readOnly]="this.readOnly">
         </qc-edit-numerical>
+
+        <qc-edit-drag-and-drop *ngIf="this.isQuestionType('dragAndDrop')"
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
+        </qc-edit-drag-and-drop>
     </div>
 </div>

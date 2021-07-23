@@ -37,6 +37,10 @@ export class EditAssessmentConfigService {
       numerical: {
         displayName: 'Numerical',
         constantName: 'numerical'
+      },
+      dragAndDrop: {
+        displayName: 'Drag and drop',
+        constantName: 'drag_and_drop'
       }
     };
   }

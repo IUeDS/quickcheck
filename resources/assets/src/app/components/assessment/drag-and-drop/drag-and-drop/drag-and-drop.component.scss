@@ -1,0 +1,95 @@
+.qc-droppable-zone {
+    position: absolute;
+    z-index: 10;
+}
+
+.qc-draggable-text {
+    padding: 5px;
+}
+
+.qc-droppable-base-img {
+    z-index: 1;
+    margin-bottom: 50px;
+}
+
+.qc-droppable-zone.cdk-drop-list-receiving,
+.qc-droppable-zone.cdk-drop-list-dragging {
+    border: dashed 2px gray;
+}
+
+.qc-droppable-incorrect img,
+.qc-droppable-incorrect .qc-draggable-text {
+    animation: pulse 5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    50% {
+      background-color: rgba(211, 61, 55, 0.3);
+    }
+    100% {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+.qc-droppable-zone.cdk-drop-list-receiving.qc-droppable-disabled,
+.qc-droppable-zone.cdk-drop-list-dragging.qc-droppable-disabled {
+    border: none;
+}
+
+.qc-droppable-zone-entered,
+.qc-droppable-zone.cdk-drop-list-receiving.qc-droppable-zone-entered,
+.qc-droppable-zone.cdk-drop-list-dragging.qc-droppable-zone-entered {
+    border: dashed 2px cornflowerblue;
+}
+
+.qc-droppable-zone-entered.qc-droppable-disabled {
+    border: none;
+}
+
+.qc-droppable-container {
+    position: relative;
+    margin-top: 75px;
+}
+
+.qc-drag-question {
+    margin-left: 100px;
+}
+
+.qc-draggable {
+    margin-bottom: 20px;
+}
+
+.qc-duplicate-drag-option {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.qc-drag-option-list {
+    width: fit-content;
+    min-width: 200px;
+    min-height: 200px;
+}
+
+.qc-dropped-option-container {
+    position: relative;
+}
+
+.qc-dropped-option {
+    z-index: 50;
+}
+
+//center images but not text, which lines up without additional styles 
+img.qc-dropped-option {
+    //center vertically and horizontally
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cdk-drag-animating {
+    transition: transform 300ms ease-in-out;
+}
