@@ -18,15 +18,23 @@ export class EditDragAndDropComponent implements OnInit {
   DRAG_TYPE = 'DRAGGABLE';
   DROP_TYPE = 'DROPPABLE';
   IMAGE_TYPE = 'IMAGE'; //the base image
+  CANVAS_PADDING = 100;
   image = null;
   draggables = [];
   droppables = [];
+  canvas = null;
+  canvasId = null;
+  imageId = null;
+  isCanvasMouseDown = false;
 
   constructor(private editAssessmentConfig: EditAssessmentConfigService, public utilitiesService: UtilitiesService) { 
     this.tinymceOptions = this.editAssessmentConfig.getTinyMceConfig();
   }
 
   ngOnInit(): void {
+    this.canvasId = this.question.id + '-canvas';
+    this.imageId = this.question.id + '-image';
+
     for (const option of this.question.options) {
       if (option.type === this.IMAGE_TYPE) {
         this.image = option;
@@ -38,6 +46,17 @@ export class EditDragAndDropComponent implements OnInit {
         this.droppables.push(option);
       }
     }
+
+    //MM: this was the only way I could find to add custom properties/data to a fabric js object
+    //such as a rectangle, so we can assign it a droppable ID and link data when moved, etc.
+    //source: https://stackoverflow.com/questions/24851386/fabric-js-add-custom-property-to-itext
+    fabric.Object.prototype.toObject = (function(toObject) {
+      return function() {
+        return fabric.util.object.extend(toObject.call(this), {
+          id: this.id
+        });
+      };
+    })(fabric.Object.prototype.toObject);
   }
 
   // handleFileInput(files: FileList) {
@@ -47,7 +66,7 @@ export class EditDragAndDropComponent implements OnInit {
 
   addDraggableImage() {
     //Date in ms for additional randomness to prevent mistaken overlaps when questions are added/removed
-    var tempId = (this.question.options.length + 1).toString() + Date.now() + '-temp';
+    const tempId = (this.question.options.length + 1).toString() + Date.now() + '-temp';
 
     this.draggables.push({
       id: tempId,
@@ -65,7 +84,7 @@ export class EditDragAndDropComponent implements OnInit {
 
   addDraggableText() {
     //Date in ms for additional randomness to prevent mistaken overlaps when questions are added/removed
-    var tempId = (this.question.options.length + 1).toString() + Date.now() + '-temp';
+    const tempId = (this.question.options.length + 1).toString() + Date.now() + '-temp';
 
     this.draggables.push({
       id: tempId,
@@ -78,6 +97,26 @@ export class EditDragAndDropComponent implements OnInit {
     });
 
     this.onEdited();
+  }
+
+  addDroppable(left, top, rectangle) {
+    //Date in ms for additional randomness to prevent mistaken overlaps when questions are added/removed
+    const tempId = (this.question.options.length + 1).toString() + Date.now() + '-temp';
+    const droppable = {
+      id: tempId,
+      question_id: this.question.id,
+      type: "DRAGGABLE", 
+      count: 1,
+      left,
+      top,
+      rectangle, //front-end only
+      width: null,
+      height: null,
+      answer_id: null
+    };
+    this.droppables.push(droppable);
+
+    return droppable;
   }
 
   deleteBaseImage() {
@@ -93,6 +132,138 @@ export class EditDragAndDropComponent implements OnInit {
     }
   }
 
+  findDroppableById(id) {
+    for (let droppable of this.droppables) {
+      if (droppable.id == id) {
+        return droppable;
+      }
+    }
+
+    return null;
+  }
+
+  initCanvas(image) {
+    this.canvas = new fabric.Canvas(this.canvasId, {
+      selection: false,
+      preserveObjectStacking: true,
+    });
+
+    //added extra to width/height of Canvas to allow room for boxes slightly off the edge
+    const imgInstance = new fabric.Image(image, { left: this.CANVAS_PADDING / 2, top: this.CANVAS_PADDING / 2, selectable: false });
+    this.canvas.add(imgInstance);
+    this.initCanvasEvents();
+    this.canvas.renderAll();
+  }
+
+  initCanvasEvents() {
+    //inspired by: https://jsfiddle.net/wcwabpwc/
+    this.canvas.on('mouse:down', (o) => {
+      //if mouse is down to resize or move an existing rectangle, don't add a new one;
+      //the only way to identify here is based on the custom ID property we are setting
+      if (o.target?.id) {
+        return;
+      }
+
+      const pointer = this.canvas.getPointer(o.e);
+      this.isCanvasMouseDown = true;
+      const origX = pointer.x;
+      const origY = pointer.y;
+  
+      const rectangle = new fabric.Rect({
+          left: origX,
+          top: origY,
+          fill: 'rgba(157, 157, 157, 0.3)',
+          stroke: 'rgba(130, 130, 130, 0.3)',
+          strokeWidth: 3,
+      });
+      this.canvas.add(rectangle);
+      const droppable = this.addDroppable(origX, origY, rectangle);
+      //our custom ID attribute can only be added after the fact, and can't use
+      //literal notation because it's not an official property of the object in its
+      //initial definition and so compilation throws an error if using rectangle.id
+      rectangle['id'] = droppable.id; 
+    });
+  
+    this.canvas.on('mouse:move', (o) => {
+      let height = 0;
+      let width = 0;
+      let droppable = null;
+      const pointer = this.canvas.getPointer(o.e);
+
+      //we want to know if the rectangle is being moved or resized, which means
+      //the mouse is down; ignore plain hover events
+      if (!this.isCanvasMouseDown) {
+        return;
+      }
+
+      if (!this.canvas.getActiveObject()) {
+        const items = this.canvas.getObjects();
+        const rectangle = items[items.length - 1];
+        droppable = this.findDroppableById(rectangle.id);
+      }
+      else {
+        const id = o.target?.id;
+        if (id) {
+          droppable = this.findDroppableById(id);
+        }
+      }
+
+      if (!droppable) {
+        return;
+      }
+
+      width = Math.abs(droppable.left - pointer.x);
+      height = Math.abs(droppable.top - pointer.y);
+      droppable.width = width;
+      droppable.height = height;
+
+      //only set width/height on a newly drawn rectangle; 
+      //otherwise width/height gets changed while moving/dragging
+      if (!this.canvas.getActiveObject()) {
+        droppable.rectangle.set({ width });
+        droppable.rectangle.set({ height });
+      }
+      
+      this.canvas.renderAll();
+    });
+    
+    this.canvas.on('mouse:up', (o) => {
+      const pointer = this.canvas.getPointer(o.e);
+      const left = Math.abs(pointer.x);
+      const top = Math.abs(pointer.y);
+      let droppable = null;
+      this.isCanvasMouseDown = false;
+
+      if (!this.canvas.getActiveObject()) {
+        const items = this.canvas.getObjects();
+        const rectangle = items[items.length - 1];
+        droppable = this.findDroppableById(rectangle.id);
+      }
+      else {
+        const id = o.target?.id;
+        if (id) {
+          droppable = this.findDroppableById(id);
+        }
+      }
+
+      if (!droppable) {
+        return;
+      }
+
+      //if user clicked to remove focus, etc., and didn't mean to create a droppable,
+      //or if somehow lack of width/height makes it impossible to use, then remove
+      if (!droppable.width || !droppable.height) {
+        this.canvas.remove(droppable.rectangle);
+        this.droppables.splice(this.droppables.length - 1, 1);
+      }
+
+      //change location if needed after moving/resizing
+      droppable.rectangle.setCoords();
+      droppable.top = top;
+      droppable.left = left;
+    });
+  }
+
   isInvalid() {
     return false;
   }
@@ -103,20 +274,47 @@ export class EditDragAndDropComponent implements OnInit {
   }
 
   onImageRatioChange(newValue, valueChanged, image) {
-    if (!image.preserveAspectRatio) {
-      return false; //if checkbox is turned off
+    if (!newValue) {
+      return false;
     }
 
-    //dimension ratio originally calculated as width/height
-    if (valueChanged === 'width') {
-      //where x is the new height: newWidthValue / x = aspectRatio
-      //thus: newWidthValue / aspectRatio = x, new height
-      image.height = newValue / image.aspectRatio;
+    if (image.preserveAspectRatio) {
+      //dimension ratio originally calculated as width/height
+      if (valueChanged === 'width') {
+        //where x is the new height: newWidthValue / x = aspectRatio
+        //thus: newWidthValue / aspectRatio = x, new height
+        image.height = Math.floor(newValue / image.aspectRatio);
+      }
+      else {
+        //where x is the new width: x / newHeightValue = aspectRatio
+        //thus: aspectRatio * newHeightValue = x, new width
+        image.width = Math.floor(newValue * image.aspectRatio);
+      }
     }
     else {
-      //where x is the new width: x / newHeightValue = aspectRatio
-      //thus: aspectRatio * newHeightValue = x, new width
-      image.width = newValue * image.aspectRatio;
+      //although this technically gets changed by angular later, we have to define it
+      //here so we can redraw the Canvas appropriately given the new values
+      if (valueChanged === 'width') {
+        image.width = newValue;
+      }
+      else {
+        image.height = newValue;
+      }
+    }
+
+    //re-render Canvas if base image
+    if (image.type == this.IMAGE_TYPE) {
+      setTimeout(() => {
+        let canvasWidth = image.width + this.CANVAS_PADDING;
+        let canvasHeight = image.height + this.CANVAS_PADDING;
+        this.canvas.setWidth(canvasWidth);
+        this.canvas.setHeight(canvasHeight);
+        const canvasImages = this.canvas.getObjects('image');
+        const canvasImage = canvasImages[0];
+        canvasImage.scaleToWidth(this.canvas.getWidth() - this.CANVAS_PADDING, true);
+        canvasImage.scaleToHeight(this.canvas.getHeight() - this.CANVAS_PADDING, true);
+        this.canvas.renderAll();
+      }, 0)
     }
 
     this.onEdited();
@@ -126,15 +324,6 @@ export class EditDragAndDropComponent implements OnInit {
   onSelectFile(event, draggable = null) {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
-      // let image = null;
-      // if (draggable) {
-      //   draggable.image = new Image();
-      //   image = draggable.image;
-      // }
-      // else { //base image
-      //   this.image = new Image();
-      //   image = this.image;
-      // }
       let image = null;
       image = new Image();
 
@@ -143,8 +332,6 @@ export class EditDragAndDropComponent implements OnInit {
       reader.onload = (event) => { // called once readAsDataURL is completed
         image.src = event.target.result;
         image.onload = () => {
-          
-
           if (draggable) {
             draggable.img_url = image.src;
             draggable.width = image.width;
@@ -162,8 +349,13 @@ export class EditDragAndDropComponent implements OnInit {
               width: image.width, 
               height: image.height, 
               img_url: image.src,
-              new_img: true //only used on front-end for creation
+              new_img: true, //only used on front-end for creation
+              preserveAspectRatio: true, //front-end only
+              aspectRatio: image.width / image.height //front-end only
             };
+            setTimeout(() => { //new digest cycle to render canvas
+              this.initCanvas(image);
+            }, 0)
           }
           this.onEdited();
         }

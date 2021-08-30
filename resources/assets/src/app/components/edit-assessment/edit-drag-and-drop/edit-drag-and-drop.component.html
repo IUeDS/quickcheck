@@ -12,7 +12,7 @@
         </span>
     </div>
     <div *ngIf="this.image">
-        <img [src]="this.image.img_url" [width]="this.image.width" [height]="this.image.height"/>
+        <canvas [id]="this.canvasId" [width]="this.image.width + this.CANVAS_PADDING" [height]="this.image.height + this.CANVAS_PADDING"></canvas>
         <div class="row">
             <div class="col-4 form-group">
                 <label for="qc-edit-img-width-{{this.question.id}}">Width (in px)</label>
@@ -27,17 +27,6 @@
                     [(ngModel)]="this.image.height"
                     (ngModelChange)="this.onEdited(); this.onImageRatioChange($event, 'height', this.image)"
                     [disabled]="this.readOnly">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4 form-group">
-                <div class="form-check">
-                    <input type="checkbox" id="qc-edit-aspect-img-{{this.question.id}}"
-                        (click)="this.togglePreserveAspectRatio(this.image)"
-                        [disabled]="this.readOnly"
-                        [checked]="this.image.preserveAspectRatio">
-                    <label for="qc-edit-aspect-img-{{this.question.id}}">Preserve aspect ratio <span class="sr-only">for question #{{ this.question.question_order }}</span></label>
-                </div>
             </div>
         </div>
     </div>
