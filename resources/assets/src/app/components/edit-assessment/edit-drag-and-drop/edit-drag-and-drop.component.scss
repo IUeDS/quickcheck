@@ -8,13 +8,20 @@
     display: inline-block;
 }
 
-.qc-delete-draggable-btn {
+.qc-delete-draggable-btn,
+.qc-delete-droppable-btn {
     float: right;
 }
 
-.qc-edit-draggable {
+.qc-edit-draggable,
+.qc-edit-droppable {
     .form-check {
         padding-left: 1.25rem;
+    }
+
+    h4 {
+        font-size: 1.3rem;
+        font-weight: 400;
     }
 }
 

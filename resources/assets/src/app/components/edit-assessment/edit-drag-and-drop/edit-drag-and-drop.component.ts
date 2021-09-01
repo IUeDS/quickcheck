@@ -105,7 +105,7 @@ export class EditDragAndDropComponent implements OnInit {
     const droppable = {
       id: tempId,
       question_id: this.question.id,
-      type: "DRAGGABLE", 
+      type: "DROPPABLE", 
       count: 1,
       left,
       top,
@@ -128,6 +128,15 @@ export class EditDragAndDropComponent implements OnInit {
     for (let [index, option] of this.draggables.entries()) {
       if (draggable.id == option.id) {
         this.draggables.splice(index, 1); 
+      }
+    }
+  }
+
+  deleteDroppable(droppable) {
+    for (let [index, option] of this.droppables.entries()) {
+      if (droppable.id == option.id) {
+        this.canvas.remove(droppable.rectangle);
+        this.droppables.splice(index, 1); 
       }
     }
   }
@@ -257,15 +266,41 @@ export class EditDragAndDropComponent implements OnInit {
         this.droppables.splice(this.droppables.length - 1, 1);
       }
 
-      //change location if needed after moving/resizing
+      //change location, width, and height if needed after moving/resizing
       droppable.rectangle.setCoords();
-      droppable.top = top;
-      droppable.left = left;
+      droppable.top = droppable.rectangle.top;
+      droppable.left = droppable.rectangle.left;
+      droppable.width = Math.round(droppable.rectangle.getScaledWidth());
+      droppable.height = Math.round(droppable.rectangle.getScaledHeight());
     });
   }
 
   isInvalid() {
     return false;
+  }
+
+  onDroppableInputChange(newValue, attr, droppable) {
+    if (!newValue) {
+      return;
+    }
+
+    const numericValue = +(newValue);
+
+    if (attr === 'top') {
+      droppable.rectangle.top = numericValue;
+    }
+    else if (attr === 'left') {
+      droppable.rectangle.left = numericValue;
+    }
+    else if (attr === 'height') {
+      droppable.rectangle.scaleToHeight(numericValue);
+    }
+    else if (attr === 'width') {
+      droppable.rectangle.scaleToWidth(numericValue);
+    }
+
+    droppable.rectangle.setCoords();
+    this.canvas.renderAll();
   }
 
   onEdited() {

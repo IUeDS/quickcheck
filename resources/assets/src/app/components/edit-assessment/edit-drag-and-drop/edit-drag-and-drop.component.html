@@ -32,13 +32,83 @@
     </div>
     <div *ngIf="!this.image && !this.readOnly">
         <div class="form-group">
-            <label for="qc-base-image-upload-{{this.question.id}}">Upload an image</label>
+            <label for="qc-base-image-upload-{{this.question.id}}">Upload an image that answer options can be dragged onto.</label>
             <input type="file" class="form-control-file" id="qc-base-image-upload-{{this.question.id}}" name="qc-base-image-upload-{{this.question.id}}" (change)="onSelectFile($event)">
         </div>
     </div>
+    <h3>Droppable areas <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
+    <p *ngIf="!this.droppables.length">Click on a point on the base image and drag to draw a rectangle in order to create a droppable zone. After it's created, drag to change location or resize by dragging on a corner. Values can be manually edited as well in the associated data fields in this section.</p>
+    <table class="table table-bordered" *ngIf="this.droppables.length">
+        <tr *ngFor="let droppable of this.droppables; index as i">
+            <td class="qc-edit-droppable">
+                <div *ngIf="!this.readOnly" class="qc-delete-droppable-btn">
+                    <span class="qc-delete-btn qc-delete-option-btn-inline" 
+                        role="button" tabindex="0"
+                        (click)="this.deleteDroppable(droppable)">
+                        <qc-delete-icon aria-hidden="true"></qc-delete-icon>
+                        <span class="sr-only">Delete droppable for question #{{ this.question.question_order }}</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <h4>Droppable #{{i + 1}}</h4>
+                </div>
+                <div class="row">
+                    <div class="form-group col-2">
+                        <label for="left-{{this.question.id}}-{{droppable.id}}">Left</label>
+                        <input type="text" id="left-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.left"
+                            (ngModelChange)="this.onEdited(); this.onDroppableInputChange($event, 'left', droppable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="top-{{this.question.id}}-{{droppable.id}}">Top</label>
+                        <input type="text" id="top-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.top"
+                            (ngModelChange)="this.onEdited(); this.onDroppableInputChange($event, 'top', droppable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="width-{{this.question.id}}-{{droppable.id}}">Width</label>
+                        <input type="text" id="width-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.width"
+                            (ngModelChange)="this.onEdited(); this.onDroppableInputChange($event, 'width', droppable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="height-{{this.question.id}}-{{droppable.id}}">Height</label>
+                        <input type="text" id="height-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.height"
+                            (ngModelChange)="this.onEdited(); this.onDroppableInputChange($event, 'height', droppable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="answer-{{this.question.id}}-{{droppable.id}}">Answer</label>
+                        <select id="answer-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.answer_id"
+                            (ngModelChange)="this.onEdited()"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                            <option></option>
+                            <option *ngFor="let draggable of this.draggables; index as idx" [value]="draggable.id">Draggable #{{idx + 1}}</option>
+                        </select>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
     <h3>Draggable question options <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
-    <table class="table table-bordered">
-        <tr *ngFor="let draggable of this.draggables">
+    <p *ngIf="!this.draggables.length">Draggable answer options can be placed on drawn droppable zones. Either upload an image or type a text-based option.</p>
+    <table class="table table-bordered" *ngIf="this.draggables.length">
+        <tr *ngFor="let draggable of this.draggables; index as i">
             <td class="qc-edit-draggable">
                 <div *ngIf="!this.readOnly" class="qc-delete-draggable-btn">
                     <span class="qc-delete-btn qc-delete-option-btn-inline" 
@@ -47,6 +117,9 @@
                         <qc-delete-icon aria-hidden="true"></qc-delete-icon>
                         <span class="sr-only">Delete draggable for question #{{ this.question.question_order }}</span>
                     </span>
+                </div>
+                <div class="row">
+                    <h4>Draggable #{{i + 1}}</h4>
                 </div>
                 <div class="row" *ngIf="draggable.new_img || draggable.img_url">
                     <div class="form-group col-3" *ngIf="!draggable.img_url">
