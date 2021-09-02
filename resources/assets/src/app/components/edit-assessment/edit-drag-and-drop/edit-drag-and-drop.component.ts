@@ -26,6 +26,7 @@ export class EditDragAndDropComponent implements OnInit {
   canvasId = null;
   imageId = null;
   isCanvasMouseDown = false;
+  activeDroppableId = null;
 
   constructor(private editAssessmentConfig: EditAssessmentConfigService, public utilitiesService: UtilitiesService) { 
     this.tinymceOptions = this.editAssessmentConfig.getTinyMceConfig();
@@ -272,6 +273,28 @@ export class EditDragAndDropComponent implements OnInit {
       droppable.left = droppable.rectangle.left;
       droppable.width = Math.round(droppable.rectangle.getScaledWidth());
       droppable.height = Math.round(droppable.rectangle.getScaledHeight());
+
+      //highlight droppable in table
+      this.activeDroppableId = droppable.id;
+    });
+
+    this.canvas.on('mouse:over', (o) => {
+      if (o.target?.id) {
+        this.activeDroppableId = o.target.id;
+      }
+      else {
+        //if rectangle has been clicked on and is active, retain hover state
+        if (!this.canvas.getActiveObject()) {
+          this.activeDroppableId = null;
+        }
+      }
+    });
+
+    this.canvas.on('mouse:out', (o) => {
+      //if rectangle has been clicked on and is active, retain hover state
+      if (!this.canvas.getActiveObject()) {
+        this.activeDroppableId = null;
+      }
     });
   }
 

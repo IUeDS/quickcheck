@@ -37,9 +37,9 @@
         </div>
     </div>
     <h3>Droppable areas <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
-    <p *ngIf="!this.droppables.length">Click on a point on the base image and drag to draw a rectangle in order to create a droppable zone. After it's created, drag to change location or resize by dragging on a corner. Values can be manually edited as well in the associated data fields in this section.</p>
+    <p>Click on a point on the base image and drag to draw a rectangle in order to create a droppable zone. After it's created, drag to change location or resize by dragging on a corner. Values can be manually edited as well in the associated data fields in this section. Hover or click on a droppable area to see its corresponding row in the table.</p>
     <table class="table table-bordered" *ngIf="this.droppables.length">
-        <tr *ngFor="let droppable of this.droppables; index as i">
+        <tr *ngFor="let droppable of this.droppables; index as i" [ngClass]="this.activeDroppableId == droppable.id ? 'table-active' : null">
             <td class="qc-edit-droppable">
                 <div *ngIf="!this.readOnly" class="qc-delete-droppable-btn">
                     <span class="qc-delete-btn qc-delete-option-btn-inline" 
