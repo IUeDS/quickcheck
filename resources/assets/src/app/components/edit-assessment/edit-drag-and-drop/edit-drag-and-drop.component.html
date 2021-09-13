@@ -12,28 +12,31 @@
         </span>
     </div>
     <div *ngIf="this.image">
-        <canvas [id]="this.canvasId" [width]="this.image.width + this.CANVAS_PADDING" [height]="this.image.height + this.CANVAS_PADDING"></canvas>
         <div class="row">
             <div class="col-4 form-group">
                 <label for="qc-edit-img-width-{{this.question.id}}">Width (in px)</label>
                 <input type="number" string-to-number class="form-control qc-edit-img-width" id="qc-edit-img-width-{{this.question.id}}" name="qc-edit-img-width-{{this.question.id}}" required
                     [(ngModel)]="this.image.width"
                     (ngModelChange)="this.onEdited(); this.onImageRatioChange($event, 'width', this.image)"
-                    [disabled]="this.readOnly">
+                    [disabled]="this.readOnly"
+                    required>
             </div>
             <div class="col-4 form-group">
                 <label for="qc-edit-img-height-{{this.question.id}}">Height (in px)</label>
                 <input type="number" string-to-number class="form-control qc-edit-img-height" id="qc-edit-img-height-{{this.question.id}}" name="qc-edit-img-height-{{this.question.id}}" required
                     [(ngModel)]="this.image.height"
                     (ngModelChange)="this.onEdited(); this.onImageRatioChange($event, 'height', this.image)"
-                    [disabled]="this.readOnly">
+                    [disabled]="this.readOnly"
+                    required>
             </div>
         </div>
+        <p>Current droppable option area: {{ this.activeDroppableId ? 'droppable #' + (this.getDroppableIndex(this.activeDroppableId) + 1) : 'none'}}</p>
+        <canvas [id]="this.canvasId" [width]="this.image.width + this.CANVAS_PADDING" [height]="this.image.height + this.CANVAS_PADDING"></canvas>
     </div>
     <div *ngIf="!this.image && !this.readOnly">
         <div class="form-group">
             <label for="qc-base-image-upload-{{this.question.id}}">Upload an image that answer options can be dragged onto.</label>
-            <input type="file" class="form-control-file" id="qc-base-image-upload-{{this.question.id}}" name="qc-base-image-upload-{{this.question.id}}" (change)="onSelectFile($event)">
+            <input type="file" class="form-control-file" id="qc-base-image-upload-{{this.question.id}}" name="qc-base-image-upload-{{this.question.id}}" (change)="onSelectFile($event)" required>
         </div>
     </div>
     <h3>Droppable areas <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
@@ -124,7 +127,7 @@
                 <div class="row" *ngIf="draggable.new_img || draggable.img_url">
                     <div class="form-group col-3" *ngIf="!draggable.img_url">
                         <label for="draggable-upload-{{this.question.id}}-{{this.draggable.id}}">Upload an image</label>
-                        <input type="file" class="form-control-file" id="draggable-upload-{{this.question.id}}-{{this.draggable.id}}" name="draggable-upload-{{this.question.id}}-{{this.draggable.id}}" (change)="onSelectFile($event, draggable)">
+                        <input type="file" class="form-control-file" id="draggable-upload-{{this.question.id}}-{{this.draggable.id}}" name="draggable-upload-{{this.question.id}}-{{this.draggable.id}}" (change)="onSelectFile($event, draggable)" required>
                     </div>
                     <div class="form-group col-3" *ngIf="draggable.img_url">
                         <p>Preview</p>

@@ -142,10 +142,42 @@ export class EditDragAndDropComponent implements OnInit {
     }
   }
 
+  drawDroppable(data) {
+    const rectData = {
+      left: data.left,
+      top: data.top,
+      fill: 'rgba(157, 157, 157, 0.3)',
+      stroke: 'rgba(130, 130, 130, 0.3)',
+      strokeWidth: 3,
+      width: data.width ? data.width : 1,
+      height: data.height ? data.height: 1
+    };
+
+    const rectangle = new fabric.Rect(rectData);
+    this.canvas.add(rectangle);
+    
+    //existing droppable rather than new
+    if (data.id) {
+      rectangle['id'] = data.id;
+    }
+
+    return rectangle;
+  }
+
   findDroppableById(id) {
     for (let droppable of this.droppables) {
       if (droppable.id == id) {
         return droppable;
+      }
+    }
+
+    return null;
+  }
+
+  getDroppableIndex(id) {
+    for (let [index, option] of this.droppables.entries()) {
+      if (id == option.id) {
+        return index;
       }
     }
 
@@ -161,6 +193,14 @@ export class EditDragAndDropComponent implements OnInit {
     //added extra to width/height of Canvas to allow room for boxes slightly off the edge
     const imgInstance = new fabric.Image(image, { left: this.CANVAS_PADDING / 2, top: this.CANVAS_PADDING / 2, selectable: false });
     this.canvas.add(imgInstance);
+    //if loading existing question or user has updated base image, re-draw existing droppables if present
+    if (this.droppables.length) {
+      for (let droppable of this.droppables) {
+        this.drawDroppable({ left: droppable.left, top: droppable.top, id: droppable.id, width: droppable.width, height: droppable.height });
+      }
+      this.canvas.renderAll();
+    }
+
     this.initCanvasEvents();
     this.canvas.renderAll();
   }
@@ -178,15 +218,7 @@ export class EditDragAndDropComponent implements OnInit {
       this.isCanvasMouseDown = true;
       const origX = pointer.x;
       const origY = pointer.y;
-  
-      const rectangle = new fabric.Rect({
-          left: origX,
-          top: origY,
-          fill: 'rgba(157, 157, 157, 0.3)',
-          stroke: 'rgba(130, 130, 130, 0.3)',
-          strokeWidth: 3,
-      });
-      this.canvas.add(rectangle);
+      const rectangle = this.drawDroppable({ left: origX, top: origY });
       const droppable = this.addDroppable(origX, origY, rectangle);
       //our custom ID attribute can only be added after the fact, and can't use
       //literal notation because it's not an official property of the object in its
