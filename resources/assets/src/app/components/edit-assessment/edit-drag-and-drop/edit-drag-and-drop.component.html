@@ -132,6 +132,15 @@
                     <div class="form-group col-3" *ngIf="draggable.img_url">
                         <p>Preview</p>
                         <img [src]="draggable.img_url" [width]="draggable.width" [height]="draggable.height" />
+                        <div class="form-check">
+                            <input type="checkbox" id="qc-edit-aspect-img-{{draggable.id}}"
+                                (click)="this.togglePreserveAspectRatio(draggable)"
+                                [disabled]="this.readOnly || !draggable.img_url"
+                                [checked]="draggable.preserveAspectRatio">
+                            <label for="qc-edit-aspect-img-{{draggable.id}}">Preserve aspect ratio <span class="sr-only">for question #{{ this.question.question_order }}</span></label>
+                        </div>
+                        <label for="draggable-upload-{{this.question.id}}-{{this.draggable.id}}">Update image</label>
+                        <input type="file" class="form-control-file" id="draggable-upload-{{this.question.id}}-{{this.draggable.id}}" name="draggable-upload-{{this.question.id}}-{{this.draggable.id}}" (change)="onSelectFile($event, draggable)" required>
                     </div>
                     <div class="form-group col-3">
                         <label for="count-{{this.question.id}}-{{draggable.id}}">Count</label>
@@ -159,17 +168,6 @@
                             class="form-control"
                             required
                             [disabled]="this.readOnly || !draggable.img_url">
-                    </div>
-                </div>
-                <div class="row" *ngIf="draggable.new_img || draggable.img_url">
-                    <div class="col-4 form-group">
-                        <div class="form-check">
-                            <input type="checkbox" id="qc-edit-aspect-img-{{draggable.id}}"
-                                (click)="this.togglePreserveAspectRatio(draggable)"
-                                [disabled]="this.readOnly || !draggable.img_url"
-                                [checked]="draggable.preserveAspectRatio">
-                            <label for="qc-edit-aspect-img-{{draggable.id}}">Preserve aspect ratio <span class="sr-only">for question #{{ this.question.question_order }}</span></label>
-                        </div>
                     </div>
                 </div>
                 <div class="row" *ngIf="draggable.new_text || draggable.text">
