@@ -4,8 +4,10 @@ namespace App\Models\AnswerTypes;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Classes\Questions\AbstractQuestionOption as QuestionOption;
+use App\Classes\Analytics\ResponseAnalytics as ResponseAnalytics;
 
-class DragAndDropAnswer extends Model
+class DragAndDropAnswer extends QuestionOption
 {
     use HasFactory;
 
@@ -28,7 +30,7 @@ class DragAndDropAnswer extends Model
     *
     * @param  []  $question
     * @param  []  $option
-    * @return void
+    * @return DragAndDropAnswer
     */
 
     public function addQuestionOption($question, $option) {
@@ -38,13 +40,15 @@ class DragAndDropAnswer extends Model
         $newOption->count = $option['count'];
         $newOption->width = $option['width'];
         $newOption->height = $option['height'];
-        $newOption->img_url = $option['img_url'];
         $newOption->text = $option['text'];
         $newOption->font_size = $option['font_size'];
         $newOption->left = $option['left'];
         $newOption->top = $option['top'];
         $newOption->answer_id = $option['answer_id'];
+        $newOption->img_url = $option['img_url'];
         $newOption->save();
+
+        return $newOption;
     }
 
     /**
@@ -114,6 +118,28 @@ class DragAndDropAnswer extends Model
     }
 
     /**
+    * Reusable function to determine if a new or existing option
+    *
+    * @param  Question  $question
+    * @param  []        $option
+    * @return DragAndDropAnswer
+    */
+
+    public function saveQuestionOption($question, $option) {
+        $dragAndDropAnswer = new DragAndDropAnswer;
+        $savedOption = null;
+
+        if ($this->isNewOption($option['id'])) {
+            $savedOption = $dragAndDropAnswer->addQuestionOption($question, $option);
+        }
+        else {
+            $savedOption = $dragAndDropAnswer->updateQuestionOption($option);
+        }
+
+        return $savedOption;
+    }
+
+    /**
     * Save options when editing a quiz
     *
     * @param  Question  $question
@@ -122,17 +148,41 @@ class DragAndDropAnswer extends Model
     */
 
     public function saveQuestionOptions($question, $updatedQuestion) {
-        $dragAndDropAnswer = new DragAndDropAnswer;
-        foreach ($updatedQuestion['options'] as $option) {
-            if (strpos($option['id'], 'temp')) {
-                $dragAndDropAnswer->addQuestionOption($question, $option);
+        $image = $updatedQuestion['image'];
+        if ($image) {
+            $this->saveQuestionOption($question, $image);
+        }
+
+        //MGM: it gets a bit tricky here. Each droppable is required to have an answer ID that points
+        //to a draggable, another row in the same table. If the answer ID belongs to a new draggable that
+        //has not been saved yet, then the temp ID from the front-end will not be a valid foreign key.
+        //We need to save the draggable first to get a valid ID from the DB, but then there will be
+        //a mismatch between the temp ID and the valid ID and we won't know what the intended answer is.
+        //So we iterate through each draggable, then iterate through each droppable and find the one
+        //where the answer ID matches the temp ID (there may be none if the draggable is a distractor).
+        //Then we save the draggable, assign the valid ID to the droppable, then save the droppable.
+        //A droppable must always have an answer ID and cannot be a distractor, so it will always be saved.
+        $draggables = $updatedQuestion['draggables'];
+        $droppables = $updatedQuestion['droppables'];
+        foreach ($draggables as $draggable) {
+            $draggableId = $draggable['id'];
+            $draggableSaved = false;
+            foreach ($droppables as $droppable) {
+                if ($droppable['answer_id'] == $draggableId) {
+                    $savedDraggable = $this->saveQuestionOption($question, $draggable);
+                    $draggableSaved = true;
+                    $droppable['answer_id'] = $savedDraggable->id;
+                    $this->saveQuestionOption($question, $droppable);
+                }
             }
-            else {
-                $dragAndDropAnswer->updateQuestionOption($option);
+
+            //if draggable is a distractor and no match, make sure to still save it
+            if (!$draggableSaved) {
+                $this->saveQuestionOptions($question, $draggable);
             }
         }
 
-        $dragAndDropAnswer->deleteRemovedQuestionOptions($updatedQuestion);
+        $this->deleteRemovedQuestionOptions($updatedQuestion);
     }
 
     /**
@@ -160,7 +210,7 @@ class DragAndDropAnswer extends Model
     * Update existing question option when editing a quiz
     *
     * @param  []  $prompt
-    * @return void
+    * @return DragAndDropAnswer
     */
 
     public function updateQuestionOption($option) {
@@ -170,12 +220,14 @@ class DragAndDropAnswer extends Model
         $existingOption->count = $option['count'];
         $existingOption->width = $option['width'];
         $existingOption->height = $option['height'];
-        $existingOption->img_url = $option['img_url'];
         $existingOption->text = $option['text'];
         $existingOption->font_size = $option['font_size'];
         $existingOption->left = $option['left'];
         $existingOption->top = $option['top'];
+        $existingOption->img_url = $option['img_url'];
         $existingOption->answer_id = $option['answer_id'];
         $existingOption->save();
+
+        return $existingOption;
     }
 }

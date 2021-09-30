@@ -46,7 +46,7 @@ abstract class AbstractQuestionOption extends Eloquent
                 return new NumericalAnswer();
             case config('constants.questionTypes.TEXTMATCH'):
                 return new TextMatchAnswer();
-            case config('constants.questiontypes.DRAGDROP');
+            case config('constants.questionTypes.DRAGDROP');
                 return new DragAndDropAnswer();
             default:
                 return false;

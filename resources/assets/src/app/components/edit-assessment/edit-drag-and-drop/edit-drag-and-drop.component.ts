@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
+import { AssessmentEditService } from '../../../services/assessment-edit.service';
 import { UtilitiesService } from '../../../services/utilities.service';
 import { fabric } from 'fabric'; 
 
@@ -24,29 +25,16 @@ export class EditDragAndDropComponent implements OnInit {
   droppables = [];
   canvas = null;
   canvasId = null;
-  imageId = null;
   isCanvasMouseDown = false;
   activeDroppableId = null;
 
-  constructor(private editAssessmentConfig: EditAssessmentConfigService, public utilitiesService: UtilitiesService) { 
+  constructor(private editAssessmentConfig: EditAssessmentConfigService, public assessmentEditService: AssessmentEditService, public utilitiesService: UtilitiesService) { 
     this.tinymceOptions = this.editAssessmentConfig.getTinyMceConfig();
   }
 
   ngOnInit(): void {
     this.canvasId = this.question.id + '-canvas';
-    this.imageId = this.question.id + '-image';
-
-    for (const option of this.question.options) {
-      if (option.type === this.IMAGE_TYPE) {
-        this.image = option;
-      }
-      else if (option.type === this.DRAG_TYPE) {
-        this.draggables.push(option);
-      }
-      else if (option.type === this.DROP_TYPE) {
-        this.droppables.push(option);
-      }
-    }
+    this.initOptions();
 
     //MM: this was the only way I could find to add custom properties/data to a fabric js object
     //such as a rectangle, so we can assign it a droppable ID and link data when moved, etc.
@@ -60,16 +48,41 @@ export class EditDragAndDropComponent implements OnInit {
     })(fabric.Object.prototype.toObject);
   }
 
-  // handleFileInput(files: FileList) {
-  //   //source: https://stackoverflow.com/questions/47936183/angular-file-upload
-  //   this.uploadedBaseImage = files.item(0);
-  // }
+
+  ngOnChanges(changesObj) {
+    if (changesObj.question) {
+      this.question = changesObj.question.currentValue;
+      this.initOptions();
+    }
+  }
+
+  initOptions() {
+    this.question.image = null;
+    this.question.draggables = [];
+    this.question.droppables = [];
+
+    if (!this.question.options) {
+      this.question.options = [];
+    }
+
+    for (const option of this.question.options) {
+      if (option.type === this.question.image_TYPE) {
+        this.question.image = option;
+      }
+      else if (option.type === this.DRAG_TYPE) {
+        this.question.draggables.push(option);
+      }
+      else if (option.type === this.DROP_TYPE) {
+        this.question.droppables.push(option);
+      }
+    }
+  }
 
   addDraggableImage() {
     //Date in ms for additional randomness to prevent mistaken overlaps when questions are added/removed
     const tempId = (this.question.options.length + 1).toString() + Date.now() + '-temp';
 
-    this.draggables.push({
+    this.question.draggables.push({
       id: tempId,
       question_id: this.question.id,
       type: "DRAGGABLE", 
@@ -77,7 +90,12 @@ export class EditDragAndDropComponent implements OnInit {
       width: null, 
       height: null, 
       img_url: null,
-      new_img: true //only used on front-end for creation
+      new_img: true, //only used on front-end for creation
+      text: null,
+      font_size: null,
+      left: null,
+      top: null,
+      answer_id: null
     });
 
     this.onEdited();
@@ -87,14 +105,20 @@ export class EditDragAndDropComponent implements OnInit {
     //Date in ms for additional randomness to prevent mistaken overlaps when questions are added/removed
     const tempId = (this.question.options.length + 1).toString() + Date.now() + '-temp';
 
-    this.draggables.push({
+    this.question.draggables.push({
       id: tempId,
       question_id: this.question.id,
       type: "DRAGGABLE", 
       count: 1, 
       text: '', 
       font_size: 16,
-      new_text: true //only used on front-end for creation
+      new_text: true, //only used on front-end for creation
+      width: null,
+      height: null,
+      img_url: null,
+      left: null,
+      top: null,
+      answer_id: null
     });
 
     this.onEdited();
@@ -113,31 +137,44 @@ export class EditDragAndDropComponent implements OnInit {
       rectangle, //front-end only
       width: null,
       height: null,
-      answer_id: null
+      answer_id: null,
+      text: null,
+      font_size: null,
+      img_url: null,
     };
-    this.droppables.push(droppable);
+    this.question.droppables.push(droppable);
 
     return droppable;
   }
 
   deleteBaseImage() {
-    this.image = null;
+    if (this.question.image.id.toString().indexOf('temp') === -1) {
+      this.onSavedOptionDeleted.emit({ option: this.question.image });
+    }
+
+    this.question.image = null;
     this.onEdited();
   }
 
   deleteDraggable(draggable) {
-    for (let [index, option] of this.draggables.entries()) {
+    for (let [index, option] of this.question.draggables.entries()) {
       if (draggable.id == option.id) {
-        this.draggables.splice(index, 1); 
+        if (draggable.id.toString().indexOf('temp') === -1) {
+          this.onSavedOptionDeleted.emit({ option: draggable });
+        }
+        this.question.draggables.splice(index, 1); 
       }
     }
   }
 
   deleteDroppable(droppable) {
-    for (let [index, option] of this.droppables.entries()) {
+    for (let [index, option] of this.question.droppables.entries()) {
       if (droppable.id == option.id) {
+        if (droppable.id.toString().indexOf('temp') === -1) {
+          this.onSavedOptionDeleted.emit({ option: droppable });
+        }
         this.canvas.remove(droppable.rectangle);
-        this.droppables.splice(index, 1); 
+        this.question.droppables.splice(index, 1); 
       }
     }
   }
@@ -165,7 +202,7 @@ export class EditDragAndDropComponent implements OnInit {
   }
 
   findDroppableById(id) {
-    for (let droppable of this.droppables) {
+    for (let droppable of this.question.droppables) {
       if (droppable.id == id) {
         return droppable;
       }
@@ -175,7 +212,7 @@ export class EditDragAndDropComponent implements OnInit {
   }
 
   getDroppableIndex(id) {
-    for (let [index, option] of this.droppables.entries()) {
+    for (let [index, option] of this.question.droppables.entries()) {
       if (id == option.id) {
         return index;
       }
@@ -194,8 +231,8 @@ export class EditDragAndDropComponent implements OnInit {
     const imgInstance = new fabric.Image(image, { left: this.CANVAS_PADDING / 2, top: this.CANVAS_PADDING / 2, selectable: false });
     this.canvas.add(imgInstance);
     //if loading existing question or user has updated base image, re-draw existing droppables if present
-    if (this.droppables.length) {
-      for (let droppable of this.droppables) {
+    if (this.question.droppables.length) {
+      for (let droppable of this.question.droppables) {
         this.drawDroppable({ left: droppable.left, top: droppable.top, id: droppable.id, width: droppable.width, height: droppable.height });
       }
       this.canvas.renderAll();
@@ -296,7 +333,7 @@ export class EditDragAndDropComponent implements OnInit {
       //or if somehow lack of width/height makes it impossible to use, then remove
       if (!droppable.width || !droppable.height) {
         this.canvas.remove(droppable.rectangle);
-        this.droppables.splice(this.droppables.length - 1, 1);
+        this.question.droppables.splice(this.question.droppables.length - 1, 1);
       }
 
       //change location, width, and height if needed after moving/resizing
@@ -393,7 +430,7 @@ export class EditDragAndDropComponent implements OnInit {
     }
 
     //re-render Canvas if base image
-    if (image.type == this.IMAGE_TYPE) {
+    if (image.type == this.question.image_TYPE) {
       setTimeout(() => {
         let canvasWidth = image.width + this.CANVAS_PADDING;
         let canvasHeight = image.height + this.CANVAS_PADDING;
@@ -411,45 +448,63 @@ export class EditDragAndDropComponent implements OnInit {
   }
 
   //https://stackoverflow.com/questions/47067249/how-can-i-display-an-image-using-typescript-and-angular-4
-  onSelectFile(event, draggable = null) {
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      let image = null;
-      image = new Image();
+  async onSelectFile(event, draggable = null) {
+    if (!event.target.files && !event.target.files[0]) {
+      return;
+    }
 
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
+    //const reader = new FileReader();
+    const file = event.target.files[0];
+    let image = new Image();
+    let data;
 
-      reader.onload = (event) => { // called once readAsDataURL is completed
-        image.src = event.target.result;
-        image.onload = () => {
-          if (draggable) {
-            draggable.img_url = image.src;
-            draggable.width = image.width;
-            draggable.height = image.height;
-            draggable.preserveAspectRatio = true; //to constrain dimension proportions, default is on
-            draggable.aspectRatio = image.width / image.height;
-          }
-          else { //create new base image
-            var tempId = 'image-' + Date.now() + '-temp';
-            this.image = {
-              id: tempId,
-              question_id: this.question.id,
-              type: "IMAGE", 
-              count: 1, 
-              width: image.width, 
-              height: image.height, 
-              img_url: image.src,
-              new_img: true, //only used on front-end for creation
-              preserveAspectRatio: true, //front-end only
-              aspectRatio: image.width / image.height //front-end only
-            };
-            setTimeout(() => { //new digest cycle to render canvas
-              this.initCanvas(image);
-            }, 0)
-          }
-          this.onEdited();
-        }
+    try {
+      //note: slightly different format here than usual requests where we need utilities service
+      //to read the data; we are sending a plain response back because it's the same endpoint that
+      //tinymce uses for image uploads in a question and that requires plain data format
+      data = await this.assessmentEditService.uploadImage(file);
+    }
+    catch(error) {
+      this.utilitiesService.showError(error);
+      return;
+    }
+    
+    image.src = data.location;
+    image.onload = () => {
+      if (draggable) {
+        draggable.img_url = image.src;
+        draggable.width = image.width;
+        draggable.height = image.height;
+        draggable.preserveAspectRatio = true; //front-end only, to constrain dimension proportions, default is on
+        draggable.aspectRatio = image.width / image.height; //front-end only
+        draggable.imgFile = file; //to upload image to back-end
       }
+      else { //create new base image
+        var tempId = 'image-' + Date.now() + '-temp';
+        this.question.image = {
+          id: tempId,
+          question_id: this.question.id,
+          type: "IMAGE", 
+          count: 1, 
+          width: image.width, 
+          height: image.height, 
+          img_url: image.src,
+          new_img: true, //only used on front-end for creation
+          preserveAspectRatio: true, //front-end only
+          aspectRatio: image.width / image.height, //front-end only
+          imgFile: file, //to upload image to back-end
+          left: null,
+          top: null,
+          text: null,
+          font_size: null,
+          answer_id: null
+        };
+
+        setTimeout(() => { //new digest cycle to render canvas
+          this.initCanvas(image);
+        }, 0);
+      }
+      this.onEdited();
     }
   }
 
@@ -467,42 +522,4 @@ export class EditDragAndDropComponent implements OnInit {
     image.preserveAspectRatio = true;
     image.aspectRatio = image.width / image.height; //if toggling back on after it was off, reset ratio to new values
   }
-
-  // uploadBaseImage() {
-  //   if (this.uploadedBaseImage) {
-  //     this.uploadFile(this.uploadedBaseImage);
-  //   }
-  // }
-
-  // uploadFile(uploadedBaseImage) {
-  //   let resp;
-  //   let data;
-  //   this.uploading = true;
-
-  //   try {
-  //     resp = await this.collectionService.importQti(file, this.assessmentGroupId);
-  //   }
-  //   catch (error) {
-  //     this.uploading = false;
-  //     this.done = true;
-  //     this.error = this.utilitiesService.getError(error);
-  //     return;
-  //   }
-
-  //   this.uploading = false;
-  //   this.done = true;
-  //   if (!this.utilitiesService.isSuccessResponse(resp)) {
-  //     this.error = this.utilitiesService.getError(resp);
-  //     return;
-  //   }
-
-  //   data = this.utilitiesService.getResponseData(resp);
-  //   const warnings = data.warnings;
-  //   if (warnings.critical.length) {
-  //     this.criticalNotices = warnings.critical;
-  //   }
-  //   this.notices = warnings.notices;
-  //   this.quizzes = data.quizzes;
-  // }
-
 }
