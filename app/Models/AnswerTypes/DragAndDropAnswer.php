@@ -90,7 +90,14 @@ class DragAndDropAnswer extends QuestionOption
     */
 
     public function getOptionsForQuestion($questionId, $noAnswers) {
+        $options = $this->where('question_id', '=', $questionId)->get();
 
+        //remove answers if sending to student-facing assessment, otherwise retain for editing
+        foreach($options as $option) {
+            $option->initializeOption($noAnswers);
+        }
+
+        return $options;
     }
 
     /**
@@ -113,7 +120,7 @@ class DragAndDropAnswer extends QuestionOption
 
     public function initializeOption($noAnswers) {
         if ($noAnswers) {
-            unset($this->correct);
+            unset($this->answer_id);
         }
     }
 
@@ -178,7 +185,7 @@ class DragAndDropAnswer extends QuestionOption
 
             //if draggable is a distractor and no match, make sure to still save it
             if (!$draggableSaved) {
-                $this->saveQuestionOptions($question, $draggable);
+                $this->saveQuestionOption($question, $draggable);
             }
         }
 

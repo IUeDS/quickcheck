@@ -18,8 +18,8 @@ class CreateDragAndDropAnswersTable extends Migration
             $table->integer('question_id')->unsigned();
             $table->string('type');
             $table->integer('count')->default(1);
-            $table->integer('width');
-            $table->integer('height');
+            $table->integer('width')->default(NULL)->nullable();
+            $table->integer('height')->default(NULL)->nullable();
             $table->string('img_url')->default(NULL)->nullable();
             $table->string('text')->default(NULL)->nullable();
             $table->integer('font_size')->default(NULL)->nullable();

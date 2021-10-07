@@ -33,9 +33,6 @@ export class EditDragAndDropComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.canvasId = this.question.id + '-canvas';
-    this.initOptions();
-
     //MM: this was the only way I could find to add custom properties/data to a fabric js object
     //such as a rectangle, so we can assign it a droppable ID and link data when moved, etc.
     //source: https://stackoverflow.com/questions/24851386/fabric-js-add-custom-property-to-itext
@@ -46,6 +43,9 @@ export class EditDragAndDropComponent implements OnInit {
         });
       };
     })(fabric.Object.prototype.toObject);
+
+    this.canvasId = this.question.id + '-canvas';
+    this.initOptions();
   }
 
 
@@ -57,6 +57,7 @@ export class EditDragAndDropComponent implements OnInit {
   }
 
   initOptions() {
+    let image = null;
     this.question.image = null;
     this.question.draggables = [];
     this.question.droppables = [];
@@ -66,7 +67,7 @@ export class EditDragAndDropComponent implements OnInit {
     }
 
     for (const option of this.question.options) {
-      if (option.type === this.question.image_TYPE) {
+      if (option.type === this.IMAGE_TYPE) {
         this.question.image = option;
       }
       else if (option.type === this.DRAG_TYPE) {
@@ -75,6 +76,15 @@ export class EditDragAndDropComponent implements OnInit {
       else if (option.type === this.DROP_TYPE) {
         this.question.droppables.push(option);
       }
+    }
+
+    console.log(this.question);
+    image = new Image();
+    image.src = this.question.image.img_url;
+    image.onload = () => {
+      setTimeout(() => { //new digest cycle to render canvas
+        this.initCanvas(image);
+      }, 0);
     }
   }
 
@@ -338,8 +348,8 @@ export class EditDragAndDropComponent implements OnInit {
 
       //change location, width, and height if needed after moving/resizing
       droppable.rectangle.setCoords();
-      droppable.top = droppable.rectangle.top;
-      droppable.left = droppable.rectangle.left;
+      droppable.top = Math.round(droppable.rectangle.top);
+      droppable.left = Math.round(droppable.rectangle.left);
       droppable.width = Math.round(droppable.rectangle.getScaledWidth());
       droppable.height = Math.round(droppable.rectangle.getScaledHeight());
 
