@@ -17,8 +17,8 @@
           'qc-droppable-incorrect': droppable.incorrect ? true : false 
         }" 
         [ngStyle]="{
-          'top.px': getDroppableTopPosition(droppable), 
-          'left.px': getDroppableLeftPosition(droppable), 
+          'top.px': droppable.top, 
+          'left.px': droppable.left, 
           'width.px': droppable.width, 
           'height.px': droppable.height
         }"

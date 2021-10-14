@@ -51,11 +51,17 @@
 
 .qc-droppable-container {
     position: relative;
-    margin-top: 75px;
+    //NOTE: this is essential to ensure droppables have correct positioning;
+    //the CANVAS_PADDING value when editing a drag and drop is set to 100,
+    //which adds 100px to width/height. If that value changes in the future,
+    //then this value also needs to be updated to be half of that. Hopefully
+    //won't need to update it, but if it becomes an issue, we could possibly
+    //find a way to centralize the value in a js config file and use ngStyle.
+    padding: 50px; 
 }
 
 .qc-drag-question {
-    margin-left: 100px;
+    margin-left: 50px;
 }
 
 .qc-draggable {
