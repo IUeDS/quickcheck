@@ -52,6 +52,12 @@
                     [modalVisible]="this.modalVisible"
                     (onAnswerSelection)="this.onAnswerSelection($event)">
                 </qc-numerical>
+
+                <qc-drag-and-drop *ngIf="this.isQuestionType('drag_and_drop')"
+                    [currentQuestion]="this.currentQuestion"
+                    [incorrectOptions]="this.incorrectRows"
+                    (onAnswerSelection)="this.onAnswerSelection($event)">
+                </qc-drag-and-drop>
             </div>
         </div>
     </div>

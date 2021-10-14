@@ -87,7 +87,7 @@ import { SessionnotvalidComponent } from './components/errors/sessionnotvalid/se
 import { LtisessionnotvalidComponent } from './components/errors/ltisessionnotvalid/ltisessionnotvalid.component';
 import { ErrorComponent } from './components/errors/error/error.component';
 import { EstablishCookieTrustComponent } from './components/shared/establish-cookie-trust/establish-cookie-trust.component';
-import { DragAndDropComponent } from './components/assessment/drag-and-drop/drag-and-drop/drag-and-drop.component';
+import { DragAndDropComponent } from './components/assessment/drag-and-drop/drag-and-drop.component';
 import { EditDragAndDropComponent } from './components/edit-assessment/edit-drag-and-drop/edit-drag-and-drop.component';
 
 import { SafePipe } from './pipes/safe.pipe';
@@ -102,6 +102,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -205,7 +206,8 @@ import { RoundProgressModule } from 'angular-svg-round-progressbar';
     PopoverModule.forRoot(),
     EditorModule,
     RoundProgressModule,
-    RouterModule
+    RouterModule,
+    DragDropModule
   ],
   providers: [
       HttpClientModule,
