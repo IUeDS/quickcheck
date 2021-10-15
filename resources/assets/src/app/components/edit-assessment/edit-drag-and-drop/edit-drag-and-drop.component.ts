@@ -48,14 +48,6 @@ export class EditDragAndDropComponent implements OnInit {
     this.initOptions();
   }
 
-
-  ngOnChanges(changesObj) {
-    if (changesObj.question) {
-      this.question = changesObj.question.currentValue;
-      this.initOptions();
-    }
-  }
-
   initOptions() {
     let image = null;
     this.question.image = null;
@@ -78,7 +70,10 @@ export class EditDragAndDropComponent implements OnInit {
       }
     }
 
-    console.log(this.question);
+    if (!this.question.image) {
+      return;
+    }
+
     image = new Image();
     image.src = this.question.image.img_url;
     image.onload = () => {
@@ -243,7 +238,8 @@ export class EditDragAndDropComponent implements OnInit {
     //if loading existing question or user has updated base image, re-draw existing droppables if present
     if (this.question.droppables.length) {
       for (let droppable of this.question.droppables) {
-        this.drawDroppable({ left: droppable.left, top: droppable.top, id: droppable.id, width: droppable.width, height: droppable.height });
+        const rectangle = this.drawDroppable({ left: droppable.left, top: droppable.top, id: droppable.id, width: droppable.width, height: droppable.height });
+        droppable.rectangle = rectangle;
       }
       this.canvas.renderAll();
     }
