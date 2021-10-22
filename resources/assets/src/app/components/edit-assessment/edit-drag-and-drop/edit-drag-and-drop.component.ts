@@ -60,9 +60,14 @@ export class EditDragAndDropComponent implements OnInit {
 
     for (const option of this.question.options) {
       if (option.type === this.IMAGE_TYPE) {
+        option.preserveAspectRatio = true; 
+        option.aspectRatio = option.width / option.height;
         this.question.image = option;
+        
       }
       else if (option.type === this.DRAG_TYPE) {
+        option.preserveAspectRatio = true; 
+        option.aspectRatio = option.width / option.height;
         this.question.draggables.push(option);
       }
       else if (option.type === this.DROP_TYPE) {
@@ -411,6 +416,11 @@ export class EditDragAndDropComponent implements OnInit {
       return false;
     }
 
+    //have to preserve aspect ratio for base image to resize properly in fabric.js Canvas
+    if (image.type == this.IMAGE_TYPE) {
+      image.preserveAspectRatio = true;
+    }
+
     if (image.preserveAspectRatio) {
       //dimension ratio originally calculated as width/height
       if (valueChanged === 'width') {
@@ -436,7 +446,7 @@ export class EditDragAndDropComponent implements OnInit {
     }
 
     //re-render Canvas if base image
-    if (image.type == this.question.image_TYPE) {
+    if (image.type == this.IMAGE_TYPE) {
       setTimeout(() => {
         let canvasWidth = image.width + this.CANVAS_PADDING;
         let canvasHeight = image.height + this.CANVAS_PADDING;
