@@ -69,6 +69,20 @@ export class DragAndDropComponent implements OnInit {
     }
   }
 
+  isDroppableIncorrect(droppable) {
+    if (!this.incorrectOptions) {
+      return false;
+    }
+
+    for (let incorrectOption of this.incorrectOptions) {
+      if (incorrectOption.id == droppable.id) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   isDraggedImg(droppable) {
     if (!droppable[this.DRAG_TYPE].length) {
       return false;
@@ -327,14 +341,6 @@ export class DragAndDropComponent implements OnInit {
       answerComplete: answerComplete,
       studentAnswer: studentAnswer
     });
-  }
-
-  submitAnswer() {
-    for (let droppable of this.droppables) {
-      if (droppable[this.DRAG_TYPE][0].id != droppable.answer_id) {
-        droppable.incorrect = true;
-      }
-    }
   }
 
   isLastDuplicateDraggable(draggable, i) {

@@ -11,6 +11,10 @@ class DragAndDropAnswer extends QuestionOption
 {
     use HasFactory;
 
+    public $DRAG_TYPE = 'DRAGGABLE';
+    public $DROP_TYPE = 'DROPPABLE';
+    public $IMAGE_TYPE = 'IMAGE';
+
     protected $fillable = [
         'question_id',
         'type',
@@ -60,7 +64,52 @@ class DragAndDropAnswer extends QuestionOption
     */
 
     public function checkAnswer($questionId, $studentAnswer) {
+        $studentAnswers = $studentAnswer['drag_and_drop_answers'];
+        $draggables = $this->getDraggablesForQuestion($questionId);
+        $droppables = $this->getDroppablesForQuestion($questionId);
+        $incorrectOptions = [];
+        $credit = 1;
+        $perOptionCredit = 0;
+        $isCorrect = true;
+        $response = [];
 
+        //how much credit per correct option, for partial credit
+        $perOptionCredit = 1 / count($droppables);
+
+        //student didn't select all the options (this should be impossible in the UI, but just in case...)
+        if (count($studentAnswers) < count($droppables)) {
+            $isCorrect = false;
+        }
+
+        //check to make sure each is correct
+        foreach ($studentAnswers as $studentAnswer) {
+            foreach ($droppables as $droppable) {
+                if ($studentAnswer['droppable_id'] != $droppable->id) {
+                    continue;
+                }
+
+                //correct answer
+                if ($studentAnswer['draggable_id'] == $droppable->answer_id) {
+                    continue;
+                }
+
+                //incorrect answer
+                $isCorrect = false;
+                $credit = $credit - $perOptionCredit;
+                $incorrectOption = ['id' => $droppable->id];
+                array_push($incorrectOptions, $incorrectOption);
+            }
+        }
+
+        //only add partial credit if some answers were incorrect; otherwise, score is doubled if isCorrect + partial credit added
+        if ($isCorrect) {
+            $credit = 0;
+        }
+
+        $response['isCorrect'] = $isCorrect;
+        $response['incorrectRows'] = $incorrectOptions;
+        $response['credit'] = $credit;
+        return $response;
     }
 
     /**
@@ -79,6 +128,32 @@ class DragAndDropAnswer extends QuestionOption
                 }
             }
         }
+    }
+
+    /**
+    * Get draggable options for a question
+    *
+    * @param  int      $questionId
+    * @return []       $draggables
+    */
+
+    public function getDraggablesForQuestion($questionId) {
+        return DragAndDropAnswer::where('question_id', '=', $questionId)
+            ->where('type', '=', $this->DRAG_TYPE)
+            ->get();
+    }
+
+    /**
+    * Get droppable options for a question
+    *
+    * @param  int      $questionId
+    * @return []       $droppables
+    */
+
+    public function getDroppablesForQuestion($questionId) {
+        return DragAndDropAnswer::where('question_id', '=', $questionId)
+            ->where('type', '=', $this->DROP_TYPE)
+            ->get();
     }
 
     /**

@@ -14,7 +14,7 @@
           'qc-droppable-disabled': droppable.disabled ? true : false, 
           'qc-droppable-zone-entered': droppable.entered ? true : false, 
           'qc-dropped-option': (droppable.img_url || droppable.text) ? true : false,
-          'qc-droppable-incorrect': droppable.incorrect ? true : false 
+          'qc-droppable-incorrect': this.isDroppableIncorrect(droppable)
         }" 
         [ngStyle]="{
           'top.px': droppable.top, 
