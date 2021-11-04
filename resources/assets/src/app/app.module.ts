@@ -89,6 +89,7 @@ import { ErrorComponent } from './components/errors/error/error.component';
 import { EstablishCookieTrustComponent } from './components/shared/establish-cookie-trust/establish-cookie-trust.component';
 import { DragAndDropComponent } from './components/assessment/drag-and-drop/drag-and-drop.component';
 import { EditDragAndDropComponent } from './components/edit-assessment/edit-drag-and-drop/edit-drag-and-drop.component';
+import { PreviewDragAndDropComponent } from './components/edit-assessment/preview-drag-and-drop/preview-drag-and-drop.component';
 
 import { SafePipe } from './pipes/safe.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
@@ -193,6 +194,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     EstablishCookieTrustComponent,
     DragAndDropComponent,
     EditDragAndDropComponent,
+    PreviewDragAndDropComponent,
   ],
   imports: [
     BrowserModule,

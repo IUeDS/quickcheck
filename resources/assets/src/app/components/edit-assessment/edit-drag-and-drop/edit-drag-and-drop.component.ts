@@ -3,6 +3,8 @@ import { EditAssessmentConfigService } from '../../../services/edit-assessment-c
 import { AssessmentEditService } from '../../../services/assessment-edit.service';
 import { UtilitiesService } from '../../../services/utilities.service';
 import { fabric } from 'fabric'; 
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { PreviewDragAndDropComponent } from '../preview-drag-and-drop/preview-drag-and-drop.component';
 
 @Component({
   selector: 'qc-edit-drag-and-drop',
@@ -21,14 +23,19 @@ export class EditDragAndDropComponent implements OnInit {
   IMAGE_TYPE = 'IMAGE'; //the base image
   CANVAS_PADDING = 100;
   image = null;
-  draggables = [];
-  droppables = [];
   canvas = null;
   canvasId = null;
   isCanvasMouseDown = false;
   activeDroppableId = null;
+  bsModalRef: BsModalRef;
 
-  constructor(private editAssessmentConfig: EditAssessmentConfigService, public assessmentEditService: AssessmentEditService, public utilitiesService: UtilitiesService) { 
+  constructor(
+    private editAssessmentConfig: EditAssessmentConfigService, 
+    public assessmentEditService: AssessmentEditService, 
+    public utilitiesService: UtilitiesService,
+    private modalService: BsModalService
+  ) 
+  { 
     this.tinymceOptions = this.editAssessmentConfig.getTinyMceConfig();
   }
 
@@ -81,9 +88,11 @@ export class EditDragAndDropComponent implements OnInit {
 
     image = new Image();
     image.src = this.question.image.img_url;
+    image.width = this.question.image.width;
+    image.height = this.question.image.height;
     image.onload = () => {
       setTimeout(() => { //new digest cycle to render canvas
-        this.initCanvas(image);
+        this.initCanvas(image, this.question.image.width, this.question.image.height);
       }, 0);
     }
   }
@@ -231,14 +240,16 @@ export class EditDragAndDropComponent implements OnInit {
     return null;
   }
 
-  initCanvas(image) {
+  initCanvas(image, width, height) {
     this.canvas = new fabric.Canvas(this.canvasId, {
       selection: false,
-      preserveObjectStacking: true,
+      preserveObjectStacking: true
     });
 
     //added extra to width/height of Canvas to allow room for boxes slightly off the edge
-    const imgInstance = new fabric.Image(image, { left: this.CANVAS_PADDING / 2, top: this.CANVAS_PADDING / 2, selectable: false });
+    const imgInstance = new fabric.Image(image, {left: this.CANVAS_PADDING / 2, top: this.CANVAS_PADDING / 2, selectable: false });
+    imgInstance.scaleToHeight(height);
+    imgInstance.scaleToWidth(width);
     this.canvas.add(imgInstance);
     //if loading existing question or user has updated base image, re-draw existing droppables if present
     if (this.question.droppables.length) {
@@ -351,8 +362,8 @@ export class EditDragAndDropComponent implements OnInit {
       droppable.rectangle.setCoords();
       droppable.top = Math.round(droppable.rectangle.top);
       droppable.left = Math.round(droppable.rectangle.left);
-      droppable.width = Math.round(droppable.rectangle.getScaledWidth());
-      droppable.height = Math.round(droppable.rectangle.getScaledHeight());
+      droppable.width = Math.round(droppable.rectangle.getScaledWidth() - droppable.rectangle.strokeWidth);
+      droppable.height = Math.round(droppable.rectangle.getScaledHeight() - droppable.rectangle.strokeWidth);
 
       //highlight droppable in table
       this.activeDroppableId = droppable.id;
@@ -388,6 +399,7 @@ export class EditDragAndDropComponent implements OnInit {
     }
 
     const numericValue = +(newValue);
+    const scale = droppable.rectangle.getObjectScaling();
 
     if (attr === 'top') {
       droppable.rectangle.top = numericValue;
@@ -396,10 +408,10 @@ export class EditDragAndDropComponent implements OnInit {
       droppable.rectangle.left = numericValue;
     }
     else if (attr === 'height') {
-      droppable.rectangle.scaleToHeight(numericValue);
+      droppable.rectangle.set('height', numericValue / scale.scaleY);
     }
     else if (attr === 'width') {
-      droppable.rectangle.scaleToWidth(numericValue);
+      droppable.rectangle.set('width', numericValue / scale.scaleX);
     }
 
     droppable.rectangle.setCoords();
@@ -517,7 +529,7 @@ export class EditDragAndDropComponent implements OnInit {
         };
 
         setTimeout(() => { //new digest cycle to render canvas
-          this.initCanvas(image);
+          this.initCanvas(image, image.width, image.height);
         }, 0);
       }
       this.onEdited();
@@ -527,6 +539,13 @@ export class EditDragAndDropComponent implements OnInit {
   onSubComponentEdited($event) {
     this.question = $event.question;
     this.onEdited();
+  }
+
+  preview() {
+    const initialState = {
+      currentQuestion: this.question
+    };
+    this.modalService.show(PreviewDragAndDropComponent, { initialState, class: 'modal-lg' });
   }
 
   togglePreserveAspectRatio(image) {
