@@ -542,6 +542,9 @@ export class EditDragAndDropComponent implements OnInit {
   }
 
   preview() {
+    //ensure in-progress additions are available as options in preview mode
+    this.question.options = this.question.draggables.concat(this.question.droppables);
+    this.question.options.push(this.question.image);
     const initialState = {
       currentQuestion: this.question
     };
