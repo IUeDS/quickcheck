@@ -238,6 +238,12 @@
                                 </ul>
                             </div>
                         </div>
+                        <div class="qc-drag-and-drop-options" *ngIf="currentQuestion.question_type == 'drag_and_drop'">
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
+                            <div class="card card-body bg-light drag-and-drop-correct-answers">
+                                <p>Response data is currently not available for the drag and drop question type while the feature is still being actively developed.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

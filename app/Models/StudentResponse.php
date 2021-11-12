@@ -50,6 +50,10 @@ class StudentResponse extends Eloquent {
         return $this->hasMany('App\Models\ResponseTypes\StudentCustomResponse');
     }
 
+    public function dragAndDropResponses() {
+        return $this->hasMany('App\Models\ResponseTypes\StudentDragAndDropResponse');
+    }
+
     /************************************************************************/
     /* PUBLIC FUNCTIONS *****************************************************/
     /************************************************************************/
@@ -92,7 +96,7 @@ class StudentResponse extends Eloquent {
         //analytics, and only the question types involved in the specific quiz are needed.
         $allResponseTypes = ['mcResponses', 'dropdownResponses',
                         'matchingResponses', 'matrixResponses', 'numericalResponses',
-                        'textmatchResponses', 'customResponses'];
+                        'textmatchResponses', 'customResponses', 'dragAndDropResponses'];
         $eagerLoading = $responseTypes ? $responseTypes : $allResponseTypes;
         $studentResponses = StudentResponse::with($eagerLoading)->where('attempt_id', '=', $attemptId)->get();
         return $studentResponses;
