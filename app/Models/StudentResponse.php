@@ -175,8 +175,8 @@ class StudentResponse extends Eloquent {
                 return 'numericalResponses';
             case config('constants.questionTypes.TEXTMATCH'):
                 return 'textmatchResponses';
-            case config('constants.questiontypes.DRAGDROP'):
-                return 'draganddropResponses';
+            case config('constants.questionTypes.DRAGDROP'):
+                return 'dragAndDropResponses';
             default:
                 return false;
         }

@@ -183,7 +183,7 @@ class DragAndDropAnswer extends QuestionOption
     */
 
     public function incrementAnalytics($optionIds) {
-
+        //TODO
     }
 
     /**
@@ -275,7 +275,15 @@ class DragAndDropAnswer extends QuestionOption
     */
 
     public function search($searchTerm) {
+        if (!$this->text) {
+            return false;
+        }
 
+        if (strpos(strtolower($this->text), $searchTerm) === false) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -285,7 +293,7 @@ class DragAndDropAnswer extends QuestionOption
     */
 
     public function setAnalyticsPercentage() {
-
+        //TODO
     }
 
     /**

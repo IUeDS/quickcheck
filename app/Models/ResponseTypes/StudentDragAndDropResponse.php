@@ -4,8 +4,10 @@ namespace App\Models\ResponseTypes;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Classes\StudentResponses\StudentResponseTypeInterface as StudentResponseType;
+use App\Models\StudentResponse;
 
-class StudentDragAndDropResponse extends Model
+class StudentDragAndDropResponse extends StudentResponseType
 {
     use HasFactory;
 
