@@ -659,6 +659,11 @@ class ExportQti {
 
     private function convertQuestionToQti($doc, $parent, $question)
     {
+        //ignore drag and drop
+        if ($question->question_type === 'drag_and_drop') {
+            return false;
+        }
+        
         //create the item and its attributes
         $item = $this->addQtiItem($doc, $parent, $question);
 

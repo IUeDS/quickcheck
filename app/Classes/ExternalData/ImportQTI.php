@@ -584,6 +584,7 @@ class ImportQTI {
             case 'essay':
             case 'file_upload':
             case 'text_only':
+            case 'drag_and_drop':
                 $this->handleIncomatibleQuestionType($questionType, $questionText);
                 return false;
                 break;

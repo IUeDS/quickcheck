@@ -115,7 +115,7 @@ class StudentDragAndDropResponse extends StudentResponseType
     */
 
     private function addQuestionToExport($selectedAnswers, &$response) {
-        $optionId = $selectedAnswers[0][$this->ANSWER_ID];
+        $optionId = $selectedAnswers[0][$this->DROPPABLE_ID];
         $this->answerDictionary->addQuestionToResponse($response, $optionId, $this->QUESTION_TYPE);
     }
 
@@ -127,6 +127,6 @@ class StudentDragAndDropResponse extends StudentResponseType
     */
 
     private function parseDragAndDropResponseForExport($selectedAnswers) {
-        //TODO
+        return 'Invalid: drag and drop questions cannot be exported in plain text format for CSV.';
     }
 }
