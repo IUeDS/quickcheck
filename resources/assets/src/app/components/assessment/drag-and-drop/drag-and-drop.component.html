@@ -33,7 +33,7 @@
           <span *ngIf="this.isDraggedText(droppable)"
             cdkDrag
             class="qc-dropped-option qc-draggable-text"
-            [ngStyle]="{'font-size': droppable[this.DRAG_TYPE][0].font_size}">
+            [ngStyle]="{'font-size': droppable[this.DRAG_TYPE][0].font_size + 'px'}">
             {{ droppable[this.DRAG_TYPE][0].text }}
           </span>
       </div>
@@ -53,7 +53,7 @@
         [ngClass]="{'qc-duplicate-drag-option': draggable.count > 1 ? true : false}"
         [ngStyle]="{'width.px': draggable.width, 'height.px': draggable.height}">
         <img *ngIf="draggable.img_url" [src]="draggable.img_url" [width]="draggable.width" [height]="draggable.height" />
-        <span *ngIf="draggable.text" class="qc-draggable-text" [ngStyle]="{'font-size': draggable.font_size}">{{ draggable.text }}</span>
+        <span *ngIf="draggable.text" class="qc-draggable-text" [ngStyle]="{'font-size': draggable.font_size + 'px'}">{{ draggable.text }}</span>
       </div>
       <!-- break to a new line at the end of a row of duplicates (needed if two sets of duplicates in a row) -->
       <br *ngIf="this.isLastDuplicateDraggable(draggable, i)"/>
