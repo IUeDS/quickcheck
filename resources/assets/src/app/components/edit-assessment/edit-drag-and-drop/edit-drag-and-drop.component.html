@@ -1,0 +1,235 @@
+<div>
+    <div class="alert alert-warning" role="alert">
+        This question type does not meet accessibility requirements and should not be used in public-facing courses. For all other courses, an accessible alternative should be provided to students.
+    </div>
+    <h3 class="qc-base-img-header">Base image <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
+    <div class="qc-delete-base-image" *ngIf="this.question.image && !this.readOnly">
+        <span class="qc-delete-btn qc-delete-option-btn-inline" 
+            role="button" tabindex="0"
+            (click)="this.deleteBaseImage()">
+            <qc-delete-icon aria-hidden="true"></qc-delete-icon>
+            <span class="sr-only">Delete base image for question #{{ this.question.question_order }}</span>
+        </span>
+    </div>
+    <div *ngIf="this.question.image">
+        <div class="row">
+            <div class="col-4 form-group">
+                <label for="qc-edit-img-width-{{this.question.id}}">Width (in px)</label>
+                <input type="number" string-to-number class="form-control qc-edit-img-width" id="qc-edit-img-width-{{this.question.id}}" name="qc-edit-img-width-{{this.question.id}}" required
+                    [(ngModel)]="this.question.image.width"
+                    (ngModelChange)="this.onEdited(); this.onImageRatioChange($event, 'width', this.question.image)"
+                    [disabled]="this.readOnly"
+                    required>
+            </div>
+            <div class="col-4 form-group">
+                <label for="qc-edit-img-height-{{this.question.id}}">Height (in px)</label>
+                <input type="number" string-to-number class="form-control qc-edit-img-height" id="qc-edit-img-height-{{this.question.id}}" name="qc-edit-img-height-{{this.question.id}}" required
+                    [(ngModel)]="this.question.image.height"
+                    (ngModelChange)="this.onEdited(); this.onImageRatioChange($event, 'height', this.question.image)"
+                    [disabled]="this.readOnly"
+                    required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 form-group">
+                <p>Current droppable option area: {{ this.activeDroppableId ? 'droppable #' + (this.getDroppableIndex(this.activeDroppableId) + 1) : 'none'}}</p>
+            </div>
+            <div class="col-4 form-group">
+                <button class="btn btn-sm btn-info qc-btn" type="button" (click)="this.preview()">
+                    <span class="fa fa-eye" aria-hidden="true"></span> Preview question 
+                    <span class="sr-only">#{{ this.question.question_order }}</span>
+                </button>
+            </div>
+        </div>
+        <canvas [id]="this.canvasId" [width]="this.question.image.width + this.CANVAS_PADDING" [height]="this.question.image.height + this.CANVAS_PADDING"></canvas>
+    </div>
+    <div *ngIf="!this.question.image && !this.readOnly">
+        <div class="form-group">
+            <label for="qc-base-image-upload-{{this.question.id}}">Upload an image that answer options can be dragged onto.</label>
+            <input type="file" class="form-control-file" id="qc-base-image-upload-{{this.question.id}}" name="qc-base-image-upload-{{this.question.id}}" (change)="onSelectFile($event)" required>
+        </div>
+    </div>
+    <h3>Droppable areas <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
+    <p>Click on a point on the base image and drag to draw a rectangle in order to create a droppable zone. After it's created, drag to change location or resize by dragging on a corner. Values can be manually edited as well in the associated data fields in this section. Hover or click on a droppable area to see its corresponding row in the table.</p>
+    <table class="table table-bordered" *ngIf="this.question.droppables.length">
+        <tr *ngFor="let droppable of this.question.droppables; index as i" [ngClass]="this.activeDroppableId == droppable.id ? 'table-active' : null">
+            <td class="qc-edit-droppable">
+                <div *ngIf="!this.readOnly" class="qc-delete-droppable-btn">
+                    <span class="qc-delete-btn qc-delete-option-btn-inline" 
+                        role="button" tabindex="0"
+                        (click)="this.deleteDroppable(droppable)">
+                        <qc-delete-icon aria-hidden="true"></qc-delete-icon>
+                        <span class="sr-only">Delete droppable for question #{{ this.question.question_order }}</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <h4>Droppable #{{i + 1}}</h4>
+                </div>
+                <div class="row">
+                    <div class="form-group col-2">
+                        <label for="left-{{this.question.id}}-{{droppable.id}}">Left</label>
+                        <input type="text" id="left-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.left"
+                            (ngModelChange)="this.onEdited(); this.onDroppableInputChange($event, 'left', droppable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="top-{{this.question.id}}-{{droppable.id}}">Top</label>
+                        <input type="text" id="top-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.top"
+                            (ngModelChange)="this.onEdited(); this.onDroppableInputChange($event, 'top', droppable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="width-{{this.question.id}}-{{droppable.id}}">Width</label>
+                        <input type="text" id="width-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.width"
+                            (ngModelChange)="this.onEdited(); this.onDroppableInputChange($event, 'width', droppable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="height-{{this.question.id}}-{{droppable.id}}">Height</label>
+                        <input type="text" id="height-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.height"
+                            (ngModelChange)="this.onEdited(); this.onDroppableInputChange($event, 'height', droppable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="answer-{{this.question.id}}-{{droppable.id}}">Answer</label>
+                        <select id="answer-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.answer_id"
+                            (ngModelChange)="this.onEdited()"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                            <option></option>
+                            <option *ngFor="let draggable of this.question.draggables; index as idx" [value]="draggable.id">Draggable #{{idx + 1}}</option>
+                        </select>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <h3>Draggable question options <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
+    <p *ngIf="!this.question.draggables.length">Draggable answer options can be placed on drawn droppable zones. Either upload an image or type a text-based option.</p>
+    <table class="table table-bordered" *ngIf="this.question.draggables.length">
+        <tr *ngFor="let draggable of this.question.draggables; index as i">
+            <td class="qc-edit-draggable">
+                <div *ngIf="!this.readOnly" class="qc-delete-draggable-btn">
+                    <span class="qc-delete-btn qc-delete-option-btn-inline" 
+                        role="button" tabindex="0"
+                        (click)="this.deleteDraggable(draggable)">
+                        <qc-delete-icon aria-hidden="true"></qc-delete-icon>
+                        <span class="sr-only">Delete draggable for question #{{ this.question.question_order }}</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <h4>Draggable #{{i + 1}}</h4>
+                </div>
+                <div class="row" *ngIf="draggable.new_img || draggable.img_url">
+                    <div class="form-group col-3" *ngIf="!draggable.img_url">
+                        <label for="draggable-upload-{{this.question.id}}-{{draggable.id}}">Upload an image</label>
+                        <input type="file" class="form-control-file" id="draggable-upload-{{this.question.id}}-{{draggable.id}}" name="draggable-upload-{{this.question.id}}-{{draggable.id}}" (change)="onSelectFile($event, draggable)" required>
+                    </div>
+                    <div class="form-group col-3" *ngIf="draggable.img_url">
+                        <p>Preview</p>
+                        <img [src]="draggable.img_url" [width]="draggable.width" [height]="draggable.height" />
+                        <div class="form-check">
+                            <input type="checkbox" id="qc-edit-aspect-img-{{draggable.id}}"
+                                (click)="this.togglePreserveAspectRatio(draggable)"
+                                [disabled]="this.readOnly || !draggable.img_url"
+                                [checked]="draggable.preserveAspectRatio">
+                            <label for="qc-edit-aspect-img-{{draggable.id}}">Preserve aspect ratio <span class="sr-only">for question #{{ this.question.question_order }}</span></label>
+                        </div>
+                        <label for="draggable-upload-{{this.question.id}}-{{draggable.id}}">Update image</label>
+                        <input type="file" class="form-control-file" id="draggable-upload-{{this.question.id}}-{{draggable.id}}" name="draggable-upload-{{this.question.id}}-{{draggable.id}}" (change)="onSelectFile($event, draggable)">
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="count-{{this.question.id}}-{{draggable.id}}">Count</label>
+                        <input type="text" id="count-{{this.question.id}}-{{draggable.id}}"
+                            [(ngModel)]="draggable.count"
+                            (ngModelChange)="this.onEdited()"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="width-{{this.question.id}}-{{draggable.id}}">Width</label>
+                        <input type="text" id="width-{{this.question.id}}-{{draggable.id}}"
+                            [(ngModel)]="draggable.width"
+                            (ngModelChange)="this.onEdited(); this.onImageRatioChange($event, 'width', draggable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly || !draggable.img_url">
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="height-{{this.question.id}}-{{draggable.id}}">Height</label>
+                        <input type="text" id="height-{{this.question.id}}-{{draggable.id}}"
+                            [(ngModel)]="draggable.height"
+                            (ngModelChange)="this.onEdited(); this.onImageRatioChange($event, 'height', draggable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly || !draggable.img_url">
+                    </div>
+                </div>
+                <div class="row" *ngIf="draggable.new_text || draggable.text">
+                    <div class="form-group col-3">
+                        <p>Preview</p>
+                        <p [style.fontSize]="draggable.font_size + 'px'">{{ draggable.text }}</p>
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="count-{{this.question.id}}-{{draggable.id}}">Count</label>
+                        <input type="text" id="count-{{this.question.id}}-{{draggable.id}}"
+                            [(ngModel)]="draggable.count"
+                            (ngModelChange)="this.onEdited()"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="text-{{this.question.id}}-{{draggable.id}}">Text</label>
+                        <input type="text" id="text-{{this.question.id}}-{{draggable.id}}"
+                            [(ngModel)]="draggable.text"
+                            (ngModelChange)="this.onEdited()"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="font-size-{{this.question.id}}-{{draggable.id}}">Font size (px)</label>
+                        <input type="text" id="font-size-{{this.question.id}}-{{draggable.id}}"
+                            [(ngModel)]="draggable.font_size"
+                            (ngModelChange)="this.onEdited()"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <button class="btn btn-sm btn-primary qc-btn" type="button"
+        (click)="this.addDraggableImage()"
+        *ngIf="!this.readOnly">
+        <span class="fa fa-plus" aria-hidden="true"></span> Add draggable image
+        <span class="sr-only">for question #{{ this.question.question_order }}</span>
+    </button>
+    <button class="btn btn-sm btn-primary qc-btn" type="button"
+        (click)="this.addDraggableText()"
+        *ngIf="!this.readOnly">
+        <span class="fa fa-plus" aria-hidden="true"></span> Add draggable text
+        <span class="sr-only">for question #{{ this.question.question_order }}</span>
+    </button>
+    <qc-custom-feedback *ngIf="!this.readOnly"
+        (onQuestionEdited)="this.onSubComponentEdited($event)"
+        [question]="this.question">
+    </qc-custom-feedback>
+</div>

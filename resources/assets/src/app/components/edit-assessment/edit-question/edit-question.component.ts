@@ -13,6 +13,7 @@ export class EditQuestionComponent implements OnInit {
   @Input() readOnly;
   @Input() totalQuestionCount;
   @Input() utilitiesService;
+  @Input() dragAndDropEnabled;
   @Output() onDelete = new EventEmitter();
   @Output() onQuestionEdited = new EventEmitter();
   @Output() onQuestionReordered = new EventEmitter();
@@ -62,6 +63,20 @@ export class EditQuestionComponent implements OnInit {
     //the edit multiple choice component will initialize
     //4 options automatically when a question is added.
     this.question.question_type = this.questionTypes.multipleChoice.constantName;
+  }
+
+  isAllowedQuestionType(questionConstantName) {
+    const dragAndDrop = this.questionTypes.dragAndDrop.constantName;
+
+    if (questionConstantName != dragAndDrop) {
+      return true;
+    }
+
+    if (this.dragAndDropEnabled) {
+      return true;
+    }
+
+    return false;
   }
 
   isDeleteConfirmed() {

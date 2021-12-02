@@ -97,6 +97,9 @@ export class ResponsesComponent implements OnInit {
     else if (studentResponse.dropdown_responses.length) {
       answerFound = this.markDropdownResponses(studentResponse);
     }
+    else if (studentResponse.drag_and_drop_responses.length) {
+      answerFound = this.markDragAndDropResponses(studentResponse);
+    }
 
     return answerFound;
   }
@@ -330,6 +333,17 @@ export class ResponsesComponent implements OnInit {
     this.initMatchingOrDropdownOptions(question);
 
     return answerFound;
+  }
+
+  markDragAndDropResponses(studentResponse) {
+    //TODO: build out response data for this question type
+    for (let thisQuestion of this.questions) {
+      if (thisQuestion.question_type === 'drag_and_drop') {
+        thisQuestion.studentResponse = true;
+      }
+    }
+
+    return true;
   }
 
   isMatrixAnswerCorrect(row, column) {

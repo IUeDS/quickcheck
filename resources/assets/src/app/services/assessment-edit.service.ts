@@ -45,4 +45,16 @@ export class AssessmentEditService {
       .pipe(timeout(timeoutLength))
       .toPromise();
   }
+
+  async uploadImage(file) {
+    const timeoutLength = this.httpService.getMediumTimeout();
+    const path = this.httpService.getApiRoute() + '/assessment/imageupload';
+
+    const data = new FormData();
+    data.append('file', file, file.name);
+
+    return await this.httpClient.post(path, data)
+      .pipe(timeout(timeoutLength))
+      .toPromise();
+  }
 }

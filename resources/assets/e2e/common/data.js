@@ -28,7 +28,8 @@ module.exports = {
         'mc': 'Multiple choice',
         'mcorrect': 'Multiple correct (checkboxes)',
         'numerical': 'Numerical',
-        'textmatch': 'Text match'
+        'textmatch': 'Text match',
+        'drag_and_drop': 'Drag and drop'
     },
 
     quizData: {

@@ -45,7 +45,8 @@
             (ngModelChange)="this.onQuestionTypeChanged(this.question.question_type, this.question.question_type)"
             [disabled]="this.readOnly">
             <option *ngFor="let item of this.questionTypes | keyvalue"
-                [ngValue]="item.value.constantName">{{ item.value.displayName }}</option>
+                [ngValue]="item.value.constantName"
+                [hidden]="!this.isAllowedQuestionType(item.value.constantName)">{{ item.value.displayName }}</option>
         </select>
         <hr>
 
@@ -117,5 +118,12 @@
             [question]="this.question"
             [readOnly]="this.readOnly">
         </qc-edit-numerical>
+
+        <qc-edit-drag-and-drop *ngIf="this.isQuestionType('dragAndDrop')"
+            (onQuestionEdited)="this.onSubComponentEdited($event)"
+            (onSavedOptionDeleted)="this.onSavedOptionDeleted($event)"
+            [question]="this.question"
+            [readOnly]="this.readOnly">
+        </qc-edit-drag-and-drop>
     </div>
 </div>

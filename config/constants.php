@@ -5,6 +5,7 @@ return [
     'features' => [
         'AUTOMATIC_GRADE_PASSBACK' => 'Automatic grade passback',
         'ATTEMPT_TIMEOUT' => 'Timeout for excessive attempts',
+        'DRAG_AND_DROP' => 'Drag and drop questions',
         'HIDE_EMPTY_ATTEMPTS' => 'Hide empty attempts',
         'STUDENT_VIEW_RESPONSES' => 'Show responses in student view'
     ],
@@ -15,7 +16,8 @@ return [
         'MATRIX' => 'matrix',
         'TEXTMATCH' => 'textmatch',
         'NUMERICAL' => 'numerical',
-        'DROPDOWN' => 'dropdown'
+        'DROPDOWN' => 'dropdown',
+        'DRAGDROP' => 'drag_and_drop'
     ]
 
 ];
