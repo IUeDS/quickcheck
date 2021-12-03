@@ -1,0 +1,30 @@
+.qc-delete-base-image {
+    display: inline-block;
+    position: relative;
+    top: -5px;
+}
+
+.qc-base-img-header {
+    display: inline-block;
+}
+
+.qc-delete-draggable-btn,
+.qc-delete-droppable-btn {
+    float: right;
+}
+
+.qc-edit-draggable,
+.qc-edit-droppable {
+    h4 {
+        font-size: 1.3rem;
+        font-weight: 400;
+    }
+}
+
+.btn-group-toggle {
+    margin-bottom: 20px;
+    
+    .qc-btn {
+        margin-right: 0;
+    }
+}

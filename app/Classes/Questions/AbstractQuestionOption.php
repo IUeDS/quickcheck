@@ -10,6 +10,7 @@ use App\Models\AnswerTypes\DropdownAnswer;
 use App\Models\AnswerTypes\MatrixAnswer;
 use App\Models\AnswerTypes\NumericalAnswer;
 use App\Models\AnswerTypes\TextMatchAnswer;
+use App\Models\AnswerTypes\DragAndDropAnswer;
 
 abstract class AbstractQuestionOption extends Eloquent
 {
@@ -45,6 +46,8 @@ abstract class AbstractQuestionOption extends Eloquent
                 return new NumericalAnswer();
             case config('constants.questionTypes.TEXTMATCH'):
                 return new TextMatchAnswer();
+            case config('constants.questionTypes.DRAGDROP');
+                return new DragAndDropAnswer();
             default:
                 return false;
         }

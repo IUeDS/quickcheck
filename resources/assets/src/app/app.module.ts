@@ -82,6 +82,14 @@ import { ArrowDownIconComponent } from './components/shared/arrow-down-icon/arro
 import { ArrowUpIconComponent } from './components/shared/arrow-up-icon/arrow-up-icon.component';
 import { CopyIconComponent } from './components/shared/copy-icon/copy-icon.component';
 import { PreviewIconComponent } from './components/shared/preview-icon/preview-icon.component';
+import { UsernotfoundComponent } from './components/errors/usernotfound/usernotfound.component';
+import { SessionnotvalidComponent } from './components/errors/sessionnotvalid/sessionnotvalid.component';
+import { LtisessionnotvalidComponent } from './components/errors/ltisessionnotvalid/ltisessionnotvalid.component';
+import { ErrorComponent } from './components/errors/error/error.component';
+import { EstablishCookieTrustComponent } from './components/shared/establish-cookie-trust/establish-cookie-trust.component';
+import { DragAndDropComponent } from './components/assessment/drag-and-drop/drag-and-drop.component';
+import { EditDragAndDropComponent } from './components/edit-assessment/edit-drag-and-drop/edit-drag-and-drop.component';
+import { PreviewDragAndDropComponent } from './components/edit-assessment/preview-drag-and-drop/preview-drag-and-drop.component';
 
 import { SafePipe } from './pipes/safe.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
@@ -95,11 +103,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
-import { UsernotfoundComponent } from './components/errors/usernotfound/usernotfound.component';
-import { SessionnotvalidComponent } from './components/errors/sessionnotvalid/sessionnotvalid.component';
-import { LtisessionnotvalidComponent } from './components/errors/ltisessionnotvalid/ltisessionnotvalid.component';
-import { ErrorComponent } from './components/errors/error/error.component';
-import { EstablishCookieTrustComponent } from './components/shared/establish-cookie-trust/establish-cookie-trust.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -188,6 +192,9 @@ import { EstablishCookieTrustComponent } from './components/shared/establish-coo
     LtisessionnotvalidComponent,
     ErrorComponent,
     EstablishCookieTrustComponent,
+    DragAndDropComponent,
+    EditDragAndDropComponent,
+    PreviewDragAndDropComponent,
   ],
   imports: [
     BrowserModule,
@@ -201,7 +208,8 @@ import { EstablishCookieTrustComponent } from './components/shared/establish-coo
     PopoverModule.forRoot(),
     EditorModule,
     RoundProgressModule,
-    RouterModule
+    RouterModule,
+    DragDropModule
   ],
   providers: [
       HttpClientModule,

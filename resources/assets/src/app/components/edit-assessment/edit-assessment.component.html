@@ -70,7 +70,8 @@
                 [question]="question"
                 [readOnly]="this.readOnly"
                 [totalQuestionCount]="this.getQuestionCount()"
-                [utilitiesService]="this.utilitiesService">
+                [utilitiesService]="this.utilitiesService"
+                [dragAndDropEnabled]="this.dragAndDropEnabled">
             </qc-edit-question>
             <qc-custom-activity-selection
                 *ngIf="!this.isQuestionAdded() && this.canViewCustomActivity()"

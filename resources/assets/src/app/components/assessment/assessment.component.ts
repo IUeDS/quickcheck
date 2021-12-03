@@ -195,7 +195,7 @@ export class AssessmentComponent implements OnInit {
   }
 
   isRowFeedbackShown() {
-    if (this.isQuestionType('matrix') || this.isQuestionType('matching')) {
+    if (this.isQuestionType('matrix') || this.isQuestionType('matching') || this.isQuestionType('drag_and_drop')) {
       return true;
     }
 

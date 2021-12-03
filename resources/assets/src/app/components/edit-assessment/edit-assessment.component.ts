@@ -23,6 +23,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
   currentPage = 'sets';
   customActivity = null;
   customActivityAdded = false;
+  dragAndDropEnabled = false; //determines if pilot-stage drag and drop question type allowed
   edited = false;
   questions = null;
   readOnly = false;
@@ -107,6 +108,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
     this.collection = data.collection;
     this.assessmentGroups = data.assessmentGroups;
     this.customActivity = data.customActivity;
+    this.dragAndDropEnabled = data.dragAndDropEnabled;
     if (this.customActivity) {
       this.customActivityAdded = true;
     }

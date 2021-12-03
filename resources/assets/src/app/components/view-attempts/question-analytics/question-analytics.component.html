@@ -200,5 +200,10 @@
                 </tbody>
             </table>
         </div>
+        <div *ngIf="this.question.question_type == 'drag_and_drop'">
+            <div class="card card-body bg-light">
+                <p>Analytics data is currently not available for the drag and drop question type while the feature is still being actively developed.</p>
+            </div>
+        </div>
     </div>
 </div>

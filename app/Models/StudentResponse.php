@@ -7,6 +7,7 @@ use App\Models\ResponseTypes\StudentDropdownResponse;
 use App\Models\ResponseTypes\StudentMatrixResponse;
 use App\Models\ResponseTypes\StudentNumericalResponse;
 use App\Models\ResponseTypes\StudentTextmatchResponse;
+use App\Models\ResponseTypes\StudentDragAndDropResponse;
 use App\Models\Student;
 
 class StudentResponse extends Eloquent {
@@ -47,6 +48,10 @@ class StudentResponse extends Eloquent {
 
     public function customResponses() {
         return $this->hasMany('App\Models\ResponseTypes\StudentCustomResponse');
+    }
+
+    public function dragAndDropResponses() {
+        return $this->hasMany('App\Models\ResponseTypes\StudentDragAndDropResponse');
     }
 
     /************************************************************************/
@@ -91,7 +96,7 @@ class StudentResponse extends Eloquent {
         //analytics, and only the question types involved in the specific quiz are needed.
         $allResponseTypes = ['mcResponses', 'dropdownResponses',
                         'matchingResponses', 'matrixResponses', 'numericalResponses',
-                        'textmatchResponses', 'customResponses'];
+                        'textmatchResponses', 'customResponses', 'dragAndDropResponses'];
         $eagerLoading = $responseTypes ? $responseTypes : $allResponseTypes;
         $studentResponses = StudentResponse::with($eagerLoading)->where('attempt_id', '=', $attemptId)->get();
         return $studentResponses;
@@ -125,6 +130,9 @@ class StudentResponse extends Eloquent {
                 break;
             case 'textmatch_responses':
                 return new StudentTextmatchResponse();
+                break;
+            case 'drag_and_drop_responses':
+                return new StudentDragAndDropResponse();
                 break;
         }
 
@@ -167,6 +175,8 @@ class StudentResponse extends Eloquent {
                 return 'numericalResponses';
             case config('constants.questionTypes.TEXTMATCH'):
                 return 'textmatchResponses';
+            case config('constants.questionTypes.DRAGDROP'):
+                return 'dragAndDropResponses';
             default:
                 return false;
         }
@@ -185,7 +195,8 @@ class StudentResponse extends Eloquent {
             'matching_responses',
             'matrix_responses',
             'numerical_responses',
-            'textmatch_responses'
+            'textmatch_responses',
+            'drag_and_drop_responses'
         ];
         return $responseTypes;
     }
@@ -281,6 +292,8 @@ class StudentResponse extends Eloquent {
                 return new StudentNumericalResponse;
             case config('constants.questionTypes.TEXTMATCH'):
                 return new StudentTextmatchResponse;
+            case config('constants.questionTypes.DRAGDROP'):
+                return new StudentDragAndDropResponse;
             default:
                 return false;
         }

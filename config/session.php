@@ -148,8 +148,7 @@ return [
     |
     */
 
-    //if app url is NOT localhost, make cookies secure (localhost is not served over SSL, otherwise SSL is required)
-    'secure' => strpos(env('APP_URL', 'http://localhost:8000'), 'localhost') !== false ? false : true,
+    'secure' => true,
 
     /*
     |--------------------------------------------------------------------------

@@ -32,5 +32,12 @@ class FeatureTableSeeder extends Seeder {
             'default_state' => 'true',
             'admin_only' => 'false'
         ]);
+
+        Feature::create([
+            'name' => config('constants.features.DRAG_AND_DROP'),
+            'description' => 'Allows the use of drag and drop questions.',
+            'default_state' => 'false',
+            'admin_only' => 'true'
+        ]);
     }
 }

@@ -1,0 +1,12 @@
+<div class="modal-content" id="qc-preview-modal" tabindex="-1">
+    <div class="modal-header">
+        <h1 class="modal-title" id="qc-preview-label">Drag and drop question preview</h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="bsModalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" id="qc-preview-dialog-content">
+        <qc-drag-and-drop [currentQuestion]="this.currentQuestion"></qc-drag-and-drop>
+    </div>
+</div>
+

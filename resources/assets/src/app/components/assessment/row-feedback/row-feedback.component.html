@@ -8,7 +8,7 @@
             <div class="sr-only" *ngIf="!this.isCorrect">
                 <ul>
                     <li *ngFor="let incorrectRow of this.incorrectRows">
-                        {{ incorrectRow.text }} was incorrect
+                        <span *ngIf="incorrectRow.text">{{ incorrectRow.text }} was incorrect</span>
                     </li>
                 </ul>
             </div>

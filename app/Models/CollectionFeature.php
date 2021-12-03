@@ -71,6 +71,17 @@ class CollectionFeature extends Eloquent {
     }
 
     /**
+    * Determine if drag and drop question type is enabled for the collection an assessment belongs to
+    *
+    * @param  int  $assessmentId
+    * @return boolean
+    */
+
+    public function isDragAndDropEnabled($assessmentId) {
+        return $this->isFeatureEnabled($assessmentId, config('constants.features.DRAG_AND_DROP'));
+    }
+
+    /**
     * Determine if automatic grade passback is enabled for the collection an assessment belongs to
     *
     * @param  int  $assessmentId
@@ -133,6 +144,11 @@ class CollectionFeature extends Eloquent {
         $collectionFeature = CollectionFeature::where('collection_id', '=', $collection->id)
             ->where('feature_id', '=', $feature->id)
             ->first();
+
+        //for experimental/pilot features, feature may not be present for all collections
+        if (!$collectionFeature) {
+            return false;
+        }
 
         if ($collectionFeature->enabled === 'true') {
             return true;
