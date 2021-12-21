@@ -1,17 +1,3 @@
-.qc-droppable-zone {
-    position: absolute;
-    z-index: 10;
-}
-
-.qc-draggable-text {
-    padding: 5px;
-}
-
-.qc-droppable-base-img {
-    z-index: 1;
-    margin-bottom: 50px;
-}
-
 .qc-droppable-zone.cdk-drop-list-receiving,
 .qc-droppable-zone.cdk-drop-list-dragging {
     border: dashed 2px gray;
@@ -49,25 +35,6 @@
     border: none;
 }
 
-.qc-droppable-container {
-    position: relative;
-    //NOTE: this is essential to ensure droppables have correct positioning;
-    //the CANVAS_PADDING value when editing a drag and drop is set to 100,
-    //which adds 100px to width/height. If that value changes in the future,
-    //then this value also needs to be updated to be half of that. Hopefully
-    //won't need to update it, but if it becomes an issue, we could possibly
-    //find a way to centralize the value in a js config file and use ngStyle.
-    padding: 50px; 
-}
-
-.qc-drag-question {
-    margin-left: 50px;
-}
-
-.qc-draggable {
-    margin-bottom: 20px;
-}
-
 .qc-duplicate-drag-option {
     display: inline-block;
     margin-right: 10px;
@@ -77,23 +44,6 @@
     width: fit-content;
     min-width: 200px;
     min-height: 200px;
-}
-
-.qc-dropped-option-container {
-    position: relative;
-}
-
-.qc-dropped-option {
-    z-index: 50;
-}
-
-//center images but not text, which lines up without additional styles 
-img.qc-dropped-option {
-    //center vertically and horizontally
-    position: relative;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .cdk-drag-animating {

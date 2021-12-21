@@ -1,5 +1,17 @@
+@import '../../../../styles/colors';
+
 .card-header {
     .fa {
         margin-right: 5px;
     }
+}
+
+.qc-droppable-correct {
+    border: solid 2px $text-success;
+    color: $text-success;
+}
+
+.qc-droppable-incorrect {
+    border: dashed 2px $text-danger;
+    color: $text-danger;
 }

@@ -240,8 +240,39 @@
                         </div>
                         <div class="qc-drag-and-drop-options" *ngIf="currentQuestion.question_type == 'drag_and_drop'">
                             <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
-                            <div class="card card-body bg-light drag-and-drop-correct-answers">
-                                <p>Response data is currently not available for the drag and drop question type while the feature is still being actively developed.</p>
+                            <p *ngIf="currentQuestion.studentResponse.partial_credit">Partial credit: {{ currentQuestion.studentResponse.partial_credit * 100 | number }}%</p>
+                            <div class="card card-body bg-light qc-drag-and-drop-answers">
+                                <div class="qc-droppable-container">
+                                    <img class="qc-droppable-base-img" [src]="currentQuestion.image.img_url" [width]="currentQuestion.image.width" [height]="currentQuestion.image.height" />
+                                    <div *ngFor="let droppable of currentQuestion.droppables; index as i"
+                                        [ngClass]="isDraggableCorrect(droppable) ? 'qc-droppable-correct' : 'qc-droppable-incorrect'"
+                                        [ngStyle]="{
+                                            'top.px': droppable.top, 
+                                            'left.px': droppable.left, 
+                                            'width.px': droppable.width, 
+                                            'height.px': droppable.height
+                                            }"
+                                            class="qc-droppable-zone">
+                                        <span *ngIf="isDraggableCorrect(droppable)">
+                                            <span class="sr-only">Droppable #{{ i }}: correct</span>
+                                        </span>
+                                        <span *ngIf="!isDraggableCorrect(droppable)">
+                                            <span class="sr-only">Droppable #{{ i }}: incorrect</span>
+                                        </span>
+                                        <img *ngIf="this.isDraggedImg(droppable)"
+                                            class="qc-dropped-option"
+                                            [src]="droppable.studentAnswer.img_url" 
+                                            [width]="droppable.studentAnswer.width" 
+                                            [height]="droppable.studentAnswer.height"
+                                        />
+                                        <span *ngIf="this.isDraggedText(droppable)"
+                                            class="qc-dropped-option qc-draggable-text"
+                                            [ngStyle]="{'font-size': droppable.studentAnswer.font_size + 'px'}">
+                                            {{ droppable.studentAnswer.text }}
+                                        </span>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
