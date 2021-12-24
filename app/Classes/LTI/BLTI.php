@@ -22,7 +22,10 @@ class BLTI {
 
     public function getContextId()
     {
-        $sessionContext = Session::get($this->sessionKey);
+        $sessionContext = $this->getSessionContext();
+        if (!$sessionContext) {
+            return false;
+        }
         return $sessionContext['context_id'];
     }
 
@@ -70,7 +73,12 @@ class BLTI {
     public function isDesigner()
     {
         $sessionContext = $this->getSessionContext();
+        if (!$sessionContext) {
+            return false;
+        }
+
         $roles = strtolower($sessionContext['roles']);
+        
 
         if (strpos($roles, "contentdeveloper") !== false) {
             return true;
@@ -88,6 +96,10 @@ class BLTI {
     public function isInstructor()
     {
         $sessionContext = $this->getSessionContext();
+        if (!$sessionContext) {
+            return false;
+        }
+
         $roles = strtolower($sessionContext['roles']);
 
         if (strpos($roles, "instructor") !== false) {

@@ -2,7 +2,7 @@
 # and referenced Laradock implementation to further optimize
 
 # Use an official PHP runtime as a parent image
-FROM php:7.3-apache-stretch
+FROM php:8.1-apache
 
 # Set Environment Variables
 ARG DEBIAN_FRONTEND=noninteractive
@@ -17,7 +17,6 @@ RUN apt-get update -yqq && \
     openssl \
     libzip-dev zip unzip \
     libpng-dev
-RUN docker-php-ext-configure zip --with-libzip
 RUN docker-php-ext-install pdo_mysql zip
 RUN docker-php-ext-configure gd
 RUN docker-php-ext-install gd

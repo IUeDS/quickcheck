@@ -74,7 +74,7 @@ class AttemptController extends \BaseController
     * @return success (with attempts, assessment info, and user list) or error in a JSON Response
     */
 
-    public function getAttemptsForAssessment($assessment_id, $context_id, $assignment_id = null, Request $request)
+    public function getAttemptsForAssessment($assessment_id, $context_id, $assignment_id = null)
     {
         $attempts = [];
         $assessment = null;
