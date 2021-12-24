@@ -23,7 +23,6 @@
             "polyfills": "resources/assets/src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "deployUrl": "/assets/dist/",
-            "aot": true,
             "allowedCommonJsDependencies": [
               "lodash",
               "moment-timezone",
@@ -75,7 +74,13 @@
               "./node_modules/tinymce/tinymce.min.js",
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/mathquill/build/mathquill.js"
-            ]
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -132,7 +137,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

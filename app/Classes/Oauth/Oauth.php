@@ -184,7 +184,7 @@ class Oauth
 
         //return in format with ampersand joining params
         $ampersand = rawurlencode('&');
-        return implode($encodedParameters, $ampersand);
+        return implode($ampersand, $encodedParameters);
     }
 
     /**
