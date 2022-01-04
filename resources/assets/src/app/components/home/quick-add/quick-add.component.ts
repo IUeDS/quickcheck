@@ -26,11 +26,7 @@ export class QuickAddComponent implements OnInit {
   cancelAdd() {
     //don't really need to send any data up to the parent component,
     //but also don't want unexpected angular errors if $event missing
-    this.onCancel.emit({
-      $event: {
-        cancel: true
-      }
-    });
+    this.onCancel.emit({ cancel: true });
   }
 
   collectionSelected() {
