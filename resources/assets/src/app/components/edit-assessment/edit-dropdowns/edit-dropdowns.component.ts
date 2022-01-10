@@ -97,7 +97,7 @@ export class EditDropdownsComponent implements OnInit {
     if (this.isSavedPrompt(prompt)) {
       for (let [answerIndex, selectableAnswer] of this.question.selectableAnswers.entries()) {
         if (selectableAnswer.id == prompt.dropdown_answer_id) {
-          this.onSavedOptionDeleted.emit({$event: { option: selectableAnswer }});
+          this.onSavedOptionDeleted.emit({ option: selectableAnswer });
           this.question.selectableAnswers.splice(answerIndex, 1);
         }
       }

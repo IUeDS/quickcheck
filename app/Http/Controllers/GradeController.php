@@ -68,7 +68,7 @@ class GradeController extends \BaseController
     * @return Response (includes: submissions in an associative array, indexed by user ID)
     */
 
-    public function index($assessment_id, $context_id, $assignment_id = null, Request $request)
+    public function index($assessment_id, $context_id, $assignment_id = null)
     {
         if (!$assessment_id || !$context_id) {
             return response()->error(400, ['An LTI context ID and/or assessment ID was not supplied in this request.']);
