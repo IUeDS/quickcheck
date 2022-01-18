@@ -68,7 +68,8 @@
     </button>
     <qc-custom-feedback *ngIf="!this.readOnly"
         (onQuestionEdited)="this.onSubComponentEdited($event)"
-        [question]="this.question">
+        [question]="this.question"
+        [optionsLength]="this.question.options.length">
     </qc-custom-feedback>
     <hr>
     <qc-randomize-checkbox

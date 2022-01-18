@@ -80,12 +80,12 @@
                     <span> Feedback for option #{{ $index + 1 }}</span>
                     <span>(<em>{{ option.answer_text }}</em>)</span></label>
                 <textarea class="form-control qc-edit-response-feedback" id="qc-response-feedback-{{option.id}}"
-                    *ngIf="!this.isRichContentToggled"
+                    *ngIf="!this.isRichContentToggled && option.mc_option_feedback"
                     rows="3" required
                     [(ngModel)]="option.mc_option_feedback.feedback_text"
                     (ngModelChange)="this.onEdited()">
                 </textarea>
-                <editor [init]="this.tinymceOptions" *ngIf="this.isRichContentToggled"
+                <editor [init]="this.tinymceOptions" *ngIf="this.isRichContentToggled && option.mc_option_feedback"
                     [(ngModel)]="option.mc_option_feedback.feedback_text"
                     (ngModelChange)="this.onEdited()"
                     [attr.aria-labelledby]="'response-feedback-' + option.id + '-label'"
