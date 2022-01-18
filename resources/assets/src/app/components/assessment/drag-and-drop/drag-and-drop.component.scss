@@ -49,3 +49,7 @@
 .cdk-drag-animating {
     transition: transform 300ms ease-in-out;
 }
+
+.qc-drag-question .qc-assessment-question {
+    padding-bottom: 50px; //additional padding for questions with larger droppable areas around the borders
+}

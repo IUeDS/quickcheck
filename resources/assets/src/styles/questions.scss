@@ -119,12 +119,15 @@
 .qc-droppable-container {
     position: relative;
     //NOTE: this is essential to ensure droppables have correct positioning;
-    //the CANVAS_PADDING value when editing a drag and drop is set to 100,
-    //which adds 100px to width/height. If that value changes in the future,
+    //the CANVAS_PADDING value when editing a drag and drop is set to 200,
+    //which adds 200px to width/height. If that value changes in the future,
     //then this value also needs to be updated to be half of that. Hopefully
     //won't need to update it, but if it becomes an issue, we could possibly
     //find a way to centralize the value in a js config file and use ngStyle.
-    padding: 50px; 
+    //Additionally, adding padding changes the positioning of all of the droppable
+    //locations, so it would require either DB or js updates as well for all the questions
+    //(i.e., if 100px of padding added, then +50 for top/left for all saved locations).
+    padding: 100px; 
 }
 
 .qc-drag-question {
