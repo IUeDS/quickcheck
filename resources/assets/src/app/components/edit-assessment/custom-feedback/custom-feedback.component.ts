@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
 import { UtilitiesService } from '../../../services/utilities.service';
 
@@ -9,6 +9,7 @@ import { UtilitiesService } from '../../../services/utilities.service';
 })
 export class CustomFeedbackComponent implements OnInit {
   @Input() question;
+  @Input() optionsLength;
   @Output() onQuestionEdited = new EventEmitter();
 
   isRichContentToggled = false;
@@ -23,6 +24,29 @@ export class CustomFeedbackComponent implements OnInit {
     this.isPerResponseFeedbackAdded();
     if (!this.question.question_feedback) { //for a new question
       this.question.question_feedback = [];
+    }
+  }
+
+  //when a new MC option is added, add custom feedback to it if it has already been toggled on
+  ngOnChanges(changesObj)  {
+    if (!this.perResponseFeedback) {
+      return;
+    }
+
+    if (!changesObj.optionsLength) {
+      return;
+    }
+
+    if (!changesObj.optionsLength.currentValue) {
+      return;
+    }
+
+    if (changesObj.optionsLength.previousValue === undefined) {
+      return;
+    }
+
+    if (changesObj.optionsLength.currentValue > changesObj.optionsLength.previousValue) {
+      this.addOptionFeedback(this.question.options[changesObj.optionsLength.currentValue - 1]);
     }
   }
 
@@ -123,14 +147,18 @@ export class CustomFeedbackComponent implements OnInit {
     }
     else { //add
       this.perResponseFeedback = true;
-      this.question.options.forEach(function(option) {
-        option.mc_option_feedback = {
-          'mc_answer_id' : option.id,
-          'feedback_text': null
-        };
-      });
+      for (let option of this.question.options) {
+        this.addOptionFeedback(option);
+      }
     }
     //re-add or remove question-level correct/incorrect feedback, to prevent redundancies
     this.toggleQuestionLevelFeedback();
+  }
+
+  addOptionFeedback(option) {
+    option.mc_option_feedback = {
+      'mc_answer_id' : option.id,
+      'feedback_text': null
+    };
   }
 }
