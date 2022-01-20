@@ -336,14 +336,61 @@ export class ResponsesComponent implements OnInit {
   }
 
   markDragAndDropResponses(studentResponse) {
-    //TODO: build out response data for this question type
+    let answerFound = false,
+      matchesFound = 0,
+      numDroppables = 0,
+      droppable = null,
+      draggable = null,
+      question = null;
+
     for (let thisQuestion of this.questions) {
       if (thisQuestion.question_type === 'drag_and_drop') {
-        thisQuestion.studentResponse = true;
+        question = thisQuestion;
+        thisQuestion.studentResponse = studentResponse;
       }
     }
 
-    return true;
+    if (!question) {
+      return false;
+    }
+
+    this.initDragAndDropOptions(question);
+
+    //first, get the number of droppables, so we can ensure that all answers are marked
+    for (let option of question.options) {
+      if (option.type === 'DROPPABLE') {
+        numDroppables++;
+      }
+    }
+
+    //next, match student responses in each prompt to their corresponding answer
+    for (let response of studentResponse.drag_and_drop_responses) {
+      droppable = false;
+      draggable = false;
+
+      for (let option of question.droppables) {
+        if (response.droppable_answer_id == option.id) {
+          droppable = option;
+        }
+      }
+
+      for (let option of question.draggables) {
+        if (response.draggable_answer_id == option.id) {
+          draggable = option;
+        }
+      }
+
+      if (draggable && droppable) {
+        matchesFound++;
+        droppable.studentAnswer = draggable;
+      }
+    }
+
+    if (matchesFound === question.droppables.length) {
+      answerFound = true;
+    }
+
+    return answerFound;
   }
 
   isMatrixAnswerCorrect(row, column) {
@@ -376,6 +423,54 @@ export class ResponsesComponent implements OnInit {
         question.selectableAnswers.push(qOption);
       }
     }
+  }
+
+  initDragAndDropOptions(question) {
+    question.droppables = [];
+    question.draggables = [];
+
+    for (let option of question.options) {
+      if (option.type === 'IMAGE') {
+        question.image = option;
+      }
+
+      if (option.type === 'DROPPABLE') {
+        option.disabled = false;
+        option.entered = false;
+        option['DRAGGABLE'] = [];
+        question.droppables.push(option);
+      }
+
+      if (option.type === 'DRAGGABLE') {
+        option.disabled = false;
+        option['DROPPABLE'] = null;
+        question.draggables.push(option);
+      }
+    }
+  }
+
+  isDraggedImg(droppable) {
+    if (droppable.studentAnswer.img_url) {
+      return true;
+    }
+
+    return false;
+  }
+
+  isDraggedText(droppable) {
+    if (droppable.studentAnswer.text) {
+      return true;
+    }
+
+    return false;
+  }
+
+  isDraggableCorrect(droppable) {
+    if (droppable.answer_id == droppable.studentAnswer.id) {
+      return true;
+    }
+
+    return false;
   }
 
   //custom activities send count correct to the back-end, but quizzes calculate based on responses

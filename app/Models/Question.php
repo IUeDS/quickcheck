@@ -3,6 +3,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use App\Classes\Questions\AbstractQuestionOption as QuestionOption;
 use App\Classes\Analytics\QuestionAnalytics as QuestionAnalytics;
+use App\Models\AnswerTypes\DragAndDropAnswer as DragAndDropAnswer;
 
 class Question extends Eloquent {
     protected $table = 'questions';
@@ -51,18 +52,50 @@ class Question extends Eloquent {
         $newQuestion->assessment_id = $assessmentId;
         $newQuestion->save();
 
-        //replicate answer options
-        $optionModel = QuestionOption::getAnswerModelFromQuestionType($this->question_type);
-        $options = $optionModel->where('question_id', '=', $this->id)->get();
-
-        foreach($options as $option) {
-            $option->copy($newQuestion->id);
+        //replicate answer options; drag and drop needs foreign keys and is more involved
+        if ($this->question_type === config('constants.questionTypes.DRAGDROP')) {
+            $this->copyDragAndDropQuestionOptions($newQuestion);
+        }
+        else {
+            $optionModel = QuestionOption::getAnswerModelFromQuestionType($this->question_type);
+            $options = $optionModel->where('question_id', '=', $this->id)->get();
+            foreach($options as $option) {
+                $option->copy($newQuestion->id);
+            }
         }
 
         //replicate feedback (if any)
         foreach($this->questionFeedback as $feedback) {
             $feedback->copy($newQuestion->id);
         }
+    }
+
+    /**
+    * Copy drag and drop question options
+    * @param  Question  $newQuestion
+    *
+    * @return void
+    */
+
+    private function copyDragAndDropQuestionOptions($newQuestion) {
+        $dragAndDropAnswer = new DragAndDropAnswer;
+        $draggables = $dragAndDropAnswer->getDraggablesForQuestion($this->id);
+        $droppables = $dragAndDropAnswer->getDroppablesForQuestion($this->id);
+        $draggableIdDictionary = []; //associative array to link previous foreign keys to new ones
+
+        foreach ($draggables as $draggable) {
+            $newDraggable = $draggable->copy($newQuestion->id);
+            $draggableIdDictionary[$draggable->id] = $newDraggable->id;
+        }
+
+        foreach ($droppables as $droppable) {
+            $newDroppable = $droppable->copy($newQuestion->id);
+            $newDraggableId = $draggableIdDictionary[$droppable->getAnswerId()];
+            $newDroppable->setAnswerId($newDraggableId);
+        }
+
+        $baseImage = $dragAndDropAnswer->getBaseImageForQuestion($this->id);
+        $baseImage->copy($newQuestion->id);
     }
 
     /**
