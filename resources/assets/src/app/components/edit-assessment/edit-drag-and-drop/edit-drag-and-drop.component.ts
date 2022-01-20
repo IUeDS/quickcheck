@@ -21,7 +21,7 @@ export class EditDragAndDropComponent implements OnInit {
   DRAG_TYPE = 'DRAGGABLE';
   DROP_TYPE = 'DROPPABLE';
   IMAGE_TYPE = 'IMAGE'; //the base image
-  CANVAS_PADDING = 100;
+  CANVAS_PADDING = 200;
   image = null;
   canvas = null;
   canvasId = null;

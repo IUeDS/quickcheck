@@ -131,6 +131,29 @@ class DragAndDropAnswer extends QuestionOption
     }
 
     /**
+    * Get answer id for droppable option
+    *
+    * @return  int  $answer_id;
+    */
+
+    public function getAnswerId() {
+        return $this->answer_id;
+    }
+
+    /**
+    * Get base image for a question
+    *
+    * @param  int      $questionId
+    * @return []       
+    */
+
+    public function getBaseImageForQuestion($questionId) {
+        return DragAndDropAnswer::where('question_id', '=', $questionId)
+            ->where('type', '=', $this->IMAGE_TYPE)
+            ->first();
+    }
+
+    /**
     * Get draggable options for a question
     *
     * @param  int      $questionId
@@ -249,10 +272,15 @@ class DragAndDropAnswer extends QuestionOption
         foreach ($draggables as $draggable) {
             $draggableId = $draggable['id'];
             $draggableSaved = false;
+            $savedDraggable = null;
             foreach ($droppables as $droppable) {
                 if ($droppable['answer_id'] == $draggableId) {
-                    $savedDraggable = $this->saveQuestionOption($question, $draggable);
-                    $draggableSaved = true;
+                    //if draggable count is > 1, don't save it more than once
+                    if (!$draggableSaved) {
+                        $savedDraggable = $this->saveQuestionOption($question, $draggable);
+                        $draggableSaved = true;
+                    }
+                    
                     $droppable['answer_id'] = $savedDraggable->id;
                     $this->saveQuestionOption($question, $droppable);
                 }
@@ -294,6 +322,18 @@ class DragAndDropAnswer extends QuestionOption
 
     public function setAnalyticsPercentage() {
         //TODO
+    }
+
+    /**
+    * Update existing question option to set draggable answer ID on a droppable option
+    *
+    * @param  int  $answerId
+    * @return void
+    */
+
+    public function setAnswerId($answerId) {
+        $this->answer_id = $answerId;
+        $this->save();
     }
 
     /**
