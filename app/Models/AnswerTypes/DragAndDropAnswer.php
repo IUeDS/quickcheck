@@ -131,6 +131,29 @@ class DragAndDropAnswer extends QuestionOption
     }
 
     /**
+    * Get answer id for droppable option
+    *
+    * @return  int  $answer_id;
+    */
+
+    public function getAnswerId() {
+        return $this->answer_id;
+    }
+
+    /**
+    * Get base image for a question
+    *
+    * @param  int      $questionId
+    * @return []       
+    */
+
+    public function getBaseImageForQuestion($questionId) {
+        return DragAndDropAnswer::where('question_id', '=', $questionId)
+            ->where('type', '=', $this->IMAGE_TYPE)
+            ->first();
+    }
+
+    /**
     * Get draggable options for a question
     *
     * @param  int      $questionId
@@ -299,6 +322,18 @@ class DragAndDropAnswer extends QuestionOption
 
     public function setAnalyticsPercentage() {
         //TODO
+    }
+
+    /**
+    * Update existing question option to set draggable answer ID on a droppable option
+    *
+    * @param  int  $answerId
+    * @return void
+    */
+
+    public function setAnswerId($answerId) {
+        $this->answer_id = $answerId;
+        $this->save();
     }
 
     /**

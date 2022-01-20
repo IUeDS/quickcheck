@@ -75,5 +75,7 @@ abstract class AbstractQuestionOption extends Eloquent
         $newOption = $this->replicate();
         $newOption->question_id = $questionId;
         $newOption->save();
+
+        return $newOption;
     }
 }
