@@ -62,7 +62,6 @@ RUN rm -rf node_modules
 
 # Specific to IU: install/compile dependencies for custom activity angular projects; if not present, will skip
 RUN bash -c 'if [ -d "${LABS_DIR}" ]; then echo "Installing labs dependencies"; cd ${LABS_DIR}; npm install; ng build --prod --base-href="/customActivities/jsomelec/labs/dist/"; rm -rf node_modules; cd ${WORK_DIR}; fi'
-RUN bash -c 'if [ -d "${DRAG_DIR}" ]; then echo "Installing drag and drop dependencies"; cd ${DRAG_DIR}; npm install; ng build --prod --base-href="/customActivities/drag-and-drop/dist/drag-and-drop/"; rm -rf node_modules; cd ${WORK_DIR}; fi'
 
 # Install back-end dependencies
 RUN composer install

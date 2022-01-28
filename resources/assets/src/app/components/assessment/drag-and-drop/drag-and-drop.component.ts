@@ -35,6 +35,11 @@ export class DragAndDropComponent implements OnInit {
   }
 
   initOptions() {
+    //reset if a previous drag and drop question
+    this.image = null;
+    this.draggables = [];
+    this.droppables = [];
+
     //sort into base image, draggables, and droppables, and add object attributes that we use
     //on the front-end for interaction but that aren't in the database model
     for (let option of this.currentQuestion.options) {
