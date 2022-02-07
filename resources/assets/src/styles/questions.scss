@@ -88,6 +88,13 @@
     }
 }
 
+.qc-mcorrect-options {
+    .qc-responses-multiple-correct-option,
+    .qc-assessment-multiple-correct-option {
+        display: flex;
+    }
+}
+
 //for matching and dropdowns
 .qc-selectable-answer-option {
     display: inline-block;
