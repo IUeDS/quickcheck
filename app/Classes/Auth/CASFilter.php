@@ -158,7 +158,7 @@ class CASFilter
         $path = $route->uri();
         $param = $route->parameter('id');
         $newPath = str_replace('{id}', $param, $path);
-        $appUrl = $baseUrl . $newPath;
+        $appUrl = $baseUrl . '/' . $newPath;
         return $appUrl;
     }
 

@@ -1,8 +1,8 @@
 # Used this as starting point: https://dev.to/mstrsobserver/how-would-you-dockerize-php-app-382i
 # and referenced Laradock implementation to further optimize
 
-# Use an official PHP runtime as a parent image
-FROM php:8.1-apache
+# Use an official PHP runtime as a parent image, through AWS to avoid Docker Hub rate limiting
+FROM public.ecr.aws/docker/library/php:8.1-apache
 
 # Set Environment Variables
 ARG DEBIAN_FRONTEND=noninteractive
