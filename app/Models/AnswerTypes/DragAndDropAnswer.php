@@ -206,7 +206,8 @@ class DragAndDropAnswer extends QuestionOption
     */
 
     public function incrementAnalytics($optionIds) {
-        //TODO
+        $answerId = $optionIds['paired'];
+        $this['answers'][$answerId]->responseAnalytics->increment();
     }
 
     /**
@@ -219,6 +220,21 @@ class DragAndDropAnswer extends QuestionOption
     public function initializeOption($noAnswers) {
         if ($noAnswers) {
             unset($this->answer_id);
+        }
+    }
+
+    /**
+    * Determine if option is a droppable
+    *
+    * @return boolean
+    */
+
+    public function isDroppable() {
+        if ($this->type === $this->DROP_TYPE) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -321,7 +337,11 @@ class DragAndDropAnswer extends QuestionOption
     */
 
     public function setAnalyticsPercentage() {
-        //TODO
+        if ($this->isDroppable()) {
+            foreach($this['answers'] as $answer) {
+                $answer->responseAnalytics->calculatePercentage();
+            }
+        }
     }
 
     /**
@@ -334,6 +354,31 @@ class DragAndDropAnswer extends QuestionOption
     public function setAnswerId($answerId) {
         $this->answer_id = $answerId;
         $this->save();
+    }
+
+    /**
+    * Override abstract parent class's setter function, since nested answer arrays
+    * need their own analytics for each possible prompt/answer combination.
+    *
+    * @param  QuestionAnalytics  $questionAnalytics
+    * @return void
+    */
+
+    public function setResponseAnalytics($questionAnalytics) {
+        if (!$this->isDroppable()) {
+            return;
+        }
+
+        //have to wholesale replace the answers to initialize; otherwise Laravel will grumble about collection
+        //override methods and such
+        $draggables = $this->getDraggablesForQuestion($this->question_id);
+        $answers = [];
+        foreach($draggables as $draggable) {
+            $newDraggable = clone $draggable; //ensure answer is not passed by reference
+            $newDraggable->responseAnalytics = new ResponseAnalytics($questionAnalytics);
+            array_push($answers, $newDraggable);
+        }
+        $this->answers = collect($answers)->keyBy('id');
     }
 
     /**

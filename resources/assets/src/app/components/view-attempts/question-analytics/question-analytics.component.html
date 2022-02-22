@@ -201,9 +201,53 @@
             </table>
         </div>
         <div *ngIf="this.question.question_type == 'drag_and_drop'">
-            <div class="card card-body bg-light">
-                <p>Analytics data is currently not available for the drag and drop question type while the feature is still being actively developed.</p>
+            <div class="card card-body bg-light qc-drag-and-drop-answers">
+                <div class="qc-droppable-container">
+                    <img class="qc-droppable-base-img" [src]="this.question.image.img_url" [width]="this.question.image.width" [height]="this.question.image.height" />
+                    <div *ngFor="let droppable of this.question.droppables; index as i"
+                        [ngStyle]="{
+                            'top.px': droppable.top, 
+                            'left.px': droppable.left, 
+                            'width.px': droppable.width, 
+                            'height.px': droppable.height
+                            }"
+                            class="qc-droppable-zone">
+                        <span>Droppable #{{ i + 1 }}</span>
+                    </div>
+                </div>
             </div>
+            <ng-container *ngFor="let droppable of this.question.droppables; index as i">
+                <p class="qc-analytics-droppable">Droppable #{{ i + 1 }}:</p>
+                <table class="table">
+                    <thead class="sr-only">
+                        <tr>
+                            <th>Option</th>
+                            <th>Percentage who chose this option</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       <tr *ngFor="let answer of droppable.answers | keyvalue" [ngClass]="droppable.answer_id == answer.key ? 'table-success' : ''">
+                            <td class="qc-analytics-drag-and-drop-answer table-active">
+                                <img *ngIf="answer.value.img_url"
+                                    [src]="answer.value.img_url" 
+                                    [width]="answer.value.width" 
+                                    [height]="answer.value.height"
+                                />
+                                <span *ngIf="answer.value.text"
+                                    class="qc-dropped-option qc-draggable-text"
+                                    [ngStyle]="{'font-size': answer.value.font_size + 'px'}">
+                                    {{ answer.value.text }}
+                                </span>
+                            </td>
+                            <td width="{{this.fullBarWidth}}px" class="qc-graph-cell">
+                                <div [ngClass]="droppable.answer_id == answer.key ? 'qc-correct-bar' : 'qc-incorrect-bar'" [style.width]="answer.value.responseAnalytics.percentSelected / 100 * this.fullBarWidth + 'px'">
+                                    <span class="qc-analytics-percentage">{{ answer.value.responseAnalytics.percentSelected }}% <span class="sr-only">selected this option</span></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-container>
         </div>
     </div>
 </div>
