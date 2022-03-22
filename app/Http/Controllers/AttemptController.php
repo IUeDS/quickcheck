@@ -148,7 +148,9 @@ class AttemptController extends \BaseController
         //considering number of quick checks in a course is small, running sort on the
         //Laravel collection instead of through DB shouldn't be an issue efficiency-wise
         $sortedAttempts = $attempts->sortBy(function ($attempt, $key) {
-            return $attempt['assessment']['name'];
+            if ($attempt['assessment']) { //if assessment was soft-deleted, NULL is returned
+                return $attempt['assessment']['name'];
+            }
         })->values();
 
         return response()->success(['attempts' => $sortedAttempts]);
