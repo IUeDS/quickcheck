@@ -11,7 +11,7 @@ export class AssessmentService {
   constructor(private httpClient: HttpClient, private httpService: HttpService) { }
 
   async getQuestions(id) {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getMediumTimeout();
     const path = this.httpService.getApiRoute() + '/assessment/' + id + '/questions';
 
     return await this.httpClient.get(path)
@@ -20,7 +20,7 @@ export class AssessmentService {
   }
 
   async gradePassback(attemptId) {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getMediumTimeout();
     const path = this.httpService.getApiRoute() + '/grade/passback';
 
     return await this.httpClient.post(path, { attemptId })
@@ -28,17 +28,18 @@ export class AssessmentService {
       .toPromise();
   }
 
-  async initAttempt(id, preview) {
-    const timeoutLength = this.httpService.getDefaultTimeout();
-    const path = this.httpService.getApiRoute() + '/attempt/' + id;
+  async initAttempt(assessmentId, preview, attemptId = null, nonce = null) {
+    const timeoutLength = this.httpService.getMediumTimeout();
+    const path = this.httpService.getApiRoute() + '/attempt/' + assessmentId;
+    const params = { preview, attemptId, nonce };
 
-    return await this.httpClient.post(path, { preview })
+    return await this.httpClient.post(path, params)
       .pipe(timeout(timeoutLength))
       .toPromise();
   }
 
   async submitQuestion(id, submission) {
-    const timeoutLength = this.httpService.getDefaultTimeout();
+    const timeoutLength = this.httpService.getMediumTimeout();
     const path = this.httpService.getApiRoute() + '/question/' + id + '/submit';
 
     return await this.httpClient.post(path, submission)

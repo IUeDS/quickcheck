@@ -9,16 +9,14 @@ use DateTimeZone;
 class Grade {
 
     private $attempt;
-    private $request;
 
     /************************************************************************/
     /* PUBLIC FUNCTIONS *****************************************************/
     /************************************************************************/
 
-    public function __construct($attempt, $request)
+    public function __construct($attempt)
     {
         $this->attempt = $attempt;
-        $this->request = $request;
     }
 
     /**
@@ -61,12 +59,13 @@ class Grade {
     /**
     * Submit a grade to the gradebook
     *
+    * @param $scoreGiven  int  If an instructor is grading, override default score from attempt
     * @return  boolean (on success/error)
     */
 
-    public function submitGrade()
+    public function submitGrade($scoreGiven = null)
     {
-        $gradePassbackResult = $this->doGradePassback();
+        $gradePassbackResult = $this->doGradePassback($scoreGiven);
         return $gradePassbackResult;
     }
 
@@ -78,23 +77,31 @@ class Grade {
     * The guts of grade passback; relies on Outcome model. Score is 0-1.
     * Checks that the new score is higher than the existing score in the gradebook.
     *
+    * @param $scoreGiven  int  If an instructor is grading, override default score from attempt
     * @return boolean (on success/error)
     */
 
-    private function doGradePassback()
+    private function doGradePassback($scoreGiven = null)
     {
-        $assessmentId = (string) $this->attempt->getAssessmentId();
-        $score = $this->attempt->getCalculatedScore();
-        $sourcedID = $this->attempt->getSourcedId();
-        $outcome = new Outcome;
+        $lineItem = $this->attempt->lineItem;
+        $lineItemUrl = $lineItem->getUrl();
+        $scoreMaximum = $lineItem->getScoreMaximum();
+        $ltiContext = new LtiContext();
+        $student = $this->attempt->student;
+        $userId = $student->getCanvasUserId();
+        $result = $ltiContext->getResult($lineItemUrl, $userId);
+        if (!$result) { //if no submission yet and NULL, then convert to numeric value of 0
+            $result = 0;
+        }
 
-        $gradeToSubmit = $this->formatGradeToSubmit($score);
-        if (!$this->isHighestScore($gradeToSubmit, $sourcedID, $outcome)) {
+        $scoreGiven = $scoreGiven ? $scoreGiven : $this->attempt->getCalculatedScore();
+        $gradeToSubmit = $this->formatGradeToSubmit($scoreGiven, $scoreMaximum);
+        if ($gradeToSubmit <= $result && !$scoreGiven) { //let instructor override and give a lower score
             return true;
         }
 
-        $gradeSendResult = $outcome->sendGrade($sourcedID, $this->attempt, $gradeToSubmit, $this->request);
-        return $gradeSendResult;
+        $submissionResult = $ltiContext->submitGrade($lineItemUrl, $userId, $gradeToSubmit, $scoreMaximum);
+        return $submissionResult;
     }
 
     /**
@@ -103,7 +110,7 @@ class Grade {
     * @return float $gradeToSubmit
     */
 
-    private function formatGradeToSubmit($score)
+    private function formatGradeToSubmit($score, $scoreMaximum)
     {
         //all grades are on a scale from 0-1, because this is the format required for LTI Outcome grade
         //passback. in some cases, such as an instructor grading, it may be formatted as 0-100. however,
@@ -114,6 +121,12 @@ class Grade {
         if ($gradeToSubmit > 1) {
             $gradeToSubmit = 1;
         }
+
+        //format result based off of score maximum of the line item; even if we used a scale of 0 - 1 similar to
+        //LTI 1.1, we discovered that if an instructor makes a change to the grade in Canvas, then the result
+        //returned by Canvas will be proportional to the total number of points of the assignment, which could result
+        //in values such as a score of 4/1 rather than 1/1.
+        $gradeToSubmit = $gradeToSubmit * $scoreMaximum;
         return $gradeToSubmit;
     }
 
@@ -148,13 +161,13 @@ class Grade {
         $dueAt = false; //default, in case no due date is set
         $courseTimeZone = $this->attempt->getCourseTimeZone();
         $courseDateTimeZone = new DateTimeZone($courseTimeZone);
+        $utcTimeZone = new DateTimeZone('UTC');
 
+        //Canvas gives us date in UTC, stored that way in DB, but we convert to course timezone
         $dueAtValue = $this->attempt->getDueAt();
         if ($dueAtValue) {
-            //although due at is saved in database in course-specific timezone,
-            //need to still convert, because otherwise, when PHP compares datetimes,
-            //it views due at as being in the default timezone, giving incorrect result
-            $dueAt = new DateTime($dueAtValue, $courseDateTimeZone);
+            $dueAt = new DateTime($dueAtValue, $utcTimeZone);
+            $dueAt = $dueAt->setTimezone($courseDateTimeZone);
         }
 
         //get current time, converted to course-specific timezone (rather than server default)

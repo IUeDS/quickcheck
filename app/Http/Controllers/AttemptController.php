@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use App\Classes\LTI\BLTI;
+use App\Classes\LTI\LtiContext;
 use App\Classes\ExternalData\CanvasAPI;
 use App\Classes\ExternalData\CSV;
 use App\Models\Assessment;
@@ -139,9 +139,9 @@ class AttemptController extends \BaseController
         }
 
         $courseContext = CourseContext::where('lti_context_id', '=', $context_id)->first();
-        $attempts = Attempt::with('assessment')
+        $attempts = Attempt::with(['assessment', 'lineItem'])
                 ->where('course_context_id', '=', $courseContext->id)
-                ->groupBy('assessment_id', 'lti_custom_assignment_id') //if embedded in multiple assignments, separate out
+                ->groupBy('assessment_id', 'line_item_id') //if embedded in multiple assignments, separate out
                 ->get();
 
         //not possible to sort by eager loaded relationship in Laravel without a join;
@@ -218,8 +218,7 @@ class AttemptController extends \BaseController
             $eagerLoading = array_merge($eagerLoading, $responseTypes);
         }
 
-        $studentUsername = Session::get('student');
-        $student = Student::where('lti_custom_canvas_user_login_id', '=', $studentUsername)->first();
+        $student = $request->student;
         $courseContext = CourseContext::where('lti_context_id', '=', $contextId)->first();
         $attempts = Attempt::with($eagerLoading)
             ->where('assessment_id', '=', $assessmentId)
@@ -243,17 +242,81 @@ class AttemptController extends \BaseController
     }
 
     /**
-    * Create an attempt record
+    * Mark an attempt as launched, authenticating with an API token
     *
     * @param  int  $assessment_id
-    * @return attempt ID and attempt type in a JSON Response
+    * @return attempt ID, attempt type, and optional API token in a JSON Response
     */
 
-    public function initAttempt($assessment_id, Request $request)
+    public function launchAttempt($assessment_id, Request $request)
     {
-        $attempt = new Attempt;
-        $attemptData = $attempt->initAttempt($assessment_id, $request);
-        return response()->success($attemptData);
+        $attemptId = $request->input('attemptId');
+        $attempt = Attempt::findOrFail($attemptId);
+        $nonce = $request->input('nonce');
+        $preview = $request->input('preview');
+        $groupName = null;
+
+        //if a preview/anonymous, no need to authenticate
+        if ($preview === "true") {
+            //if user refreshes, create a new attempt; when a preview, no additional launch data needed,
+            //no sensitive data here and so nothing to check/authenticate
+            if ($attempt->isLaunched()) {
+                $attempt = new Attempt;
+                $attempt->initAnonymousAttempt($assessment_id);
+            }
+
+            $anonymous = true;
+            $attempt->launchAttempt($anonymous);
+            return response()->success(['attemptId' => $attempt->id]);
+        }
+
+        
+        if (!$nonce) {
+            abort(403, 'LTI nonce required to authenticate attempt.');
+        }
+
+        if ($nonce != $attempt->getNonce()) {
+            abort(403, 'Unauthorized attempt launch: nonce mismatch.');
+        }
+
+        //if attempt already started, authenticated student is restarting the QC, copy to new attempt
+        if ($attempt->isLaunched()) {
+            $attempt = $attempt->replicate();
+            $attempt->reset();
+        }
+        
+        $attempt->launchAttempt();
+
+        //get group information, if necessary; only provided if custom activity has group in request
+        if ($request->has('group')) {
+            $groupName = $attempt->getGroupName($attemptType);
+        }
+
+        $caliperData = $attempt->getCaliperData();
+        $timeoutRemaining = $attempt->getTimeoutRemaining($assessment_id, $student->id);
+
+        //start submission
+        $lineItem = $attempt->lineItem;
+        if ($lineItem) {
+            $lineItemUrl = $lineItem->getUrl();
+            $canvasUserId = $student->getCanvasUserId();
+            $ltiContext = new LtiContext();
+            $currentScore = $ltiContext->getResult($lineItemUrl, $canvasUserId);
+            //student has one submission in Canvas, which is overwritten if we send new data
+            if (!$currentScore) {
+                $ltiContext->startSubmission($lineItemUrl, $canvasUserId);
+            }
+        }
+
+        $data = [
+            'nonce' => $nonce,
+            'attemptId' => $attempt->id,
+            'caliper' => $caliperData,
+            'groupName' => $groupName,
+            'timeoutRemaining' => $timeoutRemaining
+        ];
+
+        return response()->success($data);
     }
 
     /**

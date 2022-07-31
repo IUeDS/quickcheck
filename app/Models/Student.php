@@ -9,9 +9,9 @@ class Student extends Eloquent {
     protected $fillable = [
         "lis_person_name_given",
         "lis_person_name_family",
-        "lti_user_id",
         "lti_custom_canvas_user_login_id",
-        "lti_custom_user_id"
+        "lti_custom_user_id",
+        "lti_person_sourcedid"
     ];
 
     public function attempts() {
@@ -40,6 +40,23 @@ class Student extends Eloquent {
     }
 
     /**
+    * Retrieve student from database by Canvas user ID
+    *
+    * @param  int $canvasUserId
+    * @return Student
+    */
+
+    public static function findByCanvasUserId($canvasUserId)
+    {
+        $student = Student::where('lti_custom_user_id', '=', $canvasUserId)->first();
+        if (!$student) {
+            abort(500, 'Existing student not found.');
+        }
+
+        return $student;
+    }
+
+    /**
     * Return the canvas user ID of the student (numeric)
     *
     * @return int
@@ -53,7 +70,7 @@ class Student extends Eloquent {
     /**
     * Return the canvas user login ID of the student (string)
     *
-    * @return int
+    * @return string
     */
 
     public function getCanvasUserLoginId()
@@ -62,30 +79,67 @@ class Student extends Eloquent {
     }
 
     /**
+    * Return the sourced ID of the student (string)
+    *
+    * @return string
+    */
+
+    public function getLisPersonSourcedId()
+    {
+        return $this->lis_person_sourcedid;
+    }
+
+    /**
+    * Get the current logged in student
+    *
+    * @return Student
+    */
+
+    public static function getCurrentStudent() {
+        $username = Session::get('student');
+        if (!$username) {
+            abort(500, 'Session expired.');
+        }
+
+        $student = Student::where('username', '=', $username)->first();
+        if (!$student) {
+            Log::error('Student not found in database. User is: ' . $username);
+            abort(500, 'Student not found');
+        }
+        return $student;
+    }
+
+    /**
     * Initialize a new student
     *
-    * @param  Request  $request
+    * @param  string $givenName
+    * @param  string $familyName
+    * @param  string $canvasUserId
+    * @param  string $canvasLoginId
+    * @param  string $personSourcedId
     * @return void
     */
 
-    public function initialize(Request $request)
+    public function initialize($givenName, $familyName, $canvasUserId, $canvasLoginId, $personSourcedId)
     {
-        $validator = Validator::make($request->all(), [
-            'lis_person_name_given' => 'required',
-            'lis_person_name_family' => 'required',
-            'user_id' => 'required',
-            'custom_canvas_user_login_id' => 'required',
-            'custom_canvas_user_id' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->error(400, ['Unable to initialize student, required LTI data not supplied on launch.']);
-        }
+        $this->lis_person_name_given = $givenName;
+        $this->lis_person_name_family = $familyName ? $familyName : ''; //service accounts may not have last name, default blank string
+        $this->lti_custom_canvas_user_login_id = $canvasLoginId;
+        $this->lti_custom_user_id = $canvasUserId;
+        $this->lis_person_sourcedid = $personSourcedId;
+        $this->save();
+    }
 
-        $this->lis_person_name_given = $request->lis_person_name_given;
-        $this->lis_person_name_family = $request->lis_person_name_family;
-        $this->lti_user_id = $request->user_id;
-        $this->lti_custom_canvas_user_login_id = $request->custom_canvas_user_login_id;
-        $this->lti_custom_user_id = $request->custom_canvas_user_id;
+    /**
+    * Update an existing user to add a sourced ID, which was not formerly saved on this model
+    *
+    * @param  string $sourcedId
+    * @return void
+    */
+
+    public function setLisPersonSourcedId($sourcedId)
+    {
+        $this->lis_person_sourcedid = $sourcedId;
         $this->save();
     }
 }

@@ -26,7 +26,8 @@ Route::get('assessment/{id?}', 'AssessmentController@show'); //option to include
 Route::post('assessment/', 'AssessmentController@showLTI'); //id included as query param for LTI tool
 
 //LTI config
-Route::get('lticonfig', 'HomeController@returnLtiConfig');
+Route::get('lticonfig', 'LtiController@returnLtiConfig');
+Route::post('logininitiations', 'LtiController@initializeOIDC');
 
 //errors
 Route::get('usernotfound', 'UserController@userNotFound');
@@ -52,7 +53,7 @@ Route::get('establishcookietrust', function() {
 
 Route::group(['prefix' => 'api'], function() {
     //Initializing an attempt
-    Route::post('attempt/{assessmentId}', 'AttemptController@initAttempt');
+    Route::post('attempt/{assessmentId}', 'AttemptController@launchAttempt');
 
     //Quiz-taking
     Route::get('assessment/{id}/questions', 'AssessmentController@getAssessmentQuestions');
@@ -154,6 +155,7 @@ Route::group(array('middleware' => array('auth')), function() {
         Route::delete('collection/{id}', 'CollectionController@destroy');
         Route::post('quickadd', 'CollectionController@quickAdd');
         Route::post('collection/{id}/search', 'CollectionController@search');
+        Route::post('createDeepLinkingJwt', 'CollectionController@createDeepLinkingJwt');
 
         //public collection endpoints
         Route::get('publiccollections', 'CollectionController@publicIndex');

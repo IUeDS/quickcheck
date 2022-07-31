@@ -52,17 +52,4 @@ class HomeController extends BaseController
             return displaySPA();
         }
     }
-
-    /**
-    * Return LTI config information for LTI installation
-    *
-    * @return response (in XML)
-    */
-
-    public function returnLtiConfig()
-    {
-        $ltiConfig = new LtiConfig();
-        $configFile = $ltiConfig->createConfigFile();
-        return response($configFile, 200)->header('Content-Type', 'text/xml');
-    }
 }
