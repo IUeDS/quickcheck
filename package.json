@@ -42,7 +42,7 @@
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
     "mathquill": "^0.10.1-a",
-    "moment-timezone": "^0.5.34",
+    "moment-timezone": "^0.5.35",
     "ngx-bootstrap": "^6.2.0",
     "popper.js": "^1.16.1",
     "rxjs": "^6.6.7",
