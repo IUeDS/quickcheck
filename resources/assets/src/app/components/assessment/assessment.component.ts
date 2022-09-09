@@ -9,6 +9,7 @@ import { ErrorModalComponent } from './error-modal/error-modal.component';
 import { FeedbackModalComponent } from './feedback-modal/feedback-modal.component';
 import { TimeoutModalComponent } from './timeout-modal/timeout-modal.component';
 import { Subscription } from 'rxjs';
+import { take, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'qc-assessment',
@@ -21,9 +22,9 @@ export class AssessmentComponent implements OnInit {
   assessmentId = '';
   assessmentTitle = null;
   assessmentDescription = null;
-  attemptId = false;
-  caliper = null;
+  attemptId = null;
   complete = false;
+  completionModalRef = null;
   countCorrect = 0;
   countIncorrect = 0;
   currentQuestion = null;
@@ -34,11 +35,13 @@ export class AssessmentComponent implements OnInit {
   isCorrect = false;
   isNextBtnDisabled = false; //have to be careful to prevent double clicking next btn
   modalVisible = false; //for accessibility purposes, hide main when modal is visible
+  nonce = null; //nonce passed to front-end on LTI launch for verification
   questions = null;
   partialCredit = false;
   pointsPossible = 0;
   preview = false; //if preview query param in URL, send to server, valid LTI session not needed
   score = 0;
+  shuffled = false;
   studentAnswer = null;
   timeoutSecondsRemaining = null; //seconds of timeout remaining, if feature enabled
 
@@ -50,58 +53,27 @@ export class AssessmentComponent implements OnInit {
     private userService: UserService
   )
   {
-    //subscribe to changes in feedback modal
-    this.modalService.onHide.subscribe(() => { this.nextQuestion() });
+    //subscribe to changes in feedback and completion modals
+    this.modalService.onHide.subscribe(async (reason) => {
+      if (reason === 'restart') {
+        await this.restart();
+      }
+      else {
+        this.nextQuestion();
+      }
+    });
   }
 
   async ngOnInit() {
     this.getAssessmentIdFromUrl();
     this.preview = this.isPreview();
-    let data;
+    this.attemptId = this.utilitiesService.getQueryParam('attemptId');
+    this.nonce = this.utilitiesService.getQueryParam('nonce');
 
     this.utilitiesService.loadingStarted();
-
-    const thirdPartyCookiesEnabled = await this.areCookiesEnabled();
-    if (!thirdPartyCookiesEnabled) {
-      const errorMessage = this.utilitiesService.getCookieErrorMsg();
-      const showRestartBtn = false; //student must refresh entire page to get new LTI launch
-      this.showErrorModal(errorMessage, showRestartBtn);
-      this.utilitiesService.loadingFinished();
-      return;
-    }
-
-    try {
-      const resp = await this.assessmentService.initAttempt(this.assessmentId, this.preview.toString());
-      data = this.utilitiesService.getResponseData(resp);
-    }
-    catch(error) {
-      const serverError = this.utilitiesService.getQuizError(error);
-      const errorMessage = serverError ? serverError : 'Error initializing attempt.';
-      this.showErrorModal(errorMessage);
-      this.utilitiesService.loadingFinished();
-      return;
-    }
-
-    this.attemptId = data.attemptId;
-    this.parseCaliperData(data);
-    this.parseTimeoutData(data);
-    this.utilitiesService.loadingFinished();
+    await this.initAttempt();
     await this.initQuestions();
-  }
-
-  async areCookiesEnabled() {
-    //in Safari, if third party cookies are disabled, the sameSite=none policy that works in Chrome
-    //unfortunately does not work on Safari 13 and earlier in Mojave and earlier versions of mac OS.
-    //in this case, we check to see if a session exists immediately after the LTI launch, and if not,
-    //we can assume cookies are disabled and require the user to open in a new tab to establish first
-    //party trust. should only be necessary the first time the user accesses the site.
-    try {
-      await this.userService.checkCookies();
-      return true;
-    }
-    catch (error) {
-      return false;
-    }
+    this.utilitiesService.loadingFinished();
   }
 
   //get the assessment id from the Laravel url, /assessment/{id} and separate from query strings at the end, if necessary;
@@ -139,33 +111,58 @@ export class AssessmentComponent implements OnInit {
     };
   }
 
-  async initQuestions() {
+  async initAttempt() {
     let data;
-    this.utilitiesService.loadingStarted();
 
     try {
-      const resp = await this.assessmentService.getQuestions(this.assessmentId);
+      const resp = await this.assessmentService.initAttempt(this.assessmentId, this.preview.toString(), this.attemptId, this.nonce);
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
       const serverError = this.utilitiesService.getQuizError(error);
-      const errorMessage = serverError ? serverError : 'Error retrieving questions.';
+      const errorMessage = serverError ? serverError : 'Error initializing attempt.';
       this.showErrorModal(errorMessage);
       this.utilitiesService.loadingFinished();
       return;
     }
 
-    this.assessmentTitle = data.title;
-    this.assessmentDescription = data.description;
-    this.questions = data.questions;
+    //if student is restarting the QC, we might be receiving a new attempt ID
+    this.attemptId = data.attemptId;
+    this.parseCaliperData(data);
+    this.parseTimeoutData(data);
+  }
+
+  async initQuestions() {
+    this.currentQuestionIndex = 0;
+
+    if (!this.questions) {
+      let data;
+
+      try {
+        const resp = await this.assessmentService.getQuestions(this.assessmentId);
+        data = this.utilitiesService.getResponseData(resp);
+      }
+      catch(error) {
+        const serverError = this.utilitiesService.getQuizError(error);
+        const errorMessage = serverError ? serverError : 'Error retrieving questions.';
+        this.showErrorModal(errorMessage);
+        this.utilitiesService.loadingFinished();
+        return;
+      }
+
+      this.assessmentTitle = data.title;
+      this.assessmentDescription = data.description;
+      this.questions = data.questions;
+      this.shuffled = (data.shuffled == 'true');
+    }
+
     this.shuffleAnswerOptions();
-    if (data.shuffled == 'true') {
+    if (this.shuffled) {
       this.shuffleQuestions();
     }
     this.pointsPossible = this.questions.length;
     this.currentQuestion = this.questions[this.currentQuestionIndex];
     this.utilitiesService.setTitle('Quick Check');
-    this.utilitiesService.loadingFinished();
   }
 
   isComplete() {
@@ -246,7 +243,7 @@ export class AssessmentComponent implements OnInit {
       attemptId: this.attemptId,
       complete: this.complete,
       pointsPossible: this.pointsPossible,
-      score: this.score
+      score: this.score,
     };
     this.modalService.show(CompletionModalComponent, {initialState, backdrop: 'static', keyboard: false});
     this.modalVisible = true;
@@ -277,6 +274,13 @@ export class AssessmentComponent implements OnInit {
     this.showTimeoutModal(data.timeoutRemaining);
   }
 
+  resetAssessmentVariables() {
+    this.complete = false;
+    this.countCorrect = 0;
+    this.countIncorrect = 0;
+    this.score = 0;
+  }
+
   resetQuestionVariables() {
     this.currentQuestion = null;
     this.studentAnswer = null;
@@ -286,9 +290,14 @@ export class AssessmentComponent implements OnInit {
     this.partialCredit = false;
   }
 
-  restart() {
-    //hard page refresh to ensure a new attempt is created
-    window.location.reload();
+  async restart() {
+    this.utilitiesService.loadingStarted();
+    this.modalVisible = false; //modal's internal function closes itself, can't reference from external source
+    this.resetQuestionVariables();
+    this.resetAssessmentVariables();
+    await this.initAttempt();
+    await this.initQuestions();
+    this.utilitiesService.loadingFinished();
   }
 
   showErrorModal(errorMessage, showRestartBtn = true) {

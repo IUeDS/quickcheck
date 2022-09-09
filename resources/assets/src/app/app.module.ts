@@ -2,6 +2,7 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
@@ -90,6 +91,7 @@ import { EstablishCookieTrustComponent } from './components/shared/establish-coo
 import { DragAndDropComponent } from './components/assessment/drag-and-drop/drag-and-drop.component';
 import { EditDragAndDropComponent } from './components/edit-assessment/edit-drag-and-drop/edit-drag-and-drop.component';
 import { PreviewDragAndDropComponent } from './components/edit-assessment/preview-drag-and-drop/preview-drag-and-drop.component';
+import { SelectAssessmentComponent } from './components/select/select-assessment/select-assessment.component';
 
 import { SafePipe } from './pipes/safe.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
@@ -195,12 +197,14 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     DragAndDropComponent,
     EditDragAndDropComponent,
     PreviewDragAndDropComponent,
+    SelectAssessmentComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     CollapseModule.forRoot(),
     BrowserAnimationsModule,
     ModalModule.forRoot(),

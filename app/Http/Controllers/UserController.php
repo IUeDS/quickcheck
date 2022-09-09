@@ -57,7 +57,8 @@ class UserController extends \BaseController
 
     public function addAdmin(Request $request)
     {
-        if (!User::isAdmin()) {
+        $callingUser = $request->user;
+        if (!$callingUser->isAdmin()) {
             return response()->error(403);
         }
 
@@ -135,9 +136,9 @@ class UserController extends \BaseController
     * @return Response
     */
 
-    public function show()
+    public function show(Request $request)
     {
-        $user = User::getCurrentUser();
+        $user = $request->user;
         return response()->success(['user' => $user->toArray()]);
     }
 

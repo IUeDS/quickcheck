@@ -1,5 +1,6 @@
 <qc-nav [currentPage]="this.currentPage"></qc-nav>
 <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
+<qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
 <div class="row section-white qc-results-page">
     <div class="col-12">
         <div class="row">
@@ -13,7 +14,6 @@
 
             </div>
         </div>
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
         <div *ngIf="!this.isViewingByStudent()">
             <h2>Quick checks</h2>
             <p class="lead">Quick checks will only appear in the list below if at least one attempt has been made. Click on a quick check to see student results.</p>
@@ -56,7 +56,7 @@
                     <ng-container *ngFor="let attempt of this.attempts">
                         <!-- if assessment deleted, then don't include, otherwise will throw errors -->
                         <ng-container *ngIf="attempt.assessment">
-                            <a target="_self" [routerLink]="'/assessment/' + attempt.assessment_id + '/attempts/' + (attempt.lti_custom_assignment_id ? attempt.lti_custom_assignment_id : '')" queryParamsHandling="preserve" class="list-group-item list-group-item-action qc-attempt-overview-assessment" *ngIf="!this.isSubstringNotFound(attempt.assessment.name, this.search.assessmentName)">{{ attempt.assessment.name }} {{ this.getDuplicateEmbedName(attempt) }}</a>
+                            <a target="_self" [routerLink]="'/assessment/' + attempt.assessment_id + '/attempts/' + (this.getAssignmentId(attempt) ? this.getAssignmentId(attempt) : '0') + (this.getResourceLinkId(attempt) ? '/' + this.getResourceLinkId(attempt) : '0' )" queryParamsHandling="preserve" class="list-group-item list-group-item-action qc-attempt-overview-assessment" *ngIf="!this.isSubstringNotFound(attempt.assessment.name, this.search.assessmentName)">{{ attempt.assessment.name }} {{ this.getDuplicateEmbedName(attempt) }}</a>
                         </ng-container>
                     </ng-container>
                 </div>

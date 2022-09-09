@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\Guard;
 use App\Classes\Auth\CASFilter;
 use App\Classes\Auth\AltCASFilter;
 use App\Classes\Auth\LTIFilter;
+use App\Models\User;
 use Session;
 
 class Authenticate {
@@ -14,7 +15,7 @@ class Authenticate {
     {
         $redirectUrl = false;
         //give priority to LTI authentication
-        if ($request->input('lti_version')) { //LTI POST launch
+        if ($request->input('id_token')) { //LTI 1.3 launch with JWT token
             $ltiFilter = new LTIFilter($request);
             $redirectUrl = $ltiFilter->dataEntryFilter();
         }
@@ -44,6 +45,14 @@ class Authenticate {
                     $redirectUrl = 'ltisessionnotvalid';
                 }
             }
+        }
+        //if user has active session, add user value to request for easy retrieval in controllers/models;
+        //if we change the auth structure in the future, such as not using sessions, should be easy enough 
+        //to only make the necessary change here and in the manage auth file, and treat user on the request
+        //as a black box that can be reused across the rest of the app
+        else {
+            $user = User::getCurrentUser($request);
+            $request->merge(['user' => $user]);
         }
 
         if ($redirectUrl) {
