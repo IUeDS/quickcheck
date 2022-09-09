@@ -3,6 +3,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Http\Request;
 use Validator;
+use Session;
+use Log;
 
 class Student extends Eloquent {
     protected $table = "students";
@@ -101,7 +103,7 @@ class Student extends Eloquent {
             abort(500, 'Session expired.');
         }
 
-        $student = Student::where('username', '=', $username)->first();
+        $student = Student::where('lti_custom_canvas_user_login_id', '=', $username)->first();
         if (!$student) {
             Log::error('Student not found in database. User is: ' . $username);
             abort(500, 'Student not found');

@@ -37,7 +37,7 @@ const routes: Routes = [
     { path: 'index.php/student', component: StudentViewComponent },
     { path: 'manage', component: AttemptsOverviewComponent },
     { path: 'index.php/manage', component: AttemptsOverviewComponent },
-    { path: 'assessment/:assessmentId/attempts/:assignmentId', component: ViewAttemptsComponent },
+    { path: 'assessment/:assessmentId/attempts/:assignmentId/:resourceLinkId', component: ViewAttemptsComponent },
     { path: 'assessment/:assessmentId/attempts', component: ViewAttemptsComponent },
     { path: 'student/:studentId/attempts', component: ViewAttemptsForStudentComponent },
     { path: 'usernotfound', component: UsernotfoundComponent },

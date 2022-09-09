@@ -15,6 +15,7 @@ export class ViewAttemptsComponent implements OnInit {
   assessment = null;
   assessmentId = '';
   assignmentId = '';
+  resourceLinkId = '';
   assignment = null;
   attempts = []; //all attempts
   canvasCourse = null;
@@ -43,10 +44,11 @@ export class ViewAttemptsComponent implements OnInit {
     let data;
     this.assessmentId = this.route.snapshot.paramMap.get('assessmentId');
     this.assignmentId = this.route.snapshot.paramMap.get('assignmentId');
+    this.resourceLinkId = this.route.snapshot.paramMap.get('resourceLinkId');
     this.utilitiesService.loadingStarted();
 
     try {
-      const resp = await this.manageService.getAttemptsAndResponses(this.assessmentId, this.assignmentId, this.utilitiesService.contextId);
+      const resp = await this.manageService.getAttemptsAndResponses(this.assessmentId, this.assignmentId, this.resourceLinkId, this.utilitiesService.contextId);
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {

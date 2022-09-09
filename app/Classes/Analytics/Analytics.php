@@ -261,7 +261,8 @@ class Analytics {
     private function getAttempts($assessmentId, $contextId, $assignmentId = null)
     {
         $emptyAttemptsHidden = false;
-        return Attempt::getAttemptsForAssessment($assessmentId, $contextId, $assignmentId, $emptyAttemptsHidden);
+        $resourceLinkId = null; //typically used to make sure ungraded instructor attempts are included in results, but exclude them for analytics
+        return Attempt::getAttemptsForAssessment($assessmentId, $contextId, $assignmentId, $resourceLinkId, $emptyAttemptsHidden);
     }
 
     /**

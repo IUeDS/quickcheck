@@ -16,7 +16,7 @@ class MembershipController extends \BaseController {
     * @return Response (includes array of users)
     */
 
-    public function getCollectionMembership($id, Request $request)
+    public function getCollectionMembership(Request $request, $id)
     {
         $user = $request->user;
         $collection = Collection::findOrFail($id);
@@ -127,7 +127,7 @@ class MembershipController extends \BaseController {
                 $membership->update();
             }
         }
-        $response = $this->getCollectionMembership($id);
+        $response = $this->getCollectionMembership($request, $id);
         return $response;
     }
 }

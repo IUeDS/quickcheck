@@ -80,6 +80,10 @@ export class AttemptsOverviewComponent implements OnInit {
     return attempt.line_item.lti_custom_assignment_id;
   }
 
+  getResourceLinkId(attempt) {
+    return attempt.resource_link_id;
+  }
+
   getDuplicateEmbedName(attempt) {
     const embeds = this.embeds[attempt.assessment_id.toString()];
 

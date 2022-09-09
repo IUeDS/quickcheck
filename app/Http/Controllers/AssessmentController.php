@@ -10,6 +10,7 @@ use App\Models\Collection;
 use App\Models\User;
 use App\Models\CustomActivity;
 use App\Models\Question;
+use App\Models\CollectionFeature;
 
 class AssessmentController extends \BaseController
 {
@@ -188,6 +189,10 @@ class AssessmentController extends \BaseController
         if ($customActivity) { //exception called when toArray() called on NULL, so check first
             $customActivity = $customActivity->toArray();
         }
+
+        //determine if pilot drag and drop questions allowed
+        $collectionFeature = new CollectionFeature;
+        $dragAndDropEnabled = $collectionFeature->isDragAndDropEnabled($id);
 
         if (!$assessment->canUserRead($request->user)) {
             return response()->error(403);

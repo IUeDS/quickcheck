@@ -599,12 +599,6 @@ class LtiContext {
         if (!$user) {
             $user = User::saveUser($loginId);
         }
-
-        //M. Mallon, 6/3/20: add API token to model for existing users;
-        //we'll have to rewrite this function or remove it later, but don't want to forget this logic
-        if (!$user->getApiToken()) {
-            $user->setApiToken();
-        }
     }
 
     /**
@@ -633,11 +627,6 @@ class LtiContext {
             $sourcedId = $this->getPersonSourcedid();
             $student->setLisPersonSourcedId($sourcedId);
         }
-
-        //similar story as above for API tokens
-        if (!$student->getApiToken()) {
-            $student->setApiToken();
-        }
     }
 
     /**
@@ -650,9 +639,10 @@ class LtiContext {
     {
         if ($this->isInstructor()) {
             $this->initInstructorContext();
-            return;
         }
 
+        //also initialize the instructor as a student if they are testing quick checks;
+        //this merely saves a row in the database and doesn't affect session values
         $this->initStudentContext();
     }
 }

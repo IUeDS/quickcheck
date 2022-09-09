@@ -3,6 +3,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use App\Classes\ExternalData\CanvasAPI;
 use Log;
+use Session;
 use Illuminate\Support\Str;
 
 class User extends Eloquent {
@@ -43,8 +44,17 @@ class User extends Eloquent {
     * @return User
     */
 
-    public static function getCurrentUser(Request $request) {
-        return $request->user;
+    public static function getCurrentUser($request) {
+        if ($request->user) {
+            return $request->user;
+        }
+        else if (Session::has('user')) {
+            $username = Session::get('user');
+            return User::getUserFromUsername($username);
+        }
+        else {
+            return null;
+        }
     }
 
     /**
@@ -129,7 +139,6 @@ class User extends Eloquent {
         }
 
         $new_user->username = $username;
-        $new_user->api_token = Str::random(60);
         $new_user->save();
         return $new_user;
     }

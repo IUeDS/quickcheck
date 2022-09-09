@@ -26,11 +26,12 @@ class HomeController extends BaseController
     public function home(Request $request)
     {
         $ltiContext = new LtiContext;
+        $ltiContext->setLaunchValues($request->ltiLaunchValues);
         $isInstructor = $ltiContext->isInstructor();
         $isLti = $ltiContext->isInLtiContext();
-        $contextId = $ltiContext->getContextIdFromSession();
+        $contextId = $ltiContext->getContextId();
         //if a student, redirect to their view with context ID as query param
-        if (User::isStudentViewingResults()) {
+        if ($isLti && !$isInstructor) {
             return redirect('student?context=' . $contextId);
         }
         //if an instructor and an LTI launch, redirect so context id is passed as query param;
@@ -48,7 +49,7 @@ class HomeController extends BaseController
             }
         }
         //if an instructor and launching from CAS
-        else if (User::getCurrentUser()) {
+        else if (User::getCurrentUser($request)) {
             return displaySPA();
         }
     }

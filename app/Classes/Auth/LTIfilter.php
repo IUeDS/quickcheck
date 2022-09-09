@@ -28,6 +28,8 @@ class LTIFilter {
     {
         $context = new LtiContext;
         $context->initContext($this->request);
+        //add decoded LTI launch values to request so they can be retrieved in the controller, etc.
+        $this->request->merge(['ltiLaunchValues' => $context->getLaunchValues()]);
 
         if (!$context->isInstructor()) {
             //return redirect url for user not found if a student tries to access this route

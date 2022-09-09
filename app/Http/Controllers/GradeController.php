@@ -117,7 +117,7 @@ class GradeController extends \BaseController
         }
 
         $courseContext = CourseContext::where('lti_context_id', '=', $contextId)->first();
-        $assignmentId = Attempt::getAssignmentIdFromAttempts($courseContext, $assessmentId);
+        $assignmentId = Attempt::getAssignmentIdFromAttempts($contextId, $assessmentId);
 
         if (!$assignmentId) { //ungraded
             return response()->success(['submissions' => null]);

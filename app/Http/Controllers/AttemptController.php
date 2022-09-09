@@ -71,10 +71,11 @@ class AttemptController extends \BaseController
     * @param  int     $assessment_id,
     * @param  string  $context_id
     * @param  int     $assignment_id
+    * @param  string  @resource_link_id
     * @return success (with attempts, assessment info, and user list) or error in a JSON Response
     */
 
-    public function getAttemptsForAssessment($assessment_id, $context_id, $assignment_id = null)
+    public function getAttemptsForAssessment($assessment_id, $context_id, $assignment_id = null, $resource_link_id = null)
     {
         $attempts = [];
         $assessment = null;
@@ -91,7 +92,7 @@ class AttemptController extends \BaseController
         //fetch all attempts and tack on student responses, so we can determine count correct/incorrect. etc.
         //note that we are using a foreach() rather than a with() in the query because of the performance cost
         //with large numbers of attempts; foreach() is over twice as fast
-        $attempts = Attempt::getAttemptsForAssessment($assessment_id, $context_id, $assignment_id, $emptyAttemptsHidden);
+        $attempts = Attempt::getAttemptsForAssessment($assessment_id, $context_id, $assignment_id, $resource_link_id, $emptyAttemptsHidden);
         foreach($attempts as $attempt) {
             $responses = StudentResponse::getResponsesForAttempt($attempt['id']);
             $student = Student::find($attempt['student_id']);
@@ -141,8 +142,20 @@ class AttemptController extends \BaseController
         $courseContext = CourseContext::where('lti_context_id', '=', $context_id)->first();
         $attempts = Attempt::with(['assessment', 'lineItem'])
                 ->where('course_context_id', '=', $courseContext->id)
-                ->groupBy('assessment_id', 'line_item_id') //if embedded in multiple assignments, separate out
+                ->groupBy('resource_link_id', 'lti_custom_assignment_id') //if embedded in multiple assignments, separate out
                 ->get();
+
+        //to make the data compatible with both legacy LTI 1.1 and LTI 1.3, grab assignment ID from line items
+        foreach ($attempts as $attempt) {
+            if ($attempt->lti_custom_assignment_id) {
+                continue;
+            }
+
+            $assignmentId = Attempt::getAssignmentIdFromAttempts($courseContext->id, $attempt->assessment_id, $attempt->resource_link_id);
+            if ($assignmentId) {
+                $attempt->lti_custom_assignment_id = $assignmentId;
+            }
+        }
 
         //not possible to sort by eager loaded relationship in Laravel without a join;
         //considering number of quick checks in a course is small, running sort on the
@@ -252,6 +265,7 @@ class AttemptController extends \BaseController
     {
         $attemptId = $request->input('attemptId');
         $attempt = Attempt::findOrFail($attemptId);
+        $student = $attempt->student;
         $nonce = $request->input('nonce');
         $preview = $request->input('preview');
         $groupName = null;

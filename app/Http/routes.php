@@ -116,7 +116,7 @@ Route::group(array('middleware' => array('auth')), function() {
     //instructor manage view to see overview of student results; includes query param for LTI context ID
     Route::get('manage', 'AttemptController@manageOverview');
     //instructor manage view to see attempts for a specific assessment in an LTI context
-    Route::get('assessment/{id}/attempts/{assignmentId?}', 'AttemptController@manageAttempts');
+    Route::get('assessment/{id}/attempts/{assignmentId?}/{resourceLinkId?}', 'AttemptController@manageAttempts');
     //instructor manage view to see attempts for a specific student in an LTI context
     Route::get('student/{studentId}/attempts', 'AttemptController@viewAttemptsForStudent');
 
@@ -197,7 +197,7 @@ Route::group(array('middleware' => array('auth')), function() {
 
         //results endpoints
         Route::get('attempts/{id}', 'AttemptController@getAttemptsForContext');
-        Route::get('assessment/{id}/attempts/context/{context_id}/{assignmentId?}', 'AttemptController@getAttemptsForAssessment');
+        Route::get('assessment/{id}/attempts/context/{context_id}/{assignmentId?}/{resourceLinkId?}', 'AttemptController@getAttemptsForAssessment');
         Route::get('attempt/{id}/responses', 'StudentResponseController@getAttemptResponses');
         Route::get('responses/analytics/assessment/{id}/context/{context_id}/{assignment_id?}', 'StudentResponseController@calculateAnalytics');
         Route::get('attempts/{contextId}/student/{studentId}', 'AttemptController@getAttemptsForStudentInCourse');

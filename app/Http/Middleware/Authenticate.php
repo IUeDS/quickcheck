@@ -51,7 +51,7 @@ class Authenticate {
         //to only make the necessary change here and in the manage auth file, and treat user on the request
         //as a black box that can be reused across the rest of the app
         else {
-            $user = User::getCurrentUser();
+            $user = User::getCurrentUser($request);
             $request->merge(['user' => $user]);
         }
 

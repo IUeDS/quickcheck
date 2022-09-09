@@ -166,16 +166,28 @@ class Attempt extends Eloquent {
     /**
     * Find the assignment ID for an assessment within a course context.
     *
-    * @param  CourseContext  $courseContext
-    * @param  int  $assessmentId
+    * @param  int     $courseContextId
+    * @param  int     $assessmentId
+    * @param  string  $resourceLinkId
     * @return int
     */
 
-    public static function getAssignmentIdFromAttempts($courseContext, $assessmentId)
+    public static function getAssignmentIdFromAttempts($courseContextId, $assessmentId, $resourceLinkId = null)
     {
-        $firstAttempt = Attempt::where('course_context_id', '=', $courseContext->id)
+        $firstAttempt = Attempt::where('course_context_id', '=', $courseContextId)
             ->where('assessment_id', '=', $assessmentId)
-            ->firstOrFail();
+            ->whereNotNull('line_item_id');
+        
+        //if separating attempts across multiple assignment embeds
+        if ($resourceLinkId) {
+            $firstAttempt = $firstAttempt->where('resource_link_id', '=', $resourceLinkId);
+        }
+        
+        $firstAttempt = $firstAttempt->first();
+
+        if (!$firstAttempt) {
+            return null;
+        }
 
         return $firstAttempt->getAssignmentId();
     }
@@ -272,14 +284,15 @@ class Attempt extends Eloquent {
     /**
     * Get all attempts made on an assessment in a course context
     *
-    * @param  int  $assessment_id
-    * @param  int  $context_id
-    * @param  int  $assignment_id
-    * @param  bool $emptyAttemptsHidden
-    * @return []   $attempts
+    * @param  int    $assessment_id
+    * @param  int    $context_id
+    * @param  int    $assignment_id
+    * @param  string $resource_link_id
+    * @param  bool   $emptyAttemptsHidden
+    * @return []     $attempts
     */
 
-    public static function getAttemptsForAssessment($assessment_id, $context_id, $assignment_id, $emptyAttemptsHidden) {
+    public static function getAttemptsForAssessment($assessment_id, $context_id, $assignment_id, $resource_link_id, $emptyAttemptsHidden) {
         //get all attempts; sort by last name, but sort by user ID secondarily in case two users
         //have the same last name; for each user, sort attempts chronologically. this query is
         //a bit more involved, since we need to sort by student name, which is on a separate model.
@@ -294,7 +307,11 @@ class Attempt extends Eloquent {
             ->orderBy('lti_custom_user_id', 'ASC')
             ->orderBy('attempts.created_at', 'ASC');
 
-        if ($assignment_id) {
+        if ($resource_link_id) {
+            $attempts = $attempts->where('resource_link_id', '=', $resource_link_id);
+            $attempts = $attempts->orWhere('lti_custom_assignment_id', '=', $assignment_id); //if a mix of LTI 1.1 and 1.3 attempts
+        }
+        else if ($assignment_id) {
             //unfortunately we have to query both for historic 1.1 attempts and 1.3 using line items...
             $attempts = $attempts->whereHas('lineItem', function ($query) use ($assignment_id) {
                 $query->where('lti_custom_assignment_id', $assignment_id);
@@ -504,7 +521,7 @@ class Attempt extends Eloquent {
 
     public function isPastDue() {
         if (!$this->getDueAt()) { //no due date
-            return false;
+            return true;
         }
 
         $convertToDateTime = true;
