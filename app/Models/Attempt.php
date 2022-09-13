@@ -150,6 +150,10 @@ class Attempt extends Eloquent {
     */
 
     public function getAssignmentId() {
+        if (!$this->lineItem) {
+            return null;
+        }
+        
         return $this->lineItem->getAssignmentId();
     }
 
