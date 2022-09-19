@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\JWK;
 use DateTime;
+use Log;
 use Illuminate\Support\Facades\Cache;
 use App\Exceptions\GradePassbackException;
 use App\Classes\LTI\LtiConfig;
@@ -283,6 +284,10 @@ class LTIAdvantage {
         }
 
         $jsonResponse = $this->curlGet($lineItemUrl, $this->oauthHeader);
+        
+        Log::info('Line item JSON: ');
+        Log::info($jsonResponse);
+
         $data = $this->getResponseBody($jsonResponse);
 
         return $data;
@@ -417,6 +422,9 @@ class LTIAdvantage {
             Cache::put($cacheKey, $oauthToken, now()->addMinutes(58));
         }
 
+        Log::info('oauth token: ');
+        Log::info($oauthToken);
+
         $this->setOauthToken($oauthToken);
         return $oauthToken;
     }
@@ -485,7 +493,7 @@ class LTIAdvantage {
     {
         $ltiVersion = $this->launchValues['http://imsglobal.org/lti/version'];
         if ($ltiVersion != 'LTI-1p3') {
-            abort(500, 'Invalid launch: LTI 1.3 required.');
+            abort(500, 'Invalid launch: LTI 1.3 required. You may need to enable the newest version of the tool in the course navigation.');
         }
 
         return true;
