@@ -164,9 +164,29 @@ class AttemptController extends \BaseController
             if ($attempt['assessment']) { //if assessment was soft-deleted, NULL is returned
                 return $attempt['assessment']['name'];
             }
-        })->values();
+        })->toArray();
 
-        return response()->success(['attempts' => $sortedAttempts]);
+        //merge LTI 1.1 and 1.3 attempts where assignment ID is the same; prefer 1.3 attempts
+        $combinedAttempts = array_filter($sortedAttempts, function($filteredAttempt) use ($attempts) {
+            $removeAttempt = false;
+            foreach($attempts as $attempt) {
+                if (!$attempt['lti_custom_assignment_id']) {
+                    continue;
+                }
+
+                if ($attempt['lti_custom_assignment_id'] == $filteredAttempt['lti_custom_assignment_id'] && !$filteredAttempt['resource_link_id']) {
+                    $removeAttempt = true;
+                }
+            }
+
+            if ($removeAttempt) {
+                return false;
+            }
+
+            return true;
+        });
+
+        return response()->success(['attempts' => $combinedAttempts]);
     }
 
     /**

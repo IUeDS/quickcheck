@@ -250,9 +250,6 @@ class LtiContext {
         $lti = new LTIAdvantage();
         $data = $lti->getLineItem($lineItemUrl);
 
-        Log::info('Line item data: ');
-        Log::info($data);
-
         return $data;
     }
 

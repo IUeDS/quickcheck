@@ -284,10 +284,6 @@ class LTIAdvantage {
         }
 
         $jsonResponse = $this->curlGet($lineItemUrl, $this->oauthHeader);
-        
-        Log::info('Line item JSON: ');
-        Log::info($jsonResponse);
-
         $data = $this->getResponseBody($jsonResponse);
 
         return $data;
@@ -421,9 +417,6 @@ class LTIAdvantage {
             //replace it a couple minutes shy to prevent failures.
             Cache::put($cacheKey, $oauthToken, now()->addMinutes(58));
         }
-
-        Log::info('oauth token: ');
-        Log::info($oauthToken);
 
         $this->setOauthToken($oauthToken);
         return $oauthToken;

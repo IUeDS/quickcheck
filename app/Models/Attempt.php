@@ -153,7 +153,7 @@ class Attempt extends Eloquent {
         if (!$this->lineItem) {
             return null;
         }
-        
+
         return $this->lineItem->getAssignmentId();
     }
 
@@ -841,7 +841,11 @@ class Attempt extends Eloquent {
                 $lineItem->setScoreMaximum($pointsPossible);
             }
 
-            $this->line_item_id = $lineItem->id;
+            //In cases where term has ended and line item cannot be retrieved, we may not have the
+            //necessary data and need to check first before saving to prevent an error.
+            if ($lineItem) {
+                $this->line_item_id = $lineItem->id;
+            }
         }
 
         $this->save();

@@ -50,6 +50,10 @@ class LineItem extends Eloquent {
         if (!$lineItem) {
             return false;
         }
+        if ($lineItem['errors']) {
+            Log::info('Line item initialization error, line item url: ' . $lineItemUrl . ' , assignmentId: ' . $assignmentId . ' , response from Canvas: ' . json_encode($lineItem));
+            return false;
+        }
 
         $this->line_item_url = $lineItem['id'];
         $this->label = $lineItem['label'];
