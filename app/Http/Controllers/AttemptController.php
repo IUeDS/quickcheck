@@ -186,7 +186,7 @@ class AttemptController extends \BaseController
             return true;
         });
 
-        return response()->success(['attempts' => $combinedAttempts]);
+        return response()->success(['attempts' => array_values($combinedAttempts)]);
     }
 
     /**
