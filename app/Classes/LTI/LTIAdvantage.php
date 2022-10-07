@@ -93,26 +93,28 @@ class LTIAdvantage {
             return;
         }
 
-        $errors = $data['errors'];
+        $errorList = $data['errors'];
 
-        foreach ($errors as $key => $error) {            
-            if ($this->isCanvasDown($error)) {
-                throw new GradePassbackException($unresponsiveErrorMessage);
-            }
+        foreach ($errorList as $errors) {
+            foreach ($errors as $key => $error) {      
+                if ($this->isCanvasDown($error)) {
+                    throw new GradePassbackException($unresponsiveErrorMessage);
+                }
 
-            if ($this->isUserNotInCourse($error)) {
-                $errorMessage = 'Canvas indicates that you are no longer enrolled in this course and cannot receive a grade.';
-                throw new GradePassbackException($errorMessage);
-            }
+                if ($this->isUserNotInCourse($error)) {
+                    $errorMessage = 'Canvas indicates that you are no longer enrolled in this course and cannot receive a grade.';
+                    throw new GradePassbackException($errorMessage);
+                }
 
-            if ($this->isAssignmentInvalid($error)) {
-                $errorMessage = 'Canvas indicates that this assignment is invalid. It may have been closed, deleted, or unpublished after the quick check was opened.';
-                throw new GradePassbackException($errorMessage);
-            }
+                if ($this->isAssignmentInvalid($error)) {
+                    $errorMessage = 'Canvas indicates that this assignment is invalid. It may have been closed, deleted, or unpublished after the quick check was opened.';
+                    throw new GradePassbackException($errorMessage);
+                }
 
-            if ($key === 'message') {
-                $errorMessage = 'Gradebook error. Canvas returned the following message: ' . $error;
-                throw new GradePassbackException($errorMessage);
+                if ($key === 'message') {
+                    $errorMessage = 'Gradebook error. Canvas returned the following message: ' . $error;
+                    throw new GradePassbackException($errorMessage);
+                }
             }
         }
 
