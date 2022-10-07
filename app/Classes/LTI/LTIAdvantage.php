@@ -95,7 +95,7 @@ class LTIAdvantage {
 
         $errors = $data['errors'];
 
-        foreach ($errors as $error) {
+        foreach ($errors as $key => $error) {            
             if ($this->isCanvasDown($error)) {
                 throw new GradePassbackException($unresponsiveErrorMessage);
             }
@@ -107,6 +107,11 @@ class LTIAdvantage {
 
             if ($this->isAssignmentInvalid($error)) {
                 $errorMessage = 'Canvas indicates that this assignment is invalid. It may have been closed, deleted, or unpublished after the quick check was opened.';
+                throw new GradePassbackException($errorMessage);
+            }
+
+            if ($key === 'message') {
+                $errorMessage = 'Gradebook error. Canvas returned the following message: ' . $error;
                 throw new GradePassbackException($errorMessage);
             }
         }
@@ -656,6 +661,7 @@ class LTIAdvantage {
     */
     private function isCanvasDown($response)
     {
+        
         if (strpos($response, 'Gateway Time-out')) {
             return true;
         }

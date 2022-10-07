@@ -50,7 +50,7 @@ class LineItem extends Eloquent {
         if (!$lineItem) {
             return false;
         }
-        if ($lineItem['errors']) {
+        if (array_key_exists('errors', $lineItem)) {
             Log::info('Line item initialization error, line item url: ' . $lineItemUrl . ' , assignmentId: ' . $assignmentId . ' , response from Canvas: ' . json_encode($lineItem));
             return false;
         }
