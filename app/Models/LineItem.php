@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use App\Classes\LTI\LtiContext;
+use Log;
 
 class LineItem extends Eloquent {
     protected $table = 'line_items';

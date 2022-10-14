@@ -387,10 +387,14 @@ class LTIAdvantage {
             $scope .= ($scopeItem . ' ');
         }
         $params['scope'] = $scope;
+        Log::info('Oauth token params: ');
+        Log::info($params);
         $jsonResponse = $this->curlPost($this->oauthTokenEndpoint, [], $params);
         $response = json_decode($jsonResponse, true);
         $oauthToken = $response['access_token'];
         $this->oauthHeader = ['Authorization: Bearer ' . $oauthToken];
+        Log::info('Response: ');
+        Log::info($response);
 
         return $oauthToken;
     }
@@ -417,12 +421,16 @@ class LTIAdvantage {
 
         //find existing token in cache if possible
         $oauthToken = Cache::get($cacheKey);
+        Log::info('Oauth token retrieved from cache: ');
+        Log::info($oauthToken);
         if (!$oauthToken) {
              //otherwise, run the flow to fetch one from Canvas
             $oauthToken = $this->getOauthTokenFromCanvas();
             //token ALWAYS expires in an hour and doesn't extend expiration time if used;
             //replace it a couple minutes shy to prevent failures.
             Cache::put($cacheKey, $oauthToken, now()->addMinutes(58));
+            Log::info('Oauth token retrieved from Canvas to put in cache: ');
+            Log::info($oauthToken);
         }
 
         $this->setOauthToken($oauthToken);
