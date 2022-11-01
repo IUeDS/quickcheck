@@ -19,7 +19,7 @@ class CustomActivityController extends \BaseController
     public function destroy(Request $request, $id)
     {
         $user = $request->user;
-        if (!$user->sAdmin()) {
+        if (!$user->isAdmin()) {
             return response()->error(403);
         }
 
@@ -72,7 +72,7 @@ class CustomActivityController extends \BaseController
     public function update(Request $request, $id)
     {
         $user = $request->user;
-        if (!$request->isAdmin()) {
+        if (!$user->isAdmin()) {
             return response()->error(403);
         }
 

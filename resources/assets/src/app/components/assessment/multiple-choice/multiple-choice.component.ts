@@ -19,12 +19,18 @@ export class MultipleChoiceComponent implements OnInit {
   ngOnChanges(changesObj) {
     if (changesObj.currentQuestion) {
       this.utilitiesService.formatMath();
+      //reset options for new question data (esp. after a restart)
+      for (let answerOption of this.currentQuestion.options) {
+        answerOption.selected = false;
+      }
     }
 
     this.utilitiesService.setLtiHeight();
   }
 
   onAnswerSelected(option) {
+    option.selected = !option.selected;
+
     //pretty straight-forward with multiple choice--if any option selected,
     //then fire up to parent component that answer is complete
     this.onAnswerSelection.emit({

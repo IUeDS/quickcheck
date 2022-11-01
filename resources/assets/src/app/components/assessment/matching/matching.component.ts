@@ -63,9 +63,11 @@ export class MatchingComponent implements OnInit {
 
     for (let qOption of this.currentQuestion.options) {
       if (qOption.prompt_or_answer == 'prompt') {
+        qOption.selected_answer = null; //reset if student is restarting QC
         this.prompts.push(qOption);
       }
       else {
+        qOption.prompt_id = false; //reset if student is restarting QC
         this.selectableAnswers.push(qOption);
       }
     }
