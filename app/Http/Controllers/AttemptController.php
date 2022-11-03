@@ -288,6 +288,7 @@ class AttemptController extends \BaseController
         $student = $attempt->student;
         $nonce = $request->input('nonce');
         $preview = $request->input('preview');
+        $studentId = $request->input('studentId');
         $groupName = null;
 
         //if a preview/anonymous, no need to authenticate
@@ -315,11 +316,19 @@ class AttemptController extends \BaseController
 
         //if attempt already started, authenticated student is restarting the QC, copy to new attempt
         if ($attempt->isLaunched()) {
+            //student ID passed from back-end required on restarts so iframe url can't be shared with other users
+            if (!$studentId) {
+                abort(403, 'Unauthorized attempt launch.');
+            }
+
             $attempt = $attempt->replicate();
             $attempt->reset();
         }
         
         $attempt->launchAttempt();
+        if (!$studentId) {
+            $studentId = $student->id;
+        }
 
         //get group information, if necessary; only provided if custom activity has group in request
         if ($request->has('group')) {
@@ -347,7 +356,8 @@ class AttemptController extends \BaseController
             'attemptId' => $attempt->id,
             'caliper' => $caliperData,
             'groupName' => $groupName,
-            'timeoutRemaining' => $timeoutRemaining
+            'timeoutRemaining' => $timeoutRemaining,
+            'studentId' => $studentId
         ];
 
         return response()->success($data);

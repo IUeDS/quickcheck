@@ -43,6 +43,7 @@ export class AssessmentComponent implements OnInit {
   score = 0;
   shuffled = false;
   studentAnswer = null;
+  studentId = null;
   timeoutSecondsRemaining = null; //seconds of timeout remaining, if feature enabled
 
   constructor(
@@ -115,7 +116,7 @@ export class AssessmentComponent implements OnInit {
     let data;
 
     try {
-      const resp = await this.assessmentService.initAttempt(this.assessmentId, this.preview.toString(), this.attemptId, this.nonce);
+      const resp = await this.assessmentService.initAttempt(this.assessmentId, this.preview.toString(), this.attemptId, this.nonce, this.studentId);
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
@@ -126,8 +127,9 @@ export class AssessmentComponent implements OnInit {
       return;
     }
 
-    //if student is restarting the QC, we might be receiving a new attempt ID
+    //if student is restarting the QC, we might be receiving a new attempt ID and authenticated student ID
     this.attemptId = data.attemptId;
+    this.studentId = data.studentId;
     this.parseCaliperData(data);
     this.parseTimeoutData(data);
   }

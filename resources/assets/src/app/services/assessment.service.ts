@@ -28,10 +28,10 @@ export class AssessmentService {
       .toPromise();
   }
 
-  async initAttempt(assessmentId, preview, attemptId = null, nonce = null) {
+  async initAttempt(assessmentId, preview, attemptId = null, nonce = null, studentId = null) {
     const timeoutLength = this.httpService.getMediumTimeout();
     const path = this.httpService.getApiRoute() + '/attempt/' + assessmentId;
-    const params = { preview, attemptId, nonce };
+    const params = { preview, attemptId, nonce, studentId };
 
     return await this.httpClient.post(path, params)
       .pipe(timeout(timeoutLength))
