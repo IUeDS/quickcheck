@@ -55,6 +55,18 @@ export class Submission {
     return false;
   }
 
+  isLate() {
+    if (!this.userSubmission) {
+      return false;
+    }
+
+    if (this.userSubmission.late) {
+      return true;
+    }
+
+    return false;
+  }
+
   needsGrade() {
     if (this.isGradeable() && !this.isGraded()) {
       return true;

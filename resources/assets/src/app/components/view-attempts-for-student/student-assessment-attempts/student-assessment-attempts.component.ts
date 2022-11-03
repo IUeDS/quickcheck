@@ -22,7 +22,7 @@ export class StudentAssessmentAttemptsComponent implements OnInit {
   responseAttempt = null;
   responseViewVisible = false;
   studentResponses = [];
-  submission = null;
+  submission = [];
   timezone = null;
 
   constructor(private manageService: ManageService) { }
@@ -33,11 +33,19 @@ export class StudentAssessmentAttemptsComponent implements OnInit {
   }
 
   getDueAt() {
-    var dueAt,
-      dueAtInTimezone;
+    let dueAt,
+      dueAtInTimezone,
+      submission;
 
     this.timezone = this.courseContext.time_zone;
-    dueAt = this.attempts[0].due_at;
+    submission = this.submission[this.attempts[0].student.lti_custom_user_id];
+
+    if (!submission) {
+      return false;
+    }
+
+    dueAt = submission.assignment.due_at;
+    
     if (!dueAt || dueAt == 0) {
       return false;
     }

@@ -1,4 +1,5 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Submission } from '../../../classes/submission';
 
 @Component({
   selector: 'qc-attempt-data',
@@ -98,21 +99,8 @@ export class AttemptDataComponent implements OnInit {
   }
 
   isLate(attempt) {
-    if (!attempt.due_at) {
-      return false;
-    }
-
-    //convert by timezone -- attempt updated_at is in the default server timezone,
-    //whereas the dueAt timestamp is in the timezone specific to the course
-    var timezone = this.courseContext.time_zone,
-      updatedAt = this.utilitiesService.convertTimeWithTimezone(attempt.updated_at, timezone),
-      dueAt = this.utilitiesService.convertTimeWithTimezone(attempt.due_at, timezone, true);
-
-    if (updatedAt >= dueAt) {
-      return true;
-    }
-
-    return false;
+    const submission = new Submission(attempt, this.pointsPossible, this.submissions);
+    return submission.isLate();
   }
 
   parseAttempts() {

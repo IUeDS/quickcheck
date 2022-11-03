@@ -105,7 +105,7 @@ export class ManageService {
   }
 
   async getStudentAnalytics(contextId, studentId) {
-    const timeoutLength = this.httpService.getLongTimeout();
+    const timeoutLength = this.httpService.getCrazyLongTimeout();
     const path = this.httpService.getApiRoute() + '/analytics/context/' + contextId + '/student/' + studentId;
 
     return await this.httpClient.get(path)

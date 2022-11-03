@@ -311,6 +311,10 @@ class Attempt extends Eloquent {
             ->orderBy('lti_custom_user_id', 'ASC')
             ->orderBy('attempts.created_at', 'ASC');
 
+        if ($emptyAttemptsHidden) {
+            $attempts = $attempts->has('studentResponses');
+        }
+
         if ($resource_link_id) {
             $attempts = $attempts->where('resource_link_id', '=', $resource_link_id);
             $attempts = $attempts->orWhere('lti_custom_assignment_id', '=', $assignment_id); //if a mix of LTI 1.1 and 1.3 attempts
@@ -325,10 +329,6 @@ class Attempt extends Eloquent {
         else {
             //applies both to 1.3 module launches and all historic 1.1 launches
             $attempts = $attempts->doesntHave('lineItem');
-        }
-
-        if ($emptyAttemptsHidden) {
-            $attempts = $attempts->has('studentResponses');
         }
 
         $attempts = $attempts->get();
