@@ -116,7 +116,7 @@ class LtiConfig {
                 "alg" => "RS256",
                 "n" => env('LTI_JWK_N')
             ],
-            "description" => "This tool allows embedding and taking quick checks, as well as reviewing student results through the left nav.",
+            "description" => "This LTI 1.3 tool allows embedding formative assessments, as well as reviewing and grading student results through the left nav.",
             "custom_fields" => [
                 'custom_canvas_assignment_dueat' => '$Canvas.assignment.dueAt.iso8601',
                 'custom_canvas_assignment_id' => '$Canvas.assignment.id',

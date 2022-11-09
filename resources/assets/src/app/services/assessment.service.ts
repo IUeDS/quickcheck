@@ -20,7 +20,7 @@ export class AssessmentService {
   }
 
   async gradePassback(attemptId) {
-    const timeoutLength = this.httpService.getMediumTimeout();
+    const timeoutLength = this.httpService.getLongTimeout();
     const path = this.httpService.getApiRoute() + '/grade/passback';
 
     return await this.httpClient.post(path, { attemptId })
