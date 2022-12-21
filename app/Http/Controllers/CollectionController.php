@@ -5,6 +5,8 @@ use App\Models\User;
 use App\Models\AssessmentGroup;
 use App\Models\Assessment;
 use App\Models\Question;
+use App\Classes\LTI\LtiContext;
+use App\Classes\LTI\LTIAdvantage;
 
 class CollectionController extends \BaseController
 {
@@ -28,21 +30,27 @@ class CollectionController extends \BaseController
     /**
     * In Canvas, select an external tool link for LTI
     *
-    * @return View, which will redirect to the success URL specified by Canvas
+    * @return redirect
     */
 
     public function selectLink(Request $request)
     {
-        //check POST variable first for the success return URL
-        $redirectUrl = urlencode($request->input('content_item_return_url'));
+        $ltiContext = new LtiContext;
+        $ltiContext->setLaunchValues($request->ltiLaunchValues);
+        $canvasRedirectUrl = urlencode($ltiContext->getDeepLinkingRedirectUrl());
+        $deploymentId = urlencode($ltiContext->getDeploymentId());
 
-        //redirect with input vars added as query params to make them available to the front-end
-        if ($redirectUrl) {
-            $launchUrlStem = urlencode(env('APP_URL') . '/index.php/assessment?id=');
-            return redirect('/select?redirectUrl=' . $redirectUrl . '&launchUrlStem=' . $launchUrlStem);
+        if (!$canvasRedirectUrl || !$deploymentId) {
+            abort(400, 'A valid redirect URL and deployment ID from Canvas must be provided.');
         }
 
-        abort(500, 'A valid LTI context is required to access this resource.');
+        //redirect with input vars added as query params to make them available to the front-end
+        $redirectUrl = 'select';
+        $launchUrlStem = urlencode(env('APP_URL') . '/index.php/assessment?id=');
+        $redirectUrl .= '?redirectUrl=' . $canvasRedirectUrl;
+        $redirectUrl .= '&deploymentId=' . $deploymentId;
+        $redirectUrl .= '&launchUrlStem=' . $launchUrlStem;
+        return redirect($redirectUrl);
     }
 
     /**
@@ -68,8 +76,9 @@ class CollectionController extends \BaseController
     {
         $redirectUrl = $request->get('redirectUrl');
         $launchUrlStem = $request->get('launchUrlStem');
+        $deploymentId = $request->get('deploymentId');
 
-        if (!$redirectUrl || !$launchUrlStem) {
+        if (!$redirectUrl || !$launchUrlStem || !$deploymentId) {
             abort(500, 'Redirect url and launch url are required.');
         }
 
@@ -81,16 +90,45 @@ class CollectionController extends \BaseController
     /************************************************************************/
 
     /**
+    * Create a JWT to be passed to the front-end for LTI 1.3 deep linking requests
+    *
+    * @return Response
+    */
+
+    public function createDeepLinkingJwt(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'deploymentId' => 'required',
+            'launchUrl' => 'required',
+            'title' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->error(400);
+        }
+
+        $deploymentId = $request->input('deploymentId');
+        $title = $request->input('title');
+        $launchUrl = $request->input('launchUrl');
+
+        $lti = new LTIAdvantage();
+        $jwt = $lti->createDeepLinkingJwt($deploymentId, $launchUrl, $title);
+
+        return response()->success(['jwt' => $jwt]);
+    }
+
+
+    /**
     * Delete the collection
     *
     * @param  int  $id
     * @return Response
     */
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         $collection = Collection::findOrFail($id);
-        if (!$collection->canUserWrite()) {
+        if (!$collection->canUserWrite($request->user)) {
             return response()->error(403);
         }
 
@@ -105,15 +143,15 @@ class CollectionController extends \BaseController
     * @return response (includes: collection, assessmentGroups, readOnly, collectionFeatures)
     */
 
-    public function getCollection($id)
+    public function getCollection($id, Request $request)
     {
         $collection = Collection::findOrFail($id);
-        if (!$collection->canUserRead()) {
+        if (!$collection->canUserRead($request->user)) {
             return response()->error(403);
         }
 
         $readOnly = false;
-        if (!$collection->canUserWrite()) {
+        if (!$collection->canUserWrite($request->user)) {
             $readOnly = true;
         }
 
@@ -133,16 +171,16 @@ class CollectionController extends \BaseController
     * @return Response (includes current user and readOnly boolean)
     */
 
-    public function getUserPermissions($id)
+    public function getUserPermissions($id, Request $request)
     {
-        $user = User::getCurrentUser();
+        $user = $request->user;
         $collection = Collection::findOrFail($id);
-        if (!$collection->canUserRead()) {
+        if (!$collection->canUserRead($user)) {
             return response()->error(403);
         }
 
         $readOnly = false;
-        if (!$collection->canUserWrite()) {
+        if (!$collection->canUserWrite($user)) {
             $readOnly = true;
         }
 
@@ -159,10 +197,10 @@ class CollectionController extends \BaseController
     * @return response (includes: collections)
     */
 
-    public function index($assessments = false)
+    public function index(Request $request, $assessments = false)
     {
         $collections = [];
-        $user = User::getCurrentUser();
+        $user = $request->user;
         if (!$user->isAdmin()) {
             return response()->error(403);
         }
@@ -186,7 +224,9 @@ class CollectionController extends \BaseController
     public function publicIndex(Request $request)
     {
         $publicCollections = Collection::where('public_collection', '=', 'true')
-            ->with('userMembership')
+            ->with(['userMembership' => function ($query) use ($request) {
+                $query->currentUser($request);
+            }])
             ->get();
         return response()->success(['publicCollections' => $publicCollections]);
     }
@@ -200,7 +240,8 @@ class CollectionController extends \BaseController
 
     public function publicToggle(Request $request, $collectionId)
     {
-        if (!User::isAdmin()) {
+        $user = $request->user;
+        if (!$user->isAdmin()) {
             return response()->error(403);
         }
 
@@ -239,11 +280,11 @@ class CollectionController extends \BaseController
 
         if ($newCollection) {
             $collection = new Collection();
-            $collection->storeCollection($assessment['collection']['name']);
+            $collection->storeCollection($assessment['collection']['name'], $request->user);
         }
         else {
             $collection = Collection::findOrFail($collectionId);
-            if (!$collection->canUserWrite()) {
+            if (!$collection->canUserWrite($request->user)) {
                 return response()->error(403);
             }
         }
@@ -283,7 +324,7 @@ class CollectionController extends \BaseController
         ])
         ->findOrFail($id);
 
-        if (!$collection->canUserRead()) {
+        if (!$collection->canUserRead($request->user)) {
             return response()->error(403);
         }
 
@@ -319,7 +360,7 @@ class CollectionController extends \BaseController
         }
 
         $collection = new Collection();
-        $collection->storeCollection($request->input('name'), $request->input('description'));
+        $collection->storeCollection($request->input('name'), $request->user, $request->input('description'));
 
         //return new membership with collection included
         $membership = $collection->memberships()->first();
@@ -344,7 +385,7 @@ class CollectionController extends \BaseController
         }
 
         $collection = Collection::findOrFail($id);
-        if (!$collection->canUserWrite()) {
+        if (!$collection->canUserWrite($request->user)) {
             return response()->error(403);
         }
 

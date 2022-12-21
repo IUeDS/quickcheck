@@ -2,8 +2,9 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use App\Classes\ExternalData\CanvasAPI;
-use Session;
 use Log;
+use Session;
+use Illuminate\Support\Str;
 
 class User extends Eloquent {
     protected $table = 'users';
@@ -25,6 +26,10 @@ class User extends Eloquent {
     */
 
     public static function doesUserExist($username) {
+        if (!$username) {
+            return false;
+        }
+
         $result = User::where('username', '=', $username);
         if ($result->count() === 1) {
             return true;
@@ -34,64 +39,22 @@ class User extends Eloquent {
     }
 
     /**
-    * Determine if the current logged-in user has admin privileges
-    *
-    * @return boolean
-    */
-
-    public static function isAdmin() {
-        $username = Session::get('user');
-        $user = User::where('username', '=', $username)->first();
-        if (!$user) {
-            Log::error('User not found in database. User is: ' . $username);
-            abort(500, 'User not found');
-        }
-
-        if ($user->admin == 'true') {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    /**
-    * Save a new user (instructor or staff only)
-    *
-    * @param  string  $username
-    * @return mixed   User on success, false if user already exists
-    */
-
-    public static function saveUser($username) {
-        $new_user = new User;
-        if (User::where('username', '=', $username)->get()->count() > 0) {
-            return false;
-        }
-        else {
-            $new_user->username = $username;
-            $new_user->save();
-            return $new_user;
-        }
-    }
-
-    /**
     * Get the current logged in user
     *
     * @return User
     */
 
-    public static function getCurrentUser() {
-        $username = Session::get('user');
-        if (!$username) {
-            abort(500, 'Session expired.');
+    public static function getCurrentUser($request) {
+        if ($request->user) {
+            return $request->user;
         }
-
-        $user = User::where('username', '=', $username)->first();
-        if (!$user) {
-            Log::error('User not found in database. User is: ' . $username);
-            abort(500, 'User not found');
+        else if (Session::has('user')) {
+            $username = Session::get('user');
+            return User::getUserFromUsername($username);
         }
-        return $user;
+        else {
+            return null;
+        }
     }
 
     /**
@@ -100,26 +63,28 @@ class User extends Eloquent {
     * @return string
     */
 
-    public static function getCurrentUsername() {
-        if (!Session::has('user')) {
-            abort(500, 'User not currently logged in.');
-            return false;
-        }
-
-        return Session::get('user');
+    public static function getCurrentUsername(Request $request) {
+        return $request->user->username;
     }
 
     /**
-    * Determine if user is a student who has accessed results from the left nav
+    * Return the user based on username
     *
-    * @return boolean
+    * @param  string  $username
+    * @return User
     */
 
-    public static function isStudentViewingResults() {
-        if (Session::has('student')) {
-            return true;
+    public static function getUserFromUsername($username)
+    {
+        if (!$username) {
+            return false;
         }
-        return false;
+
+        $user = User::where('username', '=', $username)->first();
+        if (!$user) {
+            return null;
+        }
+        return $user;
     }
 
     /**
@@ -143,6 +108,39 @@ class User extends Eloquent {
             $user['group'] = $this->matchUserToGroup($user['id'], $groups);
         }
         return $users;
+    }
+
+    /**
+    * Determine if the current logged-in user has admin privileges
+    *
+    * @return boolean
+    */
+
+    public function isAdmin() {
+        if ($this->admin == 'true') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+    * Save a new user (instructor or staff only)
+    *
+    * @param  string  $username
+    * @return mixed   User on success, false if user already exists
+    */
+
+    public static function saveUser($username) {
+        $new_user = new User;
+        if (User::where('username', '=', $username)->get()->count() > 0) {
+            return false;
+        }
+
+        $new_user->username = $username;
+        $new_user->save();
+        return $new_user;
     }
 
     /************************************************************************/

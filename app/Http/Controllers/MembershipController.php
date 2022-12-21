@@ -16,10 +16,11 @@ class MembershipController extends \BaseController {
     * @return Response (includes array of users)
     */
 
-    public function getCollectionMembership($id)
+    public function getCollectionMembership(Request $request, $id)
     {
+        $user = $request->user;
         $collection = Collection::findOrFail($id);
-        if (!$collection->canUserRead()) {
+        if (!$collection->canUserRead($user)) {
             return response()->error(403);
         }
         $memberships = Membership::where('collection_id', '=', $id)->get();
@@ -43,7 +44,7 @@ class MembershipController extends \BaseController {
 
     public function index(Request $request, $assessments = false)
     {
-        $user = User::getCurrentUser();
+        $user = $request->user;
         $includes = ['collection'];
         if ($assessments) {
             $includes = array_merge($includes, ['collection.assessmentGroups', 'collection.assessmentGroups.assessments']);
@@ -74,7 +75,7 @@ class MembershipController extends \BaseController {
         }
 
         $collection = Collection::findOrFail($collectionId);
-        if (!$collection->canUserWrite()) {
+        if (!$collection->canUserWrite($request->user)) {
             return response()->error(403);
         }
 
@@ -108,7 +109,7 @@ class MembershipController extends \BaseController {
     public function updateCollectionMembership(Request $request, $id)
     {
         $collection = Collection::findOrFail($id);
-        if (!$collection->canUserWrite()) {
+        if (!$collection->canUserWrite($request->user)) {
             return response()->error(403);
         }
         $users = $request->input('users');
@@ -126,7 +127,7 @@ class MembershipController extends \BaseController {
                 $membership->update();
             }
         }
-        $response = $this->getCollectionMembership($id);
+        $response = $this->getCollectionMembership($request, $id);
         return $response;
     }
 }

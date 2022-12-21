@@ -19,6 +19,11 @@ export class MultipleCorrectComponent implements OnInit {
   ngOnChanges(changesObj) {
     if (changesObj.currentQuestion) {
       this.utilitiesService.formatMath();
+      
+      //reset options for new question data (esp. after a restart)
+      for (let answerOption of this.currentQuestion.options) {
+        answerOption.selected = false;
+      }
     }
 
     this.utilitiesService.setLtiHeight();

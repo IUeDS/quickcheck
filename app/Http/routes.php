@@ -26,7 +26,8 @@ Route::get('assessment/{id?}', 'AssessmentController@show'); //option to include
 Route::post('assessment/', 'AssessmentController@showLTI'); //id included as query param for LTI tool
 
 //LTI config
-Route::get('lticonfig', 'HomeController@returnLtiConfig');
+Route::get('lticonfig', 'LtiController@returnLtiConfig');
+Route::post('logininitiations', 'LtiController@initializeOIDC');
 
 //errors
 Route::get('usernotfound', 'UserController@userNotFound');
@@ -52,7 +53,7 @@ Route::get('establishcookietrust', function() {
 
 Route::group(['prefix' => 'api'], function() {
     //Initializing an attempt
-    Route::post('attempt/{assessmentId}', 'AttemptController@initAttempt');
+    Route::post('attempt/{assessmentId}', 'AttemptController@launchAttempt');
 
     //Quiz-taking
     Route::get('assessment/{id}/questions', 'AssessmentController@getAssessmentQuestions');
@@ -115,7 +116,7 @@ Route::group(array('middleware' => array('auth')), function() {
     //instructor manage view to see overview of student results; includes query param for LTI context ID
     Route::get('manage', 'AttemptController@manageOverview');
     //instructor manage view to see attempts for a specific assessment in an LTI context
-    Route::get('assessment/{id}/attempts/{assignmentId?}', 'AttemptController@manageAttempts');
+    Route::get('assessment/{id}/attempts/{assignmentId?}/{resourceLinkId?}', 'AttemptController@manageAttempts');
     //instructor manage view to see attempts for a specific student in an LTI context
     Route::get('student/{studentId}/attempts', 'AttemptController@viewAttemptsForStudent');
 
@@ -154,6 +155,7 @@ Route::group(array('middleware' => array('auth')), function() {
         Route::delete('collection/{id}', 'CollectionController@destroy');
         Route::post('quickadd', 'CollectionController@quickAdd');
         Route::post('collection/{id}/search', 'CollectionController@search');
+        Route::post('createDeepLinkingJwt', 'CollectionController@createDeepLinkingJwt');
 
         //public collection endpoints
         Route::get('publiccollections', 'CollectionController@publicIndex');
@@ -195,7 +197,7 @@ Route::group(array('middleware' => array('auth')), function() {
 
         //results endpoints
         Route::get('attempts/{id}', 'AttemptController@getAttemptsForContext');
-        Route::get('assessment/{id}/attempts/context/{context_id}/{assignmentId?}', 'AttemptController@getAttemptsForAssessment');
+        Route::get('assessment/{id}/attempts/context/{context_id}/{assignmentId?}/{resourceLinkId?}', 'AttemptController@getAttemptsForAssessment');
         Route::get('attempt/{id}/responses', 'StudentResponseController@getAttemptResponses');
         Route::get('responses/analytics/assessment/{id}/context/{context_id}/{assignment_id?}', 'StudentResponseController@calculateAnalytics');
         Route::get('attempts/{contextId}/student/{studentId}', 'AttemptController@getAttemptsForStudentInCourse');

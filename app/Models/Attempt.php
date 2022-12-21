@@ -5,23 +5,21 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Http\Request;
 use App\Classes\ExternalData\CanvasAPI;
 use App\Classes\ExternalData\Caliper;
-use App\Classes\LTI\Outcome;
-use App\Classes\LTI\Grade;
 use App\Models\CollectionFeature;
 use App\Models\CourseContext;
+use App\Models\LineItem;
 use App\Models\Student;
 use App\Classes\LTI\LtiContext;
-use App\Exceptions\SessionMissingLtiContextException;
+use App\Exceptions\MissingLtiContextException;
+use Illuminate\Support\Facades\Cache;
 
 class Attempt extends Eloquent {
     protected $table = 'attempts';
     protected $fillable = ['assessment_id',
                             'course_context_id',
                             'student_id',
-                            'lti_custom_assignment_id',
+                            'line_item_id',
                             'lti_custom_section_id',
-                            'lis_outcome_service_url',
-                            'lis_result_sourcedid',
                             'last_milestone',
                             'count_correct',
                             'count_incorrect',
@@ -35,11 +33,14 @@ class Attempt extends Eloquent {
     public $optionalParams = ['last_milestone', 'count_correct', 'count_incorrect', 'complete', 'calculated_score'];
 
     //constants
+    public $MILESTONE_CREATED = 'Attempt created';
+    public $MILESTONE_LTI_LAUNCH = 'LTI launch';
+    public $MILESTONE_ANONYMOUS_LAUNCH = 'Anonymous launch';
     public $TIMEOUT_BOUNDARY = '1 minute';
     public $TIMEOUT_MAX_COUNT = 2;
     public $TIMEOUT_MILESTONE = 'timeout';
     public $TIMEOUT_LENGTH = '2 minutes';
-    public $TIMEOUT_SESSION_KEY = 'timeoutEnd';
+    public $TIMEOUT_CACHE_KEY = 'timeoutEnd-';
 
     public function assessment() {
         return $this->belongsTo('App\Models\Assessment');
@@ -55,6 +56,10 @@ class Attempt extends Eloquent {
 
     public function studentResponses() {
         return $this->hasMany('App\Models\StudentResponse');
+    }
+
+    public function lineItem() {
+        return $this->belongsTo('App\Models\LineItem');
     }
 
     /************************************************************************/
@@ -98,20 +103,27 @@ class Attempt extends Eloquent {
                     }
                 }
             }
-            //assessment, student, and course context information
+            //assessment, student, line item, and course context information
             $attempt['assessment_name'] = $attempt['assessment']['name'];
             $studentData = Student::formatExport($attempt['student']);
+            //for LTI 1.3 launches, include info from line item, otherwise use original data if a 1.1 launch
+            if ($attempt['line_item_id']) {
+                $lineItem = $attempt['line_item'];
+                $attempt['due_at'] = $lineItem['due_at'];
+                $attempt['lti_custom_assignment_id'] = $lineItem['lti_custom_assignment_id'];
+            }
             $attempt = array_merge($attempt, $studentData, $courseData);
 
             //remove columns that the instructor doesn't need and nested objects
             $removeKeys = [
                 'assessment',
                 'course_context_id',
-                'lis_outcome_service_url',
-                'lis_result_sourcedid',
+                'line_item_id',
+                'line_item',
                 'student',
                 'student_responses',
-                'student_id'
+                'student_id',
+                'nonce'
             ];
             foreach ($removeKeys as $key) {
                 unset($attempt[$key]);
@@ -138,22 +150,48 @@ class Attempt extends Eloquent {
     */
 
     public function getAssignmentId() {
-        return $this->lti_custom_assignment_id;
+        if (!$this->lineItem) {
+            return null;
+        }
+
+        return $this->lineItem->getAssignmentId();
+    }
+
+    /**
+    * Get an attempt's line item ID (ID internal to Quick Check)
+    *
+    * @return int
+    */
+
+    public function getLineItemId() {
+        return $this->line_item_id;
     }
 
     /**
     * Find the assignment ID for an assessment within a course context.
     *
-    * @param  CourseContext  $courseContext
-    * @param  int  $assessmentId
+    * @param  int     $courseContextId
+    * @param  int     $assessmentId
+    * @param  string  $resourceLinkId
     * @return int
     */
 
-    public static function getAssignmentIdFromAttempts($courseContext, $assessmentId)
+    public static function getAssignmentIdFromAttempts($courseContextId, $assessmentId, $resourceLinkId = null)
     {
-        $firstAttempt = Attempt::where('course_context_id', '=', $courseContext->id)
+        $firstAttempt = Attempt::where('course_context_id', '=', $courseContextId)
             ->where('assessment_id', '=', $assessmentId)
-            ->firstOrFail();
+            ->whereNotNull('line_item_id');
+        
+        //if separating attempts across multiple assignment embeds
+        if ($resourceLinkId) {
+            $firstAttempt = $firstAttempt->where('resource_link_id', '=', $resourceLinkId);
+        }
+        
+        $firstAttempt = $firstAttempt->first();
+
+        if (!$firstAttempt) {
+            return null;
+        }
 
         return $firstAttempt->getAssignmentId();
     }
@@ -192,12 +230,41 @@ class Attempt extends Eloquent {
     */
 
     public function getDueAt($convertToDateTime = false) {
-        if ($convertToDateTime && $this->due_at) { //don't convert a null value
-            //convert due_at from datetime to timestamp
-            return new DateTime($this->due_at);
+        $lineItem = $this->lineItem()->first();
+        if (!$lineItem) {
+            return null;
         }
 
-        return $this->due_at;
+        $dueAt = $lineItem->getDueAt();
+
+        if ($convertToDateTime && $dueAt) { //don't convert a null value
+            //convert due_at from datetime to timestamp
+            return new DateTime($dueAt);
+        }
+
+        return $dueAt;
+    }
+
+    /**
+    * Get an attempt's LTI launch nonce
+    *
+    * @return string $nonce
+    */
+
+    public function getNonce()
+    {
+        return $this->nonce;
+    }
+
+    /**
+    * Get an attempt's LTI launch resource link ID
+    *
+    * @return string $resourceLinkId
+    */
+
+    public function getResourceLinkId()
+    {
+        return $this->resource_link_id;
     }
 
     /**
@@ -219,26 +286,17 @@ class Attempt extends Eloquent {
     }
 
     /**
-    * Get an attempt's sourcedId
-    *
-    * @return string
-    */
-
-    public function getSourcedId() {
-        return $this->lis_result_sourcedid;
-    }
-
-    /**
     * Get all attempts made on an assessment in a course context
     *
-    * @param  int  $assessment_id
-    * @param  int  $context_id
-    * @param  int  $assignment_id
-    * @param  bool $emptyAttemptsHidden
-    * @return []   $attempts
+    * @param  int    $assessment_id
+    * @param  int    $context_id
+    * @param  int    $assignment_id
+    * @param  string $resource_link_id
+    * @param  bool   $emptyAttemptsHidden
+    * @return []     $attempts
     */
 
-    public static function getAttemptsForAssessment($assessment_id, $context_id, $assignment_id, $emptyAttemptsHidden) {
+    public static function getAttemptsForAssessment($assessment_id, $context_id, $assignment_id, $resource_link_id, $emptyAttemptsHidden) {
         //get all attempts; sort by last name, but sort by user ID secondarily in case two users
         //have the same last name; for each user, sort attempts chronologically. this query is
         //a bit more involved, since we need to sort by student name, which is on a separate model.
@@ -253,15 +311,24 @@ class Attempt extends Eloquent {
             ->orderBy('lti_custom_user_id', 'ASC')
             ->orderBy('attempts.created_at', 'ASC');
 
-        if ($assignment_id) {
-            $attempts = $attempts->where('lti_custom_assignment_id', '=', $assignment_id);
-        }
-        else {
-            $attempts = $attempts->whereNull('lti_custom_assignment_id');
-        }
-
         if ($emptyAttemptsHidden) {
             $attempts = $attempts->has('studentResponses');
+        }
+
+        if ($resource_link_id) {
+            $attempts = $attempts->where('resource_link_id', '=', $resource_link_id);
+            $attempts = $attempts->orWhere('lti_custom_assignment_id', '=', $assignment_id); //if a mix of LTI 1.1 and 1.3 attempts
+        }
+        else if ($assignment_id) {
+            //unfortunately we have to query both for historic 1.1 attempts and 1.3 using line items...
+            $attempts = $attempts->whereHas('lineItem', function ($query) use ($assignment_id) {
+                $query->where('lti_custom_assignment_id', $assignment_id);
+            });
+            $attempts = $attempts->orWhere('lti_custom_assignment_id', '=', $assignment_id);
+        }
+        else {
+            //applies both to 1.3 module launches and all historic 1.1 launches
+            $attempts = $attempts->doesntHave('lineItem');
         }
 
         $attempts = $attempts->get();
@@ -321,6 +388,23 @@ class Attempt extends Eloquent {
     }
 
     /**
+    * Get data needed to forward to Caliper sensor on LTI launch
+    *
+    * @return []
+    */
+
+    public function getCaliperData() {
+        $caliperData = null;
+        $caliper = new Caliper();
+        $caliperEnabled = $caliper->isEnabled();
+        if ($caliperEnabled) {
+            $caliperData = $caliper->buildAssessmentStartedEventData($this);
+        }
+
+        return $caliperData;
+    }
+
+    /**
     * Get the duration of an attempt
     *
     * @return float (time in seconds)
@@ -331,16 +415,14 @@ class Attempt extends Eloquent {
     }
 
     /**
-    * Return the url of the LTI consumer (derived from outcome service url)
+    * Return the url of the LTI consumer (always Canvas in our case)
     *
     * @return string
     */
 
     public function getLtiConsumerUrl()
     {
-        $outcomeServiceUrl = $this->lis_outcome_service_url;
-        $splitUrl = explode('/api/', $outcomeServiceUrl);
-        return $splitUrl[0];
+        return 'https://iu.instructure.com';
     }
 
     /**
@@ -356,55 +438,38 @@ class Attempt extends Eloquent {
 
     /**
     * Initialize an attempt for a given assessment_id;
-    * Writes a record in the database for the attempt, and can create either LTI or anonymous attempts;
+    * Writes a record in the database for the attempt, and can create either LTI or anonymous attempts
     *
-    * @param  Request $request
-    * @param  str     $assessment_id
-    * @return []      (includes attempt ID, attempt type, and optional group name)
+    * @param  str        $assessment_id
+    * @param  Request    $request
+    * @param  LtiContext $ltiContext
+    * @return void
     */
 
-    public function initAttempt($assessmentId, Request $request) {
-        $attemptType = $this->getAttemptType($request);
-        $attempt = null;
-        $groupName = null;
-        $caliperData = null;
-        $timeoutRemaining = null;
+    public function initAttempt($assessmentId, Request $request, LtiContext $ltiContext = null) {
+        $attemptType = $this->getAttemptType($request, $ltiContext);
 
-        if ($attemptType === 'LTI') {
-            $attempt = $this->initLtiAttempt($assessmentId, $request);
+        //only init with LTI data if present; otherwise, if user is restarting, data already copied from last valid attempt
+        if ($attemptType === 'LTI' && $ltiContext) {
+            $this->initLtiAttempt($assessmentId, $ltiContext);
         }
-        else {
-            $attempt = $this->initAnonymousAttempt($assessmentId);
+        if ($attemptType === 'Anonymous') {
+            $this->initAnonymousAttempt($assessmentId);
         }
+    }
 
-        //get group information, if necessary; only provided if custom activity has group in request
-        if ($request->has('group')) {
-            $groupName = $this->getGroupName($attemptType, $attempt);
-        }
+    /**
+    * Initialize an anonymous attempt
+    *
+    * @param  int  $assessmentId
+    * @return Attempt
+    */
 
-        $caliper = new Caliper();
-        $caliperEnabled = $caliper->isEnabled();
-        if ($caliperEnabled) {
-            $caliperData = $caliper->buildAssessmentStartedEventData($attempt);
-        }
-
-        //if attempt timeout feature enabled, determine if timeout is in effect
-        $collectionFeature = new CollectionFeature();
-        if ($collectionFeature->isAttemptTimeoutEnabled($assessmentId)) {
-            $timeoutRemaining = $attempt->getTimeoutRemaining($request);
-            if ($timeoutRemaining > 0) {
-                $attempt->last_milestone = $this->TIMEOUT_MILESTONE;
-                $attempt->save();
-            }
-        }
-
-        return [
-            'attemptId' => $attempt->id,
-            'attemptType' => $attemptType,
-            'caliper' => $caliperData,
-            'groupName' => $groupName,
-            'timeoutRemaining' => $timeoutRemaining
-        ];
+    public function initAnonymousAttempt($assessmentId) {
+        $this->assessment_id = $assessmentId;
+        $this->last_milestone = $this->MILESTONE_CREATED;
+        $this->save();
+        return $this;
     }
 
     /**
@@ -439,6 +504,20 @@ class Attempt extends Eloquent {
     }
 
     /**
+    * Determine if an attempt has been launched
+    *
+    * @return boolean
+    */
+
+    public function isLaunched() {
+        if ($this->last_milestone === $this->MILESTONE_CREATED) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
     * Determine if the attempt is past due
     *
     * @return boolean
@@ -446,7 +525,7 @@ class Attempt extends Eloquent {
 
     public function isPastDue() {
         if (!$this->getDueAt()) { //no due date
-            return false;
+            return true;
         }
 
         $convertToDateTime = true;
@@ -482,11 +561,48 @@ class Attempt extends Eloquent {
     */
 
     public function isTiedToGradebook() {
-        if ($this->lis_result_sourcedid) {
+        if ($this->line_item_id) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+    * Update attempt with launch status
+    *
+    * @param bool   $anonymous (optional, default false)
+    * @return void
+    */
+
+    public function launchAttempt($anonymous = false) {
+        if ($this->isLaunched()) {
+            abort(403, 'Attempt has already been initialized, please refresh the page.');
+        }
+
+        if ($anonymous) {
+            $this->last_milestone = $this->MILESTONE_ANONYMOUS_LAUNCH;
+        }
+        else {
+            $this->last_milestone = $this->MILESTONE_LTI_LAUNCH;
+        }
+
+        $this->save();
+    }
+
+    /**
+    * Reset attempt data for a new launch (used when restarting)
+    *
+    * @return void
+    */
+
+    public function reset() {
+        $this->last_milestone = $this->MILESTONE_CREATED;
+        $this->count_correct = null;
+        $this->count_incorrect = null;
+        $this->calculated_score = null;
+        $this->complete = 0;
+        $this->save();
     }
 
     /**
@@ -527,24 +643,28 @@ class Attempt extends Eloquent {
     * @return string
     */
 
-    private function getAttemptType($request) {
+    private function getAttemptType($request, $ltiContext = null) {
+        //if preview included, it's an anonymous attempt from instructor
         if ($request->has('preview')) {
             //boolean in js comes through as string
             $isPreview = $request->input('preview') === "true" ? true : false;
-            //if preview included, it's an anonymous attempt; although LTI data may be present
-            //for an instructor previewing, it gets messy because assessment-specific information
-            //may not be present if the instructor has not accessed it via an assignment
             if ($isPreview) {
                 return 'Anonymous';
             }
         }
-        if (LtiContext::isInLtiContext() && !$request->has('anonymous')) {
+
+        //new LTI launch
+        if ($ltiContext && !$request->has('anonymous')) {
             return 'LTI';
         }
 
-        //if not explicitly an instructor preview and no LTI context, throw an error;
-        //students who have an expired session should be told to refresh the LTI launch
-        throw new SessionMissingLtiContextException;
+        //student is restarting on the same quick check and data has been copied over
+        if ($this->course_context_id) {
+            return 'LTI';
+        }
+
+        //if not explicitly an instructor preview and no LTI context, throw an error
+        throw new MissingLtiContextException;
     }
 
     /**
@@ -564,7 +684,6 @@ class Attempt extends Eloquent {
         $recentAttempts = Attempt::where('student_id', '=', $this->student_id)
             ->where('last_milestone', '!=', $this->TIMEOUT_MILESTONE) //only count valid attempts
             ->where('created_at', '>', $boundary_timestamp) //in a recent time period
-            ->whereNotNull('lis_result_sourcedid') //only include graded attempts
             ->has('studentResponses') //where questions were answered (so not just a view)
             ->limit(20) //limit to ease load on DB, just in case someone is refreshing a lot
             ->get()
@@ -592,24 +711,17 @@ class Attempt extends Eloquent {
     /**
     * If a custom activity where group name is included, get the name of the student's group
     *
-    * @param  string  $attemptType
-    * @param  Attempt $attempt
     * @return string
     */
 
-    private function getGroupName($attemptType, $attempt) {
-        //instructors and course designers can't be in a group, but students can be; technically the Canvas API class will
-        //just send back false for the group name if an instructor/designer, but it does still need to run quite a few
-        //API queries, so it will save some time to bypass that step altogether if an instructor/designer in LTI context
-        if ($attemptType === 'LTI' && LtiContext::isInstructor()) {
-            return false;
-        }
-        $courseContext = CourseContext::find($attempt->course_context_id);
+    private function getGroupName() {
+        $courseContext = CourseContext::find($this->course_context_id);
         $courseId = $courseContext->lti_custom_course_id;
-        $student = Student::find($attempt->student_id);
+        $student = Student::find($this->student_id);
         $studentId = $student->lti_custom_user_id;
         $canvasAPI = new CanvasAPI;
         $groupName = $canvasAPI->getUserGroup($courseId, $studentId);
+
         return $groupName;
     }
 
@@ -624,16 +736,14 @@ class Attempt extends Eloquent {
     }
 
     /**
-    * Get time in seconds remaining in timeout based on session data;
-    * session value allows for timeout periods that last longer than the
-    * boundary period (i.e., 1 minute window for attempts but 2 minute timeout)
+    * Get time in seconds remaining in timeout
     *
-    * @param  Request  $request
-    * @return mixed (int if value in session and in future, otherwise false)
+    * @param  int   $studentId
+    * @return mixed (int if value in cache and in future, otherwise false)
     */
 
-    private function getTimeoutInSession(Request $request) {
-        $timeoutEnd = $request->session()->get($this->TIMEOUT_SESSION_KEY);
+    private function getTimeoutRemainingInCache($studentId) {
+        $timeoutEnd = Cache::get($this->TIMEOUT_CACHE_KEY . $studentId);
         if (!$timeoutEnd) {
             return false;
         }
@@ -650,18 +760,20 @@ class Attempt extends Eloquent {
     /**
     * Get time in seconds of timeout time remaining if feature enabled in collection
     *
-    * @param  Request  $request
+    * @param  int  $assessmentId
+    * @param  int  $studentId
     * @return int
     */
 
-    private function getTimeoutRemaining(Request $request) {
-        if (!$this->isTimeoutApplicable()) {
+    public function getTimeoutRemaining($assessmentId, $studentId) {
+        if (!$this->isTimeoutApplicable($assessmentId)) {
             return 0;
         }
 
-        $timeoutRemainingInSession = $this->getTimeoutInSession($request);
-        if ($timeoutRemainingInSession) {
-            return $timeoutRemainingInSession;
+        $timeoutRemainingInCache = $this->getTimeoutRemainingInCache($studentId);
+        if ($timeoutRemainingInCache) {
+            $this->setTimeoutOnAttempt();
+            return $timeoutRemainingInCache;
         }
 
         $recentAttempts = $this->getAttemptsInTimeoutWindow();
@@ -675,7 +787,8 @@ class Attempt extends Eloquent {
         $endTimeout = new DateTime($lastValidAttempt->updated_at);
         $endTimeout->modify('+' . $timeoutLength);
         $endTimeoutTimestamp = $endTimeout->getTimestamp();
-        $this->setTimeoutInSession($request, $endTimeoutTimestamp);
+        $this->setTimeoutInCache($studentId, $endTimeoutTimestamp);
+        $this->setTimeoutOnAttempt();
 
         $now = new DateTime();
         $timeRemaining = $endTimeoutTimestamp - $now->getTimestamp(); //difference in seconds
@@ -684,50 +797,78 @@ class Attempt extends Eloquent {
     }
 
     /**
-    * Initialize an anonymous attempt
-    *
-    * @param  int  $assessmentId
-    * @return Attempt
-    */
-
-    private function initAnonymousAttempt($assessmentId) {
-        $attempt = new Attempt;
-        $attempt->assessment_id = $assessmentId;
-        $attempt->last_milestone = "Anonymous Launch";
-        $attempt->save();
-        return $attempt;
-    }
-
-    /**
     * Initialize an LTI attempt
     *
-    * @param  int     $assessmentId
-    * @param  Request $request
+    * @param  int        $assessmentId
+    * @param  LtiContext $ltiContext
     * @return Attempt
     */
 
-    private function initLtiAttempt($assessmentId, $request) {
-        $attempt = new Attempt;
-        $ltiContext = new LtiContext();
-        $attemptData = $ltiContext->getAttemptDataFromSession($request, $assessmentId);
-        $attempt = $attempt->create($attemptData);
-        return $attempt;
+    private function initLtiAttempt($assessmentId, $ltiContext) {
+        $contextId = $ltiContext->getContextId();
+        $courseContext = CourseContext::findByLtiContextId($contextId);
+        $canvasUserId = $ltiContext->getUserId();
+        $student = Student::findByCanvasUserId($canvasUserId);
+
+        $this->assessment_id = $assessmentId;
+        $this->course_context_id = $courseContext->id;
+        $this->student_id = $student->id;
+        $this->lti_custom_section_id = $ltiContext->getSectionId();
+        $this->last_milestone = $this->MILESTONE_CREATED;
+        $this->assignment_title = $ltiContext->getAssignmentTitle();
+        $this->resource_link_id = $ltiContext->getResourceLinkId();
+        $this->nonce = $ltiContext->getNonce();
+
+        //if an instructor, designer, etc. from LTI context, then leave line item value NULL,
+        //as it will error out if we try to start a submission for a non-student.
+        $lineItemUrl = $ltiContext->getLineItemUrl();
+        if (!$ltiContext->isInstructor() && $lineItemUrl) {
+            $lineItem = LineItem::findByUrl($lineItemUrl);
+            $assignmentId = $ltiContext->getAssignmentId();
+            $dueAt = $ltiContext->getDueAt();
+            $pointsPossible = $ltiContext->getPointsPossible();
+
+            if (!$lineItem) {
+                $lineItem = new LineItem();
+                $lineItem->initialize($lineItemUrl, $dueAt, $assignmentId);
+            }
+
+            if ($lineItem->getDueAt() != $dueAt) { //update if instructor changed due date
+                $lineItem->setDueAt($dueAt);
+            }
+
+            if ($lineItem->getScoreMaximum() != $pointsPossible) { //update if instructor changed score
+                $lineItem->setScoreMaximum($pointsPossible);
+            }
+
+            //In cases where term has ended and line item cannot be retrieved, we may not have the
+            //necessary data and need to check first before saving to prevent an error.
+            if ($lineItem) {
+                $this->line_item_id = $lineItem->id;
+            }
+        }
+
+        $this->save();
+
+        return $this;
     }
 
     /**
     * Determine if timeout feature applies to an attempt (before due date, not anonymous, etc.)
     *
+    * @param  int  $assessmentId
     * @return boolean
     */
 
-    private function isTimeoutApplicable() {
-        //only needed for LTI attempts
-        if ($this->isAnonymous()) {
+    private function isTimeoutApplicable($assessmentId) {
+        //must be enabled at the collection-level
+        $collectionFeature = new CollectionFeature();
+        if (!$collectionFeature->isAttemptTimeoutEnabled($assessmentId)) {
             return false;
         }
 
-        //if ungraded, no timeout necessary
-        if (!$this->lis_result_sourcedid) {
+        //only needed for LTI attempts
+        if ($this->isAnonymous()) {
             return false;
         }
 
@@ -756,14 +897,28 @@ class Attempt extends Eloquent {
     }
 
     /**
-    * If timeout feature turned on, set the end of the timeout in the session with a timestamp
+    * Set timeout in cache for this user; can't simply use a DB query because the timeout length may be longer
+    * than the window in which attempts can be made, i.e., if student is on a 2 minute timeout, but we are checking
+    * for attempts made within a 1 minute window, then query for the 1 minute window would give us the thumbs up.
+    * Have the item persist in the cache only for the duration of the timeout.
     *
-    * @param  Request $request
-    * @param  int     $endTimeoutTimestamp
+    * @param  int   $studentId
+    * @param  int   $endTimeoutTimestamp
     * @return void
     */
 
-    private function setTimeoutInSession(Request $request, $endTimeoutTimestamp) {
-        $request->session()->put($this->TIMEOUT_SESSION_KEY, $endTimeoutTimestamp);
+    private function setTimeoutInCache($studentId, $endTimeoutTimestamp) {
+        Cache::put($this->TIMEOUT_CACHE_KEY . $studentId, $endTimeoutTimestamp, $endTimeoutTimestamp);
+    }
+
+    /**
+    * Set an attempt as being subject to a timeout in the database
+    *
+    * @return void
+    */
+
+    private function setTimeoutOnAttempt() {
+        $this->last_milestone = $this->TIMEOUT_MILESTONE;
+        $this->save();
     }
 }

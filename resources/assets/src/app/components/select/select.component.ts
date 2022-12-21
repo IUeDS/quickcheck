@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CollectionService } from '../../services/collection.service';
 import { UserService } from '../../services/user.service';
 import { UtilitiesService } from '../../services/utilities.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'qc-select',
@@ -9,11 +10,11 @@ import { UtilitiesService } from '../../services/utilities.service';
   styleUrls: ['./select.component.scss']
 })
 export class SelectComponent implements OnInit {
-
   user;
   admin = false;
   memberships = [];
   assessments = [];
+  deploymentId;
   launchUrlStem;
   redirectUrl;
   search = {
@@ -25,45 +26,25 @@ export class SelectComponent implements OnInit {
     'viewAll': false,
     'collections': []
   };
-  collapseAccordion = false; 
 
   constructor(
   public utilitiesService: UtilitiesService,
-  private userService: UserService,
-  private collectionService: CollectionService
-  ) { }
+  public userService: UserService,
+  public collectionService: CollectionService
+  ) {}
 
   async ngOnInit() {
     this.utilitiesService.setTitle('Quick Check - Select');
     this.launchUrlStem = this.utilitiesService.getQueryParam('launchUrlStem');
     this.redirectUrl = this.utilitiesService.getQueryParam('redirectUrl');
+    this.deploymentId = this.utilitiesService.getQueryParam('deploymentId');
+
     await this.getMemberships();
   }
 
   clearSearch() {
     this.search.searchText = '';
     this.updateSearch();
-  }
-
-  createContentItemJson(assessment) {
-    const contentItemJson = {
-      '@context': 'http://purl.imsglobal.org/ctx/lti/v1/ContentItem',
-      '@graph': [
-        {
-          '@type': 'LtiLinkItem',
-          '@id': this.launchUrlStem + assessment.id,
-          'url': this.launchUrlStem + assessment.id,
-          'title': assessment.name,
-          'text': 'Quick Check',
-          'mediaType': 'application/vnd.ims.lti.v1.ltilink',
-          'placementAdvice': {
-            'presentationDocumentTarget': 'frame'
-          }
-        }
-      ]
-    };
-
-    return JSON.stringify(contentItemJson);
   }
 
   //grab the assessments out of the collections/assessment groups to make search easier
@@ -106,13 +87,6 @@ export class SelectComponent implements OnInit {
     }
 
     this.memberships = data.memberships;
-    //average number of sets per user is 5, so if > 5 because the user is an
-    //instructional designer, etc., then collapse set accordions by default 
-    //for easier browsing
-    if (this.memberships.length > 5) {
-      this.collapseAccordion = true;
-    }
-
     this.utilitiesService.loadingFinished();
     await this.getUser(); //display admin features if an admin
   }

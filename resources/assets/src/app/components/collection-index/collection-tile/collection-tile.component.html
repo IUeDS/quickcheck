@@ -11,7 +11,7 @@
                 <span class="sr-only">Delete set {{ this.collection.name }}</span>
             </span>
         </div>
-        <h3>Owner: <span class="qc-owner-name">{{ this.collection.owner }}</span></h3>
+        <h3>Created by: <span class="qc-owner-name">{{ this.collection.owner }}</span></h3>
         <h3 *ngIf="this.isReadOnly">Permissions: Read-Only</h3>
         <h3 *ngIf="this.collection.public_collection == 'true'"><span class="fa fa-eye" aria-hidden="true"></span> Public set</h3>
         <div class="row">

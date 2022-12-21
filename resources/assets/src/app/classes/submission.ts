@@ -21,7 +21,7 @@ export class Submission {
   }
 
   isGradeable() {
-    if (!this.attempt.lis_result_sourcedid) { //instructor/designer OR ungraded
+    if (!this.attempt.line_item_id) { //instructor/designer OR ungraded
       return false;
     }
     if (this.pointsPossible === 0) {
@@ -45,6 +45,26 @@ export class Submission {
     }
 
     return false; //user in course, graded assignment, but no graded submission
+  }
+
+  isHistoricLtiAttempt() {
+    if (this.attempt.lti_custom_assignment_id) {
+      return true;
+    }
+
+    return false;
+  }
+
+  isLate() {
+    if (!this.userSubmission) {
+      return false;
+    }
+
+    if (this.userSubmission.late) {
+      return true;
+    }
+
+    return false;
   }
 
   needsGrade() {

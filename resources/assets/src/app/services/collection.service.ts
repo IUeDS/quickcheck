@@ -37,6 +37,15 @@ export class CollectionService {
       .toPromise();
   }
 
+  async createDeepLinkingJwt(data) {
+    const timeoutLength = this.httpService.getDefaultTimeout();
+    const path = this.httpService.getApiRoute() + '/createDeepLinkingJwt';
+
+    return await this.httpClient.post(path, data)
+      .pipe(timeout(timeoutLength))
+      .toPromise();
+  }
+
   async createImportedQuizzes(data) {
     const timeoutLength = this.httpService.getMediumTimeout();
     const path = this.httpService.getApiRoute() + '/createImportedQuizzes';

@@ -6,8 +6,8 @@
             <input type="radio" name="{{this.currentQuestion.id}}" class="form-check-input"
                     value="{{answerOption.answer_text}}"
                     id="{{answerOption.id}}"
-                    [checked]="false"
-                    (click)="this.onAnswerSelected(answerOption)"
+                    [(ngModel)]="answerOption.selected"
+                    (ngModelChange)="this.onAnswerSelected(answerOption)"
                     [attr.tabindex]="this.modalVisible ? -1 : 0">
             <label [innerHTML]="answerOption.answer_text | safe: 'html'" for="{{answerOption.id}}" class="form-check-label"></label>
         </div>

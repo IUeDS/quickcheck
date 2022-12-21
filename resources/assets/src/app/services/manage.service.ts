@@ -28,11 +28,14 @@ export class ManageService {
       .toPromise();
   }
 
-  async getAttemptsAndResponses(assessmentId, assignmentId, contextId) {
+  async getAttemptsAndResponses(assessmentId, assignmentId, resouceLinkId, contextId) {
     const timeoutLength = this.httpService.getCrazyLongTimeout();
     let path = this.httpService.getApiRoute() + '/assessment/' + assessmentId + '/attempts/context/' + contextId;
     if (assignmentId) {
       path += ('/' + assignmentId);
+    }
+    if (resouceLinkId) {
+      path += ('/' + resouceLinkId);
     }
 
     return await this.httpClient.get(path)
@@ -102,7 +105,7 @@ export class ManageService {
   }
 
   async getStudentAnalytics(contextId, studentId) {
-    const timeoutLength = this.httpService.getLongTimeout();
+    const timeoutLength = this.httpService.getCrazyLongTimeout();
     const path = this.httpService.getApiRoute() + '/analytics/context/' + contextId + '/student/' + studentId;
 
     return await this.httpClient.get(path)

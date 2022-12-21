@@ -6,7 +6,7 @@
         <th class="danger text-center">Incorrect</th>
         <th>Score</th>
         <th class="text-center">Complete</th>
-        <th class="text-center">Past Due</th>
+        <th class="text-center" *ngIf="!this.isStudent">Past Due</th>
         <th>Start Time</th>
         <th>Elapsed Time</th>
         <th *ngIf="this.showResponses">Responses</th>
@@ -28,8 +28,8 @@
                     <span class="fa fa-check qc-attempt-completed" aria-hidden="true"></span>
                     <span class="sr-only">Complete</span></span>
             </td>
-            <td class="text-center qc-attempt-late-cell">
-                <span *ngIf="attempt.isLate">
+            <td class="text-center qc-attempt-late-cell" *ngIf="!this.isStudent">
+                <span *ngIf="this.isLate(attempt)">
                     <span class="fa fa-clock-o qc-attempt-late" aria-hidden="true"></span>
                     <span class="sr-only">Late Submission</span>
                 </span>

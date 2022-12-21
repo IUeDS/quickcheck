@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Classes\LTI\Grade;
 use App\Classes\LTI\Outcome;
+use App\Classes\LTI\LtiContext;
 use App\Classes\ExternalData\CanvasAPI as CanvasAPI;
 use App\Models\Attempt;
 use App\Models\Student;
@@ -29,30 +30,17 @@ class GradeController extends \BaseController
         $failedSubmissions = array();
         foreach ($attempts as $attempt) {
             $attemptId = $attempt['attemptId'];
-            $attempt = Attempt::find($attemptId);
+            $attempt = Attempt::findOrFail($attemptId);
             //include student information on passback to client
             $student = Student::find($attempt->student_id);
             $attempt->student = $student;
 
-            $grade = new Grade($attempt, $request);
+            $grade = new Grade($attempt);
             $result = $grade->submitGrade();
             $response = ['attempt' => $attempt->toArray(), 'score' => $attempt->getCalculatedScore()];
-            if ($result === true) {
-                array_push($successfulSubmissions, $response);
-            }
-            else {
-                array_push($failedSubmissions, $response);
-            }
+            array_push($successfulSubmissions, $response);
         }
 
-        if (count($failedSubmissions)) {
-            //note: returning 200 status instead of 500 because there might have been some successful submissions
-            return response()->error(200, [
-                'reason' => 'There was an error sending grades to the gradebook.',
-                'successfulSubmissions' => $successfulSubmissions,
-                'failedSubmissions' => $failedSubmissions
-            ]);
-        }
         return response()->success([
             'successfulSubmissions' => $successfulSubmissions,
             'failedSubmissions' => $failedSubmissions
@@ -97,7 +85,7 @@ class GradeController extends \BaseController
         $attemptGraded = false;
         $attemptId = $request->input('attemptId');
         $attempt = Attempt::findOrFail($attemptId);
-        $grade = new Grade($attempt, $request);
+        $grade = new Grade($attempt);
 
         if (!$grade->isReadyForGrade()) {
             $attemptGraded = false;
@@ -107,12 +95,7 @@ class GradeController extends \BaseController
         }
         else {
             $result = $grade->submitGrade();
-            if ($result !== true) {
-                return response()->error(500, [$result]);
-            }
-            else {
-                $attemptGraded = 'graded';
-            }
+            $attemptGraded = 'graded';
         }
 
         return response()->success(['attemptGraded' => $attemptGraded]);
@@ -134,7 +117,7 @@ class GradeController extends \BaseController
         }
 
         $courseContext = CourseContext::where('lti_context_id', '=', $contextId)->first();
-        $assignmentId = Attempt::getAssignmentIdFromAttempts($courseContext, $assessmentId);
+        $assignmentId = Attempt::getAssignmentIdFromAttempts($courseContext->id, $assessmentId);
 
         if (!$assignmentId) { //ungraded
             return response()->success(['submissions' => null]);
@@ -160,21 +143,23 @@ class GradeController extends \BaseController
 
     public function store(Request $request)
     {
-        $sourcedId = $request->input('sourcedId');
-        $grade = $request->input('grade');
-        $attempt = Attempt::where('lis_result_sourcedid', $sourcedId)->first();
+        $attemptId = $request->input('attemptId');
+        $score = $request->input('grade');
 
         //a string of "0" is considered false in PHP, but we still want to check that a grade is supplied, and 0 is indeed
         //a valid grade, so we have to check for either a grade that evaluates to TRUE or a value of "0"
-        if (!$sourcedId || (!$grade && $grade !== '0')) {
-            return response()->error(400, ['A sourced ID and/or grade were not supplied in this request.']);
+        if (!$attemptId || (!$score && $score !== '0')) {
+            return response()->error(400, ['An attempt ID and/or grade were not supplied in this request.']);
         }
 
-        $outcome = new Outcome;
-        $result = $outcome->sendGrade($sourcedId, $attempt, $grade, $request);
+        $attempt = Attempt::findOrFail($attemptId);
+        $grade = new Grade($attempt);
+        $result = $grade->submitGrade($score);
+
         if (!$result) {
             return response()->error(500, [$result]);
         }
+        
         return response()->success();
     }
 }
