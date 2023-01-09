@@ -81,7 +81,7 @@ class LTIAdvantage {
     * @return void
     */
 
-    private function checkForGradeErrors($data = null)
+    private function checkForGradeErrors($data = null, $url = null, $params = null)
     {
         $unresponsiveErrorMessage = 'The Canvas gradebook is currently unresponsive. Please try again later.';
 
@@ -98,7 +98,8 @@ class LTIAdvantage {
         foreach ($errorList as $errors) {
             if (!is_array($errors)) {
                 $errorString = json_encode($errors);
-                Log::info('Grade passback error: ' . $errorString);
+                $params = json_encode($params);
+                Log::info('Grade passback error. Error string : ' . $errorString . ' , url: ' . $url . ' , oauth header: ' . $this->oauthHeader . ' , params: ' . $params);
                 throw new GradePassbackException($unresponsiveErrorMessage);
             }
 
@@ -472,7 +473,7 @@ class LTIAdvantage {
 
         $jsonResponse = $this->curlPost($sendResultUrl, $this->oauthHeader, $params);
         $data = json_decode($jsonResponse, true); //currently only returns "resultUrl" which we don't need
-        $this->checkForGradeErrors($data);
+        $this->checkForGradeErrors($data, $sendResultUrl, $params);
 
         return $data;
     }
