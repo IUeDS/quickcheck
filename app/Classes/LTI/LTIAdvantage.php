@@ -96,6 +96,11 @@ class LTIAdvantage {
         $errorList = $data['errors'];
 
         foreach ($errorList as $errors) {
+            if (!is_array($errors)) {
+                Log::info('Grade passback error: ' . $errors);
+                throw new GradePassbackException($errors);
+            }
+
             foreach ($errors as $key => $error) {      
                 if ($this->isCanvasDown($error)) {
                     throw new GradePassbackException($unresponsiveErrorMessage);
