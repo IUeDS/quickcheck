@@ -99,7 +99,8 @@ class LTIAdvantage {
             if (!is_array($errors)) {
                 $errorString = json_encode($errors);
                 $params = json_encode($params);
-                Log::info('Grade passback error. Error string : ' . $errorString . ' , url: ' . $url . ' , oauth header: ' . $this->oauthHeader . ' , params: ' . $params);
+                $oauthHeader = json_encode($this->oauthHeader);
+                Log::info('Grade passback error. Error string : ' . $errorString . ' , url: ' . $url . ' , oauth header: ' . $oauthHeader . ' , params: ' . $params);
                 throw new GradePassbackException($unresponsiveErrorMessage);
             }
 
