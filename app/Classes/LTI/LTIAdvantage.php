@@ -101,7 +101,11 @@ class LTIAdvantage {
                 $params = json_encode($params);
                 $oauthHeader = json_encode($this->oauthHeader);
                 Log::info('Grade passback error. Error string : ' . $errorString . ' , url: ' . $url . ' , oauth header: ' . $oauthHeader . ' , params: ' . $params);
-                throw new GradePassbackException($unresponsiveErrorMessage);
+                $errorMessage = $unresponsiveErrorMessage;
+                if ($errors == "unprocessable_entity") {
+                    $errorMessage = 'Error sending grade to Canvas. The most likely cause is that you have exceeded the maximum number of attempts for this assignment that your instructor has specified in the assignment settings.';
+                }
+                throw new GradePassbackException($errorMessage);
             }
 
             foreach ($errors as $key => $error) {      
