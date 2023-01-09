@@ -97,8 +97,9 @@ class LTIAdvantage {
 
         foreach ($errorList as $errors) {
             if (!is_array($errors)) {
-                Log::info('Grade passback error: ' . $errors);
-                throw new GradePassbackException($errors);
+                $errorString = json_encode($errors);
+                Log::info('Grade passback error: ' . $errorString);
+                throw new GradePassbackException($unresponsiveErrorMessage);
             }
 
             foreach ($errors as $key => $error) {      
