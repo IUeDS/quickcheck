@@ -67,7 +67,7 @@ class LtiContext {
             return false;
         }
 
-        $allowedAttempts = $this->launchValues[$this->customKey]->custom_canvas_allowed_attempts;
+        $allowedAttempts = $this->launchValues[$this->customKey]->canvas_allowed_attempts;
         if ($allowedAttempts === '$Canvas.assignment.allowedAttempts') {
             return null;
         }
