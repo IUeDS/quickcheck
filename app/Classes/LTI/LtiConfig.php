@@ -126,7 +126,9 @@ class LtiConfig {
                 'custom_canvas_coursesection_id' => '$CourseSection.sourcedId',
                 'custom_canvas_section_id' => '$Canvas.course.sectionIds',
                 'custom_canvas_user_id' => '$Canvas.user.id',
-                'custom_canvas_user_login_id' => '$Canvas.user.loginId'
+                'custom_canvas_user_login_id' => '$Canvas.user.loginId',
+                'custom_canvas_allowed_attempts' => '$Canvas.assignment.allowedAttempts',
+                'custom_canvas_student_attempts' => '$Canvas.assignment.submission.studentAttempts'
             ],
             "target_link_uri" => $this->launchUrl,
             "oidc_initiation_url" => $this->oidcUrl

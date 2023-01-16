@@ -57,6 +57,29 @@ class LtiContext {
     }
 
     /**
+    * From the initial launch params passed along in the request, retrieve allowed attempts
+    *
+    * @return int or null
+    */
+    public function getAllowedAttempts()
+    {
+        if (!$this->launchValues) {
+            return false;
+        }
+
+        $allowedAttempts = $this->launchValues[$this->customKey]->custom_canvas_allowed_attempts;
+        if ($allowedAttempts === '$Canvas.assignment.allowedAttempts') {
+            return null;
+        }
+
+        if (!$allowedAttempts) {
+            return null;
+        }
+
+        return (int) $allowedAttempts;
+    }
+
+    /**
     * From the initial launch params passed along in the request, retrieve assignment ID
     *
     * @return int
