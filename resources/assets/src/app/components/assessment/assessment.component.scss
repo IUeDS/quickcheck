@@ -24,6 +24,7 @@
         }
     }
 
+    .qc-attempt-limit,
     .qc-current-score,
     .qc-submit-response,
     .qc-restart {
@@ -43,6 +44,7 @@
         width: 90%;
     }
 
+    .qc-attempt-limit,
     .qc-current-score {
         background-color: $neutral-gray;
     }

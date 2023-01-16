@@ -74,6 +74,7 @@
                 </qc-row-feedback>
                 <button class="qc-submit-response" [disabled]="this.isSubmitDisabled()" [attr.tabindex]="this.modalVisible ? -1 : 0" (click)="this.submitAnswer()" type="submit">Submit</button>
                 <div class="qc-current-score" aria-live="assertive" aria-atomic="true">{{ this.score }} / {{ this.pointsPossible }} questions correct</div>
+                <div class="qc-attempt-limit" *ngIf="this.allowedAttempts">Attempt {{ this.attemptNumber }} out of {{ this.allowedAttempts }} allowed <span *ngIf="this.attemptNumber > this.allowedAttempts">(this attempt is ineligible for a grade)</span></div>
                 <button class="qc-restart" [attr.tabindex]="this.modalVisible ? -1 : 0" (click)="this.restart()" type="button">Start Over</button>
             </div>
         </div>
