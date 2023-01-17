@@ -624,6 +624,11 @@ class Attempt extends Eloquent {
         $this->count_incorrect = null;
         $this->calculated_score = null;
         $this->complete = 0;
+
+        if ($this->attempt_number) {
+            $this->attempt_number += 1;
+        }
+
         $this->save();
     }
 
