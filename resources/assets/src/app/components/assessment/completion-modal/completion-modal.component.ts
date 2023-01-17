@@ -83,6 +83,8 @@ export class CompletionModalComponent implements OnInit {
       if (this.attemptNumber > this.allowedAttempts) {
         this.graded = false;
         this.loading = false;
+        this.utilitiesService.loadingFinished();
+        return;
       }
     }
 

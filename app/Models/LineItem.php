@@ -47,11 +47,7 @@ class LineItem extends Eloquent {
     public function initialize($lineItemUrl, $dueAt = null, $assignmentId = null)
     {
         $ltiContext = new LtiContext();
-        Log::info('line item url: ');
-        Log::info($lineItemUrl);
         $lineItem = $ltiContext->getLineItem($lineItemUrl);
-        Log::info('line item: ');
-        Log::info($lineItem);
         if (!$lineItem) {
             return false;
         }

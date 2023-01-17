@@ -874,22 +874,15 @@ class Attempt extends Eloquent {
         //if an instructor, designer, etc. from LTI context, then leave line item value NULL,
         //as it will error out if we try to start a submission for a non-student.
         $lineItemUrl = $ltiContext->getLineItemUrl();
-        Log::info('line item url in attempt class: ');
-        Log::info($lineItemUrl);
         if (!$ltiContext->isInstructor() && $lineItemUrl) {
             $lineItem = LineItem::findByUrl($lineItemUrl);
-            Log::info('line item find by url: ');
-            Log::info($lineItem);
             $assignmentId = $ltiContext->getAssignmentId();
             $dueAt = $ltiContext->getDueAt();
             $pointsPossible = $ltiContext->getPointsPossible();
 
             if (!$lineItem) {
-                Log::info('initialize new line item');
                 $lineItem = new LineItem();
                 $lineItem->initialize($lineItemUrl, $dueAt, $assignmentId);
-                Log::info('initialize new line item after: ');
-                Log::info($lineItem);
             }
 
             if ($lineItem->getDueAt() != $dueAt) { //update if instructor changed due date
