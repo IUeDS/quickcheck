@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Models\CustomActivity;
 use App\Models\Question;
 use App\Models\CollectionFeature;
-use Log;
 
 class AssessmentController extends \BaseController
 {
