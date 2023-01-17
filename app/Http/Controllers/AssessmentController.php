@@ -107,8 +107,6 @@ class AssessmentController extends \BaseController
 
         $ltiContext = new LtiContext();
         $ltiContext->initContext($request);
-        Log::info('lti context in assessment controller: ');
-        Log::info($ltiContext);
 
         //generate new attempt
         $attempt = new Attempt;
