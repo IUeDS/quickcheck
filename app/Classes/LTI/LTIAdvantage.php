@@ -298,6 +298,8 @@ class LTIAdvantage {
     public function getLineItem($lineItemUrl)
     {
         $this->initOauthToken();
+        Log::info('init oauth token header: ');
+        Log::info($this->oauthHeader);
         if (!$this->oauthHeader) {
             abort(500, 'Oauth token not set on user.');
         }
@@ -429,9 +431,13 @@ class LTIAdvantage {
 
         //find existing token in cache if possible
         $oauthToken = Cache::get($cacheKey);
+        Log::info('oauth token from cache: ');
+        Log::info($oauthToken);
         if (!$oauthToken) {
              //otherwise, run the flow to fetch one from Canvas
             $oauthToken = $this->getOauthTokenFromCanvas();
+            Log::info('oauth retrieved from canvas: ');
+            Log::info($oauthToken);
             //token ALWAYS expires in an hour and doesn't extend expiration time if used;
             //replace it a couple minutes shy to prevent failures.
             Cache::put($cacheKey, $oauthToken, now()->addMinutes(58));
