@@ -620,15 +620,15 @@ class Attempt extends Eloquent {
     */
 
     public function reset() {
+        if ($this->attempt_number && $this->complete == 1) {
+            $this->attempt_number += 1;
+        }
+
         $this->last_milestone = $this->MILESTONE_CREATED;
         $this->count_correct = null;
         $this->count_incorrect = null;
         $this->calculated_score = null;
         $this->complete = 0;
-
-        if ($this->attempt_number) {
-            $this->attempt_number += 1;
-        }
 
         $this->save();
     }
