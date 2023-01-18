@@ -9,7 +9,9 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./completion-modal.component.scss']
 })
 export class CompletionModalComponent implements OnInit {
+  @Input() allowedAttempts;
   @Input() attemptId;
+  @Input() attemptNumber;
   @Input() complete;
   @Input() pointsPossible;
   @Input() score;
@@ -74,6 +76,16 @@ export class CompletionModalComponent implements OnInit {
     //grade is not re-submitted
     if (this.graded) {
       return false;
+    }
+
+    //don't pass a grade back if over attempt limit
+    if (this.allowedAttempts) {
+      if (this.attemptNumber > this.allowedAttempts) {
+        this.graded = false;
+        this.loading = false;
+        this.utilitiesService.loadingFinished();
+        return;
+      }
     }
 
     let data;

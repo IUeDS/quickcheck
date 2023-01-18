@@ -18,11 +18,13 @@ import { take, filter } from 'rxjs/operators';
 })
 export class AssessmentComponent implements OnInit {
   bsModalRef: BsModalRef;
+  allowedAttempts = null;
   answerSelected = false;
   assessmentId = '';
   assessmentTitle = null;
   assessmentDescription = null;
   attemptId = null;
+  attemptNumber = null;
   complete = false;
   completionModalRef = null;
   countCorrect = 0;
@@ -130,6 +132,10 @@ export class AssessmentComponent implements OnInit {
     //if student is restarting the QC, we might be receiving a new attempt ID and authenticated student ID
     this.attemptId = data.attemptId;
     this.studentId = data.studentId;
+    //set attempt limit data if present
+    this.allowedAttempts = data.allowedAttempts;
+    this.attemptNumber = data.attemptNumber;
+
     this.parseCaliperData(data);
     this.parseTimeoutData(data);
   }
@@ -242,7 +248,9 @@ export class AssessmentComponent implements OnInit {
 
   onCompletion() {
     const initialState = {
+      allowedAttempts: this.allowedAttempts,
       attemptId: this.attemptId,
+      attemptNumber: this.attemptNumber,
       complete: this.complete,
       pointsPossible: this.pointsPossible,
       score: this.score,

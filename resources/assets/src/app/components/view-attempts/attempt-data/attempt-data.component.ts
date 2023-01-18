@@ -20,6 +20,7 @@ export class AttemptDataComponent implements OnInit {
   @Input() users;
   @Input() utilitiesService;
 
+  isAttemptLimit = false; //show attempt count/limit if applicable
   itemSize = 45; //angular infinite scrolling requires item size
   studentsWithFirstRow = {}; //for tracking table borders, etc.
 
@@ -105,6 +106,9 @@ export class AttemptDataComponent implements OnInit {
 
   parseAttempts() {
     for (let attempt of this.attempts) {
+      if (attempt.allowed_attempts) {
+        this.isAttemptLimit = true;
+      }
       if (this.isLate(attempt)) {
         attempt.isLate = true;
       }

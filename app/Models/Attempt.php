@@ -12,6 +12,7 @@ use App\Models\Student;
 use App\Classes\LTI\LtiContext;
 use App\Exceptions\MissingLtiContextException;
 use Illuminate\Support\Facades\Cache;
+use Log;
 
 class Attempt extends Eloquent {
     protected $table = 'attempts';
@@ -388,6 +389,28 @@ class Attempt extends Eloquent {
     }
 
     /**
+    * Get allowed attempts if an attempt limit is present
+    *
+    * @return int or NULL
+    */
+
+    public function getAllowedAttempts()
+    {
+        return $this->allowed_attempts;
+    }
+
+    /**
+    * Get the current attempt number if an attempt limit is present
+    *
+    * @return int or NULL
+    */
+
+    public function getAttemptNumber()
+    {
+        return $this->attempt_number;
+    }
+
+    /**
     * Get data needed to forward to Caliper sensor on LTI launch
     *
     * @return []
@@ -597,11 +620,16 @@ class Attempt extends Eloquent {
     */
 
     public function reset() {
+        if ($this->attempt_number && $this->complete == 1) {
+            $this->attempt_number += 1;
+        }
+
         $this->last_milestone = $this->MILESTONE_CREATED;
         $this->count_correct = null;
         $this->count_incorrect = null;
         $this->calculated_score = null;
         $this->complete = 0;
+
         $this->save();
     }
 
@@ -635,6 +663,23 @@ class Attempt extends Eloquent {
     /************************************************************************/
     /* PRIVATE FUNCTIONS ****************************************************/
     /************************************************************************/
+
+    /**
+    * Calculate the current attempt number if an attempt limit is present
+    *
+    * @return int or NULL
+    */
+
+    public function calculateAttemptNumber()
+    {
+        $completedAttemptCount = $this->where('course_context_id', $this->course_context_id)
+            ->where('assessment_id', $this->assessment_id)
+            ->where('student_id', $this->student_id)
+            ->where('complete', 1)
+            ->count();
+        
+        return $completedAttemptCount + 1;
+    }
 
     /**
     * Get the attempt type (anonymous or LTI)
@@ -818,6 +863,13 @@ class Attempt extends Eloquent {
         $this->assignment_title = $ltiContext->getAssignmentTitle();
         $this->resource_link_id = $ltiContext->getResourceLinkId();
         $this->nonce = $ltiContext->getNonce();
+
+        //add allowed attempt data if applicable
+        $allowedAttempts = $ltiContext->getAllowedAttempts();
+        if ($allowedAttempts) {
+            $this->allowed_attempts = $allowedAttempts;
+            $this->attempt_number = $this->calculateAttemptNumber();
+        }
 
         //if an instructor, designer, etc. from LTI context, then leave line item value NULL,
         //as it will error out if we try to start a submission for a non-student.

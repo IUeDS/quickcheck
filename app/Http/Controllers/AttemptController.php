@@ -338,18 +338,9 @@ class AttemptController extends \BaseController
         $caliperData = $attempt->getCaliperData();
         $timeoutRemaining = $attempt->getTimeoutRemaining($assessment_id, $student->id);
 
-        //start submission
-        $lineItem = $attempt->lineItem;
-        if ($lineItem) {
-            $lineItemUrl = $lineItem->getUrl();
-            $canvasUserId = $student->getCanvasUserId();
-            $ltiContext = new LtiContext();
-            $currentScore = $ltiContext->getResult($lineItemUrl, $canvasUserId);
-            //student has one submission in Canvas, which is overwritten if we send new data
-            if (!$currentScore) {
-                $ltiContext->startSubmission($lineItemUrl, $canvasUserId);
-            }
-        }
+        //determine attempt limit, if applicable
+        $allowedAttempts = $attempt->getAllowedAttempts();
+        $attemptNumber = $attempt->getAttemptNumber();
 
         $data = [
             'nonce' => $nonce,
@@ -357,7 +348,9 @@ class AttemptController extends \BaseController
             'caliper' => $caliperData,
             'groupName' => $groupName,
             'timeoutRemaining' => $timeoutRemaining,
-            'studentId' => $studentId
+            'studentId' => $studentId,
+            'allowedAttempts' => $allowedAttempts,
+            'attemptNumber' => $attemptNumber
         ];
 
         return response()->success($data);
