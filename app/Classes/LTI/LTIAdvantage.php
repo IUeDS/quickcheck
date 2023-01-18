@@ -464,13 +464,10 @@ class LTIAdvantage {
             "timestamp" => $timestamp,
             "activityProgress" => $activityProgress,
             "gradingProgress" => $gradingProgress,
-            "userId" => $userId
+            "userId" => $userId,
+            "scoreGiven" => $scoreGiven,
+            "scoreMaximum" => $scoreMaximum
         ];
-
-        if ($scoreGiven) {
-            $params["scoreGiven"] = $scoreGiven;
-            $params["scoreMaximum"] = $scoreMaximum;
-        }
 
         if (!$this->oauthHeader) {
             abort(500, 'Oauth token not set on user.');

@@ -96,7 +96,7 @@ class Grade {
 
         $scoreToSubmit = $scoreGiven ? $scoreGiven : $this->attempt->getCalculatedScore();
         $gradeToSubmit = $this->formatGradeToSubmit($scoreToSubmit, $scoreMaximum);
-        if ($gradeToSubmit <= $result && !$scoreGiven) { //let instructor override and give a lower score
+        if ($gradeToSubmit < $result && !$scoreGiven) { //let instructor override and give a lower score
             return true;
         }
 
