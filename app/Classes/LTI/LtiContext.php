@@ -67,6 +67,10 @@ class LtiContext {
             return false;
         }
 
+        if (!property_exists($this->launchValues[$this->customKey], 'canvas_allowed_attempts')) {
+            return null;
+        }
+
         $allowedAttempts = $this->launchValues[$this->customKey]->canvas_allowed_attempts;
         if ($allowedAttempts === '$Canvas.assignment.allowedAttempts') {
             return null;
@@ -76,7 +80,14 @@ class LtiContext {
             return null;
         }
 
-        return (int) $allowedAttempts;
+        $allowedAttemptsInteger = (int) $allowedAttempts;
+
+        //sometimes Canvas will bug out and give a value of -1 rather than NULL with unlimited attempts
+        if ($allowedAttemptsInteger <= 0) {
+            return null;
+        }
+
+        return $allowedAttemptsInteger;
     }
 
     /**
