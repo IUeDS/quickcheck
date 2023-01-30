@@ -496,6 +496,7 @@ class LtiContext {
 
     public function isInstructor()
     {
+        $isInstructor = false;
         if (!$this->launchValues) {
             return false;
         }
@@ -503,20 +504,26 @@ class LtiContext {
         $roles = $this->launchValues[$this->rolesKey];
         foreach ($roles as $role) {
             $role = strtolower($role);
+
+            //if user is a learner in this course, that should supercede all other roles,
+            //such as admin; for instance, an admin may need to take a training course
+            if (strpos($role, 'membership#learner')) {
+                return false;
+            }
             if (strpos($role, 'membership#instructor')) {
-                return true;
+                $isInstructor = true;
             }
 
             if (strpos($role, 'membership#contentdeveloper')) {
-                return true;
+                $isInstructor = true;
             }
 
             if (strpos($role, 'administrator')) {
-                return true;
+                $isInstructor = true;
             }
         }
 
-        return false;
+        return $isInstructor;
     }
 
     /**
