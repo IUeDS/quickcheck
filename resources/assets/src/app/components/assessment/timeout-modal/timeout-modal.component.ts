@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import * as moment from 'moment-timezone';
 
 @Component({
@@ -8,6 +9,7 @@ import * as moment from 'moment-timezone';
 })
 export class TimeoutModalComponent implements OnInit {
   @Input() timeoutSecondsRemaining;
+  @Output() onRestart = new EventEmitter();
 
   countdownAnimation = null; //path for svg to animate
   countdownIncrement = 0; //how much of the circle to increment each repaint; calculated in $onInit
@@ -20,7 +22,10 @@ export class TimeoutModalComponent implements OnInit {
   timeoutStartedTime = null;
   timerInterval = null;
 
-  constructor() { }
+  constructor(
+    private bsModalRef: BsModalRef,
+    private bsModalService: BsModalService
+  ) { }
 
   ngOnInit() {
     if (!this.timeoutSecondsRemaining) {
@@ -68,8 +73,8 @@ export class TimeoutModalComponent implements OnInit {
   }
 
   restart() {
-    //hard page refresh to ensure a new attempt is created
-    window.location.reload();
+    this.bsModalService.setDismissReason('restart');
+    this.bsModalRef.hide();
   }
 
   runTimer() {
