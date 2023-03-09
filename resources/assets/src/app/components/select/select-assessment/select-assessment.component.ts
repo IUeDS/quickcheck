@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { CollectionService } from '../../../services/collection.service';
 import { UtilitiesService } from '../../../services/utilities.service';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   selector: 'qc-select-assessment',
@@ -16,7 +16,7 @@ export class SelectAssessmentComponent implements OnInit {
   @Input() collectionService: CollectionService;
   @Input() utilitiesService: UtilitiesService;
   @ViewChild('form', {static: false}) form: ElementRef;
-  jwtValue = new FormControl('');
+  jwtValue = new UntypedFormControl('');
   jwt;
 
   constructor() { }
