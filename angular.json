@@ -27,7 +27,7 @@
               "lodash",
               "moment-timezone",
               "fabric"
-           ],
+            ],
             "assets": [
               {
                 "glob": "**/*",
@@ -199,7 +199,6 @@
       }
     }
   },
-  "defaultProject": "quickcheck",
   "cli": {
     "analytics": "aee00c48-91b1-4edd-95db-197a7593ce6c"
   }
