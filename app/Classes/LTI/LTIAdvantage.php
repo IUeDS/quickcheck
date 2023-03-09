@@ -545,7 +545,7 @@ class LTIAdvantage {
             $parsedPublicKeySet = JWK::parseKeySet($publicKeySet);
             foreach($parsedPublicKeySet as $kid => $publicKeyItem) {
                 if ($kid == $launchKID) {
-                    $publicKeyArray = openssl_pkey_get_details($publicKeyItem);
+                    $publicKeyArray = openssl_pkey_get_details($publicKeyItem->getKeyMaterial());
                     $publicKey = $publicKeyArray['key'];
                     //not sure how often Canvas updates public keys, looks like they last for months
                     //based on the KID values, but refreshing once a week to be on the safer side.
