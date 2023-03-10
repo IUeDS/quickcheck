@@ -5,6 +5,7 @@ namespace App\Classes\LTI;
 use Illuminate\Http\Request;
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\JWK;
+use Firebase\JWT\Key;
 use DateTime;
 use Log;
 use Illuminate\Support\Facades\Cache;
@@ -226,7 +227,7 @@ class LTIAdvantage {
         $this->publicKey = $this->getPublicKey();
 
         //library checks the signature, makes sure it isn't expired, etc.
-        $decodedJwt = JWT::decode($rawJwt, $this->publicKey, ['RS256']);
+        $decodedJwt = JWT::decode($rawJwt, new Key($this->publicKey, 'RS256'));
         $this->launchValues = (array) $decodedJwt; //returns object; coerce into array
         //dd($this->launchValues); //un-comment for debugging, to see launch values
     }
