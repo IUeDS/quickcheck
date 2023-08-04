@@ -25,7 +25,7 @@ class ManageAuthenticate {
         //to only make the necessary change here and in the manage auth file, and treat user on the request
         //as a black box that can be reused across the rest of the app
         else if (Session::has('user')) {
-            $user = User::getCurrentUser();
+            $user = User::getCurrentUser($request);
             $request->merge(['user' => $user]);
         }
         else if (Session::has('student')) {
