@@ -44,7 +44,7 @@ If installing locally, PHP >= 7.1.3 is required, as is [Composer](https://getcom
 3. To build the scripts for local testing: `npm run build`
 4. To build the scripts for production use: `npm run build:prod`
 
-### Running locally
+### Running locally (without Docker)
 1. Run `php artisan serve` in the app root to fire up a local server.
 2. To use the app locally, enter the url home page in your browser (the default is http://localhost:8000 but can be altered in the .env file).
     - LTI-specific functionality, such as viewing student results, is not available locally. The application must be installed in a secure https environment and installed as an LTI tool in Canvas for all functionality to be available.
@@ -115,6 +115,14 @@ Whenever a new version of the app is released, the following commands should be 
 ## Image uploads
 
 Instructors are allowed to upload images to embed in quick checks. By default, the storage driver is "local" and is stored on the local disk in a public directory. The storage driver can also be set to "s3" for AWS S3 cloud storage. If using the local driver, a public directory must be symlinked with the command `php artisan storage:link` before users can upload public images.
+
+## Local development in Docker
+
+To make changes to the code and develop locally, 2 containers need to be run: a container to run the back-end server (use the same `docker run` command listed above in the Docker Install section), and a second container for the front-end, to watch for changes and recompile the angular code. 
+
+In the initial docker build process, the `node_modules` folder is removed to save space in the container for production use. When developing locally and node modules are required for angular recompilation, either the line in the dockefile can be commented out before building, or, preferably, node modules can be installed on the local machine with `npm install` (which allows for more flexibility for additional updates/installs to node dependencies in the course of development). If node modules are installed locally, use the following Docker command to run a process to watch for front-end changes and recompile, replacing `PATH_TO_APP_HERE` with the absolute location of the code on your local machine:
+
+`docker run -v PATH_TO_APP_HERE:/var/www/html:delegated -v /var/www/html/vendor --rm quickcheck:1.0 npm run build:watch`
 
 ## License
 Quick Check is open-sourced software licensed under the [Educational Community License, Version 2.0](https://opensource.org/licenses/ECL-2.0).

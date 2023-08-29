@@ -22,7 +22,7 @@ RUN docker-php-ext-configure gd
 RUN docker-php-ext-install gd
 
 # Install node/npm/angular CLI
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get update && apt-get install -y nodejs
 RUN npm install -g @angular/cli
 
