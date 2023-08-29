@@ -58,7 +58,7 @@ class CollectionFeatureController extends \BaseController
         }
 
         $collectionFeature = CollectionFeature::with('feature')->findOrFail($id);
-        if ($collectionFeature->feature->admin_only === 'true' && !$user->isAdmin()) {
+        if ($collectionFeature->feature->admin_only === 'true' && !$request->user->isAdmin()) {
             return response()->error(403);
         }
 
