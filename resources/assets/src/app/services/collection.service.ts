@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { timeout } from 'rxjs/operators';
 import { HttpService } from './http.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -214,13 +215,12 @@ export class CollectionService {
       .toPromise();
   }
 
-  async updateCollectionMembership(id, data) {
+  updateCollectionMembership(id, data): Observable<any> {
     const timeoutLength = this.httpService.getDefaultTimeout();
     const path = this.httpService.getApiRoute() + '/membership/collection/' + id;
 
-    return await this.httpClient.put(path, data)
+    return this.httpClient.put(path, data)
       .pipe(timeout(timeoutLength))
-      .toPromise();
   }
 
   async updateFeature(id, data) {

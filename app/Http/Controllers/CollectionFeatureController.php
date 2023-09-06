@@ -53,6 +53,7 @@ class CollectionFeatureController extends \BaseController
         $featureToUpdate = $request->input('collectionFeature');
         $collectionId = $featureToUpdate['collection_id'];
         $collection = Collection::findOrFail($collectionId);
+        $user = $request->user;
         if (!$collection->canUserWrite($request->user)) {
             return response()->error(403);
         }
