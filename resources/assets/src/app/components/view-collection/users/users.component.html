@@ -6,7 +6,14 @@
     <div class="card-body collapse" id="qc-user-list" [collapse]="!this.showUsers" [isAnimated]="true">
         <div (click)="this.utilitiesService.preventToggle($event)">
             <ul [hidden]="this.isEditingUsers.init">
-                <li *ngFor="let user of this.collectionUsers" class="qc-users-user"><strong>{{user.username}}</strong> <span class="badge badge-secondary ml-1" *ngIf="user.readOnly">Read-only</span></li>
+                <li *ngFor="let user of this.collectionUsers" class="qc-users-user">
+                    <strong>
+                        {{user.username}}
+                        <span *ngIf="user.username == this.currentUser.username">
+                            (self)
+                        </span>
+                    </strong> 
+                    <span class="badge badge-secondary ml-1" *ngIf="user.readOnly">Read-only</span></li>
             </ul>
             <button type="button" class="btn btn-lg qc-btn-add qc-btn-user-add qc-btn"
                     (click)="this.isAddingUserInit()"
@@ -80,9 +87,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let user of this.isEditingUsers.users" class="qc-users-edit-user" [ngClass]="{'table-danger': user.deleted}"
-                            [hidden]="user.username == this.currentUser.username">
-                            <td [ngClass]="{'strike-through': user.deleted}">{{ user.username }}</td>
+                        <tr *ngFor="let user of this.isEditingUsers.users" class="qc-users-edit-user" [ngClass]="{'table-danger': user.deleted}">
+                            <td [ngClass]="{'strike-through': user.deleted}">
+                                {{ user.username }}
+                                <span *ngIf="user.username == this.currentUser.username">
+                                    (self)
+                                </span>
+                            </td>
                             <td>
                                 <div class="checkbox">
                                     <label [ngClass]="{'strike-through': user.deleted}">
