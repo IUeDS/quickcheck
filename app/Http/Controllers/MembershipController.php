@@ -3,6 +3,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Collection;
 use App\Models\Membership;
+use Illuminate\Support\Facades\Log;
+
 
 class MembershipController extends \BaseController {
 
@@ -21,6 +23,7 @@ class MembershipController extends \BaseController {
         $user = $request->user;
         $collection = Collection::findOrFail($id);
         if (!$collection->canUserRead($user)) {
+            Log::info('get Collection From Membership', ['user not allowed' => $request->user]);
             return response()->error(403);
         }
         $memberships = Membership::where('collection_id', '=', $id)->get();
@@ -109,6 +112,7 @@ class MembershipController extends \BaseController {
     public function updateCollectionMembership(Request $request, $id)
     {
         $collection = Collection::findOrFail($id);
+
         if (!$collection->canUserWrite($request->user)) {
             return response()->error(403);
         }
@@ -127,7 +131,13 @@ class MembershipController extends \BaseController {
                 $membership->update();
             }
         }
-        $response = $this->getCollectionMembership($request, $id);
-        return $response;
+
+        if ($collection->canUserRead($request->user)) {
+            $response = $this->getCollectionMembership($request, $id);
+            return $response;
+        } else {
+            return response()->success();
+        }
+
     }
 }

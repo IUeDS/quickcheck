@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CollectionService } from '../../../services/collection.service';
 import { UserService } from '../../../services/user.service';
 import * as cloneDeep from 'lodash/cloneDeep';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'qc-users',
@@ -36,7 +37,11 @@ export class UsersComponent implements OnInit {
   };
   showUsers = false;
 
-  constructor(private collectionService: CollectionService, private userService: UserService) { }
+  constructor(
+    private collectionService: CollectionService, 
+    private userService: UserService,
+    private router: Router, 
+    private route: ActivatedRoute) { }
 
   async ngOnInit() {
     await this.getCollectionUsers();
@@ -90,26 +95,48 @@ export class UsersComponent implements OnInit {
     this.utilitiesService.focusToElement('#edit-users-header');
   }
 
+  showAlertPopUp(): boolean {
+    let showAlertPopup = false;
+    let confirmEdits = true;
 
-  async saveUserEdits() {
-    let data;
-    this.isEditingUsers.loading = true;
-    this.isEditingUsers.init = false;
-
-    try {
-      const resp = await this.collectionService.updateCollectionMembership(this.collectionId, this.isEditingUsers);
-      data = this.utilitiesService.getResponseData(resp);
+    this.isEditingUsers.users.forEach(user => {
+      if (user.username == this.currentUser.username && user.deleted) {
+        showAlertPopup = true;
+        return;
+      }
+    });
+    if (showAlertPopup) {
+      // Show pop here
+      confirmEdits = confirm('You are removing your access to this set. Do you want to proceed?');
     }
-    catch (error) {
-      this.isEditingUsers.loading = false;
-      this.isEditingUsers.error = true;
-      this.isEditingUsers.init = true; //show editing view again so they can redo
-      return;
-    }
+    return confirmEdits;
+  }
 
-    this.isEditingUsers.loading = false;
-    this.collectionUsers = data.users;
-    this.isEditingUsers.success = true;
+  saveUserEdits() {
+    if (this.showAlertPopUp()) {
+      let data;
+      this.isEditingUsers.loading = true;
+      this.isEditingUsers.init = false;
+      
+      this.collectionService.updateCollectionMembership(this.collectionId, this.isEditingUsers).subscribe(resp => {
+        data = this.utilitiesService.getResponseData(resp);
+
+        this.isEditingUsers.loading = false;
+        this.collectionUsers = data.users;
+        this.isEditingUsers.success = true;
+
+        if (data.length === 0) {
+          this.router.navigateByUrl('/');
+        }
+      }, error => {
+        this.isEditingUsers.loading = false;
+        this.isEditingUsers.error = true;
+        this.isEditingUsers.init = true; //show editing view again so they can redo
+        return;
+      });
+
+      
+    }
   }
 
   async saveUserMembership() {
