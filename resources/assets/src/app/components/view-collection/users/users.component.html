@@ -117,7 +117,7 @@
                         <p>There was an error updating the membership for this set. Please try again.</p>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm qc-btn" (click)="this.saveUserEdits()" [hidden]="this.isEditingUsers.loading || this.isEditingUsers.users.length == 1">Save User Edits 3</button>
+                <button type="submit" class="btn btn-primary btn-sm qc-btn" (click)="this.saveUserEdits()" [hidden]="this.isEditingUsers.loading || this.isEditingUsers.users.length == 1">Save User Edits</button>
                 <button type="button" class="btn btn-outline-dark btn-sm qc-btn" (click)="this.editUsersCancel()" [hidden]="this.isEditingUsers.loading">Cancel</button>
             </div>
             <div *ngIf="this.isEditingUsers.loading" class="text-center" aria-live="polite">
