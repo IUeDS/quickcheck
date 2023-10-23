@@ -11,6 +11,51 @@ import { TimeoutModalComponent } from './timeout-modal/timeout-modal.component';
 import { Subscription } from 'rxjs';
 import { take, filter } from 'rxjs/operators';
 
+export interface Question {
+  assessment_id: number;
+  created_at: string;
+  id: number;
+  multiple_correct: string;
+  options: Array<Option>
+  question_feedback: Array<any>
+  question_order: number
+  question_text: string;
+  question_type: QuestionTypeEnum;
+  randomized: string;
+  updated_at: string;
+}
+
+export interface Option {
+  DROPPABLE: any;
+  count: number;
+  created_at: string;
+  disabled: boolean;
+  font_size: number;
+  height: number;
+  width: number;
+  id: number;
+  img_url: string;
+  left: number;
+  question_id: number;
+  text: string;
+  top: number;
+  type: OptionTypeEnum;
+  randomized: string,
+  updated_at: string;
+  entered: boolean;
+  _unique_id: string;
+}
+
+export enum OptionTypeEnum {
+  Draggable = <any> 'DRAGGABLE',
+  Droppable = <any> 'DROPPABLE',
+  Image = <any> 'IMAGE'
+}
+
+export enum QuestionTypeEnum {
+  drag_and_drop = <any> 'drag_and_drop',
+}
+
 @Component({
   selector: 'qc-assessment',
   templateUrl: './assessment.component.html',
@@ -29,7 +74,7 @@ export class AssessmentComponent implements OnInit {
   completionModalRef = null;
   countCorrect = 0;
   countIncorrect = 0;
-  currentQuestion = null;
+  currentQuestion: Question = null;
   currentQuestionIndex = 0;
   errorMessage = false;
   feedback = [];

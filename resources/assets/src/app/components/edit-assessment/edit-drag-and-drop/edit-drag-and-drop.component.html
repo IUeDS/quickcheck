@@ -103,6 +103,14 @@
                             [disabled]="this.readOnly">
                     </div>
                     <div class="form-group col-2">
+                        <label for="height-{{this.question.id}}-{{droppable.id}}">Description</label>
+                        <input type="text" id="height-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.text"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-2">
                         <label for="answer-{{this.question.id}}-{{droppable.id}}">Answer</label>
                         <select id="answer-{{this.question.id}}-{{droppable.id}}"
                             [(ngModel)]="droppable.answer_id"
@@ -114,6 +122,7 @@
                             <option *ngFor="let draggable of this.question.draggables; index as idx" [value]="draggable.id">Draggable #{{idx + 1}}</option>
                         </select>
                     </div>
+                   
                 </div>
             </td>
         </tr>
