@@ -31,7 +31,6 @@
           <img *ngIf="this.isDraggedImg(droppable)"
             cdkDrag
             class="qc-dropped-option"
-            alt="{{droppable.alt_text}}"
             [src]="droppable[optionTypeEnum.Draggable][0].img_url" 
             [width]="droppable[optionTypeEnum.Draggable][0].width" 
             [height]="droppable[optionTypeEnum.Draggable][0].height"
@@ -61,14 +60,12 @@
         <div cdkDrag
         class="qc-draggable"
         id="{{draggableId}}-{{draggable.id}}"
-        alt="{{draggable.alt_text}}"
         [ngClass]="{
           'qc-duplicate-drag-option': draggable.count > 1 ? true : false
         
         }"
         [ngStyle]="{'width.px': draggable.width, 'height.px': draggable.height}">
         <img *ngIf="draggable.img_url" class="qc-draggable-text" [src]="draggable.img_url" [width]="draggable.width" [height]="draggable.height"
-        alt="{{droppable.alt_text}}"
         [ngClass]="{
           'qc-draggable-cursor': this.keyDroppableProperties.indexOfSelectedDraggable === i && this.keyDroppableProperties.selectedDraggable === null,
           'qc-draggable-selected': this.keyDroppableProperties.indexOfSelectedDraggable === i && this.keyDroppableProperties.selectedDraggable !== null
