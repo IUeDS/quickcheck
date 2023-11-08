@@ -1,5 +1,13 @@
 @import '../../../styles/colors';
 
+$border-radius: 20px;
+
+.button-selected {
+    border: 2px rgb(40, 148, 215) solid;
+    border-bottom-right-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+}
+
 ::ng-deep {
     .qc-assessment-button-area {
         float: left;
@@ -29,8 +37,8 @@
     .qc-submit-response,
     .qc-restart {
         border: 0;
-        border-bottom-right-radius: 20px;
-        border-top-right-radius: 20px;
+        border-bottom-right-radius: $border-radius;
+        border-top-right-radius: $border-radius;
         clear: left;
         float: left;
         font-family: 'Oswald', sans-serif;

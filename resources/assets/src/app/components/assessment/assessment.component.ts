@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../services/utilities.service';
 import { AssessmentService } from '../../services/assessment.service';
 import { CaliperService } from '../../services/caliper.service';
@@ -10,6 +10,7 @@ import { FeedbackModalComponent } from './feedback-modal/feedback-modal.componen
 import { TimeoutModalComponent } from './timeout-modal/timeout-modal.component';
 import { Subscription } from 'rxjs';
 import { take, filter } from 'rxjs/operators';
+import { KEY_CODE } from './drag-and-drop/drag-and-drop.component';
 
 export interface Question {
   assessment_id: number;
@@ -43,7 +44,8 @@ export interface Option {
   randomized: string,
   updated_at: string;
   entered: boolean;
-  _unique_id: string;
+  alt_text: string;
+  // _unique_id: string;
 }
 
 export enum OptionTypeEnum {
@@ -92,6 +94,46 @@ export class AssessmentComponent implements OnInit {
   studentAnswer = null;
   studentId = null;
   timeoutSecondsRemaining = null; //seconds of timeout remaining, if feature enabled
+
+  resetSelected: boolean = false;
+  submitSelected: boolean = false;
+
+
+  @HostListener('window:keyup', ['$event'])
+  keyEventUp(event: KeyboardEvent) {
+    switch (event.code) {
+
+      case KEY_CODE.KEY_R:
+        this.resetSelected = true;
+        this.submitSelected = false;
+        break;
+
+      case KEY_CODE.KEY_S:
+        this.submitSelected = true;
+        this.resetSelected = false;
+        break;
+
+
+      case KEY_CODE.ENTER:
+        if (this.submitSelected) {
+          // submit the quick check
+          if (!this.isSubmitDisabled()) {
+            this.submitAnswer();
+          }
+        } else if (this.resetSelected) {
+          // reset the quick check
+          if (confirm("Are you sure you want to start over?")) {
+            this.restart();
+          }
+
+        }
+        break;
+
+      default:
+        // Do Nothing
+        break;
+    }
+  }
 
   constructor(
     public utilitiesService: UtilitiesService,

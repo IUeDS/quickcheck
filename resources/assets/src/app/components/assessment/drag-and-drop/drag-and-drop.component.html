@@ -1,10 +1,15 @@
+123
 <div cdkDropListGroup class="qc-drag-question">
+  <div class="sr-only">
+    Use the keyboard for dragging and dropping. Press spacebar to select the first draggable. Press tab to highlight another draggable. Press spacebar to select it. Once you selected a draggable use the up and down arrow keys to drop your draggable into a droppable zone. 
+    To drop an answer press spacebar. To return an answer to the answer bank, click Escape. To Restart, press r and then press enter. To submit, ensure all droppables are filled, and then click s and then enter.
+  </div>
   <div class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></div>
   <div [id]="droppableContainerId" class="qc-droppable-container-drag-drop" [style.padding.px]="droppableContainerPadding">
     <img class="qc-droppable-base-img" [src]="this.image.img_url" [width]="this.image.width" [height]="this.image.height" />
     <div *ngFor="let droppable of this.getDroppables(); let i = index;">
       <div cdkDropList
-        [id]="droppable._unique_id"
+        [id]="droppable.id"
         [cdkDropListData]="droppable[optionTypeEnum.Draggable]"
         (cdkDropListDropped)="dropOntoAnswer($event)"
         (cdkDropListEntered)="droppableEntered($event)"
@@ -26,6 +31,7 @@
           <img *ngIf="this.isDraggedImg(droppable)"
             cdkDrag
             class="qc-dropped-option"
+            alt="{{droppable.alt_text}}"
             [src]="droppable[optionTypeEnum.Draggable][0].img_url" 
             [width]="droppable[optionTypeEnum.Draggable][0].width" 
             [height]="droppable[optionTypeEnum.Draggable][0].height"
@@ -39,6 +45,9 @@
       </div>
     </div>
   </div>
+  <div [id]="optionListHeaderId" class="draggables-label">
+    <h3> Draggable Options</h3>
+  </div>
   <div cdkDropList
     [cdkDropListData]="draggables"
     [id]="optionListId"
@@ -48,19 +57,33 @@
     [ngClass]="{'qc-droppable-zone-entered': this.dragListHighlighted}"
     class="qc-drag-option-list">
     <ng-container *ngFor="let draggable of this.draggables; let i = index;">
-      <div cdkDrag
+      <div class="qc-draggable-container">
+        <div cdkDrag
         class="qc-draggable"
-        id="{{draggableId}}-{{draggable._unique_id}}"
-        [style.margin-right.px]="draggableMarginRight"
+        id="{{draggableId}}-{{draggable.id}}"
+        alt="{{draggable.alt_text}}"
         [ngClass]="{
-          'qc-duplicate-drag-option': draggable.count > 1 ? true : false,
-          'qc-draggable-cursor': this.keyDroppableProperties.indexOfSelectedDraggable === i && this.keyDroppableProperties.selectedDraggable === null,
-          'qc-draggable-selected': this.keyDroppableProperties.indexOfSelectedDraggable === i && this.keyDroppableProperties.selectedDraggable !== null
+          'qc-duplicate-drag-option': draggable.count > 1 ? true : false
+        
         }"
         [ngStyle]="{'width.px': draggable.width, 'height.px': draggable.height}">
-        <img *ngIf="draggable.img_url" [src]="draggable.img_url" [width]="draggable.width" [height]="draggable.height" />
-        <span *ngIf="draggable.text" class="qc-draggable-text" [ngStyle]="{'font-size': draggable.font_size + 'px'}">{{ draggable.text }}</span>
+        <img *ngIf="draggable.img_url" class="qc-draggable-text" [src]="draggable.img_url" [width]="draggable.width" [height]="draggable.height"
+        alt="{{droppable.alt_text}}"
+        [ngClass]="{
+          'qc-draggable-cursor': this.keyDroppableProperties.indexOfSelectedDraggable === i && this.keyDroppableProperties.selectedDraggable === null,
+          'qc-draggable-selected': this.keyDroppableProperties.indexOfSelectedDraggable === i && this.keyDroppableProperties.selectedDraggable !== null
+        }" />
+        <span *ngIf="draggable.text" 
+          class="qc-draggable-text" 
+          [ngStyle]="{'font-size': draggable.font_size + 'px'}"
+          [ngClass]="{
+            'qc-draggable-cursor': this.keyDroppableProperties.indexOfSelectedDraggable === i && this.keyDroppableProperties.selectedDraggable === null,
+            'qc-draggable-selected': this.keyDroppableProperties.indexOfSelectedDraggable === i && this.keyDroppableProperties.selectedDraggable !== null
+          }"
+          >{{ draggable.text }}</span>
       </div>
+      </div>
+
       <!-- break to a new line at the end of a row of duplicates (needed if two sets of duplicates in a row) -->
       <!-- <br *ngIf="this.isLastDuplicateDraggable(draggable, i)"/> -->
     </ng-container>

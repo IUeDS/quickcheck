@@ -114,7 +114,8 @@ export class EditDragAndDropComponent implements OnInit {
       font_size: null,
       left: null,
       top: null,
-      answer_id: null
+      answer_id: null,
+      alt_text: null
     });
 
     this.onEdited();
@@ -137,7 +138,8 @@ export class EditDragAndDropComponent implements OnInit {
       img_url: null,
       left: null,
       top: null,
-      answer_id: null
+      answer_id: null,
+      alt_text: null
     });
 
     this.onEdited();
@@ -160,6 +162,7 @@ export class EditDragAndDropComponent implements OnInit {
       text: null,
       font_size: null,
       img_url: null,
+      alt_text: null
     };
     this.question.droppables.push(droppable);
 

@@ -48,7 +48,9 @@
     width: fit-content;
     min-width: 200px;
     border: 1px solid black;
-    text-align: center;
+    // text-align: center;
+    display: block;
+    padding: 10px;
 }
 
 .cdk-drag-animating {
@@ -62,12 +64,21 @@
 
 .qc-draggable-text {
     cursor: pointer;
+    border: 1px black solid;
+    border-radius: 8px;
 }
 
 .qc-draggable {
-    display: inline-block;
+    // display: inline-block;
     // margin-right: 20px;
     position: relative;
+    display: block;
+//     float: left;
+
+}
+
+.draggables-label {
+    padding: 10px 0px;
 }
 
 .qc-droppable-container-drag-drop {
@@ -81,9 +92,14 @@
 .qc-draggable-selected {
     border: 2px green solid;
     border-radius: 8px;
-
 }
 
 #announcer {
     opacity: 0;
 }
+
+.qc-draggable-container {
+    // display: inline-block;
+    text-align: center;
+}
+

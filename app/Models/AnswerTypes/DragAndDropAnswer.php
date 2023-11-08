@@ -26,7 +26,8 @@ class DragAndDropAnswer extends QuestionOption
         'font_size',
         'left',
         'top',
-        'answer_id'
+        'answer_id',
+        'alt_text'
     ];
 
     /**
@@ -50,6 +51,7 @@ class DragAndDropAnswer extends QuestionOption
         $newOption->top = $option['top'];
         $newOption->answer_id = $option['answer_id'];
         $newOption->img_url = $option['img_url'];
+        $newOption->alt_text = $option['alt_text'];
         $newOption->save();
 
         return $newOption;
@@ -401,6 +403,7 @@ class DragAndDropAnswer extends QuestionOption
         $existingOption->top = $option['top'];
         $existingOption->img_url = $option['img_url'];
         $existingOption->answer_id = $option['answer_id'];
+        $existingOption->alt_text = $option['alt_text'];
         $existingOption->save();
 
         return $existingOption;

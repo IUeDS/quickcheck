@@ -5,6 +5,8 @@ import { Option, OptionTypeEnum, Question } from '../assessment.component';
 import { LiveAnnouncer } from "@angular/cdk/a11y";
 
 
+import * as cloneDeep from 'lodash/cloneDeep';
+
 export enum KEY_CODE {
   RIGHT_ARROW = 'ArrowRight',
   LEFT_ARROW = 'ArrowLeft',
@@ -14,7 +16,11 @@ export enum KEY_CODE {
   ESCAPE = 'Escape',
   TAB = 'Tab',
   DELETE = 'Delete',
-  BACKSPACE = 'Backspace'
+  BACKSPACE = 'Backspace',
+  KEY_S = 'KeyS',
+  KEY_R = 'KeyR',
+  KEY_I = 'KeyI',
+  ENTER = 'Enter'
 }
 
 export interface DroppableTracker {
@@ -26,11 +32,14 @@ export interface DroppableTracker {
 
 // to identify the option container when a placed option is dragged back
 const OPTION_LIST_DROP_LIST_ID = 'OPTION_LIST'; // draggable container
+const OPTION_LIST_DROP_HEADER_ID = 'OPTION_LIST_HEADER'; // draggable container header
+
 const DRAGGABLE_ID = 'DRAGGABLE';
 const DROPPABLE_CONTAINER_ID = 'DROPPABLE_CONTAINER';
 
 const DROPPABLE_CONTAINER_PADDING = 100;
 const DRAGGABLE_MARGIN_RIGHT = 20;
+const DRAGGABLE_MARGIN_BOTTOM = 20;
 
 /*
   things left to do:
@@ -53,6 +62,7 @@ export class DragAndDropComponent implements OnInit {
 
   // IMAGE_TYPE = 'IMAGE'; //the base image
   optionListId = OPTION_LIST_DROP_LIST_ID;
+  optionListHeaderId = OPTION_LIST_DROP_HEADER_ID;
   draggableId = DRAGGABLE_ID;
   droppableContainerId = DROPPABLE_CONTAINER_ID;
   droppableContainerPadding = DROPPABLE_CONTAINER_PADDING;
@@ -88,7 +98,6 @@ export class DragAndDropComponent implements OnInit {
   @HostListener('window:keyup', ['$event'])
   keyEventUp(event: KeyboardEvent) {
     switch (event.code) {
-
       // Note: Up = right and down = left arrow keys
       case KEY_CODE.UP_ARROW:
       case KEY_CODE.RIGHT_ARROW:
@@ -120,6 +129,10 @@ export class DragAndDropComponent implements OnInit {
         this.onAnswerSelected(); //emit data to parent
 
         break;
+
+      case KEY_CODE.KEY_I:
+
+       break;
 
       default:
         // Do Nothing
@@ -171,14 +184,14 @@ export class DragAndDropComponent implements OnInit {
         option.disabled = false;
         option.entered = false;
         option[OptionTypeEnum.Draggable] = [];
-        option._unique_id = this.utilitiesService.generateUniqueId();
+        // option._unique_id = this.utilitiesService.generateUniqueId();
         this.droppables.push(option);
       }
 
       if (option.type === OptionTypeEnum.Draggable) {
         option.disabled = false;
         option[OptionTypeEnum.Droppable] = null;
-        option._unique_id = this.utilitiesService.generateUniqueId();
+        // option._unique_id = this.utilitiesService.generateUniqueId();
         this.draggables.push(option);
       }
     }
@@ -189,7 +202,7 @@ export class DragAndDropComponent implements OnInit {
       if (draggable.count > 1) {
         for (let j = 0; j < draggable.count - 1; j++) {
           const clone = JSON.parse(JSON.stringify(draggable));
-          clone._unique_id = this.utilitiesService.generateUniqueId();
+          // clone._unique_id = this.utilitiesService.generateUniqueId();
           this.draggables.splice(i, 0, clone);
         }
         i += (draggable.count - 1); //increment counter so we don't loop over those we just added
@@ -201,8 +214,8 @@ export class DragAndDropComponent implements OnInit {
     
   }
 
-  /* 
-  * Positions the Droppable to the selected draggable
+  /*ƒƒ
+  * Positions the Droppable to the selected ƒ∂ƒdraggable
   * The positioning is dynamically calculated and applied as a style
   * Changes in the HTML template will cause issues here
   */ 
@@ -213,14 +226,15 @@ export class DragAndDropComponent implements OnInit {
       // const droppableHeight = this.droppables[this.keyDroppableProperties.indexOfSelectedDroppable].height;
       // const droppableWidth = this.droppables[this.keyDroppableProperties.indexOfSelectedDroppable].width;
   
-      const draggableElement = document.getElementById(this.getDraggableId(this.keyDroppableProperties.selectedDraggable._unique_id));
+      const draggableElement = document.getElementById(this.getDraggableId(this.keyDroppableProperties.selectedDraggable.id));
       const qcDroppableContainerElementHeight = document.getElementById(DROPPABLE_CONTAINER_ID).offsetHeight;
-      const qcDraggableContainerElementHeight = document.getElementById(OPTION_LIST_DROP_LIST_ID).offsetHeight;
+      const qcDraggableContainerElementHeight = document.getElementById(OPTION_LIST_DROP_LIST_ID).offsetHeight + document.getElementById(OPTION_LIST_DROP_HEADER_ID).offsetHeight;
   
+      // For Horizontal draggables
       let widthToMoveLeft = 0;
       this.draggables.forEach((draggable, index) => {
         if (this.keyDroppableProperties.indexOfSelectedDraggable > index) {
-          const draggableElement = document.getElementById(`${DRAGGABLE_ID}-${draggable._unique_id}`);
+          const draggableElement = document.getElementById(`${DRAGGABLE_ID}-${draggable.id}`);
           widthToMoveLeft += draggableElement.clientWidth + DRAGGABLE_MARGIN_RIGHT;
         }
       });
@@ -229,11 +243,27 @@ export class DragAndDropComponent implements OnInit {
       console.log('qcDraggableContainerElementHeight/2: ', qcDraggableContainerElementHeight/2);
       console.log('draggableElement.offsetHeight: ', draggableElement.offsetHeight);
       */ 
-      const draggableTop = qcDroppableContainerElementHeight - droppableTop + qcDraggableContainerElementHeight/2 - draggableElement.offsetHeight/2 - 10;
-      const draggableLeft = droppableLeft - widthToMoveLeft;
-  
+
+      // For Horizontal draggables
+      // const draggableTop = qcDroppableContainerElementHeight - droppableTop + qcDraggableContainerElementHeight/2 - draggableElement.offsetHeight/2 - 10;
+      // const draggableLeft = droppableLeft - widthToMoveLeft;
+
+      // For Vertical draggables
+      let heightToMoveTop = 0;
+      this.draggables.forEach((draggable, index) => {
+        if (this.keyDroppableProperties.indexOfSelectedDraggable > index) {
+          const draggableElement = document.getElementById(`${DRAGGABLE_ID}-${draggable.id}`);
+          heightToMoveTop += draggableElement.clientHeight + DRAGGABLE_MARGIN_BOTTOM;
+        }
+      });
+
+      // For Vertical Draggables
+      const draggableTop = qcDroppableContainerElementHeight - droppableTop + heightToMoveTop + 36 + 55;
+      const draggableLeft = droppableLeft - 10;
+
       draggableElement.style.top = `-${draggableTop}px`;
       draggableElement.style.left = `${draggableLeft}px`;
+      draggableElement.style.textAlign = 'left';
   }
 
   /* 
@@ -255,6 +285,11 @@ export class DragAndDropComponent implements OnInit {
       this.keyDroppableProperties.indexOfSelectedDraggable += 1;
     }
 
+
+    let textToAnnounce = `${this.optionAnnouncementName(this.draggables[this.keyDroppableProperties.indexOfSelectedDraggable])} is selected.
+      Press space to grab.`;
+    this.liveAnnouncer.announce(textToAnnounce);
+
     // Update the indexOfSelectedDroppable if the draggable is in a droppable
     this.droppableDraggableIndexMap.forEach((value, key) => {
       // key: index of Droppable
@@ -273,13 +308,17 @@ export class DragAndDropComponent implements OnInit {
   deleteClicked(): void {
     if (this.keyDroppableProperties.selectedDraggable !== null) {
       const indexOfDraggableOnSelectedDraggable = this.droppableDraggableIndexMap.get(this.keyDroppableProperties.indexOfSelectedDroppable);
-      this.returnDraggableToOriginialPositioning(this.draggables[this.keyDroppableProperties.indexOfSelectedDraggable]._unique_id, indexOfDraggableOnSelectedDraggable);
+      this.returnDraggableToOriginialPositioning(this.draggables[this.keyDroppableProperties.indexOfSelectedDraggable].id, indexOfDraggableOnSelectedDraggable);
       this.droppableDraggableIndexMap.set(this.keyDroppableProperties.indexOfSelectedDroppable, -1);
     }
   }
 
   optionAnnouncementName(option: Option): string {
-    return option.text !== undefined && option.text !== null ? option.text : `${option.type} number ${option.id + 1}`
+    if (option) {
+      return option && option.text !== undefined && option.text !== null ? option.text : `${option.type} number ${option.id + 1}`
+    } else {
+      return '';
+    }
   }
 
   /* 
@@ -295,16 +334,20 @@ export class DragAndDropComponent implements OnInit {
     }
     if (this.keyDroppableProperties.selectedDraggable === null) {
       this.keyDroppableProperties.selectedDraggable = this.draggables[this.keyDroppableProperties.indexOfSelectedDraggable];
+      let textToAnnounce = 
+      `${this.optionAnnouncementName(this.draggables[this.keyDroppableProperties.indexOfSelectedDraggable])} is grabbed. Press the up and down arrows to hear drop zones, spacebar to drop, and escape to return this answer to the answer bank.`;
+      this.liveAnnouncer.announce(textToAnnounce);
     } else {
       const indexOfDraggableOnSelectedDraggable = this.droppableDraggableIndexMap.get(this.keyDroppableProperties.indexOfSelectedDroppable);
-      let textToAnnounce = 
-        `${this.optionAnnouncementName(this.draggables[indexOfDraggableOnSelectedDraggable])} is now assigned as an answer to 
-        ${this.optionAnnouncementName(this.droppables[this.keyDroppableProperties.indexOfSelectedDroppable])}`;
-      this.liveAnnouncer.announce(textToAnnounce);
+      // console.log(cloneDeep(this.droppableDraggableIndexMap), indexOfDraggableOnSelectedDraggable);
       if (indexOfDraggableOnSelectedDraggable >= 0) {
-        this.returnDraggableToOriginialPositioning(this.draggables[indexOfDraggableOnSelectedDraggable]._unique_id, indexOfDraggableOnSelectedDraggable);
+        this.returnDraggableToOriginialPositioning(this.draggables[indexOfDraggableOnSelectedDraggable].id, indexOfDraggableOnSelectedDraggable);
       }
       this.droppableDraggableIndexMap.set(this.keyDroppableProperties.indexOfSelectedDroppable, this.keyDroppableProperties.indexOfSelectedDraggable);
+      let textToAnnounce = 
+       `${this.optionAnnouncementName(this.draggables[this.keyDroppableProperties.indexOfSelectedDraggable])} is now assigned as an answer to 
+        ${this.optionAnnouncementName(this.droppables[this.keyDroppableProperties.indexOfSelectedDroppable])}`;
+      this.liveAnnouncer.announce(textToAnnounce);
       this.keyDroppableProperties.selectedDraggable = null;
       this.setDroppablesEnteredProperty();
     }
@@ -336,24 +379,21 @@ export class DragAndDropComponent implements OnInit {
       this.positionDroppable();
       let textToAnnounce = 
         `Press Space to Assign ${this.optionAnnouncementName(this.draggables[this.keyDroppableProperties.indexOfSelectedDraggable])} to 
-        ${this.optionAnnouncementName(this.droppables[this.keyDroppableProperties.indexOfSelectedDroppable])}`;
+        ${this.optionAnnouncementName(this.droppables[this.keyDroppableProperties.indexOfSelectedDroppable])}. Press the up and down arrows to hear more drop zones, and escape to cancel.`;
       this.liveAnnouncer.announce(textToAnnounce);
     }
-    console.log('this.keyDroppableProperties', this.keyDroppableProperties)
-    console.log('this.draggables', this.draggables)
-    console.log('this.droppables', this.droppables)
-
   }
 
   /* 
   * Utility function to return (read: position) the draggable to bank
   */ 
-  returnDraggableToOriginialPositioning(draggableId: string, indexOfDraggableOnSelectedDraggable: number): void {
+  returnDraggableToOriginialPositioning(draggableId: number, indexOfDraggableOnSelectedDraggable: number): void {
     if (draggableId) {
       const draggableElement = document.getElementById(this.getDraggableId(draggableId));
       if (draggableElement) {
         draggableElement.style.top = `0px`;
         draggableElement.style.left = `0px`
+        draggableElement.style.textAlign = 'center';
       }
       let textToAnnounce = `${this.optionAnnouncementName(this.draggables[indexOfDraggableOnSelectedDraggable])} is returned to answer bank.`
       this.liveAnnouncer.announce(textToAnnounce);
@@ -364,7 +404,7 @@ export class DragAndDropComponent implements OnInit {
   /* 
   * Gets the associted unique ID for a draggable
   */ 
-  getDraggableId(idOfSelectedDraggable: string ):string {
+  getDraggableId(idOfSelectedDraggable: number ):string {
     return `${DRAGGABLE_ID}-${idOfSelectedDraggable}`;
   }
 
