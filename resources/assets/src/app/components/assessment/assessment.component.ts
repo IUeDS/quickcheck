@@ -45,7 +45,7 @@ export interface Option {
   updated_at: string;
   entered: boolean;
   alt_text: string;
-  // _unique_id: string;
+  _unique_id: string;
 }
 
 export enum OptionTypeEnum {

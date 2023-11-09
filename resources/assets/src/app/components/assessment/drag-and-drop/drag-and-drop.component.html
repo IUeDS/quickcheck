@@ -1,4 +1,3 @@
-123
 <div cdkDropListGroup class="qc-drag-question">
   <div class="sr-only">
     Use the keyboard for dragging and dropping. Press spacebar to select the first draggable. Press tab to highlight another draggable. Press spacebar to select it. Once you selected a draggable use the up and down arrow keys to drop your draggable into a droppable zone. 
@@ -9,7 +8,7 @@
     <img class="qc-droppable-base-img" [src]="this.image.img_url" [width]="this.image.width" [height]="this.image.height" />
     <div *ngFor="let droppable of this.getDroppables(); let i = index;">
       <div cdkDropList
-        [id]="droppable.id"
+        [id]="droppable._unique_id"
         [cdkDropListData]="droppable[optionTypeEnum.Draggable]"
         (cdkDropListDropped)="dropOntoAnswer($event)"
         (cdkDropListEntered)="droppableEntered($event)"
@@ -59,7 +58,7 @@
       <div class="qc-draggable-container">
         <div cdkDrag
         class="qc-draggable"
-        id="{{draggableId}}-{{draggable.id}}"
+        id="{{draggableId}}-{{draggable._unique_id}}"
         [ngClass]="{
           'qc-duplicate-drag-option': draggable.count > 1 ? true : false
         
