@@ -10,6 +10,7 @@ class CourseContext extends Eloquent {
     protected $fillable = [
         "lti_context_id",
         "lti_custom_course_id",
+        "late_grading_enabled",
         "time_zone",
         "lis_course_offering_sourcedid"
     ];
@@ -75,8 +76,20 @@ class CourseContext extends Eloquent {
 
     public function getCourseOfferingSourcedid()
     {
-        return $this->lis_course_offering_sourcedid;
+        return $this->lti_custom_course_id;
     }
+
+    /**
+    * Get the late grading policy of the course
+    *
+    * @return string
+    */
+
+    public function getLateGradingPolicy()
+    {
+        return $this->late_grading_enabled;
+    }
+
 
     /**
     * Get the time zone of the course context
@@ -104,6 +117,14 @@ class CourseContext extends Eloquent {
         $this->lti_custom_course_id = $courseId;
         $this->lis_course_offering_sourcedid = $sourcedId;
         $this->time_zone = $this->getCourseTimeZoneFromAPI($courseId);
+
+        $canvasApi = new CanvasAPI;
+        $lateGradingPolicy = $canvasApi->getCourseLateGradePolicy($courseId);
+        if (!$lateGradingPolicy) {
+            $this->late_grading_enabled = false;
+        } else {
+            $this->late_grading_enabled = true;
+        }
         $this->save();
     }
 

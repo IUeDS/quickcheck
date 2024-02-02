@@ -11,7 +11,16 @@
                 <a class="btn btn-light qc-btn qc-btn-download-csv" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId">
                     <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
                 </a>
-
+                <br>
+                <div class="qc-student-results-toggle">
+                    <input class="tgl tgl-ios sr-only" type="checkbox"
+                        id="qc-student-results-toggle"
+                        [(ngModel)]="allowLateSubmissions"
+                        [checked]="allowLateSubmissions === true"
+                        (click)="allowLateSubmissionsChecked()">
+                    <label class="tgl-btn inline-block" for="qc-student-results-toggle"><span class="sr-only">Toggle to view results by student</span></label>
+                    <p class="qc-toggle-student-results-text"> Allow Late Submissions</p>
+                </div>
             </div>
         </div>
         <div *ngIf="!this.isViewingByStudent()">
@@ -69,3 +78,8 @@
         </div>
     </div>
 </div>
+
+
+<!-- 
+
+ -->

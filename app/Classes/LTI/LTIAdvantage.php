@@ -386,6 +386,10 @@ class LTIAdvantage {
 
         $privateKey = $this->getRsaKeyFromEnv('LTI_PRIVATE_KEY');
         $kid = env('LTI_JWK_KID', null);
+        Log::info($privateKey);
+        Log::info($jwtToken);
+        Log::info($kid);
+
         $oauthRequestJWT = JWT::encode($jwtToken, $privateKey, 'RS256', $kid);
         $params = [];
         $params['grant_type'] = 'client_credentials';
@@ -402,6 +406,7 @@ class LTIAdvantage {
         $params['scope'] = $scope;
         $jsonResponse = $this->curlPost($this->oauthTokenEndpoint, [], $params);
         $response = json_decode($jsonResponse, true);
+        Log::info($response);
         $oauthToken = $response['access_token'];
         $this->oauthHeader = ['Authorization: Bearer ' . $oauthToken];
 

@@ -3,6 +3,8 @@ import { UtilitiesService } from '../../services/utilities.service';
 import { ManageService } from '../../services/manage.service';
 import { Submission } from '../../classes/submission';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'qc-view-attempts',

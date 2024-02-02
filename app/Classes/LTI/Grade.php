@@ -49,7 +49,10 @@ class Grade {
             return false;
         }
 
-        if ($this->isPastDue()) {
+        $isLateGradingEnabled = $this->attempt->courseContext->late_grading_enabled;
+
+        if ($this->isPastDue() && !$isLateGradingEnabled) {
+            Log::info('not ready for grade 1');
             return false;
         }
 
@@ -94,11 +97,21 @@ class Grade {
             $result = 0;
         }
 
-        $scoreToSubmit = $scoreGiven ? $scoreGiven : $this->attempt->getCalculatedScore();
+        $isLateGradingEnabled = $this->attempt->courseContext->late_grading_enabled;
+        $isPastDue = $this->isPastDue();
+
+        $applyLateGradingPolicy = $isLateGradingEnabled && $isPastDue;
+        $scoreToSubmit = $scoreGiven ? $scoreGiven : $this->attempt->getCalculatedScore($applyLateGradingPolicy);
         $gradeToSubmit = $this->formatGradeToSubmit($scoreToSubmit, $scoreMaximum);
         if ($gradeToSubmit < $result && !$scoreGiven) { //let instructor override and give a lower score
             return true;
         }
+
+        if ($isPastDue && !$isLateGradingEnabled) {
+            Log::info('will not grade');
+            return true;
+        }
+        Log::info('will grade');
 
         $submissionResult = $ltiContext->submitGrade($lineItemUrl, $userId, $gradeToSubmit, $scoreMaximum);
         return $submissionResult;
@@ -162,16 +175,19 @@ class Grade {
         $courseTimeZone = $this->attempt->getCourseTimeZone();
         $courseDateTimeZone = new DateTimeZone($courseTimeZone);
         $utcTimeZone = new DateTimeZone('UTC');
+        Log::info("courseTimeZone: " . $courseTimeZone);
 
         //Canvas gives us date in UTC, stored that way in DB, but we convert to course timezone
         $dueAtValue = $this->attempt->getDueAt();
         if ($dueAtValue) {
-            $dueAt = new DateTime($dueAtValue, $utcTimeZone);
-            $dueAt = $dueAt->setTimezone($courseDateTimeZone);
+            $dueAt = new DateTime($dueAtValue, $courseDateTimeZone);
+            // $dueAt = $dueAt->setTimezone($courseDateTimeZone);
         }
+        // Log::info("dueAt: " . $dueAt);
 
         //get current time, converted to course-specific timezone (rather than server default)
         $now = new DateTime("now", $courseDateTimeZone);
+        // Log::info("Now: " . $now);
 
         // If $dueAt is FALSE, allow grade to be passed back (no due date supplied)
         if (!$dueAt || $now <= $dueAt) {

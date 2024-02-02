@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { timeout } from 'rxjs/operators';
 import { HttpService } from './http.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -165,5 +166,18 @@ export class ManageService {
     return await this.httpClient.post(path, data)
       .pipe(timeout(timeoutLength))
       .toPromise();
+  }
+
+  changeLateGradingPolicy(contextId, courseId, lateGradingPolicy: boolean): Observable<any> {
+    const url = `${this.httpService.getApiRoute()}/context/${contextId}/course/${courseId}/latePolicy`;
+    const payload = {
+      'lateGradingPolicy': lateGradingPolicy
+    }
+    return this.httpClient.post(url, payload);
+  }
+
+  getCourseContextByContextId(contextId: string): Observable<any> {
+    const url = `${this.httpService.getApiRoute()}/context/${contextId}`;
+    return this.httpClient.get(url);
   }
 }

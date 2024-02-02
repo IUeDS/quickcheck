@@ -278,6 +278,40 @@ class CanvasAPI
         }
     }
 
+
+    /**
+    * Given a course, what late grading policy does this course have
+    *
+    * @param  int  $courseId
+    * @return [] $lateGradePolicy
+    */
+
+    public function getCourseLateGradePolicy($courseId) 
+    {
+        $lateGradePolicyUrl = $this->canvasDomain . '/courses/' . $courseId . '/late_policy';
+        $JSONresponse = $this->curlGet($lateGradePolicyUrl, $this->apiToken);
+        // Log::info('$JSONresponse : ' . $JSONresponse );
+
+        $lateGradePolicy = $this->getResponseBody($JSONresponse);
+
+        // See if error exists
+        $errorMessage = $this->getApiError($lateGradePolicy);
+
+        if ($errorMessage) {
+            Log::info('Error from Canvas API. Canvas API returned: ' . $errorMessage);
+            return null;
+        }
+
+        return $lateGradePolicy;
+    }
+
+        /**
+    * Given a course, what late grading policy does this course have
+    *
+    * @param  int  $courseId
+    * @return [] $lateGradePolicy
+    */
+
     /************************************************************************/
     /* PRIVATE FUNCTIONS ****************************************************/
     /************************************************************************/

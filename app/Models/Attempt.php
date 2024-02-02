@@ -11,6 +11,7 @@ use App\Models\LineItem;
 use App\Models\Student;
 use App\Classes\LTI\LtiContext;
 use App\Exceptions\MissingLtiContextException;
+use DateTimeZone;
 use Illuminate\Support\Facades\Cache;
 use Log;
 
@@ -197,20 +198,83 @@ class Attempt extends Eloquent {
         return $firstAttempt->getAssignmentId();
     }
 
+    public function getLateGradePolicy() {
+        $courseId = $this->courseContext->lti_custom_course_id;
+        $canvasApi = new CanvasAPI;
+        $lateGradingPolicy = $canvasApi->getCourseLateGradePolicy($courseId);
+        $lateGradingPolicyObject = $lateGradingPolicy['late_policy'];
+        return $lateGradingPolicyObject;
+    }
+
     /**
     * Get an attempt's calculated score
     *
     * @return int
     */
 
-    public function getCalculatedScore() {
+    public function getCalculatedScore($applyLateGradingPolicy = false) {
         //don't think we'll run into this, but if the attempt has not been updated at all and
         //this value is still NULL, then return 0
         if (is_null($this->calculated_score)) {
             return 0;
         }
+        // 
+        $percentageScore = $this->calculated_score * 100;
 
-        return $this->calculated_score;
+        if ($applyLateGradingPolicy) {
+            // $courseContext = CourseContext::where('id', '=', $this->course_context_id)->first();
+            // $courseContext = CourseContext::find($this->course_context_id);
+            
+            // Log::info('$courseId: ' . $courseId);
+            // echo $courseId; die();
+
+            $lateGradingPolicyObject = $this->getLateGradePolicy();
+            // dd($lateGradingPolicy);
+            // Log::info('$lateGradingPolicy: ' . $lateGradingPolicy);
+            $isPastDue = $this->isPastDue();
+
+            //  &&
+            if ($isPastDue) {
+                $scoreToRemove = $this->calculateScoreToRemove($lateGradingPolicyObject, $applyLateGradingPolicy);
+                if ($percentageScore - $scoreToRemove <= $lateGradingPolicyObject['late_submission_minimum_percent']) {
+                    $percentageScore = $lateGradingPolicyObject['late_submission_minimum_percent'];
+                } else {
+                    $percentageScore = $percentageScore - $scoreToRemove;
+                }
+
+                
+            }
+        }
+        $realScore = $percentageScore/100;
+        $this->calculatedScore = $realScore;
+
+        return $this->calculatedScore;
+    }
+
+    public function calculateScoreToRemove($lateGradingPolicyObject, $applyLateGradingPolicy = false) {
+        $scoreToRemove = 0;
+        $numOfIntervalsLate = 0;
+        if ($this->getDueAt(true) && $applyLateGradingPolicy && $this->isPastDue() && $lateGradingPolicyObject['late_submission_deduction_enabled'] && $lateGradingPolicyObject['late_submission_interval']) {
+            $dueAt = $this->getDueAt(true)->getTimeStamp();
+            $submitted = $this->updated_at->getTimeStamp();
+            $latenessTimestamp = $submitted - $dueAt; // difference in seconds
+    
+            switch ($lateGradingPolicyObject['late_submission_interval']) {
+                case "hour":
+                    $numOfIntervalsLate = ceil($latenessTimestamp / 3600);
+                    break;
+                case "day":
+                    $numOfIntervalsLate = ceil($latenessTimestamp / 86400);
+                    break;
+                default: // default is day
+                    $numOfIntervalsLate = ceil($latenessTimestamp / 86400);
+                    break;
+            }    
+        }
+        $scoreToRemove = $lateGradingPolicyObject['late_submission_deduction'] * $numOfIntervalsLate;
+        
+        return $scoreToRemove;
+
     }
 
     /**
@@ -237,10 +301,15 @@ class Attempt extends Eloquent {
         }
 
         $dueAt = $lineItem->getDueAt();
+        // $courseTimeZone = $this->getCourseTimeZone();
+        // $courseDateTimeZone = new DateTimeZone($courseTimeZone);
+        $utcTimeZone = new DateTimeZone('UTC');
 
         if ($convertToDateTime && $dueAt) { //don't convert a null value
             //convert due_at from datetime to timestamp
-            return new DateTime($dueAt);
+            $dueAtTimeZone = new DateTime($dueAt, $utcTimeZone);
+            // dd($dueAtTimeZone);
+            return $dueAtTimeZone;
         }
 
         return $dueAt;
@@ -279,9 +348,28 @@ class Attempt extends Eloquent {
         $countCorrect = $this->getCountCorrect();
         $partialCredit = $this->getPartialCredit();
         $points = $countCorrect + $partialCredit;
+        $lateGradingPolicyObject = $this->getLateGradePolicy();
+        $isLateGradingEnabled = $this->courseContext->late_grading_enabled;
+        $scoreToRemove = $this->calculateScoreToRemove($lateGradingPolicyObject, $isLateGradingEnabled);
         $questionCount = $this->assessment->questions->count();
         if ($questionCount > 0) {
-            $calculatedScore = $points / $questionCount;
+            if ($isLateGradingEnabled) {
+                $calculatedScore = ($points / $questionCount);
+                Log::info('$calculatedScore: ' . $calculatedScore );
+                $scoreToRemove = $this->calculateScoreToRemove($lateGradingPolicyObject, $isLateGradingEnabled);
+                Log::info('$scoreToRemove: ' . $scoreToRemove );
+
+                    if ($calculatedScore * 100 - $scoreToRemove <= $lateGradingPolicyObject['late_submission_minimum_percent']) {
+                        $calculatedScore = ($lateGradingPolicyObject['late_submission_minimum_percent'])/100;
+                    } else {
+                        $calculatedScore = $calculatedScore  - ($scoreToRemove)/100;
+                    }
+                $calculatedScore = $calculatedScore;
+                Log::info('$calculatedScore 123: ' . $calculatedScore );
+
+            } else { // no late grade policy
+                $calculatedScore = ($points / $questionCount);
+            }
         }
         return $calculatedScore;
     }
@@ -554,6 +642,8 @@ class Attempt extends Eloquent {
         $convertToDateTime = true;
         $dueAt = $this->getDueAt($convertToDateTime)->getTimeStamp();
         $updatedAt = $this->updated_at->getTimeStamp();
+        Log::info('$dueAt: ' . $dueAt);
+        Log::info('$updatedAt: ' . $updatedAt);
         if ($updatedAt >= $dueAt) {
             return true;
         }

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../services/utilities.service';
 import { ManageService } from '../../services/manage.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'qc-attempts-overview',
@@ -8,7 +9,9 @@ import { ManageService } from '../../services/manage.service';
   styleUrls: ['./attempts-overview.component.scss']
 })
 export class AttemptsOverviewComponent implements OnInit {
+  @Input() courseContext;
   attempts = [];
+  contextId: string = '';
   currentPage = 'results';
   embeds = {}; //if same assessment is embedded in multiple assignments, split into separate entries
   isResultsByStudentToggled = false;
@@ -19,7 +22,12 @@ export class AttemptsOverviewComponent implements OnInit {
   };
   students = [];
 
-  constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
+  allowLateSubmissions = false;
+
+  constructor(
+     public utilitiesService: UtilitiesService,
+     private manageService: ManageService,
+     private router: ActivatedRoute) { }
 
   ngOnInit() {
     this.utilitiesService.setTitle('Quick Check results');
@@ -30,8 +38,10 @@ export class AttemptsOverviewComponent implements OnInit {
     else {
       this.getAssessments();
     }
+    this.getLateGradePolicy();
   }
 
+  // 
   async getAssessments() {
     let data;
     this.utilitiesService.loadingStarted();
@@ -64,6 +74,48 @@ export class AttemptsOverviewComponent implements OnInit {
     this.attempts = data.attempts;
     this.utilitiesService.loadingFinished();
   }
+
+  allowLateSubmissionsChecked(): void {
+    // console.log($event)
+    this.contextId = this.router.snapshot.queryParamMap.get('context');
+    this.allowLateSubmissions = !this.allowLateSubmissions;
+    // console.log('this.courseId', this.contextId);
+    // const resp = await this.manageService.getAttemptsAndResponses(this.assessmentId, this.assignmentId, this.resourceLinkId, this.utilitiesService.contextId);
+    this.manageService.getCourseContextByContextId(this.contextId).subscribe(res => {
+      // console.log('response', res);
+      let response = this.utilitiesService.getResponseData(res);
+      this.courseContext = response.courseContext;
+      // console.log('this.courseContext', this.courseContext);
+      // console.log('this.courseContext.lti_custom_course_id', this.courseContext.lti_custom_course_id);
+
+      this.manageService.changeLateGradingPolicy(this.contextId , this.courseContext.lti_custom_course_id, this.allowLateSubmissions).subscribe(changeLateGradingPolicy => {
+        let changeLateGradePolicyResponse = this.utilitiesService.getResponseData(changeLateGradingPolicy);
+        this.allowLateSubmissions = changeLateGradePolicyResponse.courseContext;
+        // console.log('this.allowLateSubmissions', this.allowLateSubmissions);
+
+      });
+    })
+  
+  }
+
+  getLateGradePolicy(): void {
+    this.contextId = this.router.snapshot.queryParamMap.get('context');
+    // this.allowLateSubmissions = !this.allowLateSubmissions;
+    console.log('this.courseId', this.contextId);
+    // const resp = await this.manageService.getAttemptsAndResponses(this.assessmentId, this.assignmentId, this.resourceLinkId, this.utilitiesService.contextId);
+    this.manageService.getCourseContextByContextId(this.contextId).subscribe(res => {
+      // console.log('response', res);
+      let response = this.utilitiesService.getResponseData(res);
+      this.courseContext = response.courseContext;
+      console.log('this.courseContext', this.courseContext);
+      this.allowLateSubmissions = this.courseContext.late_grading_enabled === 1 ? true : false;
+      // console.log('this.courseContext.lti_custom_course_id', this.courseContext.lti_custom_course_id);
+
+
+    })
+  }
+
+
 
   getAssignmentId(attempt) {
     //1.1 attempts that were graded
@@ -149,7 +201,7 @@ export class AttemptsOverviewComponent implements OnInit {
   //source: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
   storageAvailable() {
     const type = 'sessionStorage';
-    try {
+  try {
       var storage = window[type],
         x = '__storage_test__';
       storage.setItem(x, x);

@@ -151,7 +151,7 @@ class GradeController extends \BaseController
         if (!$attemptId || (!$score && $score !== '0')) {
             return response()->error(400, ['An attempt ID and/or grade were not supplied in this request.']);
         }
-
+        Log::info('submitGrade');
         $attempt = Attempt::findOrFail($attemptId);
         $grade = new Grade($attempt);
         $result = $grade->submitGrade($score);

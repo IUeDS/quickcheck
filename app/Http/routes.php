@@ -212,5 +212,14 @@ Route::group(array('middleware' => array('auth')), function() {
         Route::post('user/addAdmin', 'UserController@addAdmin');
         Route::post('user/validate', 'UserController@validateUser');
         Route::get('users/course/{id}', 'UserController@getUsersInCourse');
+
+        // course context endpoints
+
+        // Route::get('context/{contextId}', 'CourseContextController@getLtiCourseContext');
+        Route::get('context/{contextId}', 'App\Http\Controllers\CourseContextController@getLtiCourseContext');
+        // Route::get('context/{contextId}', [CourseContextController::class, 'getLtiCourseContext']);
+
+        
+        Route::post('context/{contextId}/course/{courseId}/latePolicy', 'App\Http\Controllers\CourseContextController@changeCourseLateGradingPolicy');
     });
 });
