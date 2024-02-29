@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('drag_and_drop_answers', function (Blueprint $table) {
-            $table->string('alt_text')->nullable()->default(NULL);
-            // ->after('lti_custom_user_id')
+            $table->string('alt_text')->after('text')->nullable()->default(NULL);
         });
     }
 
