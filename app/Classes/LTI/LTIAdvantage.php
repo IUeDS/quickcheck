@@ -148,10 +148,11 @@ class LTIAdvantage {
 
     public function createDeepLinkingJwt($deploymentId, $launchUrl, $title)
     {
+        //MGM, 2/29/24: removed title attribute as it changes Canvas assignment name;
+        //if needed in the future, add "title" => $title to the $resource below
         $this->iss = $this->getIssuer();
         $resource = [
             "type" => "ltiResourceLink",
-            "title" => $title,
             "url" => $launchUrl,
             "iframe" => [
                 "width" => 800,
