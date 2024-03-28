@@ -17,8 +17,8 @@
         </div>
     </div>
 </div>
-<div class="form-group bg-success text-light text-center qc-graded-message" [hidden]="!this.graded">
-    <span class="fa fa-check correct-icon" aria-hidden="true"></span>
+<div class="form-group text-light text-center qc-graded-message" [hidden]="!this.graded">
+    <span class="fa fa-check correct-icon" aria-hidden="true"></span>&nbsp;
     <span *ngIf="this.ungradedAssessment">This quick check is ungraded</span>
     <span *ngIf="!this.ungradedAssessment">All on-time assignments graded</span>
 </div>
