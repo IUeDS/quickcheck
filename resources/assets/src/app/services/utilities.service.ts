@@ -444,4 +444,8 @@ export class UtilitiesService {
     for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
   }
+
+  generateUniqueId(): string{
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  }
 }

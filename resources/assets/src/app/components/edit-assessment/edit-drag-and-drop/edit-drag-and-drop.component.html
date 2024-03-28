@@ -29,6 +29,14 @@
                     [disabled]="this.readOnly"
                     required>
             </div>
+            <div class="col-4 form-group">
+                <label for="qc-edit-img-alt-text-{{this.question.id}}">Alternate Text</label>
+                <input type="text" string-to-number class="form-control qc-edit-img-alt-text" id="qc-edit-img-alt-text-{{this.question.id}}" name="qc-edit-img-alt-text-{{this.question.id}}" required
+                    [(ngModel)]="this.question.image.alt_text"
+                    (ngModelChange)="this.onEdited();"
+                    [disabled]="this.readOnly"
+                    required>
+            </div>
         </div>
         <div class="row">
             <div class="col-4 form-group">
@@ -103,6 +111,14 @@
                             [disabled]="this.readOnly">
                     </div>
                     <div class="form-group col-2">
+                        <label for="description-{{this.question.id}}-{{droppable.id}}">Description</label>
+                        <input type="text" id="description-{{this.question.id}}-{{droppable.id}}"
+                            [(ngModel)]="droppable.alt_text"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly">
+                    </div>
+                    <div class="form-group col-2">
                         <label for="answer-{{this.question.id}}-{{droppable.id}}">Answer</label>
                         <select id="answer-{{this.question.id}}-{{droppable.id}}"
                             [(ngModel)]="droppable.answer_id"
@@ -114,6 +130,7 @@
                             <option *ngFor="let draggable of this.question.draggables; index as idx" [value]="draggable.id">Draggable #{{idx + 1}}</option>
                         </select>
                     </div>
+                   
                 </div>
             </td>
         </tr>
@@ -152,7 +169,7 @@
                         <label for="draggable-upload-{{this.question.id}}-{{draggable.id}}">Update image</label>
                         <input type="file" class="form-control-file" id="draggable-upload-{{this.question.id}}-{{draggable.id}}" name="draggable-upload-{{this.question.id}}-{{draggable.id}}" (change)="onSelectFile($event, draggable)">
                     </div>
-                    <div class="form-group col-3">
+                    <div class="form-group col-2">
                         <label for="count-{{this.question.id}}-{{draggable.id}}">Count</label>
                         <input type="text" id="count-{{this.question.id}}-{{draggable.id}}"
                             [(ngModel)]="draggable.count"
@@ -161,7 +178,7 @@
                             required
                             [disabled]="this.readOnly">
                     </div>
-                    <div class="form-group col-3">
+                    <div class="form-group col-2">
                         <label for="width-{{this.question.id}}-{{draggable.id}}">Width</label>
                         <input type="text" id="width-{{this.question.id}}-{{draggable.id}}"
                             [(ngModel)]="draggable.width"
@@ -170,11 +187,20 @@
                             required
                             [disabled]="this.readOnly || !draggable.img_url">
                     </div>
-                    <div class="form-group col-3">
+                    <div class="form-group col-2">
                         <label for="height-{{this.question.id}}-{{draggable.id}}">Height</label>
                         <input type="text" id="height-{{this.question.id}}-{{draggable.id}}"
                             [(ngModel)]="draggable.height"
                             (ngModelChange)="this.onEdited(); this.onImageRatioChange($event, 'height', draggable)"
+                            class="form-control"
+                            required
+                            [disabled]="this.readOnly || !draggable.img_url">
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="description-{{this.question.id}}-{{draggable.id}}">Description</label>
+                        <input type="text" id="description-{{this.question.id}}-{{draggable.id}}"
+                            [(ngModel)]="draggable.alt_text"
+                            (ngModelChange)="this.onEdited();"
                             class="form-control"
                             required
                             [disabled]="this.readOnly || !draggable.img_url">

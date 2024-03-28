@@ -1,3 +1,7 @@
+
+.qc-droppable-zone {
+    border: dashed 2px gray;
+}
 .qc-droppable-zone.cdk-drop-list-receiving,
 .qc-droppable-zone.cdk-drop-list-dragging {
     border: dashed 2px gray;
@@ -43,7 +47,16 @@
 .qc-drag-option-list {
     width: fit-content;
     min-width: 200px;
-    min-height: 200px;
+    border: 1px solid black;
+    // text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+
+    .qc-draggable {
+        margin: 10px;
+        text-align: center;
+    }
 }
 
 .cdk-drag-animating {
@@ -53,3 +66,46 @@
 .qc-drag-question .qc-assessment-question {
     padding-bottom: 50px; //additional padding for questions with larger droppable areas around the borders
 }
+
+
+.qc-draggable-text {
+    cursor: pointer;
+    border: 1px black solid;
+    border-radius: 8px;
+}
+
+.qc-draggable {
+    // display: inline-block;
+    // margin-right: 20px;
+    position: relative;
+    display: block;
+//     float: left;
+
+}
+
+.draggables-label {
+    padding: 10px 0px;
+}
+
+.qc-droppable-container-drag-drop {
+    position: relative;
+}
+
+.qc-draggable-cursor {
+    border: 2px blue solid;
+    border-radius: 8px;
+}
+.qc-draggable-selected {
+    border: 2px green solid;
+    border-radius: 8px;
+}
+
+#announcer {
+    opacity: 0;
+}
+
+.qc-draggable-container {
+    // display: inline-block;
+    text-align: center;
+}
+

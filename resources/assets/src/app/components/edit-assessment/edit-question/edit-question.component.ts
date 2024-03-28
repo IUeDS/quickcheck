@@ -67,7 +67,6 @@ export class EditQuestionComponent implements OnInit {
 
   isAllowedQuestionType(questionConstantName) {
     const dragAndDrop = this.questionTypes.dragAndDrop.constantName;
-
     if (questionConstantName != dragAndDrop) {
       return true;
     }
