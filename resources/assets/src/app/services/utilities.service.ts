@@ -409,7 +409,6 @@ export class UtilitiesService {
         height = document.querySelector('body').clientHeight - this.scrollingLtiHeight;
       }
 
-      console.log('height: ' + height);
       window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
     }, 0);
   }

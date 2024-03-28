@@ -161,7 +161,7 @@ export class DragAndDropComponent implements OnInit {
       //set height after options have loaded, add delay if images need time to load
       setTimeout(() => {
         this.utilitiesService.setLtiHeight();
-      }, 2000);
+      }, 5000);
     }
   }
 
