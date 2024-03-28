@@ -52,6 +52,11 @@
     display: flex;
     flex-wrap: wrap;
     padding: 10px;
+
+    .qc-draggable {
+        margin: 10px;
+        text-align: center;
+    }
 }
 
 .cdk-drag-animating {
