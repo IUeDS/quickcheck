@@ -158,7 +158,10 @@ export class DragAndDropComponent implements OnInit {
     if (changesObj.currentQuestion) {
       this.initOptions();
       this.utilitiesService.formatMath();
-      this.utilitiesService.setLtiHeight();
+      //set height after options have loaded, add delay if images need time to load
+      setTimeout(() => {
+        this.utilitiesService.setLtiHeight();
+      }, 2000);
     }
   }
 
@@ -211,11 +214,6 @@ export class DragAndDropComponent implements OnInit {
     this.droppables.forEach((droppable, i) => {
       this.droppableDraggableIndexMap.set(i, -1);
     })
-
-    //set height after options have loaded, add delay if images need time to load
-    setTimeout(() => {
-      this.utilitiesService.setLtiHeight();
-    }, 2000);
   }
 
   /*ƒƒ
