@@ -158,10 +158,11 @@ export class DragAndDropComponent implements OnInit {
     if (changesObj.currentQuestion) {
       this.initOptions();
       this.utilitiesService.formatMath();
+      this.utilitiesService.setLtiHeight();
       //set height after options have loaded, add delay if images need time to load
-      setTimeout(() => {
-        this.utilitiesService.setLtiHeight();
-      }, 5000);
+      // setTimeout(() => {
+      //   this.utilitiesService.setLtiHeight();
+      // }, 5000);
     }
   }
 

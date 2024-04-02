@@ -5,7 +5,7 @@
   </div>
   <div class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></div>
   <div [id]="droppableContainerId" class="qc-droppable-container-drag-drop" [style.padding.px]="droppableContainerPadding">
-    <img class="qc-droppable-base-img" [src]="this.image.img_url" [width]="this.image.width" [height]="this.image.height" />
+    <img class="qc-droppable-base-img" [src]="this.image.img_url" [width]="this.image.width" [height]="this.image.height" (load)="this.utilitiesService.setLtiHeight()" />
     <div *ngFor="let droppable of this.getDroppables(); let i = index;">
       <div cdkDropList
         [id]="droppable._unique_id"
