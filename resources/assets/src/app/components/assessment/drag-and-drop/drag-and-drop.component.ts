@@ -159,10 +159,6 @@ export class DragAndDropComponent implements OnInit {
       this.initOptions();
       this.utilitiesService.formatMath();
       this.utilitiesService.setLtiHeight();
-      //set height after options have loaded, add delay if images need time to load
-      // setTimeout(() => {
-      //   this.utilitiesService.setLtiHeight();
-      // }, 5000);
     }
   }
 
@@ -732,6 +728,13 @@ export class DragAndDropComponent implements OnInit {
     }
 
     return true;
+  }
+
+  resizeIframe() {
+      //set height after options have loaded, add delay if images need time to load
+      setTimeout(() => {
+        this.utilitiesService.setLtiHeight();
+      }, 2000);
   }
 
 }
