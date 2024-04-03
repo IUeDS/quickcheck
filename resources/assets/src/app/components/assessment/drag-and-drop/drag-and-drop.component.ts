@@ -731,15 +731,17 @@ export class DragAndDropComponent implements OnInit {
   }
 
   resizeIframe() {
-      //set height after options have loaded, add delay if images need time to load
-      setTimeout(() => {
-        this.utilitiesService.setLtiHeight();
-      }, 2000);
+    this.utilitiesService.setLtiHeight();
 
-      //debugging
-      setTimeout(() => {
-        this.utilitiesService.setLtiHeight();
-      }, 10000);
+      //set height after options have loaded, add delay if images need time to load
+      // setTimeout(() => {
+      //   this.utilitiesService.setLtiHeight();
+      // }, 2000);
+
+      // //debugging
+      // setTimeout(() => {
+      //   this.utilitiesService.setLtiHeight();
+      // }, 10000);
   }
 
 }
