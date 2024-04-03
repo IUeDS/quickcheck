@@ -735,6 +735,11 @@ export class DragAndDropComponent implements OnInit {
       setTimeout(() => {
         this.utilitiesService.setLtiHeight();
       }, 2000);
+
+      //debugging
+      setTimeout(() => {
+        this.utilitiesService.setLtiHeight();
+      }, 10000);
   }
 
 }
