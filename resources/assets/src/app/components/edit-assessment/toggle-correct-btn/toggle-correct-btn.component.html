@@ -6,7 +6,8 @@
         'qc-selected-incorrect': !this.isCorrect()
     }"
     role="button" tabindex="0"
-    (click)="this.toggleCorrect()">
+    (click)="this.toggleCorrect()"
+    (keydown.space)="this.toggleCorrect()">
     <label class="sr-only" id="mc-option-{{this.question.id}}-{{this.option.id}}-correct">
         Mark option #{{ this.index + 1 }}
         <span *ngIf="this.isCorrect()">correct</span>
