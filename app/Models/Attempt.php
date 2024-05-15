@@ -316,19 +316,14 @@ class Attempt extends Eloquent {
             $attempts = $attempts->has('studentResponses');
         }
 
-        if ($resource_link_id) {
+        //using resource link ID in place of assignment ID because in LTI 1.3 a line item 
+        //may not be present if an instructor took the QC (ungraded) but no students did.
+        //using the assignment ID would result in instructors testing a new QC getting an error
+        if ($resource_link_id) { 
             $attempts = $attempts->where('resource_link_id', '=', $resource_link_id);
-            $attempts = $attempts->orWhere('lti_custom_assignment_id', '=', $assignment_id); //if a mix of LTI 1.1 and 1.3 attempts
-        }
-        else if ($assignment_id) {
-            //unfortunately we have to query both for historic 1.1 attempts and 1.3 using line items...
-            $attempts = $attempts->whereHas('lineItem', function ($query) use ($assignment_id) {
-                $query->where('lti_custom_assignment_id', $assignment_id);
-            });
-            $attempts = $attempts->orWhere('lti_custom_assignment_id', '=', $assignment_id);
         }
         else {
-            //applies both to 1.3 module launches and all historic 1.1 launches
+            //applies to 1.3 module launches
             $attempts = $attempts->doesntHave('lineItem');
         }
 

@@ -74,7 +74,7 @@ class Grade {
     /************************************************************************/
 
     /**
-    * The guts of grade passback; relies on Outcome model. Score is 0-1.
+    * The guts of grade passback; relies on line item. Score is 0-1.
     * Checks that the new score is higher than the existing score in the gradebook.
     *
     * @param $scoreGiven  int  If an instructor is grading, override default score from attempt
@@ -112,7 +112,7 @@ class Grade {
 
     private function formatGradeToSubmit($score, $scoreMaximum)
     {
-        //all grades are on a scale from 0-1, because this is the format required for LTI Outcome grade
+        //all grades are on a scale from 0-1, because this is the format required for LTI grade
         //passback. in some cases, such as an instructor grading, it may be formatted as 0-100. however,
         //the front-end should translate this to be 0-1 before passing to the back-end. consistently
         //across the back-end, score should ONLY be in the 0-1 range. anything else is presentation only.

@@ -163,7 +163,7 @@ class CanvasAPI
 
     /**
     * Get submissions for an assignment from the Canvas API, to more quickly fetch grades
-    * in manage view, compared to fetching each grade individually using the Outcome model.
+    * in manage view, compared to fetching each grade individually using the LTI endpoint.
     * Returns an associative array where user_id is used as a key, to look up the grade for
     * a student in O(1) constant time. [It does take O(N) time to loop through API array and
     * create new array by key, vs. ~O(N^2) time if we instead just looped through original

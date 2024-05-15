@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Classes\LTI\Grade;
-use App\Classes\LTI\Outcome;
 use App\Classes\LTI\LtiContext;
 use App\Classes\ExternalData\CanvasAPI as CanvasAPI;
 use App\Models\Attempt;
