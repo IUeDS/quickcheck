@@ -145,6 +145,23 @@ class AttemptController extends \BaseController
                 ->groupBy('resource_link_id') //if embedded in multiple assignments, separate out
                 ->get();
 
+        //grouping by the resource link ID for multiple embeds means that the first queried item may be
+        //an attempt by an instructor without a line item attached to it, and we need that data for the 
+        //assignment ID; we can't only select relations that have a value for line item ID because the 
+        //instructor may be testing before students use the QC or it may be ungraded or a module item;
+        //so run a separate query on each assignment to find an attempt where line item is not null, if applicable
+        foreach ($attempts as $attempt) {
+            if ($attempt->lineItem) {
+                continue;
+            }
+
+            $lineItem = Attempt::getLineItemFromAttempts($courseContext->id, $attempt->assessment_id, $attempt->resource_link_id);
+            if ($lineItem) {
+                $attempt->lineItem()->associate($lineItem); //associate just for purposes of listing gradeable assignments on front-end, not saving it!
+            }
+        }
+        
+
         //not possible to sort by eager loaded relationship in Laravel without a join;
         //considering number of quick checks in a course is small, running sort on the
         //Laravel collection instead of through DB shouldn't be an issue efficiency-wise

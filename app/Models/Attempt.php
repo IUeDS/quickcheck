@@ -247,6 +247,35 @@ class Attempt extends Eloquent {
     }
 
     /**
+    * Find the line item for an assessment within a course context.
+    *
+    * @param  int     $courseContextId
+    * @param  int     $assessmentId
+    * @param  string  $resourceLinkId
+    * @return int
+    */
+
+    public static function getLineItemFromAttempts($courseContextId, $assessmentId, $resourceLinkId = null)
+    {
+        $firstAttempt = Attempt::with('lineItem')
+            ->where('course_context_id', '=', $courseContextId)
+            ->where('assessment_id', '=', $assessmentId)
+            ->whereNotNull('line_item_id');
+        
+        //if separating attempts across multiple assignment embeds
+        if ($resourceLinkId) {
+            $firstAttempt = $firstAttempt->where('resource_link_id', '=', $resourceLinkId);
+        }
+        
+        $firstAttempt = $firstAttempt->first();
+        if ($firstAttempt) {
+            return $firstAttempt->lineItem;
+        }
+
+        return null;
+    }
+
+    /**
     * Get an attempt's LTI launch nonce
     *
     * @return string $nonce
