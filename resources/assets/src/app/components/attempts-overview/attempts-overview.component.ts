@@ -48,7 +48,7 @@ export class AttemptsOverviewComponent implements OnInit {
     //if assessment is embedded in multiple assignments (or assignment + module item), separate results view for each
     for (let attempt of data.attempts) {
       const assessmentId = attempt.assessment_id.toString();
-      let assignmentId = this.getAssignmentId(attempt); //note: may be NULL if a module item or LTI 1.1 historic attempt
+      let assignmentId = this.getAssignmentId(attempt); //note: may be NULL if a module item
 
       let embeds = this.embeds[assessmentId];
       if (!embeds) {
@@ -66,17 +66,12 @@ export class AttemptsOverviewComponent implements OnInit {
   }
 
   getAssignmentId(attempt) {
-    //1.1 attempts that were graded
-    if (attempt.lti_custom_assignment_id) {
-      return attempt.lti_custom_assignment_id;
-    }
-
-    //1.1 and 1.3 attempts that are ungraded
+    //ungraded or module item
     if (!attempt.line_item) {
       return null;
     }
 
-    //graded 1.3 attempts
+    //graded
     return attempt.line_item.lti_custom_assignment_id;
   }
 
