@@ -142,20 +142,25 @@ class AttemptController extends \BaseController
         $courseContext = CourseContext::where('lti_context_id', '=', $context_id)->first();
         $attempts = Attempt::with(['assessment', 'lineItem'])
                 ->where('course_context_id', '=', $courseContext->id)
-                ->groupBy('resource_link_id', 'lti_custom_assignment_id') //if embedded in multiple assignments, separate out
+                ->groupBy('resource_link_id') //if embedded in multiple assignments, separate out
                 ->get();
 
-        //to make the data compatible with both legacy LTI 1.1 and LTI 1.3, grab assignment ID from line items
+        //grouping by the resource link ID for multiple embeds means that the first queried item may be
+        //an attempt by an instructor without a line item attached to it, and we need that data for the 
+        //assignment ID; we can't only select relations that have a value for line item ID because the 
+        //instructor may be testing before students use the QC or it may be ungraded or a module item;
+        //so run a separate query on each assignment to find an attempt where line item is not null, if applicable
         foreach ($attempts as $attempt) {
-            if ($attempt->lti_custom_assignment_id) {
+            if ($attempt->lineItem) {
                 continue;
             }
 
-            $assignmentId = Attempt::getAssignmentIdFromAttempts($courseContext->id, $attempt->assessment_id, $attempt->resource_link_id);
-            if ($assignmentId) {
-                $attempt->lti_custom_assignment_id = $assignmentId;
+            $lineItem = Attempt::getLineItemFromAttempts($courseContext->id, $attempt->assessment_id, $attempt->resource_link_id);
+            if ($lineItem) {
+                $attempt->lineItem()->associate($lineItem); //associate just for purposes of listing gradeable assignments on front-end, not saving it!
             }
         }
+        
 
         //not possible to sort by eager loaded relationship in Laravel without a join;
         //considering number of quick checks in a course is small, running sort on the
@@ -166,27 +171,7 @@ class AttemptController extends \BaseController
             }
         })->toArray();
 
-        //merge LTI 1.1 and 1.3 attempts where assignment ID is the same; prefer 1.3 attempts
-        $combinedAttempts = array_filter($sortedAttempts, function($filteredAttempt) use ($attempts) {
-            $removeAttempt = false;
-            foreach($attempts as $attempt) {
-                if (!$attempt['lti_custom_assignment_id']) {
-                    continue;
-                }
-
-                if ($attempt['lti_custom_assignment_id'] == $filteredAttempt['lti_custom_assignment_id'] && !$filteredAttempt['resource_link_id']) {
-                    $removeAttempt = true;
-                }
-            }
-
-            if ($removeAttempt) {
-                return false;
-            }
-
-            return true;
-        });
-
-        return response()->success(['attempts' => array_values($combinedAttempts)]);
+        return response()->success(['attempts' => array_values($sortedAttempts)]);
     }
 
     /**
