@@ -273,10 +273,10 @@ class LTIAdvantage {
             $this->endpointDomain = 'https://sso.canvaslms.com';
         }
         else if ($iss === 'https://canvas.beta.instructure.com') {
-            $this->endpointDomain = 'sso.beta.canvaslms.com';
+            $this->endpointDomain = 'https://sso.beta.canvaslms.com';
         }
         else if ($iss === 'https://canvas.test.instructure.com') {
-            $this->endpointDomain = 'sso.test.canvaslms.com';
+            $this->endpointDomain = 'https://sso.test.canvaslms.com';
         }
         else {
             abort(500, 'Cannot retrieve endpoint domain -- invalid issuer.');
