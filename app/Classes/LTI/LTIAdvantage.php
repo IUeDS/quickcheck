@@ -153,6 +153,7 @@ class LTIAdvantage {
         //MGM, 2/29/24: removed title attribute as it changes Canvas assignment name;
         //if needed in the future, add "title" => $title to the $resource below
         $this->iss = $this->getIssuer();
+        $aud = $this->getEndpointDomain($this->iss);
         $resource = [
             "type" => "ltiResourceLink",
             "url" => $launchUrl,
@@ -164,7 +165,7 @@ class LTIAdvantage {
 
         $jwtData= [
             "iss" => env('LTI_CLIENT_ID'),
-            "aud" => $this->iss,
+            "aud" => $aud,
             "exp" => time() + 600,
             "iat" => time(),
             "nonce" => hash('sha256', random_bytes(64)),
@@ -407,7 +408,6 @@ class LTIAdvantage {
         $this->iss = $this->getIssuer();
         $endpoint = $this->getEndpointDomain($this->iss);
         $this->oauthTokenEndpoint = $endpoint . '/login/oauth2/token';
-        Log::info('oauth token endpoint: ' . $this->oauthTokenEndpoint);
         //send JWT to get oauth token
         $jwtToken = [
             "iss" => env('LTI_CLIENT_ID'),

@@ -16,7 +16,7 @@ class LtiController extends \BaseController
     {
         $lti = new LTIAdvantage();
         $redirectUrl = $lti->buildOIDCRedirectUrl();
-        return redirect($redirectUrl);
+        return redirect()->away($redirectUrl);
     }
 
     /**
