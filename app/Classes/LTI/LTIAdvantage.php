@@ -14,6 +14,7 @@ use App\Classes\LTI\LtiConfig;
 
 class LTIAdvantage {
     private $aud;
+    private $endpointDomain;
     private $iss;
     private $jwtHeader;
     private $jwtBody;
@@ -40,6 +41,7 @@ class LTIAdvantage {
     public function buildOIDCRedirectUrl()
     {
         $iss = $this->request->input('iss');
+        $endpoint = $this->getEndpointDomain($iss);
         $loginHint = $this->request->input('login_hint');
         //NOTE: the target link uri is specific to the resource, so if launching from nav, it's the nav launch url, etc.
         //rather than the default target link uri set on the tool, so that's good news.
@@ -50,7 +52,7 @@ class LTIAdvantage {
             return response()->error(400, ['OIDC issuer does not match Canvas url.']);
         }
 
-        $redirectUrl = $iss . '/api/lti/authorize_redirect';
+        $redirectUrl = $endpoint . '/api/lti/authorize_redirect';
 
         //state and nonce are validated after the redirect to ensure they match, then removed
         $state = uniqid('state-', true);
@@ -254,6 +256,35 @@ class LTIAdvantage {
     }
 
     /**
+    * Get endpoint domain based on issuer
+    *
+    * @param   string $iss
+    * @return  string
+    */
+
+    public function getEndpointDomain($iss)
+    {
+        if ($this->endpointDomain) {
+            return $this->endpointDomain;
+        }
+
+        if ($iss === 'https://canvas.instructure.com') {
+            $this->endpointDomain = 'https://sso.canvaslms.com';
+        }
+        else if ($iss === 'https://canvas.beta.instructure.com') {
+            $this->endpointDomain = 'https://sso.beta.canvaslms.com';
+        }
+        else if ($iss === 'https://canvas.test.instructure.com') {
+            $this->endpointDomain = 'https://sso.test.canvaslms.com';
+        }
+        else {
+            abort(500, 'Cannot retrieve endpoint domain -- invalid issuer.');
+        }
+
+        return $this->endpointDomain;
+    }
+
+    /**
     * Get the issuer of the JWT (i.e., canvas test, canvas prod, etc.) from the JWT launch data
     *
     * @return string
@@ -374,7 +405,8 @@ class LTIAdvantage {
     public function getOauthTokenFromCanvas()
     {
         $this->iss = $this->getIssuer();
-        $this->oauthTokenEndpoint = $this->iss . '/login/oauth2/token';
+        $endpoint = $this->getEndpointDomain($this->iss);
+        $this->oauthTokenEndpoint = $endpoint . '/login/oauth2/token';
         //send JWT to get oauth token
         $jwtToken = [
             "iss" => env('LTI_CLIENT_ID'),
@@ -541,7 +573,8 @@ class LTIAdvantage {
         $launchKID = $this->jwtHeader['kid'];
         $publicKey = Cache::get($launchKID);
         if (!$publicKey) {
-            $publicKeyUrl = $this->iss . '/api/lti/security/jwks';
+            $endpoint = $this->getEndpointDomain($this->iss);
+            $publicKeyUrl = $endpoint . '/api/lti/security/jwks';
             $publicKeyJson = file_get_contents($publicKeyUrl);
             $publicKeySet = json_decode($publicKeyJson, true);
             $parsedPublicKeySet = JWK::parseKeySet($publicKeySet);
