@@ -1,13 +1,5 @@
 <div class="card qc-question-panel">
-    <div class="card-header qc-question-panel-heading" role="button"
-        [attr.data-target]="'#question-data-' + this.question.id"
-        [attr.aria-expanded]="false"
-        [attr.aria-controls]="'question-data-' + this.question.id"
-        (click)="this.toggleQuestionClosed()">
-        <span class="qc-accordion-arrow fa fa-lg"
-            [ngClass]="this.question.questionClosed ? 'fa-caret-right' : 'fa-caret-down'"
-            aria-hidden="true">
-        </span>
+    <div class="card-header qc-question-panel-heading">
         <h2 id="question-header-{{this.question.question_order}}" tabindex="-1"
             class="qc-question-header-number">Question #{{this.question.question_order}}</h2>
 
@@ -36,7 +28,7 @@
             </span>
         </div>
     </div>
-    <div class="card-body collapse in" id="question-data-{{this.question.id}}" [collapse]="this.question.questionClosed" [isAnimated]="true">
+    <div class="card-body" id="question-data-{{this.question.id}}">
         <!-- question type -->
         <label for="question-type-{{this.question.id}}">
             <h3>Question type <span class="sr-only">for question # {{this.question.question_order}}</span></h3>

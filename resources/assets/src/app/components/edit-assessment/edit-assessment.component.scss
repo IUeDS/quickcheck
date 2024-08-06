@@ -152,13 +152,15 @@
     }
 
     .qc-question-panel-heading {
+        align-items: center;
+        display: flex;
+
         .qc-buttons-right {
-            float: right;
+            margin-left: auto;
         }
 
         .qc-delete-btn {
             margin-right: 10px;
-            margin-top: 10px;
 
             svg {
                 height: 30px;
@@ -167,8 +169,7 @@
         }
 
         .qc-reorder-btn-group {
-            margin-right: 25px;
-            margin-top: 10px;
+            margin-right: 20px;
         }
 
         .qc-reorder-down-btn,
@@ -185,10 +186,8 @@
             }
         }
 
-        //adjusts the up arrow to be vertically aligned above the down arrow
         .qc-reorder-up-btn {
-            display: inline-block;
-            overflow: hidden;
+            vertical-align: top; //get icon to align vertically with delete icon
         }
     }
 
