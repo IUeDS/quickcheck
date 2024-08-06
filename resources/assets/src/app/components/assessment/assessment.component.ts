@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../services/utilities.service';
 import { AssessmentService } from '../../services/assessment.service';
+import { AssessmentEditService } from '../../services/assessment-edit.service';
 import { CaliperService } from '../../services/caliper.service';
 import { UserService } from '../../services/user.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -138,6 +139,7 @@ export class AssessmentComponent implements OnInit {
   constructor(
     public utilitiesService: UtilitiesService,
     private assessmentService: AssessmentService,
+    private assessmentEditService: AssessmentEditService,
     private caliperService: CaliperService,
     private modalService: BsModalService,
     private userService: UserService
@@ -257,7 +259,8 @@ export class AssessmentComponent implements OnInit {
     }
     this.pointsPossible = this.questions.length;
     this.currentQuestion = this.questions[this.currentQuestionIndex];
-    this.utilitiesService.setTitle('Quick Check');
+
+    this.setPageTitle();
   }
 
   isComplete() {
@@ -395,6 +398,43 @@ export class AssessmentComponent implements OnInit {
     await this.initAttempt();
     await this.initQuestions();
     this.utilitiesService.loadingFinished();
+  }
+
+  async setPageTitle() {
+    //for students, show QC name in page title;
+    //for instructors, include set and subset for accessibility
+    if (!this.isPreview()) {
+      this.utilitiesService.setTitle(this.assessmentTitle + ' - Quick Check');
+    }
+
+    let data;
+
+    try {
+      const resp = await this.assessmentEditService.getAssessment(this.assessmentId);
+      data = this.utilitiesService.getResponseData(resp);
+    }
+    catch(error) {
+      const serverError = this.utilitiesService.getQuizError(error);
+      const errorMessage = serverError ? serverError : 'Error retrieving questions.';
+      this.showErrorModal(errorMessage);
+      this.utilitiesService.loadingFinished();
+      return;
+    }
+
+    const assessment = data.assessment;
+    const collection = data.collection;
+    const assessmentGroups = data.assessmentGroups;
+    let assessmentGroupName = '';
+
+    for (const assessmentGroup of assessmentGroups) {
+      if (assessment.assessment_group_id == assessmentGroup.id) {
+        assessmentGroupName = assessmentGroup.name;
+      }
+    }
+
+    //Preview - [quick_check_name] - [subset_name] - [set_name] - Quick Check
+    const pageTitle = 'Preview - ' + this.assessmentTitle + ' - ' + assessmentGroupName + ' - ' + collection.name + ' - Quick Check';
+    this.utilitiesService.setTitle(pageTitle);
   }
 
   showErrorModal(errorMessage, showRestartBtn = true) {

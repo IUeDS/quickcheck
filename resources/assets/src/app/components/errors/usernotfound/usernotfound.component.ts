@@ -11,7 +11,7 @@ export class UsernotfoundComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
-    this.utilitiesService.setTitle('Quick Check - User Not Found');
+    this.utilitiesService.setTitle('User Not Found - Quick Check');
   }
 
 }

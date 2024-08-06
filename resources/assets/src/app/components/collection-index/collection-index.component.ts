@@ -28,7 +28,7 @@ export class CollectionIndexComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.utilitiesService.setTitle('Quick Check sets');
+    this.utilitiesService.setTitle('Sets - Quick Check');
     await this.getCollections();
   }
 

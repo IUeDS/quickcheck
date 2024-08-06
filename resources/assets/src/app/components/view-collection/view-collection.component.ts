@@ -52,7 +52,7 @@ export class ViewCollectionComponent implements OnInit {
     this.collection = data.collection;
     this.assessmentGroups = data.assessmentGroups;
     this.readOnly = data.readOnly;
-    this.utilitiesService.setTitle('Quick Check - View Set ' + this.collection.name);
+    this.utilitiesService.setTitle('View Set - ' + this.collection.name + ' - Quick Check');
     this.utilitiesService.loadingFinished();
   }
 

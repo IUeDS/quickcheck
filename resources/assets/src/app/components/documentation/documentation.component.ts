@@ -15,7 +15,7 @@ export class DocumentationComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService, private userService: UserService) { }
 
   async ngOnInit() {
-    this.utilitiesService.setTitle('Quick Check documentation');
+    this.utilitiesService.setTitle('Documentation - Quick Check');
     this.isIU = this.utilitiesService.isIU();
     await this.getUser();
 

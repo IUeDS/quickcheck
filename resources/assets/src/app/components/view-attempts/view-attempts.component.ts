@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../services/utilities.service';
+import { AssessmentEditService } from '../../services/assessment-edit.service';
 import { ManageService } from '../../services/manage.service';
 import { Submission } from '../../classes/submission';
 import { ActivatedRoute } from '@angular/router';
@@ -38,7 +39,7 @@ export class ViewAttemptsComponent implements OnInit {
   ungradedAttempts = [];
   users = [];
 
-  constructor(public utilitiesService: UtilitiesService, private manageService: ManageService, private route: ActivatedRoute) { }
+  constructor(public utilitiesService: UtilitiesService, private assessmentEditService: AssessmentEditService, private manageService: ManageService, private route: ActivatedRoute) { }
 
   async ngOnInit() {
     let data;
@@ -189,7 +190,7 @@ export class ViewAttemptsComponent implements OnInit {
       this.largeClassSize = true;
     }
 
-    this.utilitiesService.setTitle('Quick Check Results - ' + this.assessment.name);
+    this.setPageTitle();
   }
 
   isAttemptsView() {
@@ -258,6 +259,36 @@ export class ViewAttemptsComponent implements OnInit {
         }
       });
     }, 500);
+  }
+
+  async setPageTitle() {
+    let data;
+
+    try {
+      const resp = await this.assessmentEditService.getAssessment(this.assessmentId);
+      data = this.utilitiesService.getResponseData(resp);
+    }
+    catch(error) {
+      const serverError = this.utilitiesService.getQuizError(error);
+      const errorMessage = serverError ? serverError : 'Error retrieving assessment data.';
+      this.utilitiesService.showError(error);
+      this.utilitiesService.loadingFinished();
+      return;
+    }
+
+    const assessment = data.assessment;
+    const collection = data.collection;
+    const assessmentGroups = data.assessmentGroups;
+    let assessmentGroupName = '';
+
+    for (const assessmentGroup of assessmentGroups) {
+      if (assessment.assessment_group_id == assessmentGroup.id) {
+        assessmentGroupName = assessmentGroup.name;
+      }
+    }
+
+    const pageTitle = 'Attempts - ' + assessment.name + ' - ' + assessmentGroupName + ' - ' + collection.name + ' - Quick Check';
+    this.utilitiesService.setTitle(pageTitle);
   }
 
   //for infinite scrolling, need a bit of a scrollbar in iframe

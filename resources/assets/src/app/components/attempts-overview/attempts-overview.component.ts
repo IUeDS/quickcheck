@@ -22,7 +22,7 @@ export class AttemptsOverviewComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   ngOnInit() {
-    this.utilitiesService.setTitle('Quick Check results');
+    this.utilitiesService.setTitle('Student Results - Quick Check');
     if (this.isResultsByStudentToggleEnabled()) {
       this.isResultsByStudentToggled = true;
       this.getStudents();
