@@ -1,8 +1,8 @@
-<div class="card qc-accordion-panel qc-user-panel" (click)="this.toggleShowUsers()" *ngIf="!this.readOnly">
-    <div class="card-header" role="button" [attr.aria-expanded]="false" [attr.aria-controls]="'qc-user-list'">
+<div class="card qc-accordion-panel qc-user-panel" *ngIf="!this.readOnly">
+    <button class="card-header" (click)="this.toggleShowUsers()" [attr.aria-expanded]="false" [attr.aria-controls]="'qc-user-list'">
         <span class="qc-accordion-arrow fa fa-lg" [ngClass]="this.showUsers ? 'fa-caret-down' : 'fa-caret-right'" aria-hidden="true"></span>
         <h3 class="card-title">Show users in this set</h3>
-    </div>
+    </button>
     <div class="card-body collapse" id="qc-user-list" [collapse]="!this.showUsers" [isAnimated]="true">
         <div (click)="this.utilitiesService.preventToggle($event)">
             <ul [hidden]="this.isEditingUsers.init">

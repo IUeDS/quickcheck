@@ -30,6 +30,11 @@
     }
 }
 
+.qc-delete-btn,
+.qc-edit-btn {
+    background-color: inherit;
+}
+
 //each new row of 2 sets needs to clear both, so that when editing in the row above, it doesn't float up
 body main .qc-new-row {
     clear: both;

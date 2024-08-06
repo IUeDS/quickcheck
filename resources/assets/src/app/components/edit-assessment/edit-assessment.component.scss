@@ -152,8 +152,11 @@
     }
 
     .qc-question-panel-heading {
-        .qc-delete-btn {
+        .qc-buttons-right {
             float: right;
+        }
+
+        .qc-delete-btn {
             margin-right: 10px;
             margin-top: 10px;
 
@@ -164,7 +167,6 @@
         }
 
         .qc-reorder-btn-group {
-            float: right;
             margin-right: 25px;
             margin-top: 10px;
         }
