@@ -1,6 +1,5 @@
 <div class="card qc-accordion-panel qc-custom-activity-panel">
-    <div class="card-header" role="tab" id="qc-custom-activity-{{this.customActivity.id}}"
-        role="button"
+    <button class="card-header" id="qc-custom-activity-{{this.customActivity.id}}"
         [attr.href]="'#collapse-group-' + this.customActivity.id"
         [attr.aria-expanded]="this.customActivity.closed ? 'false' : 'true'"
         [attr.aria-controls]="'collapse-group-' + this.customActivity.id"
@@ -10,17 +9,16 @@
             aria-hidden="true">
         </span>
         <h5 class="qc-custom-activity-name">{{ this.customActivity.name }}</h5>
-        <span class="qc-edit-btn qc-custom-activity-edit-btn" role="button" (click)="this.edit($event)" [hidden]="this.isEditing">
+        <button class="qc-edit-btn qc-custom-activity-edit-btn" (click)="this.edit($event)" [hidden]="this.isEditing">
             <qc-edit-icon aria-hidden="true"></qc-edit-icon>
             <span class="sr-only">Edit custom activity {{this.customActivity.name}}</span>
-        </span>
-        <span class="qc-delete-btn qc-custom-activity-delete-btn" role="button" (click)="this.deleteCustomActivity($event)">
+        </button>
+        <button class="qc-delete-btn qc-custom-activity-delete-btn" (click)="this.deleteCustomActivity($event)">
             <qc-delete-icon aria-hidden="true"></qc-delete-icon>
             <span class="sr-only">Delete custom activity {{this.customActivity.name}}</span>
-        </span>
-    </div>
+        </button>
+    </button>
      <div id="collapse-group-{{this.customActivity.id}}" class="collapse"
-        role="tabpanel"
         [attr.aria-labelledby]="'qc-custom-activity-' + this.customActivity.id"
         [collapse]="this.customActivity.closed"
         [isAnimated]="true">

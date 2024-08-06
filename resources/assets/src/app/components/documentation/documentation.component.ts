@@ -25,7 +25,7 @@ export class DocumentationComponent implements OnInit {
           e.preventDefault();
 
           document.querySelector(this.getAttribute('href')).scrollIntoView({
-              behavior: 'smooth'
+              behavior: 'instant'
           });
       });
     });

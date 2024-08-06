@@ -9,10 +9,10 @@
                 <div class="col-10 qc-select-search">
                     <label for="assessment-search" class="sr-only">Search for quick checks</label>
                     <input type="text" class="form-control qc-search-box" id="assessment-search" [(ngModel)]="this.search.searchText" (ngModelChange)="this.updateSearch()" placeholder="Search">
-                    <span role="button" class="qc-select-clear-search" (click)="this.clearSearch()">
+                    <button class="qc-select-clear-search" (click)="this.clearSearch()">
                         <span class="fa fa-remove fa-lg" aria-hidden="true"></span>
                         <span class="sr-only">Clear search</span>
-                    </span>
+                    </button>
                 </div>
             </div>
             <div [hidden]="this.search.searchActivated" aria-live="polite">

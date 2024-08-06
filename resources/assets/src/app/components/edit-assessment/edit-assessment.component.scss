@@ -169,11 +169,14 @@
         }
 
         .qc-reorder-btn-group {
-            margin-right: 20px;
+            margin-right: 10px;
         }
 
         .qc-reorder-down-btn,
         .qc-reorder-up-btn {
+            background-color: inherit;
+            border: none;
+
             svg {
                 height: 25px;
                 width: 25px;

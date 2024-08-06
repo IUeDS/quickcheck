@@ -1,7 +1,5 @@
-<span class="qc-delete-btn qc-delete-option-btn-inline"
-    role="button" tabindex="0"
-    (click)="this.deleteOption()"
-    (keydown.space)="this.deleteOption()">
+<button class="qc-delete-btn qc-delete-option-btn-inline"
+    (click)="this.deleteOption()">
     <qc-delete-icon aria-hidden="true"></qc-delete-icon>
     <span class="sr-only">Delete {{ this.optionTypeText }} #{{ this.index+1 }} for question #{{ this.question.question_order }}</span>
-</span>
+</button>

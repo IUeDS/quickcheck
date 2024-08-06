@@ -20,7 +20,7 @@
                     </a>
                 </div>
                 <div class="col-3">
-                    <button role="button" class="btn qc-opt-out-btn qc-btn"
+                    <button class="btn qc-opt-out-btn qc-btn"
                         (click)="this.optOutPublicCollection(collection)">
                         <span class="fa fa-remove" aria-hidden="true"></span>
                         Opt-out <span class="sr-only">of public set {{ collection.name }}</span>
@@ -30,7 +30,7 @@
             <!-- show if user has not joined the collection -->
             <div class="row" *ngIf="!collection.user_membership">
                 <div class="col-3">
-                    <button role="button" class="btn btn-success qc-join-btn qc-btn"
+                    <button class="btn btn-success qc-join-btn qc-btn"
                         (click)="this.joinPublicCollection(collection)">
                         <span class="fa fa-plus" aria-hidden="true"></span>
                         Join <span class="sr-only">public set {{ collection.name }}</span>

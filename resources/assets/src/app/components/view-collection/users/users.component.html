@@ -20,10 +20,10 @@
                     [disabled]="this.isAddingUser.init || this.isEditingUsers.init">
                 <span class="fa fa-plus" aria-hidden="true"></span> <span>Add a user to this set</span>
             </button>
-            <span class="qc-edit-btn qc-users-edit-btn" role="button" (click)="this.isEditingUsersInit()" [attr.disabled]="this.isEditingUsers.init || this.isAddingUser.init ? 'true' : null">
+            <button class="qc-edit-btn qc-users-edit-btn" (click)="this.isEditingUsersInit()" [attr.disabled]="this.isEditingUsers.init || this.isAddingUser.init ? 'true' : null">
                 <qc-edit-icon aria-hidden="true"></qc-edit-icon>
                 <span class="sr-only">Edit users</span>
-            </span>
+            </button>
             <div *ngIf="this.isAddingUser.init">
                 <h3 id="invite-user-header" tabindex="-1">Invite User</h3>
                 <div *ngIf="this.isAddingUser.checkUser">
@@ -102,10 +102,10 @@
                                 </div>
                             </td>
                             <td>
-                                <span class="qc-delete-btn qc-delete-user-btn" role="button" (click)="this.deleteMembership(user)" [hidden]="user.deleted">
+                                <button class="qc-delete-btn qc-delete-user-btn" (click)="this.deleteMembership(user)" [hidden]="user.deleted">
                                     <qc-delete-icon aria-hidden="true"></qc-delete-icon>
                                     <span class="sr-only">Delete set membership for user {{user.username}}</span>
-                                </span>
+                                </button>
                                 <span [hidden]="!user.deleted">Click save button to confirm deletion</span>
                             </td>
                         </tr>
