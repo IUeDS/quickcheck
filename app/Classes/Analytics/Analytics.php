@@ -23,16 +23,17 @@ class Analytics {
     /**
     * Return all analytics for an assessment in an LTI context
     *
-    * @param  int  $assessmentId
+    * @param  int     $assessmentId
     * @param  string  $contextId
-    * @param  int  $assignmentId
-    * @return []  $responseAnalytics
+    * @param  int     $assignmentId
+    * @param  string  $resourceLinkId
+    * @return []      $responseAnalytics
     */
 
-    public function getResponseAnalytics($assessmentId, $contextId, $assignmentId = null)
+    public function getResponseAnalytics($assessmentId, $contextId, $assignmentId = null, $resourceLinkId = null)
     {
         $assessment = Assessment::find($assessmentId);
-        $this->attempts = $this->getAttempts($assessmentId, $contextId, $assignmentId);
+        $this->attempts = $this->getAttempts($assessmentId, $contextId, $assignmentId, $resourceLinkId);
         $this->assessmentAnalytics = $this->getAssessmentLevelAnalytics();
 
         if (!$assessment->isCustomAssessment()) {
@@ -252,16 +253,16 @@ class Analytics {
     /**
     * Get all attempts on this assessment and in this LTI context from the database
     *
-    * @param  int  $assessmentId
+    * @param  int     $assessmentId
     * @param  string  $contextId
-    * @param  int  $assignmentId
+    * @param  int     $assignmentId
+    * @param  string  $resourceLinkId
     * @return [] $attempts
     */
 
-    private function getAttempts($assessmentId, $contextId, $assignmentId = null)
+    private function getAttempts($assessmentId, $contextId, $assignmentId = null, $resourceLinkId = null)
     {
         $emptyAttemptsHidden = false;
-        $resourceLinkId = null; //typically used to make sure ungraded instructor attempts are included in results, but exclude them for analytics
         return Attempt::getAttemptsForAssessment($assessmentId, $contextId, $assignmentId, $resourceLinkId, $emptyAttemptsHidden);
     }
 

@@ -82,13 +82,9 @@ export class ManageService {
       .toPromise();
   }
 
-  async getResponseAnalytics(id, contextId, assignmentId = null) {
+  async getResponseAnalytics(id, contextId, assignmentId = null, resourceLinkId = null) {
     const timeoutLength = this.httpService.getCrazyLongTimeout();
-    let path = this.httpService.getApiRoute() + '/responses/analytics/assessment/' + id + '/context/' + contextId;
-
-    if (assignmentId) {
-      path += ('/' + assignmentId);
-    }
+    let path = this.httpService.getApiRoute() + '/responses/analytics/assessment/' + id + '/context/' + contextId + '/assignment/' + assignmentId + '/resourceLinkId/' + resourceLinkId;
 
     return await this.httpClient.get(path)
       .pipe(timeout(timeoutLength))

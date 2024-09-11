@@ -18,20 +18,21 @@ class StudentResponseController extends \BaseController
     /**
     * Get analytics on student responses for an assessment in an LTI context
     *
-    * @param int assessmentId
-    * @param string contextId
-    * @param int assignmentId
+    * @param int     assessmentId
+    * @param string  contextId
+    * @param int     assignmentId
+    * @param string     resourceLinkId
     * @return Response
     */
 
-    public function calculateAnalytics($assessmentId, $contextId, $assignmentId = null)
+    public function calculateAnalytics($assessmentId, $contextId, $assignmentId = null, $resourceLinkId = null)
     {
         if (!$assessmentId || ! $contextId) {
             return response()->error(400, ['Assessment ID and context ID are required']);
         }
 
         $analytics = new Analytics;
-        $responseAnalytics = $analytics->getResponseAnalytics($assessmentId, $contextId, $assignmentId);
+        $responseAnalytics = $analytics->getResponseAnalytics($assessmentId, $contextId, $assignmentId, $resourceLinkId);
         return response()->success(['analytics' => $responseAnalytics]);
     }
 
