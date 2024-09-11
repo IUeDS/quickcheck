@@ -10,6 +10,7 @@ import { ManageService } from '../../../services/manage.service';
 export class QuizAnalyticsComponent implements OnInit {
   @Input() assessment;
   @Input() assignmentId;
+  @Input() resourceLinkId;
   @Input() utilitiesService : UtilitiesService;
 
   analytics = null;
@@ -30,7 +31,7 @@ export class QuizAnalyticsComponent implements OnInit {
     this.utilitiesService.loadingStarted();
 
     try {
-      const resp = await this.manageService.getResponseAnalytics(this.assessment.id, this.utilitiesService.contextId, this.assignmentId);
+      const resp = await this.manageService.getResponseAnalytics(this.assessment.id, this.utilitiesService.contextId, this.assignmentId, this.resourceLinkId);
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
