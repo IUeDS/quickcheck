@@ -8,10 +8,6 @@ a {
     &[data-toggle='popover'] {
         text-decoration: underline;
     }
-
-    &:focus {
-        background-color: $neutral-gray;
-    }
 }
 
 body {

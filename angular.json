@@ -31,11 +31,6 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "../../../node_modules/font-awesome/fonts",
-                "output": "./assets/"
-              },
-              {
-                "glob": "**/*",
                 "input": "node_modules/tinymce/skins",
                 "output": "/tinymce/skins/"
               },

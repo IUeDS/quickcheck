@@ -67,3 +67,22 @@ h6,
 .qc-search-box {
     background-color: $light-gray;
 }
+
+a,
+button,
+input,
+select,
+textarea {
+    &:focus {
+        border: solid $iron-gray 3px !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    &:focus {
+        outline: solid $iron-gray 3px !important;
+    }
+}

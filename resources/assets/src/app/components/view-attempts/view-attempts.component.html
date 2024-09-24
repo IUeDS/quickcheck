@@ -1,115 +1,117 @@
-<qc-nav [currentPage]="this.currentPage"></qc-nav>
-<qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
-<div class="row section-white">
-    <div class="col-12">
-        <div class="row" *ngIf="this.isAttemptsView()">
-            <div class="col-12">
-                <a routerLink="/manage" queryParamsHandling="preserve" target="_self" ><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to all course results</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <h1 [hidden]="!this.isAttemptsView()">Attempts</h1>
-            </div>
-            <div class="col-6 text-right" *ngIf="!this.fatalError" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()">
-                <button class="btn btn-light qc-btn qc-btn-analytics" type="button" (click)="this.toggleAnalytics()">
-                    <span class="fa fa-bar-chart fa-2x" aria-hidden="true"></span>
-                    <span>View <strong>Analytics</strong></span>
-                </button>
-            </div>
-        </div>
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
-        <div class="row" *ngIf="this.largeClassSize" [hidden]="!this.isAttemptsView()">
-            <div class="col-12">
-                <div class="card card-body bg-light">
-                    <p class="lead">Notice: large class size detected</p>
-                    <p>In classes with more than 1000 students, slowness from the Canvas gradebook results in connection timeouts and other not very fun issues when reviewing attempts in Quick Check. For this reason, grading functionality is disabled for large courses when reviewing attempts in Quick Check.</p>
-                </div>
-            </div>
-        </div>
-        <h2 *ngIf="this.isAttemptsView() && this.assessment" class="qc-results-quiz-name" >{{ this.assessment.name }}</h2>
-        <p *ngIf="this.dueAt && this.isAttemptsView()" class="qc-due-at">Due at: {{ this.dueAt }}</p>
-        <div *ngIf="!this.fatalError" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()" >
-            <div class="row">
-                <div class="col-6 col-md-4">
-                    <label for="search-name" *ngIf="this.attempts.length" class="sr-only">Search by last name: </label>
-                    <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.studentLastName" (ngModelChange)="this.searchStudentLastName()" *ngIf="this.attempts.length" placeholder="Search by last name">
-                </div>
-                <div class="col-6 col-md-4">
-                    <qc-auto-grade *ngIf="!this.gradesLoading" [hidden]="this.largeClassSize"
-                        [dueAt]="this.dueAt"
-                        (onSuccess)="this.onAutoGradeSuccess($event)"
-                        [pointsPossible]="this.pointsPossible"
-                        [submissions]="this.submissions"
-                        [ungradedAttempts]="this.ungradedAttempts"
-                        [utilitiesService]="this.utilitiesService">
-                    </qc-auto-grade>
-                </div>
-                <div class="col-6 col-md-4 form-group">
-                    <qc-release
-                        [assessmentId]="this.assessmentId"
-                        [existingRelease]="this.release"
-                        [utilitiesService]="this.utilitiesService" >
-                    </qc-release>
+<qc-nav [currentPage]="this.currentPage" aria-label="Quick Check"></qc-nav>
+<main class="container-fluid" aria-label="Quick Check">
+    <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
+    <div class="row section-white">
+        <div class="col-12">
+            <div class="row" *ngIf="this.isAttemptsView()">
+                <div class="col-12">
+                    <a routerLink="/manage" queryParamsHandling="preserve" target="_self" ><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to all course results</a>
                 </div>
             </div>
             <div class="row">
-                <div class="col-6 col-md-4">
-                    <!-- show ungraded -->
-                    <div class="checkbox uppercase" [hidden]="this.gradesLoading || this.largeClassSize">
-                        <label>
-                            <input type="checkbox" (click)="this.toggleUngraded()" class="ungraded-checkbox"> View ungraded assignments only
-                        </label>
+                <div class="col-6">
+                    <h1 [hidden]="!this.isAttemptsView()">Attempts</h1>
+                </div>
+                <div class="col-6 text-right" *ngIf="!this.fatalError" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()">
+                    <button class="btn btn-light qc-btn qc-btn-analytics" type="button" (click)="this.toggleAnalytics()">
+                        <span class="fa fa-bar-chart fa-2x" aria-hidden="true"></span>
+                        <span>View <strong>Analytics</strong></span>
+                    </button>
+                </div>
+            </div>
+            <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+            <div class="row" *ngIf="this.largeClassSize" [hidden]="!this.isAttemptsView()">
+                <div class="col-12">
+                    <div class="card card-body bg-light">
+                        <p class="lead">Notice: large class size detected</p>
+                        <p>In classes with more than 1000 students, slowness from the Canvas gradebook results in connection timeouts and other not very fun issues when reviewing attempts in Quick Check. For this reason, grading functionality is disabled for large courses when reviewing attempts in Quick Check.</p>
                     </div>
                 </div>
             </div>
-            <qc-attempt-data *ngIf="this.displayedAttempts.length"
-                [attempts]="this.displayedAttempts"
-                [courseContext]="this.courseContext"
-                [gradesLoading]="this.gradesLoading"
-                [isStudent]="false"
-                [isVisible]="this.isAttemptsView()"
-                [largeClassSize]="this.largeClassSize"
-                [pointsPossible]="this.pointsPossible"
-                [showResponses]="true"
-                [submissions]="this.submissions"
-                [users]="this.users"
-                [utilitiesService]="this.utilitiesService"
-                (onViewResponses)="this.viewResponses($event)">
-            </qc-attempt-data>
-            <div class="card card-body bg-light text-center" *ngIf="!this.displayedAttempts.length">
-                <h3 class="uppercase">No attempts found</h3>
+            <h2 *ngIf="this.isAttemptsView() && this.assessment" class="qc-results-quiz-name" >{{ this.assessment.name }}</h2>
+            <p *ngIf="this.dueAt && this.isAttemptsView()" class="qc-due-at">Due at: {{ this.dueAt }}</p>
+            <div *ngIf="!this.fatalError" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()" >
+                <div class="row">
+                    <div class="col-6 col-md-4">
+                        <label for="search-name" *ngIf="this.attempts.length" class="sr-only">Search by last name: </label>
+                        <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.studentLastName" (ngModelChange)="this.searchStudentLastName()" *ngIf="this.attempts.length" placeholder="Search by last name">
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <qc-auto-grade *ngIf="!this.gradesLoading" [hidden]="this.largeClassSize"
+                            [dueAt]="this.dueAt"
+                            (onSuccess)="this.onAutoGradeSuccess($event)"
+                            [pointsPossible]="this.pointsPossible"
+                            [submissions]="this.submissions"
+                            [ungradedAttempts]="this.ungradedAttempts"
+                            [utilitiesService]="this.utilitiesService">
+                        </qc-auto-grade>
+                    </div>
+                    <div class="col-6 col-md-4 form-group">
+                        <qc-release
+                            [assessmentId]="this.assessmentId"
+                            [existingRelease]="this.release"
+                            [utilitiesService]="this.utilitiesService" >
+                        </qc-release>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 col-md-4">
+                        <!-- show ungraded -->
+                        <div class="checkbox uppercase" [hidden]="this.gradesLoading || this.largeClassSize">
+                            <label>
+                                <input type="checkbox" (click)="this.toggleUngraded()" class="ungraded-checkbox"> View ungraded assignments only
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <qc-attempt-data *ngIf="this.displayedAttempts.length"
+                    [attempts]="this.displayedAttempts"
+                    [courseContext]="this.courseContext"
+                    [gradesLoading]="this.gradesLoading"
+                    [isStudent]="false"
+                    [isVisible]="this.isAttemptsView()"
+                    [largeClassSize]="this.largeClassSize"
+                    [pointsPossible]="this.pointsPossible"
+                    [showResponses]="true"
+                    [submissions]="this.submissions"
+                    [users]="this.users"
+                    [utilitiesService]="this.utilitiesService"
+                    (onViewResponses)="this.viewResponses($event)">
+                </qc-attempt-data>
+                <div class="card card-body bg-light text-center" *ngIf="!this.displayedAttempts.length">
+                    <h3 class="uppercase">No attempts found</h3>
+                </div>
+            </div>
+            <div *ngIf="this.responseViewVisible" >
+                <a href='javascript:;' (click)="this.hideResponses()">
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                    Back to attempts
+                </a>
+                <h1 id="response-header" tabindex="-1">Responses for {{ this.responseAttempt.student.lis_person_name_given }} {{ this.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
+                <p class="lead">Starting at {{ this.utilitiesService.formatTimeWithTimeZone(this.responseAttempt.created_at, this.courseContext.time_zone) }}</p>
+                <qc-responses
+                    [attempt]="this.responseAttempt"
+                    [courseContext]="this.courseContext"
+                    [isStudent]="false"
+                    [questions]="this.questions"
+                    [responses]="this.studentResponses">
+                </qc-responses>
+                <span class="sr-only">
+                    <!-- screenreader user will be moving down the page, so easier for the back button to be down here -->
+                    <a href='javascript:;' (click)="this.hideResponses()">Back to attempts</a>
+                </span>
             </div>
         </div>
-        <div *ngIf="this.responseViewVisible" >
-            <a href='javascript:;' (click)="this.hideResponses()">
-                <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-                Back to attempts
-            </a>
-            <h1 id="response-header" tabindex="-1">Responses for {{ this.responseAttempt.student.lis_person_name_given }} {{ this.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
-            <p class="lead">Starting at {{ this.utilitiesService.formatTimeWithTimeZone(this.responseAttempt.created_at, this.courseContext.time_zone) }}</p>
-            <qc-responses
-                [attempt]="this.responseAttempt"
-                [courseContext]="this.courseContext"
-                [isStudent]="false"
-                [questions]="this.questions"
-                [responses]="this.studentResponses">
-            </qc-responses>
-            <span class="sr-only">
-                <!-- screenreader user will be moving down the page, so easier for the back button to be down here -->
-                <a href='javascript:;' (click)="this.hideResponses()">Back to attempts</a>
-            </span>
-        </div>
     </div>
-</div>
-<div *ngIf="this.analyticsViewVisible">
-    <a href='javascript:;' (click)="this.toggleAnalytics()" class="qc-analytics-back-btn">
-        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-        Back to attempts
-    </a>
-    <qc-quiz-analytics
-        [assessment]="this.assessment"
-        [assignmentId]="this.assignmentId"
-        [utilitiesService]="this.utilitiesService">
-    </qc-quiz-analytics>
-</div>
+    <div *ngIf="this.analyticsViewVisible">
+        <a href='javascript:;' (click)="this.toggleAnalytics()" class="qc-analytics-back-btn">
+            <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+            Back to attempts
+        </a>
+        <qc-quiz-analytics
+            [assessment]="this.assessment"
+            [assignmentId]="this.assignmentId"
+            [utilitiesService]="this.utilitiesService">
+        </qc-quiz-analytics>
+    </div>
+</main>

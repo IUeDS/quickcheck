@@ -96,11 +96,14 @@
     &:hover::after { //sass-lint:disable-line force-pseudo-nesting
         background-color: $white;
         border-color: $iron-gray;
+        border-width: 3px;
     }
 
     &:focus,
     &:focus::after {
         background-color: $light-gray;
+        border-color: $iron-gray;
+        border-width: 3px;
     }
 }
 
@@ -137,7 +140,7 @@
 .qc-view-btn
 {
     background-color: inherit;
-    border: none;
+    border: none !important;
 
     svg {
         height: 25px;
@@ -153,7 +156,7 @@
     }
 
     &:focus {
-        outline: none; //no dotted outline, adding custom border styles instead
+        border: none !important; //border goes around the round SVG, not square button
 
         svg { //focus border styles need to be circular rather than square: ;
             border-radius: 50%;
@@ -176,7 +179,7 @@
 
     &:focus {
         svg {
-            border: solid $muted-purple 3px;
+            border: solid $iron-gray 3px;
         }
     }
 }
@@ -192,7 +195,7 @@
 
     &:focus {
         svg {
-            border: solid $crimson-red 3px;
+            border: solid $iron-gray 3px;
         }
     }
 }
@@ -225,7 +228,7 @@
 
     &:focus {
         svg {
-            border: solid $electric-blue 3px;
+            border: solid $iron-gray 3px;
         }
     }
 }
@@ -246,7 +249,7 @@
 
     &:focus {
         svg {
-            border: solid $seafoam-green 3px;
+            border: solid $iron-gray 3px;
         }
     }
 }

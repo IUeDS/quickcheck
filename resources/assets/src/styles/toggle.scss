@@ -64,7 +64,7 @@
     //M. Mallon -- make focus visible
     &:focus {
         + .tgl-btn {
-            outline: solid $toggle-green 1px; //testing
+            outline: solid $iron-gray 3px;
         }
     }
 }
