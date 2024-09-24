@@ -13,11 +13,11 @@
             <th></th>
             <th *ngFor="let column of this.question.columns; index as $index;" class="qc-matrix-row-header qc-edit-matrix-column">
                 <div class="qc-matrix-header-container">
-                    <label for="matrix-column-{{column.id}}" class="sr-only">
+                    <label for="matrix-{{question.id}}-column-{{column.id}}" class="sr-only">
                         Column text
                         <span class="sr-only"> for question #{{ this.question.question_order }}, column #{{ $index + 1 }}</span>:
                     </label>
-                    <input type="text" id="matrix-column-{{column.id}}" class="form-control"
+                    <input type="text" id="matrix-{{question.id}}-column-{{column.id}}" class="form-control"
                         [(ngModel)]="column.answer_text"
                         (ngModelChange)="this.onEdited()"
                         required
@@ -37,11 +37,11 @@
             <tr *ngFor="let row of this.question.rows; index as $index;" class="qc-edit-matrix-row">
                 <td>
                     <div class="qc-matrix-header-container">
-                        <label for="matrix-row-{{row.id}}" class="sr-only">
+                        <label for="matrix-{{question.id}}-row-{{row.id}}" class="sr-only">
                             Row text
                             <span class="sr-only"> for question #{{ this.question.question_order }}, row #{{ $index + 1 }}</span>:
                         </label>
-                        <input type="text" id="matrix-row-{{row.id}}" class="form-control"
+                        <input type="text" id="matrix-{{question.id}}-row-{{row.id}}" class="form-control"
                             [(ngModel)]="row.answer_text"
                             (ngModelChange)="this.onEdited()"
                             required
@@ -58,7 +58,7 @@
                 </td>
                 <td *ngFor="let column of this.question.columns">
                     <div class="checkbox">
-                        <p class="sr-only" id="matrixrow-{{row.id}}-column-{{column.id}}">Check this box to match {{row.answer_text}} to {{column.answer_text}}</p>
+                        <p class="sr-only" id="matrixrow-{{question.id}}-{{row.id}}-column-{{column.id}}">Check this box to match {{row.answer_text}} to {{column.answer_text}}</p>
                         <label>
                             <input type="radio" name="{{row.id}}" value="{{column.answer_text}}"
                                 [checked]="row.columnAnswerId == column.id"
