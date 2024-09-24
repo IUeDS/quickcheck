@@ -38,7 +38,7 @@
                 <p>Current droppable option area: {{ this.activeDroppableId ? 'droppable #' + (this.getDroppableIndex(this.activeDroppableId) + 1) : 'none'}}</p>
             </div>
             <div class="col-4 form-group">
-                <button class="btn btn-sm btn-info qc-btn" type="button" (click)="this.preview()">
+                <button class="btn btn-sm qc-btn qc-edit-dragdrop-preview-btn" type="button" (click)="this.preview()">
                     <span class="fa fa-eye" aria-hidden="true"></span> Preview question 
                     <span class="sr-only">#{{ this.question.question_order }}</span>
                 </button>

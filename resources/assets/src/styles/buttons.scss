@@ -40,6 +40,12 @@
     }
 }
 
+.qc-edit-dragdrop-preview-btn {
+    background-color: $dark-blue;
+    border-color: $dark-blue;
+    color: white;
+}
+
 //common to all buttons in the instructor view
 .qc-btn {
     font-family: 'BentonSansCompBook';
@@ -186,6 +192,11 @@
 
 .qc-delete-btn {
     svg {
+        
+        path {
+            fill: $darker-gray;
+        }
+
         &:hover {
             path {
                 fill: $crimson-red !important;
@@ -202,6 +213,10 @@
 
 .qc-edit-btn {
     svg {
+        path {
+            fill: $darker-gray;
+        }
+
         &:hover {
             path {
                 fill: $electric-blue !important;
