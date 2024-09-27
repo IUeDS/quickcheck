@@ -16,14 +16,10 @@
         <h3 *ngIf="this.collection.public_collection == 'true'"><span class="fa fa-eye" aria-hidden="true"></span> Public set</h3>
         <div class="row">
             <div class="col-6">
-                <a [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_self">
-                    <button type="button" class="btn qc-view-set-btn qc-btn">Go to set<span class="sr-only"> {{ this.collection.name }}</span></button>
-                </a>
+                <a [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_self" class="btn qc-view-set-btn qc-btn">Go to set<span class="sr-only"> {{ this.collection.name }}</span></a>
             </div>
             <div class="col-6">
-                <a *ngIf="this.utilitiesService.isLti" [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_blank">
-                    <button type="button" class="btn qc-view-new-tab-btn"><span class="fa fa-mail-forward" aria-hidden="true"></span> View<span class="sr-only"> set {{ this.collection.name }}</span> in new tab</button>
-                </a>
+                <a *ngIf="this.utilitiesService.isLti" [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_blank" class="btn qc-view-new-tab-btn"><span class="fa fa-mail-forward" aria-hidden="true"></span> View<span class="sr-only"> set {{ this.collection.name }}</span> in new tab</a>
             </div>
         </div>
     </div>
