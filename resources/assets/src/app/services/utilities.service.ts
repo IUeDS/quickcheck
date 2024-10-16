@@ -419,6 +419,8 @@ export class UtilitiesService {
 
   setTitle(title: string) {
     this.titleService.setTitle(title);
+    //IU-specific Canvas includes js to change page title
+    window.parent.postMessage(JSON.stringify({subject: 'iu.frameTitle', title }), '*');
   }
 
   showError(resp) {
