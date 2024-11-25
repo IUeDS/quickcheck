@@ -172,6 +172,7 @@ export class ViewAttemptsComponent implements OnInit {
     this.assignment = attemptData.assignment;
     this.courseContext = attemptData.courseContext;
     this.canvasCourse = attemptData.canvasCourse;
+    const sourcedId = attemptData.sourcedId;
     //if graded/an assignment
     if (this.assignment) {
       this.pointsPossible = this.assignment.points_possible;
@@ -190,7 +191,7 @@ export class ViewAttemptsComponent implements OnInit {
       this.largeClassSize = true;
     }
 
-    this.setPageTitle();
+    this.setPageTitle(sourcedId);
   }
 
   isAttemptsView() {
@@ -261,7 +262,7 @@ export class ViewAttemptsComponent implements OnInit {
     }, 500);
   }
 
-  async setPageTitle() {
+  async setPageTitle(sourcedId) {
     let data;
 
     try {
@@ -287,8 +288,11 @@ export class ViewAttemptsComponent implements OnInit {
       }
     }
 
-    const pageTitle = 'Attempts - ' + assessment.name + ' - ' + assessmentGroupName + ' - ' + collection.name + ' - Quick Check';
-    this.utilitiesService.setTitle(pageTitle);
+    let title = 'Attempts - ' + assessment.name + ' - ' + assessmentGroupName + ' - ' + collection.name + ' - Quick Check';
+    if (sourcedId) {
+      title += (' - ' + sourcedId);
+    }
+    this.utilitiesService.setTitle(title);
   }
 
   //for infinite scrolling, need a bit of a scrollbar in iframe

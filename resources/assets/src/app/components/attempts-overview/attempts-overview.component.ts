@@ -22,7 +22,6 @@ export class AttemptsOverviewComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
   ngOnInit() {
-    this.utilitiesService.setTitle('Student Results - Quick Check');
     if (this.isResultsByStudentToggleEnabled()) {
       this.isResultsByStudentToggled = true;
       this.getStudents();
@@ -62,6 +61,8 @@ export class AttemptsOverviewComponent implements OnInit {
     //attempts are grouped by unique assessment id, so we're not getting ALL attempts;
     //each attempt comes with the unique assessment, for us to put onto the page
     this.attempts = data.attempts;
+    this.setPageTitle(data.sourcedId);
+
     this.utilitiesService.loadingFinished();
   }
 
@@ -112,6 +113,7 @@ export class AttemptsOverviewComponent implements OnInit {
     }
 
     this.students = data.students;
+    this.setPageTitle(data.sourcedId);
     this.utilitiesService.loadingFinished();
   }
 
@@ -138,6 +140,15 @@ export class AttemptsOverviewComponent implements OnInit {
     }
 
     return false;
+  }
+
+  setPageTitle(sourcedId) {
+      //set page title with course abbreviation
+      let title = 'Student Results - Quick Check';
+      if (sourcedId) {
+        title += (' - ' + sourcedId);
+      }
+      this.utilitiesService.setTitle(title);
   }
 
   //determine if local storage is available

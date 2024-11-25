@@ -41,7 +41,14 @@ export class ViewAttemptsForStudentComponent implements OnInit {
     this.assessmentsWithAttempts = data.assessmentsWithAttempts;
     this.displayedAssessments = this.assessmentsWithAttempts; //default show all
     this.studentName = this.getStudentName();
-    this.utilitiesService.setTitle(this.studentName + ' - Results - Quick Check');
+
+    const sourcedId = data.sourcedId;
+    let title = this.studentName + ' - Results - Quick Check';
+    if (sourcedId) {
+      title += (' - ' + sourcedId);
+    }
+    this.utilitiesService.setTitle(title);
+
     this.utilitiesService.loadingFinished();
   }
 

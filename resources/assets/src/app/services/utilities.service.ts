@@ -419,7 +419,7 @@ export class UtilitiesService {
 
   setTitle(title: string) {
     this.titleService.setTitle(title);
-    //IU-specific Canvas includes js to change page title
+    //IU-specific Canvas includes js to change page title from within iframe
     window.parent.postMessage(JSON.stringify({subject: 'iu.frameTitle', title }), '*');
   }
 
