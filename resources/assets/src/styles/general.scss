@@ -80,6 +80,15 @@ textarea {
     }
 }
 
+//light color focus for contrast against dark background for nav links
+nav a {
+    &:focus {
+        border: solid $white 3px !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+}
+
 input[type="checkbox"],
 input[type="radio"] {
     &:focus {
