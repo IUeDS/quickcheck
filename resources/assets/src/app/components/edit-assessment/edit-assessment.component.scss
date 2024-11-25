@@ -126,6 +126,13 @@
     .qc-question-options-header,
     .qc-feedback-header {
         display: inline-block;
+        margin-right: 20px;
+    }
+
+    legend {
+        border-bottom: none;
+        width: initial;
+        padding-bottom: 10px;
     }
 
     .qc-question-panel {
@@ -229,6 +236,32 @@
     #qc-validation-error {
         ul {
             color: $black; //ensure proper color contrast
+        }
+    }
+
+    //shared styles between multiple choice and multiple correct editing;
+    //note that multiple choice turns into checkboxes when the option is
+    //selected for multiple options to be considered correct
+    .qc-edit-mc-list {
+        padding-inline-start: 0;
+
+        li {
+            list-style: none;
+            margin-bottom: 10px;
+        }
+    }
+
+    .qc-mc-correct-wrapper {
+        float: left;
+        padding: 5px 10px 0 10px;
+     
+        input[type="checkbox"] {
+            height: 25px;
+            width: 25px;
+        }
+    
+        input[type="checkbox"]:checked {
+            accent-color: #397F3B;
         }
     }
 }

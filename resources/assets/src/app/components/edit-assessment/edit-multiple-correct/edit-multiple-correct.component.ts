@@ -56,6 +56,14 @@ export class EditMultipleCorrectComponent implements OnInit {
     this.onEdited();
   }
 
+  isCorrect(option) {
+    if (option.correct == 'true') {
+      return true;
+    }
+
+    return false;
+  }
+
   isInvalid() {
     var optionsAdded = false,
       correctAnswerFound = false;
@@ -98,9 +106,7 @@ export class EditMultipleCorrectComponent implements OnInit {
     this.onEdited();
   }
 
-  toggleCorrect($event) {
-    var option = $event.option;
-
+  toggleCorrect(option) {
     if (this.readOnly) {
       return;
     }
