@@ -401,10 +401,11 @@ export class AssessmentComponent implements OnInit {
   }
 
   async setPageTitle() {
+    const assessmentTitle = this.assessmentTitle ? this.assessmentTitle : 'Untitled quick check';
     //for students, show QC name in page title;
     //for instructors, include set and subset for accessibility
     if (!this.isPreview()) {
-      this.utilitiesService.setTitle(this.assessmentTitle + ' - Quick Check');
+      this.utilitiesService.setTitle(assessmentTitle + ' - Quick Check');
     }
 
     let data;
@@ -433,8 +434,11 @@ export class AssessmentComponent implements OnInit {
     }
 
     //Preview - [quick_check_name] - [subset_name] - [set_name] - Quick Check
-    const pageTitle = 'Preview - ' + this.assessmentTitle + ' - ' + assessmentGroupName + ' - ' + collection.name + ' - Quick Check';
-    this.utilitiesService.setTitle(pageTitle);
+    if (this.isPreview()) {
+      const pageTitle = 'Preview - ' + assessment.name + ' - ' + assessmentGroupName + ' - ' + collection.name + ' - Quick Check';
+      this.utilitiesService.setTitle(pageTitle);
+    }
+
   }
 
   showErrorModal(errorMessage, showRestartBtn = true) {
