@@ -1,91 +1,93 @@
-<div class="qc-quiz-view" [attr.aria-hidden]="this.modalVisible ? 'true' : 'false'">
-    <div class="row section-white">
-        <div class="col-12">
-            <h1 *ngIf="this.assessmentTitle" class="qc-assessment-title">{{ this.assessmentTitle }}</h1>
-            <!-- if no title, make a generic h1 header for accessibility, to maintain semantic header structure -->
-            <h1 *ngIf="!this.assessmentTitle" class="sr-only">Take the quick check</h1>
-            <p *ngIf="this.assessmentDescription" class="qc-assessment-description" [innerHTML]="this.assessmentDescription | safe: 'html'"></p>
-            <h2 *ngIf="this.currentQuestionIndex + 1 <= this.pointsPossible"
-                class="qc-question-number"
-                tabindex="-1" aria-live="assertive" aria-atomic="true">
-                Question {{ this.currentQuestionIndex + 1 }} out of {{ this.pointsPossible }}
-            </h2>
-            <div *ngIf="this.currentQuestion">
-                <qc-multiple-choice *ngIf="this.isQuestionType('multiple_choice')"
-                    [currentQuestion]="this.currentQuestion"
-                    [modalVisible]="this.modalVisible"
-                    (onAnswerSelection)="this.onAnswerSelection($event)">
-                </qc-multiple-choice>
+<main class="container-fluid" aria-label="Quick Check">
+    <div class="qc-quiz-view" [attr.aria-hidden]="this.modalVisible ? 'true' : 'false'">
+        <div class="row section-white">
+            <div class="col-12">
+                <h1 *ngIf="this.assessmentTitle" class="qc-assessment-title">{{ this.assessmentTitle }}</h1>
+                <!-- if no title, make a generic h1 header for accessibility, to maintain semantic header structure -->
+                <h1 *ngIf="!this.assessmentTitle" class="sr-only">Take the quick check</h1>
+                <p *ngIf="this.assessmentDescription" class="qc-assessment-description" [innerHTML]="this.assessmentDescription | safe: 'html'"></p>
+                <h2 *ngIf="this.currentQuestionIndex + 1 <= this.pointsPossible"
+                    class="qc-question-number"
+                    tabindex="-1" aria-live="assertive" aria-atomic="true">
+                    Question {{ this.currentQuestionIndex + 1 }} out of {{ this.pointsPossible }}
+                </h2>
+                <div *ngIf="this.currentQuestion">
+                    <qc-multiple-choice *ngIf="this.isQuestionType('multiple_choice')"
+                        [currentQuestion]="this.currentQuestion"
+                        [modalVisible]="this.modalVisible"
+                        (onAnswerSelection)="this.onAnswerSelection($event)">
+                    </qc-multiple-choice>
 
-                <qc-multiple-correct *ngIf="this.isQuestionType('multiple_correct')"
-                    [currentQuestion]="this.currentQuestion"
-                    [modalVisible]="this.modalVisible"
-                    (onAnswerSelection)="this.onAnswerSelection($event)">
-                </qc-multiple-correct>
+                    <qc-multiple-correct *ngIf="this.isQuestionType('multiple_correct')"
+                        [currentQuestion]="this.currentQuestion"
+                        [modalVisible]="this.modalVisible"
+                        (onAnswerSelection)="this.onAnswerSelection($event)">
+                    </qc-multiple-correct>
 
-                <qc-matrix *ngIf="this.isQuestionType('matrix')"
-                    [currentQuestion]="this.currentQuestion"
-                    [incorrectRows]="this.incorrectRows"
-                    (onAnswerSelection)="this.onAnswerSelection($event)">
-                </qc-matrix>
+                    <qc-matrix *ngIf="this.isQuestionType('matrix')"
+                        [currentQuestion]="this.currentQuestion"
+                        [incorrectRows]="this.incorrectRows"
+                        (onAnswerSelection)="this.onAnswerSelection($event)">
+                    </qc-matrix>
 
-                <qc-matching *ngIf="this.isQuestionType('matching')"
-                    [currentQuestion]="this.currentQuestion"
-                    [incorrectRows]="this.incorrectRows"
-                    (onAnswerSelection)="this.onAnswerSelection($event)">
-                </qc-matching>
+                    <qc-matching *ngIf="this.isQuestionType('matching')"
+                        [currentQuestion]="this.currentQuestion"
+                        [incorrectRows]="this.incorrectRows"
+                        (onAnswerSelection)="this.onAnswerSelection($event)">
+                    </qc-matching>
 
-                <qc-dropdowns *ngIf="this.isQuestionType('dropdown')"
-                    [currentQuestion]="this.currentQuestion"
-                    [modalVisible]="this.modalVisible"
-                    (onAnswerSelection)="this.onAnswerSelection($event)">
-                </qc-dropdowns>
+                    <qc-dropdowns *ngIf="this.isQuestionType('dropdown')"
+                        [currentQuestion]="this.currentQuestion"
+                        [modalVisible]="this.modalVisible"
+                        (onAnswerSelection)="this.onAnswerSelection($event)">
+                    </qc-dropdowns>
 
-                <qc-textmatch *ngIf="this.isQuestionType('textmatch')"
-                    [currentQuestion]="this.currentQuestion"
-                    [modalVisible]="this.modalVisible"
-                    (onAnswerSelection)="this.onAnswerSelection($event)">
-                </qc-textmatch>
+                    <qc-textmatch *ngIf="this.isQuestionType('textmatch')"
+                        [currentQuestion]="this.currentQuestion"
+                        [modalVisible]="this.modalVisible"
+                        (onAnswerSelection)="this.onAnswerSelection($event)">
+                    </qc-textmatch>
 
-                <qc-numerical *ngIf="this.isQuestionType('numerical')"
-                    [currentQuestion]="this.currentQuestion"
-                    [modalVisible]="this.modalVisible"
-                    (onAnswerSelection)="this.onAnswerSelection($event)">
-                </qc-numerical>
+                    <qc-numerical *ngIf="this.isQuestionType('numerical')"
+                        [currentQuestion]="this.currentQuestion"
+                        [modalVisible]="this.modalVisible"
+                        (onAnswerSelection)="this.onAnswerSelection($event)">
+                    </qc-numerical>
 
-                <qc-drag-and-drop *ngIf="this.isQuestionType('drag_and_drop')"
-                    [currentQuestion]="this.currentQuestion"
-                    [incorrectOptions]="this.incorrectRows"
-                    (onAnswerSelection)="this.onAnswerSelection($event)">
-                </qc-drag-and-drop>
+                    <qc-drag-and-drop *ngIf="this.isQuestionType('drag_and_drop')"
+                        [currentQuestion]="this.currentQuestion"
+                        [incorrectOptions]="this.incorrectRows"
+                        (onAnswerSelection)="this.onAnswerSelection($event)">
+                    </qc-drag-and-drop>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="qc-assessment-button-area">
+                    <qc-row-feedback *ngIf="this.incorrectRows"
+                        [feedback]="this.feedback"
+                        [incorrectRows]="this.incorrectRows"
+                        [isCorrect]="this.isCorrect"
+                        [isNextBtnDisabled]="this.isNextBtnDisabled"
+                        (onContinue)="this.nextQuestion()"
+                        [partialCredit]="this.partialCredit">
+                    </qc-row-feedback>
+                    <button class="qc-submit-response" 
+                        [class.button-selected]= "submitSelected === true" 
+                        [disabled]="this.isSubmitDisabled()" 
+                        [attr.tabindex]="this.modalVisible ? -1 : 0" 
+                        (click)="this.submitAnswer()" 
+                        type="submit">Submit</button>
+                    <div class="qc-current-score" aria-live="assertive" aria-atomic="true">{{ this.score }} / {{ this.pointsPossible }} questions correct</div>
+                    <div class="qc-attempt-limit" *ngIf="this.allowedAttempts"><span *ngIf="this.attemptNumber <= this.allowedAttempts">Attempt {{ this.attemptNumber }} out of {{ this.allowedAttempts }} allowed</span><span *ngIf="this.attemptNumber > this.allowedAttempts">Attempt limit exceeded (this attempt will not be graded)</span></div>
+                    <button class="qc-restart" 
+                        [class.button-selected]= "resetSelected === true" 
+                        [attr.tabindex]="this.modalVisible ? -1 : 0" 
+                        (click)="this.restart()" 
+                        type="button">Start Over</button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="qc-assessment-button-area">
-                <qc-row-feedback *ngIf="this.incorrectRows"
-                    [feedback]="this.feedback"
-                    [incorrectRows]="this.incorrectRows"
-                    [isCorrect]="this.isCorrect"
-                    [isNextBtnDisabled]="this.isNextBtnDisabled"
-                    (onContinue)="this.nextQuestion()"
-                    [partialCredit]="this.partialCredit">
-                </qc-row-feedback>
-                <button class="qc-submit-response" 
-                    [class.button-selected]= "submitSelected === true" 
-                    [disabled]="this.isSubmitDisabled()" 
-                    [attr.tabindex]="this.modalVisible ? -1 : 0" 
-                    (click)="this.submitAnswer()" 
-                    type="submit">Submit</button>
-                <div class="qc-current-score" aria-live="assertive" aria-atomic="true">{{ this.score }} / {{ this.pointsPossible }} questions correct</div>
-                <div class="qc-attempt-limit" *ngIf="this.allowedAttempts"><span *ngIf="this.attemptNumber <= this.allowedAttempts">Attempt {{ this.attemptNumber }} out of {{ this.allowedAttempts }} allowed</span><span *ngIf="this.attemptNumber > this.allowedAttempts">Attempt limit exceeded (this attempt will not be graded)</span></div>
-                <button class="qc-restart" 
-                    [class.button-selected]= "resetSelected === true" 
-                    [attr.tabindex]="this.modalVisible ? -1 : 0" 
-                    (click)="this.restart()" 
-                    type="button">Start Over</button>
-            </div>
-        </div>
-    </div>
-</div>
+</main>

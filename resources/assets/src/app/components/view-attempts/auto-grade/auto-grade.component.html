@@ -1,5 +1,5 @@
 <div class="form-group" [hidden]="this.graded">
-    <button (click)="this.autoGrade()" [disabled]="this.beforeDueDate()" role="button" class="btn qc-btn qc-autograde-btn" tooltip="Send each student's highest grade before the due date (if applicable) to the gradebook. Students who have not made an attempt will still have a blank grade. This is only available after the due date has passed." placement="left">
+    <button (click)="this.autoGrade()" [disabled]="this.beforeDueDate()" class="btn qc-btn qc-autograde-btn" tooltip="Send each student's highest grade before the due date (if applicable) to the gradebook. Students who have not made an attempt will still have a blank grade. This is only available after the due date has passed." placement="left">
         <span class="fa fa-book" aria-hidden="true"></span> Auto-grade ungraded assignments
     </button>
 </div>

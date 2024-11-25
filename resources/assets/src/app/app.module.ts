@@ -55,7 +55,6 @@ import { EditQuestionComponent } from './components/edit-assessment/edit-questio
 import { EditTextmatchComponent } from './components/edit-assessment/edit-textmatch/edit-textmatch.component';
 import { RandomizeCheckboxComponent } from './components/edit-assessment/randomize-checkbox/randomize-checkbox.component';
 import { RichContentToggleComponent } from './components/edit-assessment/rich-content-toggle/rich-content-toggle.component';
-import { ToggleCorrectBtnComponent } from './components/edit-assessment/toggle-correct-btn/toggle-correct-btn.component';
 import { SelectComponent } from './components/select/select.component';
 import { SelectCollectionPanelComponent } from './components/select/select-collection-panel/select-collection-panel.component';
 import { StudentViewComponent } from './components/student-view/student-view.component';
@@ -159,7 +158,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     EditTextmatchComponent,
     RandomizeCheckboxComponent,
     RichContentToggleComponent,
-    ToggleCorrectBtnComponent,
     SelectComponent,
     SelectCollectionPanelComponent,
     StudentViewComponent,

@@ -40,6 +40,12 @@
     }
 }
 
+.qc-edit-dragdrop-preview-btn {
+    background-color: $dark-blue;
+    border-color: $dark-blue;
+    color: white;
+}
+
 //common to all buttons in the instructor view
 .qc-btn {
     font-family: 'BentonSansCompBook';
@@ -96,11 +102,14 @@
     &:hover::after { //sass-lint:disable-line force-pseudo-nesting
         background-color: $white;
         border-color: $iron-gray;
+        border-width: 3px;
     }
 
     &:focus,
     &:focus::after {
         background-color: $light-gray;
+        border-color: $iron-gray;
+        border-width: 3px;
     }
 }
 
@@ -136,6 +145,8 @@
 .qc-edit-btn,
 .qc-view-btn
 {
+    background-color: inherit;
+    border: none !important;
 
     svg {
         height: 25px;
@@ -151,7 +162,7 @@
     }
 
     &:focus {
-        outline: none; //no dotted outline, adding custom border styles instead
+        border: none !important; //border goes around the round SVG, not square button
 
         svg { //focus border styles need to be circular rather than square: ;
             border-radius: 50%;
@@ -174,13 +185,18 @@
 
     &:focus {
         svg {
-            border: solid $muted-purple 3px;
+            border: solid $iron-gray 3px;
         }
     }
 }
 
 .qc-delete-btn {
     svg {
+        
+        path {
+            fill: $darker-gray;
+        }
+
         &:hover {
             path {
                 fill: $crimson-red !important;
@@ -190,13 +206,17 @@
 
     &:focus {
         svg {
-            border: solid $crimson-red 3px;
+            border: solid $iron-gray 3px;
         }
     }
 }
 
 .qc-edit-btn {
     svg {
+        path {
+            fill: $darker-gray;
+        }
+
         &:hover {
             path {
                 fill: $electric-blue !important;
@@ -223,7 +243,7 @@
 
     &:focus {
         svg {
-            border: solid $electric-blue 3px;
+            border: solid $iron-gray 3px;
         }
     }
 }
@@ -244,7 +264,7 @@
 
     &:focus {
         svg {
-            border: solid $seafoam-green 3px;
+            border: solid $iron-gray 3px;
         }
     }
 }

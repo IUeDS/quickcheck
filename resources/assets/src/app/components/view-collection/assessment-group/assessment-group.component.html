@@ -1,7 +1,5 @@
 <div class="card qc-accordion-panel qc-subset-panel">
-    <div class="card-header" role="tab" id="heading-group-{{this.assessmentGroup.id}}" role="button"
-        [attr.href]="'#collapse-group-' + this.assessmentGroup.id" [attr.aria-expanded]="this.assessmentGroup.closed ? 'false' : 'true'"
-        [attr.aria-controls]="'collapse-group-' + this.assessmentGroup.id" (click)="this.toggleAccordion()">
+    <div class="card-header" id="heading-group-{{this.assessmentGroup.id}}">
         <div class="qc-assessment-group-title">
             <span class="fa fa-lg qc-accordion-arrow" [ngClass]="this.assessmentGroup.closed ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true" [hidden]="this.isEditing"></span>
             <h3 [hidden]="this.isEditing">{{ this.assessmentGroup.name }}</h3>
@@ -13,134 +11,128 @@
                     <button type="button" class="btn btn-sm" (click)="this.editAssessmentGroupCancel()">Cancel <span class="sr-only">edits to subset {{this.assessmentGroup.name}}</span></button>
                 </form>
             </div>
-            <span class="qc-edit-btn qc-subset-edit-btn" role="button" (click)="this.editAssessmentGroup($event)" [hidden]="this.isEditing" *ngIf="!this.readOnly">
+            <button class="qc-edit-btn qc-subset-edit-btn" (click)="this.editAssessmentGroup($event)" [hidden]="this.isEditing" *ngIf="!this.readOnly">
                 <qc-edit-icon aria-hidden="true"></qc-edit-icon>
                 <span class="sr-only">Edit subset {{this.assessmentGroup.name}}</span>
-            </span>
-            <span class="qc-delete-btn qc-subset-delete-btn" role="button" (click)="this.deleteAssessmentGroup($event)" *ngIf="!this.readOnly">
+            </button>
+            <button class="qc-delete-btn qc-subset-delete-btn" (click)="this.deleteAssessmentGroup($event)" *ngIf="!this.readOnly">
                 <qc-delete-icon aria-hidden="true"></qc-delete-icon>
                 <span class="sr-only">Delete subset {{this.assessmentGroup.name}}</span>
-            </span>
+            </button>
         </div>
     </div>
-    <div id="collapse-group-{{this.assessmentGroup.id}}" class="collapse in" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.assessmentGroup.id" [collapse]="this.assessmentGroup.closed" [isAnimated]="true">
-        <div (click)="this.utilitiesService.preventToggle($event)">
-            <div class="card-body">
-                <p *ngIf="!this.assessmentGroup.assessments.length && !this.readOnly">There are currently no quick checks in this subset. Click the button to add a new quick check to the subset, and then edit the quick check to start adding questions.</p>
-                <div class="row qc-quiz-row" *ngFor="let assessment of this.assessmentGroup.assessments; index as $index;">
-                    <div class="col-12 col-sm-5">
-                        <h4 class="admin-assessment-name">
-                            <strong>{{ assessment.name }}</strong>
-                            <span *ngIf="assessment.custom_activity_id" class="badge badge-info qc-label-custom"><span class="fa fa-cog" aria-hidden="true"></span> Custom</span>
-                        </h4>
-                    </div>
-                    <div class="col-12 col-sm-6 offset-sm-1">
-                        <a [routerLink]="'/assessment/' + assessment.id + '/edit'" queryParamsHandling="preserve" target="_self" id="assessment-edit-{{assessment.id}}" class="qc-edit-btn qc-quiz-edit-btn">
-                            <qc-edit-icon aria-hidden="true"></qc-edit-icon>
-                            <span class="sr-only">
-                                <span *ngIf="!this.readOnly">Edit </span>
-                                <span *ngIf="this.readOnly">View </span>
-                                quick check {{ assessment.name }}
-                            </span>
-                        </a>
-                        <a [href]="'../assessment/' + assessment.id + '?preview=true'" target="_blank" class="qc-view-btn qc-quiz-preview-btn">
-                            <qc-preview-icon aria-hidden="true"></qc-preview-icon>
-                            <span class="sr-only">Preview quick check {{ assessment.name }}</span>
-                        </a>
-                        <span class="qc-delete-btn qc-quiz-delete-btn" role="button" (click)="this.deleteAssessment(assessment.id, $index)" *ngIf="!this.readOnly">
-                            <qc-delete-icon aria-hidden="true"></qc-delete-icon>
-                            <span class="sr-only">Delete quick check {{ assessment.name }}</span>
+        <div class="card-body">
+            <p *ngIf="!this.assessmentGroup.assessments.length && !this.readOnly">There are currently no quick checks in this subset. Click the button to add a new quick check to the subset, and then edit the quick check to start adding questions.</p>
+            <div class="row qc-quiz-row" *ngFor="let assessment of this.assessmentGroup.assessments; index as $index;">
+                <div class="col-12 col-sm-5">
+                    <h4 class="admin-assessment-name">
+                        <strong>{{ assessment.name }}</strong>
+                        <span *ngIf="assessment.custom_activity_id" class="badge badge-info qc-label-custom"><span class="fa fa-cog" aria-hidden="true"></span> Custom</span>
+                    </h4>
+                </div>
+                <div class="col-12 col-sm-6 offset-sm-1">
+                    <a [routerLink]="'/assessment/' + assessment.id + '/edit'" queryParamsHandling="preserve" target="_self" id="assessment-edit-{{assessment.id}}" class="qc-edit-btn qc-quiz-edit-btn">
+                        <qc-edit-icon aria-hidden="true"></qc-edit-icon>
+                        <span class="sr-only">
+                            <span *ngIf="!this.readOnly">Edit </span>
+                            <span *ngIf="this.readOnly">View </span>
+                            quick check {{ assessment.name }}
                         </span>
-                        <span class="qc-copy-btn qc-quiz-copy-btn" role="button" (click)="this.initCopyAssessment(assessment)" *ngIf="!this.readOnly">
-                                <qc-copy-icon aria-hidden="true"></qc-copy-icon>
-                                <span class="sr-only">Copy quick check {{ assessment.name }}</span>
-                        </span>
-                    </div>
-                    <div class="row qc-quiz-copy-panel w-100" *ngIf="assessment.isCopying">
-                        <div class="col-10 offset-1">
-                            <div class="card qc-assessment-copy-panel">
-                                <h5 class="lead">Copy Quick Check <span class="sr-only">{{ assessment.name }}</span></h5>
-                                <div *ngIf="this.memberships" [hidden]="assessment.copyData.copied">
-                                    <div class="form-group">
-                                        <label for="copy-assessment-{{assessment.id}}-collection">Set</label>
-                                        <select id="copy-assessment-{{assessment.id}}-collection"
-                                            name="copy-assessment-{{assessment.id}}-collection"
-                                            class="form-control qc-copy-quiz-collection"
-                                            [(ngModel)]="assessment.copyData.collection_id"
-                                            (ngModelChange)="this.onCopyAssessmentCollectionSelected(assessment)">
-                                            <ng-container *ngFor="let membership of this.memberships">
-                                                <option [ngValue]="membership.collection.id" *ngIf="membership.read_only !== 'true'">
-                                                    {{ membership.collection.name }}
-                                                </option>
-                                            </ng-container>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="copy-assessment-{{assessment.id}}-group">Subset</label>
-                                        <select id="copy-assessment-{{assessment.id}}-group"
-                                            name="copy-assessment-{{assessment.id}}-group"
-                                            class="form-control qc-copy-quiz-assessment-group"
-                                            [(ngModel)]="assessment.copyData.assessment_group_id">
-                                            <option *ngFor="let assessmentGroup of assessment.copyData.assessmentGroups" [ngValue]="assessmentGroup.id">
-                                                {{ assessmentGroup.name }}
+                    </a>
+                    <a [href]="'../assessment/' + assessment.id + '?preview=true'" target="_blank" class="qc-view-btn qc-quiz-preview-btn">
+                        <qc-preview-icon aria-hidden="true"></qc-preview-icon>
+                        <span class="sr-only">Preview quick check {{ assessment.name }}</span>
+                    </a>
+                    <button class="qc-delete-btn qc-quiz-delete-btn" (click)="this.deleteAssessment(assessment.id, $index)" *ngIf="!this.readOnly">
+                        <qc-delete-icon aria-hidden="true"></qc-delete-icon>
+                        <span class="sr-only">Delete quick check {{ assessment.name }}</span>
+                    </button>
+                    <button class="qc-copy-btn qc-quiz-copy-btn" (click)="this.initCopyAssessment(assessment)" *ngIf="!this.readOnly">
+                            <qc-copy-icon aria-hidden="true"></qc-copy-icon>
+                            <span class="sr-only">Copy quick check {{ assessment.name }}</span>
+                    </button>
+                </div>
+                <div class="row qc-quiz-copy-panel w-100" *ngIf="assessment.isCopying">
+                    <div class="col-10 offset-1">
+                        <div class="card qc-assessment-copy-panel">
+                            <h5 class="lead">Copy Quick Check <span class="sr-only">{{ assessment.name }}</span></h5>
+                            <div *ngIf="this.memberships" [hidden]="assessment.copyData.copied">
+                                <div class="form-group">
+                                    <label for="copy-assessment-{{assessment.id}}-collection">Set</label>
+                                    <select id="copy-assessment-{{assessment.id}}-collection"
+                                        name="copy-assessment-{{assessment.id}}-collection"
+                                        class="form-control qc-copy-quiz-collection"
+                                        [(ngModel)]="assessment.copyData.collection_id"
+                                        (ngModelChange)="this.onCopyAssessmentCollectionSelected(assessment)">
+                                        <ng-container *ngFor="let membership of this.memberships">
+                                            <option [ngValue]="membership.collection.id" *ngIf="membership.read_only !== 'true'">
+                                                {{ membership.collection.name }}
                                             </option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="copy-assessment-{{assessment.id}}-name">Name</label>
-                                        <input type="text" class="form-control qc-copy-quiz-name" name="qc-copy-quiz-name" [(ngModel)]="assessment.copyData.assessment_name">
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-sm btn-success qc-btn qc-copy-quiz-submit" type="submit" (click)="this.copyAssessment(assessment)">
-                                            Copy
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-dark qc-btn" type="button" (click)="this.copyAssessmentCancel(assessment)">
-                                            Cancel
-                                        </button>
-                                    </div>
+                                        </ng-container>
+                                    </select>
                                 </div>
-                                <div [hidden]="!assessment.copyData.copied">
-                                    <div class="alert alert-success" role="alert">
-                                        <p><strong>Success!</strong></p>
-                                    </div>
-                                    <div class="form-group">
-                                        <a [href]="assessment.copyData.editUrl" target="_self">
-                                            <button class="btn btn-sm btn-primary qc-btn qc-quiz-copy-edit-btn" type="button">
-                                                <span class="fa fa-pencil" aria-hidden="true"></span>
-                                                Edit copied quick check
-                                            </button>
-                                        </a>
-                                        <button class="btn btn-sm btn-outline-dark qc-btn" type="button" (click)="this.copyAssessmentCancel(assessment)">
-                                            Close
-                                        </button>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="copy-assessment-{{assessment.id}}-group">Subset</label>
+                                    <select id="copy-assessment-{{assessment.id}}-group"
+                                        name="copy-assessment-{{assessment.id}}-group"
+                                        class="form-control qc-copy-quiz-assessment-group"
+                                        [(ngModel)]="assessment.copyData.assessment_group_id">
+                                        <option *ngFor="let assessmentGroup of assessment.copyData.assessmentGroups" [ngValue]="assessmentGroup.id">
+                                            {{ assessmentGroup.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="copy-assessment-{{assessment.id}}-name">Name</label>
+                                    <input type="text" class="form-control qc-copy-quiz-name" name="qc-copy-quiz-name" [(ngModel)]="assessment.copyData.assessment_name">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-success qc-btn qc-copy-quiz-submit" type="submit" (click)="this.copyAssessment(assessment)">
+                                        Copy
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-dark qc-btn" type="button" (click)="this.copyAssessmentCancel(assessment)">
+                                        Cancel
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-lg qc-btn qc-btn-add qc-btn-add-quiz" (click)="this.initNewAssessment()" [hidden]="this.isAddingAssessment" type="button" *ngIf="!this.readOnly"><span class="fa fa-plus" aria-hidden="true"></span> Add new quick check to subset <span class="sr-only">{{ this.assessmentGroup.name }}</span></button>
-                <div class="row" *ngIf="this.isAddingAssessment">
-                    <div class="col-12 col-sm-6">
-                        <div class="card">
-                            <div class="card-body qc-add-quiz-panel">
-                                <h4 class="create-assessment-header qc-add-header" id="create-assessment-header-{{this.assessmentGroup.id}}" tabindex="-1">Create new quick check</h4>
-                                <form ngNativeValidate (ngSubmit)="this.saveNewAssessment()">
-                                    <label for="new-assessment-{{this.assessmentGroup.id}}">Quick check name</label>
-                                    <input type="text" class="form-control"
-                                            id="new-assessment-{{this.assessmentGroup.id}}"
-                                            name="new-assessment-{{this.assessmentGroup.id}}"
-                                            [(ngModel)]="this.newAssessment.name"
-                                            required>
-                                    <hr>
-                                    <button type="submit" class="btn btn-sm btn-success qc-btn">Save <span class="sr-only">new quick check to subset {{this.assessmentGroup.name}}</span></button>
-                                    <button type="button" class="btn btn-sm btn-outline-dark qc-btn" (click)="this.newAssessmentCancel()">Cancel <span class="sr-only">adding new quick check to subset {{this.assessmentGroup.name}}</span></button>
-                                </form>
+                            <div [hidden]="!assessment.copyData.copied">
+                                <div class="alert alert-success" role="alert">
+                                    <p><strong>Success!</strong></p>
+                                </div>
+                                <div class="form-group">
+                                    <a [href]="assessment.copyData.editUrl" target="_self" class="btn btn-sm btn-primary qc-btn qc-quiz-copy-edit-btn">
+                                            <span class="fa fa-pencil" aria-hidden="true"></span>
+                                            Edit copied quick check
+                                    </a>
+                                    <button class="btn btn-sm btn-outline-dark qc-btn" type="button" (click)="this.copyAssessmentCancel(assessment)">
+                                        Close
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <button class="btn btn-lg qc-btn qc-btn-add qc-btn-add-quiz" (click)="this.initNewAssessment()" [hidden]="this.isAddingAssessment" type="button" *ngIf="!this.readOnly"><span class="fa fa-plus" aria-hidden="true"></span> Add new quick check to subset <span class="sr-only">{{ this.assessmentGroup.name }}</span></button>
+            <div class="row" *ngIf="this.isAddingAssessment">
+                <div class="col-12 col-sm-6">
+                    <div class="card">
+                        <div class="card-body qc-add-quiz-panel">
+                            <h4 class="create-assessment-header qc-add-header" id="create-assessment-header-{{this.assessmentGroup.id}}" tabindex="-1">Create new quick check</h4>
+                            <form ngNativeValidate (ngSubmit)="this.saveNewAssessment()">
+                                <label for="new-assessment-{{this.assessmentGroup.id}}">Quick check name</label>
+                                <input type="text" class="form-control"
+                                        id="new-assessment-{{this.assessmentGroup.id}}"
+                                        name="new-assessment-{{this.assessmentGroup.id}}"
+                                        [(ngModel)]="this.newAssessment.name"
+                                        required>
+                                <hr>
+                                <button type="submit" class="btn btn-sm btn-success qc-btn">Save <span class="sr-only">new quick check to subset {{this.assessmentGroup.name}}</span></button>
+                                <button type="button" class="btn btn-sm btn-outline-dark qc-btn" (click)="this.newAssessmentCancel()">Cancel <span class="sr-only">adding new quick check to subset {{this.assessmentGroup.name}}</span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 </div>

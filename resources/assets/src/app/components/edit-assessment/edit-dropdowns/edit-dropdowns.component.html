@@ -12,11 +12,10 @@
             <tr *ngFor="let prompt of this.question.prompts; index as $index;" class="qc-edit-dropdown-prompt">
                 <td class="qc-edit-dropdowns-inline">
                     <label for="dropdown-prompt-{{this.question.id}}-{{prompt.id}}">
-                        Prompt
-                        <span class="sr-only"> for question #{{ this.question.question_order }}, dropdown pair #{{ $index+1 }}</span>:
+                        Prompt for dropdown pair #{{ $index+1 }}, question #{{ this.question.question_order }}:
                     </label>
                     <input type="text" id="dropdown-prompt-{{this.question.id}}-{{prompt.id}}"
-                        class="form-control ml-2"
+                        class="form-control"
                         [(ngModel)]="prompt.answer_text"
                         (ngModelChange)="this.onEdited()"
                         required
@@ -24,11 +23,10 @@
                 </td>
                 <td class="qc-edit-dropdowns-inline">
                     <label for="dropdown-answer-{{this.question.id}}-{{prompt.id}}">
-                        Answer
-                        <span class="sr-only"> for question #{{ this.question.question_order }}, dropdown pair #{{ $index+1 }}</span>:
+                        Answer for dropdown pair #{{ $index+1 }}, question #{{ this.question.question_order }}:
                     </label>
                     <input type="text" id="dropdown-answer-{{this.question.id}}-{{prompt.id}}"
-                        class="form-control ml-2"
+                        class="form-control"
                         [(ngModel)]="prompt.dropdown_answer_text"
                         (ngModelChange)="this.onEdited();"
                         required
@@ -60,8 +58,7 @@
     <div *ngFor="let distractor of this.question.distractors; index as $index;" class="row form-group qc-edit-assessment-inline qc-edit-dropdown-distractor">
         <div class="col-12">
             <label for="dropdown-distractor-{{this.question.id}}-{{distractor.id}}">
-                Distractor
-                <span class="sr-only"> #{{ $index+1 }} for question #{{ this.question.question_order }}</span>:
+                Distractor #{{ $index+1 }} for question #{{ this.question.question_order }}:
             </label>
             <input type="text" id="dropdown-distractor-{{this.question.id}}-{{distractor.id}}"
                 [(ngModel)]="distractor.answer_text"

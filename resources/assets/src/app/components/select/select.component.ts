@@ -34,7 +34,7 @@ export class SelectComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.utilitiesService.setTitle('Quick Check - Select');
+    this.utilitiesService.setTitle('Select - Quick Check');
     this.launchUrlStem = this.utilitiesService.getQueryParam('launchUrlStem');
     this.redirectUrl = this.utilitiesService.getQueryParam('redirectUrl');
     this.deploymentId = this.utilitiesService.getQueryParam('deploymentId');

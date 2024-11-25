@@ -1,0 +1,40 @@
+//adapted from TK421's answer:
+//https://stackoverflow.com/questions/279421/can-you-style-an-html-radio-button-to-look-like-a-checkbox
+input[type="radio"]{
+    appearance: none;
+    border: 1px solid #d3d3d3;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    content: none;
+    outline: none;
+    margin: 0;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    &:focus {
+        border: none !important; //use outline rather than border to preserve finnicky styling
+    }
+ }
+ 
+ //hide default radio buttons when checked
+ input[type="radio"]:checked {
+    appearance: none;
+    outline: none;
+    padding: 0;
+    content: none;
+    border: none;
+ }
+ 
+ //replace default checked radio button with a green checkmark
+ input[type="radio"]:checked::before{
+    position: absolute;
+    background-color: #397F3B;
+    border-color: #397F3B;
+    color: white !important;
+    content: "\00A0\2713\00A0" !important;
+    border: 1px solid #d3d3d3;
+    border-radius: 50%;
+    font-weight: bolder;
+    font-size: 21px;
+    line-height: 28px;
+ }

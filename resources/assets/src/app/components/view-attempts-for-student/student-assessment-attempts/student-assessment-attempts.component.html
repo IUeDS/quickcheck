@@ -1,14 +1,13 @@
 <div class="card qc-accordion-panel qc-student-attempts-panel">
-    <div class="card-header qc-student-attempts-panel-heading"
-        role="tab" role="button"
+    <button class="card-header qc-student-attempts-panel-heading"
         id="heading-group-{{this.assessment.id}}"
         [attr.aria-expanded]="this.isAccordionClosed() ? 'false' : 'true'"
         [attr.aria-controls]="'collapse-group-' + this.assessment.id"
         (click)="this.toggleAccordion()">
         <span class="fa fa-lg qc-accordion-arrow" [ngClass]="this.isAccordionClosed() ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true"></span>
         <h3>{{ this.assessment.name }}</h3>
-    </div>
-    <div id="collapse-group-{{this.assessment.id}}" class="collapse" role="tabpanel" [attr.aria-labelledby]="'heading-group-' + this.assessment.id" [collapse]="this.isAccordionClosed()" [isAnimated]="true">
+    </button>
+    <div id="collapse-group-{{this.assessment.id}}" class="collapse" [attr.aria-labelledby]="'heading-group-' + this.assessment.id" [collapse]="this.isAccordionClosed()" [isAnimated]="true">
         <div class="card-body">
             <div *ngIf="!this.responseViewVisible">
                 <p *ngIf="this.dueAt" class="qc-due-at">Due at: {{ this.dueAt }}</p>

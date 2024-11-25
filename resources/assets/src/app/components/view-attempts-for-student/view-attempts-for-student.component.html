@@ -1,55 +1,57 @@
-<qc-nav [currentPage]="this.currentPage"></qc-nav>
-<qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
-<div class="row section-white">
-    <div class="col-12">
-        <div class="row" *ngIf="this.isAttemptsView()">
-            <div class="col-12">
-                <a routerLink="/manage" queryParamsHandling="preserve" target="_self" ><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to all course results</a>
-            </div>
-        </div>
-        <div class="row" [hidden]="!this.isAttemptsView()">
-            <div class="col-6">
-                <h1>Individual Student Attempts</h1>
-                <h2>{{ this.studentName }}</h2>
-            </div>
-            <div class="col-6 text-right" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()">
-                <button class="btn btn-light qc-btn qc-btn-analytics" type="button" (click)="this.toggleAnalytics()">
-                    <span class="fa fa-bar-chart fa-2x" aria-hidden="true"></span>
-                    <span>View <strong>Analytics</strong></span>
-                </button>
-            </div>
-        </div>
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
-        <div [hidden]="this.utilitiesService.loading || !this.isAttemptsView()" >
-            <div class="row">
-                <div class="col-6 col-md-4">
-                    <label for="search-name" class="sr-only">Search by quick check name: </label>
-                    <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.assessmentName" (ngModelChange)="this.searchAssessmentName()" placeholder="Search by quick check name">
+<qc-nav [currentPage]="this.currentPage" aria-label="Quick Check"></qc-nav>
+<main class="container-fluid" aria-label="Quick Check">
+    <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
+    <div class="row section-white">
+        <div class="col-12">
+            <div class="row" *ngIf="this.isAttemptsView()">
+                <div class="col-12">
+                    <a routerLink="/manage" queryParamsHandling="preserve" target="_self" ><span class="fa fa-angle-double-left" aria-hidden="true"></span> Back to all course results</a>
                 </div>
             </div>
-            <qc-student-assessment-attempts
-                *ngFor="let assessment of this.displayedAssessments"
-                [assessmentWithAttempts]="assessment"
-                [courseContext]="this.courseContext"
-                [studentId]="this.studentId"
-                [user]="this.user"
-                [utilitiesService]="this.utilitiesService">
-            </qc-student-assessment-attempts>
-            <div class="card card-body bg-light text-center qc-none-found-well" *ngIf="!this.displayedAssessments.length && this.assessmentsWithAttempts.length">
-                <h3 class="uppercase">No quick checks found</h3>
-                <p>Either the name does not match, or the student has not yet attempted the quick check.</p>
+            <div class="row" [hidden]="!this.isAttemptsView()">
+                <div class="col-6">
+                    <h1>Individual Student Attempts</h1>
+                    <h2>{{ this.studentName }}</h2>
+                </div>
+                <div class="col-6 text-right" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()">
+                    <button class="btn btn-light qc-btn qc-btn-analytics" type="button" (click)="this.toggleAnalytics()">
+                        <span class="fa fa-bar-chart fa-2x" aria-hidden="true"></span>
+                        <span>View <strong>Analytics</strong></span>
+                    </button>
+                </div>
+            </div>
+            <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+            <div [hidden]="this.utilitiesService.loading || !this.isAttemptsView()" >
+                <div class="row">
+                    <div class="col-6 col-md-4">
+                        <label for="search-name" class="sr-only">Search by quick check name: </label>
+                        <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.assessmentName" (ngModelChange)="this.searchAssessmentName()" placeholder="Search by quick check name">
+                    </div>
+                </div>
+                <qc-student-assessment-attempts
+                    *ngFor="let assessment of this.displayedAssessments"
+                    [assessmentWithAttempts]="assessment"
+                    [courseContext]="this.courseContext"
+                    [studentId]="this.studentId"
+                    [user]="this.user"
+                    [utilitiesService]="this.utilitiesService">
+                </qc-student-assessment-attempts>
+                <div class="card card-body bg-light text-center qc-none-found-well" *ngIf="!this.displayedAssessments.length && this.assessmentsWithAttempts.length">
+                    <h3 class="uppercase">No quick checks found</h3>
+                    <p>Either the name does not match, or the student has not yet attempted the quick check.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div *ngIf="this.analyticsViewVisible">
-    <a href='javascript:;' (click)="this.toggleAnalytics()">
-        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-        Back to attempts
-    </a>
-    <qc-student-analytics
-        [studentId]="this.studentId"
-        [studentName]="this.studentName"
-        [utilitiesService]="this.utilitiesService">
-    </qc-student-analytics>
-</div>
+    <div *ngIf="this.analyticsViewVisible">
+        <a href='javascript:;' (click)="this.toggleAnalytics()">
+            <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+            Back to attempts
+        </a>
+        <qc-student-analytics
+            [studentId]="this.studentId"
+            [studentName]="this.studentName"
+            [utilitiesService]="this.utilitiesService">
+        </qc-student-analytics>
+    </div>
+</main>

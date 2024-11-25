@@ -12,22 +12,21 @@
             <tr *ngFor="let prompt of this.question.prompts; index as $index;" class="qc-edit-matching-prompt">
                 <td class="qc-edit-matching-inline">
                     <label for="matching-prompt-{{this.question.id}}-{{prompt.id}}">
-                        Prompt
-                        <span class="sr-only"> for question #{{ this.question.question_order }}, matching pair #{{ $index + 1 }}</span>:
+                        Prompt for matching pair #{{ $index + 1 }}, question #{{ this.question.question_order }}:
                     </label>
                     <input type="text" id="matching-prompt-{{this.question.id}}-{{prompt.id}}"
                         [(ngModel)]="prompt.option_text"
                         (ngModelChange)="this.onEdited()"
-                        class="form-control ml-2"
+                        class="form-control"
                         required
                         [disabled]="this.readOnly">
                 </td>
                 <td class="qc-edit-matching-inline">
                     <label for="matching-answer-{{this.question.id}}-{{prompt.id}}">
-                        Answer
-                        <span class="sr-only"> for question #{{ this.question.question_order }}, matching pair #{{ $index + 1 }}</span>: </label>
+                        Answer for matching pair #{{ $index + 1 }}, question #{{ this.question.question_order }}: 
+                    </label>
                     <input type="text" id="matching-answer-{{this.question.id}}-{{prompt.id}}"
-                        class="form-control ml-2"
+                        class="form-control"
                         [(ngModel)]="prompt.matching_answer_text"
                         (ngModelChange)="this.onEdited()"
                         required
@@ -58,8 +57,7 @@
     <div *ngFor="let distractor of this.question.distractors; index as $index;" class="row qc-edit-assessment-inline qc-edit-matching-distractor">
         <div class="form-group col-12">
             <label for="matching-distractor-{{this.question.id}}-{{distractor.id}}">
-                Distractor
-                <span class="sr-only">#{{ $index + 1 }} for question #{{this.question.question_order}}</span>:
+                Distractor #{{ $index + 1 }} for question #{{this.question.question_order}}:
             </label>
             <input type="text" id="matching-distractor-{{this.question.id}}-{{distractor.id}}"
                 [(ngModel)]="distractor.option_text"

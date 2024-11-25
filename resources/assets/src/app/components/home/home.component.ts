@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService, public userService: UserService) { }
 
   async ngOnInit() {
-    this.utilitiesService.setTitle('Quick Check - Home');
+    this.utilitiesService.setTitle('Home - Quick Check');
     this.utilitiesService.loadingStarted();
 
     //in Safari, if third party cookies are disabled, the sameSite=none policy that works in Chrome

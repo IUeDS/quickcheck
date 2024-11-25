@@ -112,7 +112,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
     if (this.customActivity) {
       this.customActivityAdded = true;
     }
-    this.utilitiesService.setTitle('Edit Quick Check - ' + this.assessment.name);
+    this.setPageTitle();
     this.setModelIntegers();
     this.getUserAndPermissions(); //determine if user is an admin and permissions
 
@@ -290,6 +290,19 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
       this.customActivity.id = this.customActivity.id.toString();
       this.assessment.custom_activity_id = this.assessment.custom_activity_id.toString();
     }
+  }
+
+  setPageTitle() {
+    let assessmentGroupName = null;
+    const assessmentGroupId = this.assessment.assessment_group_id;
+
+    for (const assessmentGroup of this.assessmentGroups) {
+      if (assessmentGroupId == assessmentGroup.id) {
+        assessmentGroupName = assessmentGroup.name;
+      }
+    }
+    
+    this.utilitiesService.setTitle('Edit Quick Check - ' + this.assessment.name + ' - ' + assessmentGroupName + ' - ' + this.collection.name + ' - Quick Check');
   }
 
   toggleShuffled() {

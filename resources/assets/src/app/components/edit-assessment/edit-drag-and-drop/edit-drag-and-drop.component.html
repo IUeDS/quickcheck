@@ -1,12 +1,10 @@
 <div>
     <h3 class="qc-base-img-header">Base image <span class="sr-only">for question #{{ this.question.question_order }}</span></h3>
     <div class="qc-delete-base-image" *ngIf="this.question.image && !this.readOnly">
-        <span class="qc-delete-btn qc-delete-option-btn-inline" 
-            role="button" tabindex="0"
-            (click)="this.deleteBaseImage()">
+        <button class="qc-delete-btn qc-delete-option-btn-inline" (click)="this.deleteBaseImage()">
             <qc-delete-icon aria-hidden="true"></qc-delete-icon>
             <span class="sr-only">Delete base image for question #{{ this.question.question_order }}</span>
-        </span>
+    </button>
     </div>
     <div *ngIf="this.question.image">
         <div class="row">
@@ -40,7 +38,7 @@
                 <p>Current droppable option area: {{ this.activeDroppableId ? 'droppable #' + (this.getDroppableIndex(this.activeDroppableId) + 1) : 'none'}}</p>
             </div>
             <div class="col-4 form-group">
-                <button class="btn btn-sm btn-info qc-btn" type="button" (click)="this.preview()">
+                <button class="btn btn-sm qc-btn qc-edit-dragdrop-preview-btn" type="button" (click)="this.preview()">
                     <span class="fa fa-eye" aria-hidden="true"></span> Preview question 
                     <span class="sr-only">#{{ this.question.question_order }}</span>
                 </button>
@@ -60,12 +58,10 @@
         <tr *ngFor="let droppable of this.question.droppables; index as i" [ngClass]="this.activeDroppableId == droppable.id ? 'table-active' : null">
             <td class="qc-edit-droppable">
                 <div *ngIf="!this.readOnly" class="qc-delete-droppable-btn">
-                    <span class="qc-delete-btn qc-delete-option-btn-inline" 
-                        role="button" tabindex="0"
-                        (click)="this.deleteDroppable(droppable)">
+                    <button class="qc-delete-btn qc-delete-option-btn-inline" (click)="this.deleteDroppable(droppable)">
                         <qc-delete-icon aria-hidden="true"></qc-delete-icon>
                         <span class="sr-only">Delete droppable for question #{{ this.question.question_order }}</span>
-                    </span>
+                    </button>
                 </div>
                 <div class="row">
                     <h4>Droppable #{{i + 1}}</h4>
@@ -138,12 +134,10 @@
         <tr *ngFor="let draggable of this.question.draggables; index as i">
             <td class="qc-edit-draggable">
                 <div *ngIf="!this.readOnly" class="qc-delete-draggable-btn">
-                    <span class="qc-delete-btn qc-delete-option-btn-inline" 
-                        role="button" tabindex="0"
-                        (click)="this.deleteDraggable(draggable)">
+                    <button class="qc-delete-btn qc-delete-option-btn-inline" (click)="this.deleteDraggable(draggable)">
                         <qc-delete-icon aria-hidden="true"></qc-delete-icon>
                         <span class="sr-only">Delete draggable for question #{{ this.question.question_order }}</span>
-                    </span>
+                    </button>
                 </div>
                 <div class="row">
                     <h4>Draggable #{{i + 1}}</h4>

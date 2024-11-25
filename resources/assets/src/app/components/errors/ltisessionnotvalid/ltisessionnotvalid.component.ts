@@ -11,7 +11,7 @@ export class LtisessionnotvalidComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
-    this.utilitiesService.setTitle('Quick Check - LTI Session Not Valid');
+    this.utilitiesService.setTitle('LTI Session Not Valid - Quick Check');
   }
 
 }
