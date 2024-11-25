@@ -1,43 +1,41 @@
-<div class="card qc-select-collection">
-    <button class="card-header" id="heading-group-{{this.collection.id}}"
-        [attr.href]="'#collapse-group-' + this.collection.id" [attr.aria-expanded]="this.collection.closed ? 'false' : 'true'"
-        [attr.aria-controls]="'collapse-group-' + this.collection.id" (click)="this.collection.closed = !this.collection.closed">
+<div class="card qc-accordion-panel qc-select-collection" (click)="this.toggleAccordion()">
+    <button class="card-header" 
+        [attr.aria-expanded]="this.accordionOpen"
+        [attr.aria-controls]="'collapse-group-' + this.collection.id">
         <h3>
-            <span class="fa" [ngClass]="this.collection.closed ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true"></span>
+            <span class="fa" [ngClass]="this.accordionOpen ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true"></span>
             {{ this.collection.name }}
         </h3>
     </button>
-    <div id="collapse-group-{{this.collection.id}}" class="collapse in" [attr.aria-labelledby]="'heading-group-' + this.collection.id" [collapse]="this.collection.closed" [isAnimated]="true">
-        <div class="card-body">
-            <div *ngFor="let assessmentGroup of this.collection.assessment_groups" class="qc-select-assessment-group">
-                <h4>{{assessmentGroup.name}}</h4>
-                <div class="row qc-select-assessment" *ngFor="let assessment of assessmentGroup.assessments">
-                    <div class="col-6 qc-select-row">
-                        <h5 class="admin-assessment-name">
-                            {{ assessment.name }}
-                            <span *ngIf="assessment.custom_activity_id" class="badge badge-info qc-label-custom">Custom</span>
-                        </h5>
-                    </div>
-                    <div class="col-6 qc-select-row">
-                        <qc-select-assessment
-                            [assessment]="assessment"
-                            [launchUrlStem]="this.launchUrlStem"
-                            [redirectUrl]="this.redirectUrl"
-                            [deploymentId]="this.deploymentId"
-                            [collectionService]="this.collectionService"
-                            [utilitiesService]="this.utilitiesService">
-                        </qc-select-assessment>
-                    </div>
+    <div id="collapse-group-{{this.collection.id}}" class="card-body collapse" [collapse]="!this.accordionOpen" [isAnimated]="true">
+        <div *ngFor="let assessmentGroup of this.collection.assessment_groups" class="qc-select-assessment-group">
+            <h4>{{assessmentGroup.name}}</h4>
+            <div class="row qc-select-assessment" *ngFor="let assessment of assessmentGroup.assessments">
+                <div class="col-6 qc-select-row">
+                    <h5 class="admin-assessment-name">
+                        {{ assessment.name }}
+                        <span *ngIf="assessment.custom_activity_id" class="badge badge-info qc-label-custom">Custom</span>
+                    </h5>
                 </div>
-                <div *ngIf="!assessmentGroup.assessments.length">
-                    <h5>There are no quick checks in this subset. You can add a quick check by clicking on the quick check tool in the course navigation.</h5>
+                <div class="col-6 qc-select-row">
+                    <qc-select-assessment
+                        [assessment]="assessment"
+                        [launchUrlStem]="this.launchUrlStem"
+                        [redirectUrl]="this.redirectUrl"
+                        [deploymentId]="this.deploymentId"
+                        [collectionService]="this.collectionService"
+                        [utilitiesService]="this.utilitiesService">
+                    </qc-select-assessment>
                 </div>
-                <hr>
             </div>
-            <div class="row" *ngIf="!this.collection.assessment_groups.length">
-                <div class="col-12">
-                    <p>There are no subsets in this set.</p>
-                </div>
+            <div *ngIf="!assessmentGroup.assessments.length">
+                <h5>There are no quick checks in this subset. You can add a quick check by clicking on the quick check tool in the course navigation.</h5>
+            </div>
+            <hr>
+        </div>
+        <div class="row" *ngIf="!this.collection.assessment_groups.length">
+            <div class="col-12">
+                <p>There are no subsets in this set.</p>
             </div>
         </div>
     </div>

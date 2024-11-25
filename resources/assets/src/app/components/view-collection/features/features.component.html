@@ -1,5 +1,5 @@
 <div class="card qc-accordion-panel qc-feature-panel" (click)="this.toggleShowFeatures()">
-    <button class="card-header" [attr.aria-expanded]="false" [attr.aria-controls]="'featureList'">
+    <button class="card-header" [attr.aria-expanded]="this.showFeatures" [attr.aria-controls]="'featureList'">
         <span class="qc-accordion-arrow fa fa-lg" [ngClass]="this.showFeatures ? 'fa-caret-down' : 'fa-caret-right'" aria-hidden="true"></span>
         <h3 class="card-title">Show features in this set</h3>
     </button>

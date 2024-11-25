@@ -16,8 +16,14 @@ export class SelectCollectionPanelComponent implements OnInit {
   @Input() collectionService: CollectionService;
   @Input() utilitiesService: UtilitiesService;
 
+  accordionOpen = true;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  toggleAccordion() {
+    this.accordionOpen = !this.accordionOpen;
   }
 }

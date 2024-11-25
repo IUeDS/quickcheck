@@ -81,7 +81,7 @@
                                     <input type="radio" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" disabled
                                         [checked]="answerOption.studentAnswer" id="{{answerOption.id}}">
                                     <label class="qc-mc-option-response" for="{{answerOption.id}}">
-                                        <span [innerHTML]="answerOption.answer_text | safe: 'html'"></span>
+                                        <span class="qc-response-text" [innerHTML]="answerOption.answer_text | safe: 'html'"></span>
                                         <span *ngIf="answerOption.correct === 'true'" class="qc-correct-text"> <span class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></span> Correct answer</span>
                                     </label>
                                 </div>
@@ -94,7 +94,7 @@
                                 <div class="form-check qc-responses-multiple-correct-option" *ngFor="let answerOption of currentQuestion.options" [ngClass]="{'qc-correct-answer-marked': answerOption.correct === 'true'}">
                                     <input type="checkbox" name="{{currentQuestion.id}}" value="{{answerOption.answer_text}}" [checked]="answerOption.studentAnswer" disabled id="{{answerOption.id}}">
                                     <label for="{{answerOption.id}}">
-                                        <span [innerHTML]="answerOption.answer_text | safe: 'html'"></span>
+                                        <span class="qc-response-text" [innerHTML]="answerOption.answer_text | safe: 'html'"></span>
                                         <span *ngIf="answerOption.correct === 'true'" class="qc-correct-text"> <span class="fa fa-long-arrow-left fa-lg" aria-hidden="true"></span> Correct answer</span>
                                     </label>
                                 </div>
