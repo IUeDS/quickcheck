@@ -29,10 +29,6 @@
         float: left;
         margin: 12px 5px 0 0;
         padding: 2px;
-
-        &:focus {
-            color: $electric-blue;
-        }
     }
 
     .qc-delete-option-btn-inline {
@@ -130,6 +126,13 @@
     .qc-question-options-header,
     .qc-feedback-header {
         display: inline-block;
+        margin-right: 20px;
+    }
+
+    legend {
+        border-bottom: none;
+        width: initial;
+        padding-bottom: 10px;
     }
 
     .qc-question-panel {
@@ -152,10 +155,15 @@
     }
 
     .qc-question-panel-heading {
+        align-items: center;
+        display: flex;
+
+        .qc-buttons-right {
+            margin-left: auto;
+        }
+
         .qc-delete-btn {
-            float: right;
             margin-right: 10px;
-            margin-top: 10px;
 
             svg {
                 height: 30px;
@@ -164,13 +172,14 @@
         }
 
         .qc-reorder-btn-group {
-            float: right;
-            margin-right: 25px;
-            margin-top: 10px;
+            margin-right: 10px;
         }
 
         .qc-reorder-down-btn,
         .qc-reorder-up-btn {
+            background-color: inherit;
+            border: none;
+
             svg {
                 height: 25px;
                 width: 25px;
@@ -183,10 +192,8 @@
             }
         }
 
-        //adjusts the up arrow to be vertically aligned above the down arrow
         .qc-reorder-up-btn {
-            display: inline-block;
-            overflow: hidden;
+            vertical-align: top; //get icon to align vertically with delete icon
         }
     }
 
@@ -213,7 +220,7 @@
     }
 
     .qc-selected-incorrect {
-        color: $dark-gray;
+        color: $darker-gray;
 
         &:hover {
             color: $green;
@@ -229,6 +236,32 @@
     #qc-validation-error {
         ul {
             color: $black; //ensure proper color contrast
+        }
+    }
+
+    //shared styles between multiple choice and multiple correct editing;
+    //note that multiple choice turns into checkboxes when the option is
+    //selected for multiple options to be considered correct
+    .qc-edit-mc-list {
+        padding-inline-start: 0;
+
+        li {
+            list-style: none;
+            margin-bottom: 10px;
+        }
+    }
+
+    .qc-mc-correct-wrapper {
+        float: left;
+        padding: 5px 10px 0 10px;
+     
+        input[type="checkbox"] {
+            height: 25px;
+            width: 25px;
+        }
+    
+        input[type="checkbox"]:checked {
+            accent-color: #397F3B;
         }
     }
 }

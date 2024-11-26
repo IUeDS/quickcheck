@@ -101,6 +101,7 @@ class AttemptController extends \BaseController
         }
         $assessment = Assessment::find($assessment_id);
         $courseContext = CourseContext::where('lti_context_id', '=', $context_id)->first();
+        $sourcedId = $courseContext->getCourseOfferingSourcedid();
         $canvasCourse = $this->getCanvasCourse($courseContext->lti_custom_course_id);
         $release = $this->getReleaseForAssessment($assessment_id, $courseContext->id);
 
@@ -122,7 +123,8 @@ class AttemptController extends \BaseController
             'courseContext' => $courseContext,
             'assessment' => $assessment,
             'release' => $release,
-            'assignment' => $assignment
+            'assignment' => $assignment,
+            'sourcedId' => $sourcedId
         ]);
     }
 
@@ -140,6 +142,7 @@ class AttemptController extends \BaseController
         }
 
         $courseContext = CourseContext::where('lti_context_id', '=', $context_id)->first();
+        $sourcedId = $courseContext->getCourseOfferingSourcedid(); //course abbreviation to include with page titles
         $attempts = Attempt::with(['assessment', 'lineItem'])
                 ->where('course_context_id', '=', $courseContext->id)
                 ->groupBy('resource_link_id') //if embedded in multiple assignments, separate out
@@ -171,7 +174,7 @@ class AttemptController extends \BaseController
             }
         })->toArray();
 
-        return response()->success(['attempts' => array_values($sortedAttempts)]);
+        return response()->success(['attempts' => array_values($sortedAttempts), 'sourcedId' => $sourcedId]);
     }
 
     /**
@@ -193,6 +196,7 @@ class AttemptController extends \BaseController
 
         //fetch user from Canvas API
         $courseContext = CourseContext::where('lti_context_id', '=', $contextId)->firstOrFail();
+        $sourcedId = $courseContext->getCourseOfferingSourcedid();
         $courseId = $courseContext->getCourseId();
         $canvasUserId = Student::find($studentId)->getCanvasUserId();
         $canvasAPI = new CanvasAPI;
@@ -201,7 +205,8 @@ class AttemptController extends \BaseController
         return response()->success([
             'assessmentsWithAttempts' => $assessmentsWithAttempts,
             'courseContext' => $courseContext,
-            'user' => $user
+            'user' => $user,
+            'sourcedId' => $sourcedId
         ]);
     }
 

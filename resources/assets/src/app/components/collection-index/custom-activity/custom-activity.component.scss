@@ -25,10 +25,13 @@
 
     .card-header {
         background-color: $dark-gray;
+        border: none;
         border-left: solid $muted-purple 10px;
+        text-align: left;
     }
 
     ::ng-deep .qc-custom-activity-edit-btn {
+        background-color: inherit;
         margin-left: 20px;
         vertical-align: middle;
 
@@ -43,6 +46,7 @@
     }
 
     ::ng-deep .qc-custom-activity-delete-btn {
+        background-color: inherit;
         float: right;
         margin-right: 10px;
         vertical-align: middle;

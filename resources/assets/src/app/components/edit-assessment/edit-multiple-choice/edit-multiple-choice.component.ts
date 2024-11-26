@@ -123,6 +123,14 @@ export class EditMultipleChoiceComponent implements OnInit {
     return false;
   }
 
+  isCorrect(option) {
+    if (option.correct == 'true') {
+      return true;
+    }
+
+    return false;
+  }
+
   onEdited() {
     this.question.validationError = this.isInvalid();
     this.onQuestionEdited.emit({question: this.question});
@@ -137,13 +145,10 @@ export class EditMultipleChoiceComponent implements OnInit {
     this.onEdited();
   }
 
-  toggleCorrect($event) {
-    //can't add ng-disabled since this isn't technically a button element
+  toggleCorrect(option) {
     if (this.readOnly) {
       return false;
     }
-
-    var option = $event.option; //retrieved from sub-component event
 
     //by default, only one correct answer for multiple choice; however, if the checkbox for
     //multiple_correct is checked, then although the question will appear as multiple choice,

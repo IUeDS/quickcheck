@@ -57,6 +57,44 @@ h6,
     }
 }
 
+.qc-link {
+    background-color: inherit;
+    border: none;
+    padding: 0px;
+    text-decoration: underline;
+}
+
 .qc-search-box {
     background-color: $light-gray;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+    &:focus {
+        border: solid $iron-gray 2px !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+}
+
+//light color focus for contrast against dark background for nav links
+nav a {
+    &:focus {
+        border: solid $white 2px !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+}
+
+//add outline rather than border for radio and checkbox inputs
+input[type="checkbox"],
+input[type="radio"] {
+    &:focus {
+        outline: solid $iron-gray 2px !important;
+        outline-offset: 3px;
+        border: none !important;
+    }
 }

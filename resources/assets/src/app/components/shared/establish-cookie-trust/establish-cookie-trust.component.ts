@@ -15,7 +15,7 @@ export class EstablishCookieTrustComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService, public userService: UserService) { }
 
   async ngOnInit() {
-    this.utilitiesService.setTitle('Quick Check - Establish Cookie Trust');
+    this.utilitiesService.setTitle('Establish Cookie Trust - Quick Check');
     this.utilitiesService.loadingStarted();
 
     try {

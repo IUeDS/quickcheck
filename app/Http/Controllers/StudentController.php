@@ -42,6 +42,8 @@ class StudentController extends \BaseController
 
         $students = [];
         $courseContext = CourseContext::where('lti_context_id', '=', $contextId)->first();
+        $sourcedId = $courseContext->getCourseOfferingSourcedid(); //course abbreviation to include with page titles
+
         $attemptsGroupedByStudent = Attempt::where('course_context_id', '=', $courseContext->id)
             ->groupBy('student_id')
             ->with('student')
@@ -58,6 +60,6 @@ class StudentController extends \BaseController
         $students = collect($students);
         $students = $students->sortBy('lis_person_name_family')->values()->all();
 
-        return response()->success(['students' => $students]);
+        return response()->success(['students' => $students, 'sourcedId' => $sourcedId]);
     }
 }

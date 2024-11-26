@@ -11,7 +11,7 @@ export class SessionnotvalidComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
-    this.utilitiesService.setTitle('Quick Check - Session Not Valid');
+    this.utilitiesService.setTitle('Session Not Valid - Quick Check');
   }
 
 }

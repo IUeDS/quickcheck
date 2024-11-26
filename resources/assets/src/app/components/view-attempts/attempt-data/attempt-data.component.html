@@ -41,7 +41,7 @@
             <td *ngIf="this.isAttemptLimit">{{ attempt.attempt_number }}</td>
             <td *ngIf="this.isAttemptLimit">{{ attempt.allowed_attempts }}</td>
             <td *ngIf="this.showResponses">
-                <button class="btn btn-primary btn-sm qc-btn qc-btn-view-responses" role="button" type="button" (click)="this.viewResponses(attempt)" *ngIf="this.responsesAvailable(attempt)">
+                <button class="btn btn-primary btn-sm qc-btn qc-btn-view-responses" (click)="this.viewResponses(attempt)" *ngIf="this.responsesAvailable(attempt)">
                     View Responses
                     <span class="sr-only">for <span *ngIf="!this.isStudent">{{ attempt.student.lis_person_name_given }} {{ attempt.student.lis_person_name_family }}'s </span>attempt beginning at {{ this.utilitiesService.formatTimeWithTimeZone(attempt.created_at, this.courseContext.time_zone) }}</span>
                 </button>
