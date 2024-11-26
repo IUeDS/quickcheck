@@ -406,6 +406,7 @@ export class AssessmentComponent implements OnInit {
     //for instructors, include set and subset for accessibility
     if (!this.isPreview()) {
       this.utilitiesService.setTitle(assessmentTitle + ' - Quick Check');
+      return;
     }
 
     let data;
