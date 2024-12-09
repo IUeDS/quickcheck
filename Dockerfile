@@ -2,7 +2,7 @@
 # and referenced Laradock implementation to further optimize
 
 # Use an official PHP runtime as a parent image, through AWS to avoid Docker Hub rate limiting
-FROM public.ecr.aws/docker/library/php:8.1-apache
+FROM public.ecr.aws/docker/library/php:8.2-apache
 
 # Set Environment Variables
 ARG DEBIAN_FRONTEND=noninteractive
@@ -22,7 +22,7 @@ RUN docker-php-ext-configure gd
 RUN docker-php-ext-install gd
 
 # Install node/npm/angular CLI
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash -
 RUN apt-get update && apt-get install -y nodejs
 RUN npm install -g @angular/cli
 
