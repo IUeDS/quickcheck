@@ -15,12 +15,15 @@
       "prefix": "qc",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "public/assets/dist",
+            "outputPath": {
+              "base": "public/assets/dist"
+            },
             "index": "resources/assets/src/index.html",
-            "main": "resources/assets/src/main.ts",
-            "polyfills": "resources/assets/src/polyfills.ts",
+            "polyfills": [
+              "resources/assets/src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.app.json",
             "deployUrl": "/assets/dist/",
             "allowedCommonJsDependencies": [
@@ -70,12 +73,11 @@
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/mathquill/build/mathquill.js"
             ],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "resources/assets/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -90,8 +92,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -117,8 +117,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
