@@ -76,7 +76,7 @@
                 </qc-qti-export>
             </div>
             <div>
-                <qc-users
+                <qc-users *ngIf="this.currentUser"
                     [collectionId]="this.collectionId"
                     [currentUser]="this.currentUser"
                     [readOnly]="this.readOnly"

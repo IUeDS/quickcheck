@@ -81,5 +81,8 @@
     "tslint": "~6.1.0",
     "typescript": "^5.4.5",
     "webpack-bundle-analyzer": "^4.8.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.28.1"
   }
 }

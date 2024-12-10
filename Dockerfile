@@ -57,8 +57,6 @@ RUN npm install
 RUN ng build --configuration "production"
 #copy hashed css output to non-hashed file for inclusion with tinymce editor (which has a set config and can't guess the hash)
 RUN cp public/assets/dist/browser/styles-*.css public/assets/dist/styles.css
-# Delete node modules after compiling front-end assets to save disk space
-RUN rm -rf node_modules
 
 # Specific to IU: install/compile dependencies for custom activity angular projects; if not present, will skip
 RUN bash -c 'if [ -d "${LABS_DIR}" ]; then echo "Installing labs dependencies"; cd ${LABS_DIR}; npm install; ng build --prod --base-href="/customActivities/jsomelec/labs/dist/"; rm -rf node_modules; cd ${WORK_DIR}; fi'
