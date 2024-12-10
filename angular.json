@@ -138,18 +138,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "quickcheck:build"
+            "buildTarget": "quickcheck:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "quickcheck:build:production"
+              "buildTarget": "quickcheck:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "quickcheck:build"
+            "buildTarget": "quickcheck:build"
           }
         },
         "test": {
