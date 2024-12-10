@@ -209,7 +209,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         RoundProgressModule,
         RouterModule,
         DragDropModule], providers: [
-        HttpClientModule,
         Title,
         CanDeactivateGuard,
         provideHttpClient(withInterceptorsFromDi())

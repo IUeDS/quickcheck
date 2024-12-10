@@ -19,7 +19,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^11.0",
         "filp/whoops": "^2.1.4"
     },
     "autoload": {

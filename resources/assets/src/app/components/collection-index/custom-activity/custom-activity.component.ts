@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CustomActivityService } from '../../../services/custom-activity.service';
-import * as cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'qc-custom-activity',

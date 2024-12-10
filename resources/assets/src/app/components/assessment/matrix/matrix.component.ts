@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
-import * as cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'qc-matrix',

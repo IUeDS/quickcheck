@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {environment} from '../../environments/environment';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import { Title } from '@angular/platform-browser';
-import * as cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 @Injectable({
   providedIn: 'root'

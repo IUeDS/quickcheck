@@ -56,7 +56,7 @@ WORKDIR ${WORK_DIR}
 RUN npm install
 RUN ng build --configuration "production"
 #copy hashed css output to non-hashed file for inclusion with tinymce editor (which has a set config and can't guess the hash)
-RUN cp public/assets/dist/styles.*.css public/assets/dist/styles.css
+RUN cp public/assets/dist/browser/styles-*.css public/assets/dist/styles.css
 # Delete node modules after compiling front-end assets to save disk space
 RUN rm -rf node_modules
 

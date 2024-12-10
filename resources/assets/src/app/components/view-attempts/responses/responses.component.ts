@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
-import * as cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'qc-responses',
