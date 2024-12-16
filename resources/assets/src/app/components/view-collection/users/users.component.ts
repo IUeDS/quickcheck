@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CollectionService } from '../../../services/collection.service';
 import { UserService } from '../../../services/user.service';
-import * as cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

@@ -55,7 +55,7 @@ export class EditQuestionComponent implements OnInit {
   }
 
   getCSSFilePath() {
-    return '/assets/dist/styles.css';
+    return '/assets/dist/browser/styles.css';
   }
 
   initializeNewQuestion() {

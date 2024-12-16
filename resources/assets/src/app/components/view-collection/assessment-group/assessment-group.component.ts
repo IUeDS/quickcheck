@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AssessmentEditService } from '../../../services/assessment-edit.service';
 import { CollectionService } from '../../../services/collection.service';
 import { HttpService } from '../../../services/http.service';
-import * as cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'qc-assessment-group',

@@ -16,7 +16,7 @@ import { SessionnotvalidComponent } from './components/errors/sessionnotvalid/se
 import { LtisessionnotvalidComponent } from './components/errors/ltisessionnotvalid/ltisessionnotvalid.component';
 import { ErrorComponent } from './components/errors/error/error.component';
 import { EstablishCookieTrustComponent } from './components/shared/establish-cookie-trust/establish-cookie-trust.component';
-import * as cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep';
 import { CanDeactivateGuard } from './guards/can-deactivate-guard.service';
 
 const routes: Routes = [

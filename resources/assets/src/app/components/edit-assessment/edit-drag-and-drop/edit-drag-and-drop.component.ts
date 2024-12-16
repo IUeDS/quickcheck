@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angu
 import { EditAssessmentConfigService } from '../../../services/edit-assessment-config.service';
 import { AssessmentEditService } from '../../../services/assessment-edit.service';
 import { UtilitiesService } from '../../../services/utilities.service';
-import { fabric } from 'fabric'; 
+import * as fabric from 'fabric'; 
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { PreviewDragAndDropComponent } from '../preview-drag-and-drop/preview-drag-and-drop.component';
 
@@ -43,13 +43,16 @@ export class EditDragAndDropComponent implements OnInit {
     //MM: this was the only way I could find to add custom properties/data to a fabric js object
     //such as a rectangle, so we can assign it a droppable ID and link data when moved, etc.
     //source: https://stackoverflow.com/questions/24851386/fabric-js-add-custom-property-to-itext
-    fabric.Object.prototype.toObject = (function(toObject) {
-      return function() {
-        return fabric.util.object.extend(toObject.call(this), {
-          id: this.id
-        });
-      };
-    })(fabric.Object.prototype.toObject);
+
+    //MM 12/9/24: TODO: new version of fabric v6 does not allow the following code and I can't 
+    //easily find a fix. Need to rewrite this somehow in the future to include id attribute.
+    // fabric.Object.prototype.toObject = (function(toObject) {
+    //   return function() {
+    //     return fabric.util.object.extend(toObject.call(this), {
+    //       id: this.id
+    //     });
+    //   };
+    // })(fabric.Object.prototype.toObject);
 
     this.canvasId = this.question.id + '-canvas';
     this.initOptions();

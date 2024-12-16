@@ -3,5 +3,5 @@
 use Illuminate\Support\Facades\File;
 
 function displaySPA() {
-    return File::get(public_path() . '/assets/dist/index.html');
+    return File::get(public_path() . '/assets/dist/browser/index.html');
 }
