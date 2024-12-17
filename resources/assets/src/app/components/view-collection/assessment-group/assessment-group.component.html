@@ -1,7 +1,6 @@
 <div class="card qc-accordion-panel qc-subset-panel">
     <div class="card-header" id="heading-group-{{this.assessmentGroup.id}}">
         <div class="qc-assessment-group-title">
-            <span class="fa fa-lg qc-accordion-arrow" [ngClass]="this.assessmentGroup.closed ? 'fa-caret-right' : 'fa-caret-down'" aria-hidden="true" [hidden]="this.isEditing"></span>
             <h3 [hidden]="this.isEditing">{{ this.assessmentGroup.name }}</h3>
             <div *ngIf="this.isEditing" class="qc-edit-subset">
                 <form ngNativeValidate (ngSubmit)="this.updateAssessmentGroup()" (click)="this.utilitiesService.preventToggle($event)">

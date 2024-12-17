@@ -5,7 +5,7 @@ import { Option, OptionTypeEnum, Question } from '../assessment.component';
 import { LiveAnnouncer } from "@angular/cdk/a11y";
 
 
-import * as cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 export enum KEY_CODE {
   RIGHT_ARROW = 'ArrowRight',

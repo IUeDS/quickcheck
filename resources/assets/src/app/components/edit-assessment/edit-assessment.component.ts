@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssessmentEditService } from '../../services/assessment-edit.service';
 import { UserService } from '../../services/user.service';
 import { UtilitiesService } from '../../services/utilities.service';
-import * as cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep';
 import { CanDeactivateGuard } from '../../guards/can-deactivate-guard.service';
 
 interface ComponentCanDeactivate {

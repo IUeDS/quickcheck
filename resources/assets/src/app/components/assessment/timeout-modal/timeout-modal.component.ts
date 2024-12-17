@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 @Component({
   selector: 'qc-timeout-modal',

@@ -2,7 +2,7 @@
 # and referenced Laradock implementation to further optimize
 
 # Use an official PHP runtime as a parent image, through AWS to avoid Docker Hub rate limiting
-FROM public.ecr.aws/docker/library/php:8.1-apache
+FROM public.ecr.aws/docker/library/php:8.2-apache
 
 # Set Environment Variables
 ARG DEBIAN_FRONTEND=noninteractive
@@ -22,7 +22,7 @@ RUN docker-php-ext-configure gd
 RUN docker-php-ext-install gd
 
 # Install node/npm/angular CLI
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash -
 RUN apt-get update && apt-get install -y nodejs
 RUN npm install -g @angular/cli
 
@@ -56,9 +56,7 @@ WORKDIR ${WORK_DIR}
 RUN npm install
 RUN ng build --configuration "production"
 #copy hashed css output to non-hashed file for inclusion with tinymce editor (which has a set config and can't guess the hash)
-RUN cp public/assets/dist/styles.*.css public/assets/dist/styles.css
-# Delete node modules after compiling front-end assets to save disk space
-RUN rm -rf node_modules
+RUN cp public/assets/dist/browser/styles-*.css public/assets/dist/styles.css
 
 # Specific to IU: install/compile dependencies for custom activity angular projects; if not present, will skip
 RUN bash -c 'if [ -d "${LABS_DIR}" ]; then echo "Installing labs dependencies"; cd ${LABS_DIR}; npm install; ng build --prod --base-href="/customActivities/jsomelec/labs/dist/"; rm -rf node_modules; cd ${WORK_DIR}; fi'

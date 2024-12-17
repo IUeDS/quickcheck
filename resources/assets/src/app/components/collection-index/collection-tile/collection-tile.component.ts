@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../../services/utilities.service';
 import { CollectionService } from '../../../services/collection.service';
-import * as cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'qc-collection-tile',

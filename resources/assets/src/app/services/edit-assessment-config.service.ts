@@ -55,7 +55,7 @@ export class EditAssessmentConfigService {
       'alignright alignjustify ltr rtl | bullist numlist outdent indent | link image mathquill';
 
     return {
-      base_url: '/assets/dist/tinymce',
+      base_url: '/assets/dist/browser/tinymce',
       suffix: '.min',
       plugins: tinymcePlugins,
       toolbar: tinymceToolbar,
