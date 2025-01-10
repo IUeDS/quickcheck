@@ -202,7 +202,7 @@ class ExportQti {
             $this->addAttribute($doc, 'ident', $feedbackId, $itemfeedback);
             $flow_mat = $itemfeedback->appendChild($doc->createElement('flow_mat'));
             $material = $flow_mat->appendChild($doc->createElement('material'));
-            $mattext = $material->appendChild($doc->createElement('mattext', $mcOptionFeedback->feedback_text));
+            $mattext = $material->appendChild($doc->createElement('mattext', htmlspecialchars($mcOptionFeedback->feedback_text)));
             $this->addAttribute($doc, 'texttype', 'text/plain', $mattext);
 
             //then link the responses to their feedback
@@ -383,7 +383,7 @@ class ExportQti {
             $responseId = 'response_' . $matchingPrompt->id;
             $this->addAttribute($doc, 'ident', $responseId, $response_lid);
             $material = $response_lid->appendChild($doc->createElement('material'));
-            $mattext = $material->appendChild($doc->createElement('mattext', $matchingPrompt->option_text));
+            $mattext = $material->appendChild($doc->createElement('mattext', htmlspecialchars($matchingPrompt->option_text)));
             $this->addAttribute($doc, 'texttype', 'text/plain', $mattext);
             $render_choice = $response_lid->appendChild($doc->createElement('render_choice'));
 
@@ -392,7 +392,7 @@ class ExportQti {
                 $response_label = $render_choice->appendChild($doc->createElement('response_label'));
                 $this->addAttribute($doc, 'ident', $matchingAnswer->id, $response_label);
                 $material = $response_label->appendChild($doc->createElement('material'));
-                $mattext = $material->appendChild($doc->createElement('mattext', $matchingAnswer->option_text));
+                $mattext = $material->appendChild($doc->createElement('mattext', htmlspecialchars($matchingAnswer->option_text)));
 
                 if ($matchingPrompt->matching_answer_text == $matchingAnswer->option_text) {
                     $correctAnswer = $matchingAnswer;
@@ -619,14 +619,14 @@ class ExportQti {
         $this->addAttribute($doc, 'ident', 'correct_fb', $correctFeedback);
         $flow_mat = $correctFeedback->appendChild($doc->createElement('flow_mat'));
         $material = $flow_mat->appendChild($doc->createElement('material'));
-        $mattext = $material->appendChild($doc->createElement('mattext', $correctFeedbackText));
+        $mattext = $material->appendChild($doc->createElement('mattext', htmlspecialchars($correctFeedbackText)));
         $this->addAttribute($doc, 'texttype', 'text/plain', $mattext);
 
         $incorrectFeedback = $item->appendChild($doc->createElement('itemfeedback'));
         $this->addAttribute($doc, 'ident', 'general_incorrect_fb', $incorrectFeedback);
         $flow_mat = $incorrectFeedback->appendChild($doc->createElement('flow_mat'));
         $material = $flow_mat->appendChild($doc->createElement('material'));
-        $mattext = $material->appendChild($doc->createElement('mattext', $incorrectFeedbackText));
+        $mattext = $material->appendChild($doc->createElement('mattext', htmlspecialchars($incorrectFeedbackText)));
         $this->addAttribute($doc, 'texttype', 'text/plain', $mattext);
 
 
