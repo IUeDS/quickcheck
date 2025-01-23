@@ -17,7 +17,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "analyze": "webpack-bundle-analyzer public/assets/dist/stats-es2015.json"
+    "analyze": "webpack-bundle-analyzer public/assets/dist/stats-es2015.json",
+    "cy:open": "cypress open"
   },
   "private": true,
   "dependencies": {
@@ -66,6 +67,7 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "codelyzer": "^6.0.2",
+    "cypress": "^13.17.0",
     "eslint": "^8.57.0",
     "eslint-plugin-import": "2.25.2",
     "eslint-plugin-jsdoc": "^50.6.0",
