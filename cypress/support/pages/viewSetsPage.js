@@ -17,7 +17,7 @@ export class ViewSetsPage {
 
       //functions
       this.addAdminUser = () => this.addAdminUserBtn.click();
-      this.cancelSetEdit = (setElement) => setElement.find(this.cancelSetEditText).click();
+      this.cancelSetEdit = (setElement) => setElement.get('button').contains(this.cancelSetEditText).click();
       this.clearSearch = () => {
         this.searchBox.clear();
         // Manually trigger search by sending a keypress
@@ -35,7 +35,7 @@ export class ViewSetsPage {
       this.getAddSetNameField = () => this.newSetNameField;
       this.getEditedDescriptionInput = (setElement) => setElement.find(this.editSetDescriptionField);
       this.getEditedNameInput = (setElement) => setElement.find(this.editSetNameField);
-      this.getGoToSetBtn = (setElement) => setElement.find(this.goToSetText);
+      this.getGoToSetBtn = (setElement) => setElement.get('.qc-view-set-btn');
       this.getGoToSetNewTabBtn = (setElement) => setElement.find(this.newTabBtn);
       this.getInitialInstructions = () => this.initialInstructions;
       this.getMembershipTiles = () => this.membershipTiles;
@@ -45,13 +45,14 @@ export class ViewSetsPage {
       this.getPublicSets = () => this.publicSets;
       this.getPublicViewBtn = (set) => set.find(this.publicViewBtn);
       this.getSearchBox = () => this.searchBox;
-      this.getSetName = (setElement) => setElement.find(this.setName).text();
+      this.getSetName = (setElement) => setElement.find(this.setName).invoke('text');
       this.isSetPublic = (set) => set.text().includes('Public');
       this.saveNewSet = () => this.saveNewSetBtn.click();
       this.submitAdminUser = () => this.submitAdminUserBtn.click();
       this.toggleAdminViewAllSets = () => this.adminViewAllToggle.click();
       this.togglePublicSets = () => this.togglePublicSetsBtn.click();
-      this.updateSet = (setElement) => setElement.find(this.saveUpdatedSetText).click();
+      this.updateSet = (setElement) => setElement.get('button').contains('Save').click();
+      
     }
 
     //getters
