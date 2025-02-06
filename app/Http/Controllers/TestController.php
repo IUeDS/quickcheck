@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use App\Models\Collection;
+use App\Models\User;
 
 class TestController extends Controller
 {
@@ -21,12 +23,22 @@ class TestController extends Controller
     /**
     * Create a new set with the test instructor added as a user
     *
-    * @param  None 
+    * @param  string  $name 
+    * @param  string  $description
     * @return Response
     */
 
     public function newSet(Request $request)
     {
+        $this->refreshDatabase();
+
+        $name = $request->input('name');
+        $description = $request->input('description');
+        $username = 'testinstructor';
+        $user = User::getUserFromUsername($username);
+        $collection = new Collection();
+        $collection->storeCollection($name, $user, $description);
+
         return response()->success();
     }
 

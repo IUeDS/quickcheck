@@ -8,9 +8,21 @@ Cypress.Commands.add('refreshLocalDB', () => {
     });
 });
 
+Cypress.Commands.add('newLocalSet', () => {
+    const url = data.urls.localRoot + data.urls.testEndpoints.newSet;
+    const name = data.sets.toBeDeleted.name;
+    const description = data.sets.toBeDeleted.description;
+
+    cy.request('POST', url, { name, description }).then((response) => {
+      expect(response.status).to.eq(200);
+    });
+});
+
+
 declare global {
   namespace Cypress {
     interface Chainable {
+      newLocalSet(): Chainable<void>,
       refreshLocalDB(): Chainable<void>
     }
   }
