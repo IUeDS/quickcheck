@@ -1,4 +1,21 @@
-/// <reference types="cypress" />
+import data from './data/data';
+
+
+Cypress.Commands.add('refreshLocalDB', () => {
+    const url = data.urls.localRoot + data.urls.testEndpoints.refresh;
+    cy.request('POST', url).then((response) => {
+      expect(response.status).to.eq(200);
+    });
+});
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      refreshLocalDB(): Chainable<void>
+    }
+  }
+}
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite

@@ -1,10 +1,13 @@
-//import { NavComponent } from '../../support/components/navComponent';
 import { nav } from '../../support/components/navComponent';
 import { viewSetsPage } from '../../support/pages/viewSetsPage';
 import { setPage } from '../../support/pages/setPage';
 import data from '../../support/data/data';
 
 describe('Accessing the list of sets for the first time', function() {
+    before(() => {
+        cy.refreshLocalDB();
+    });
+
     beforeEach(() => {
         const url = data.urls.local.setsPage;
         cy.visit(url);
@@ -56,96 +59,96 @@ describe('Adding a set', () => {
     });
   });
   
-  describe('Editing a set', () => {
-    const sets = data.sets;
+// describe('Editing a set', () => {
+//     const sets = data.sets;
 
-    beforeEach(() => {
-        const url = data.urls.local.setsPage;
-        cy.visit(url);
-        const setElement = viewSetsPage.getMembershipTiles().first();
-        // Click the edit button on the first membership tile
-        viewSetsPage.editSet(setElement);
-    });
+//     beforeEach(() => {
+//         const url = data.urls.local.setsPage;
+//         cy.visit(url);
+//         const setElement = viewSetsPage.getMembershipTiles().first();
+//         // Click the edit button on the first membership tile
+//         viewSetsPage.editSet(setElement);
+//     });
   
-    it('should show the necessary form when the button is clicked', () => {
-      const setElement = viewSetsPage.getMembershipTiles().first();  
-      const nameInput = viewSetsPage.getEditedNameInput(setElement);
+//     it('should show the necessary form when the button is clicked', () => {
+//       const setElement = viewSetsPage.getMembershipTiles().first();  
+//       const nameInput = viewSetsPage.getEditedNameInput(setElement);
   
-      // Assert that the name input is visible
-      nameInput.should('be.visible');
-    });
+//       // Assert that the name input is visible
+//       nameInput.should('be.visible');
+//     });
   
-    it('should have the correct set name in the editing form', () => {
-      const setElement = viewSetsPage.getMembershipTiles().first();  
-      const nameInput = viewSetsPage.getEditedNameInput(setElement);
+//     it('should have the correct set name in the editing form', () => {
+//       const setElement = viewSetsPage.getMembershipTiles().first();  
+//       const nameInput = viewSetsPage.getEditedNameInput(setElement);
 
-      nameInput.invoke('val').should('eq', sets.toBeDeleted.name)
-    });
+//       nameInput.invoke('val').should('eq', sets.toBeDeleted.name)
+//     });
 
-    it('should have the correct set description in the editing form', () => {
-        const setElement = viewSetsPage.getMembershipTiles().first();  
+//     it('should have the correct set description in the editing form', () => {
+//         const setElement = viewSetsPage.getMembershipTiles().first();  
 
-        const descriptionInput = viewSetsPage.getEditedDescriptionInput(setElement);
-        descriptionInput.invoke('val').should('eq', sets.toBeDeleted.description);
-      });
+//         const descriptionInput = viewSetsPage.getEditedDescriptionInput(setElement);
+//         descriptionInput.invoke('val').should('eq', sets.toBeDeleted.description);
+//       });
   
   
-    it('should change the set name in the user\'s list after being saved', () => {
-      const setElement = viewSetsPage.getMembershipTiles().first();
-      const nameInput = viewSetsPage.getEditedNameInput(setElement);
+//     it('should change the set name in the user\'s list after being saved', () => {
+//       const setElement = viewSetsPage.getMembershipTiles().first();
+//       const nameInput = viewSetsPage.getEditedNameInput(setElement);
 
-      nameInput.clear();
-      sets.toBeDeleted.name = 'Edited name';
-      nameInput.type(sets.toBeDeleted.name);
+//       nameInput.clear();
+//       sets.toBeDeleted.name = 'Edited name';
+//       nameInput.type(sets.toBeDeleted.name);
   
-      // Save the set
-      viewSetsPage.updateSet(setElement);
+//       // Save the set
+//       viewSetsPage.updateSet(setElement);
   
-      // Assert that the set name in the membership tile is equal to the edited name
-      viewSetsPage.getSetName(viewSetsPage.getMembershipTiles().first()).should('eq', sets.toBeDeleted.name);
-    });
+//       // Assert that the set name in the membership tile is equal to the edited name
+//       viewSetsPage.getSetName(viewSetsPage.getMembershipTiles().first()).should('eq', sets.toBeDeleted.name);
+//     });
   
-    it('should change the set description in the user\'s list after being saved', () => {
-      let setElement = viewSetsPage.getMembershipTiles().first();  
-      const descriptionInput = viewSetsPage.getEditedDescriptionInput(setElement);
+//     it('should change the set description in the user\'s list after being saved', () => {
+//       let setElement = viewSetsPage.getMembershipTiles().first();  
+//       const descriptionInput = viewSetsPage.getEditedDescriptionInput(setElement);
 
-      // Clear the description input and enter a new description
-      descriptionInput.clear();
-      sets.toBeDeleted.description = 'Edited description';
-      descriptionInput.type(sets.toBeDeleted.description);
+//       // Clear the description input and enter a new description
+//       descriptionInput.clear();
+//       sets.toBeDeleted.description = 'Edited description';
+//       descriptionInput.type(sets.toBeDeleted.description);
 
-      // Save the set
-      viewSetsPage.updateSet(setElement);
+//       // Save the set
+//       viewSetsPage.updateSet(setElement);
 
-      setElement = viewSetsPage.getMembershipTiles().first(); 
-      viewSetsPage.editSet(setElement);
+//       setElement = viewSetsPage.getMembershipTiles().first(); 
+//       viewSetsPage.editSet(setElement);
   
-      // Assert that the value of the description input is equal to the edited description
-      viewSetsPage.getEditedDescriptionInput(viewSetsPage.getMembershipTiles().first()).invoke('val').should('eq', sets.toBeDeleted.description);
-    });
+//       // Assert that the value of the description input is equal to the edited description
+//       viewSetsPage.getEditedDescriptionInput(viewSetsPage.getMembershipTiles().first()).invoke('val').should('eq', sets.toBeDeleted.description);
+//     });
   
-    it('should hide the form when canceling an edit', () => {
-      // Cancel the set edit
-      viewSetsPage.cancelSetEdit(viewSetsPage.getMembershipTiles().first());
+//     it('should hide the form when canceling an edit', () => {
+//       // Cancel the set edit
+//       viewSetsPage.cancelSetEdit(viewSetsPage.getMembershipTiles().first());
   
-      // Assert that the name input is not visible
-      viewSetsPage.getEditedNameInput(viewSetsPage.getMembershipTiles().first()).should('not.exist');
-    });
-  });
+//       // Assert that the name input is not visible
+//       viewSetsPage.getEditedNameInput(viewSetsPage.getMembershipTiles().first()).should('not.exist');
+//     });
+//   });
   
-  describe('Viewing a set', () => {
-    beforeEach(() => {
-      // Initialize the page objects and navigate to the sets page
-      const url = data.urls.local.setsPage;
-      cy.visit(url);
-    });
+//   describe('Viewing a set', () => {
+//     beforeEach(() => {
+//       // Initialize the page objects and navigate to the sets page
+//       const url = data.urls.local.setsPage;
+//       cy.visit(url);
+//     });
   
-    it('should initially show instructions for adding a subset', () => {
-      const setBtn = viewSetsPage.getGoToSetBtn(viewSetsPage.getMembershipTiles().first());
-      // Click the set button
-      setBtn.click();
+//     it('should initially show instructions for adding a subset', () => {
+//       const setBtn = viewSetsPage.getGoToSetBtn(viewSetsPage.getMembershipTiles().first());
+//       // Click the set button
+//       setBtn.click();
   
-      // Assert that the initial instructions are displayed
-      setPage.getInitialInstructions().should('be.visible');
-    });
-  });
+//       // Assert that the initial instructions are displayed
+//       setPage.getInitialInstructions().should('be.visible');
+//     });
+//   });

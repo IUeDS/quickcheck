@@ -71,6 +71,17 @@ Route::group(['prefix' => 'api'], function() {
 
     //Third party cookie check
     Route::get('checkcookies', 'UserController@checkCookies');
+
+    //Acceptance test routes available only in local/reg environments;
+    //Used to reset DB in between acceptance tests
+    if (env('APP_ENV') === 'local' || env('APP_ENV') === 'reg') {
+        Route::group(['prefix' => 'test'], function() {
+            Route::post('refresh', 'TestController@refresh');
+            Route::post('newSet', 'TestController@newSet');
+            Route::post('newAssessment', 'TestController@newAssessment');
+            Route::post('testAssessments', 'TestController@testAssessments');
+        });
+    }
 });
 
 /********************************************************************/

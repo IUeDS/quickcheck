@@ -186,11 +186,18 @@ module.exports = {
     },
 
     urls: {
+        localRoot: 'localhost:8000',
         local: {
             setsPage: "localhost:8000/collection"
         },
         canvas: {
 
+        },
+        testEndpoints: {
+            refresh: '/api/test/refresh',
+            newSet: '/api/test/newSet',
+            newAssessment: '/api/test/newAssessment',
+            testAssessments: '/api/test/testAssessments'
         }
     },
 
