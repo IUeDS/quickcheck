@@ -1,4 +1,3 @@
-import { nav } from '../../support/components/navComponent';
 import { viewSetsPage } from '../../support/pages/viewSetsPage';
 import { setPage } from '../../support/pages/setPage';
 import data from '../../support/data/data';
@@ -57,7 +56,7 @@ describe('Adding a set', () => {
       viewSetsPage.getAddSetNameField().should('not.exist');
       viewSetsPage.getInitialInstructions().should('not.exist');
     });
-  });
+});
   
 describe('Editing a set', () => {
     const sets = data.sets;
@@ -131,9 +130,9 @@ describe('Editing a set', () => {
       // Assert that the name input is not visible
       viewSetsPage.getEditedNameInput(viewSetsPage.getMembershipTiles().first()).should('not.exist');
     });
-  });
+});
   
-  describe('Viewing a set', () => {
+describe('Viewing a set', () => {
     before(() => {
         cy.newLocalSet();
     });
@@ -152,4 +151,4 @@ describe('Editing a set', () => {
       // Assert that the initial instructions are displayed
       setPage.getInitialInstructions().should('be.visible');
     });
-  });
+});
