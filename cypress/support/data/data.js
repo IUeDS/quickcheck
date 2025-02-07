@@ -15,6 +15,8 @@ module.exports = {
 
     //none at this time
     featureNamesAdmin: [],
+    instructorLocalUsername: 'testinstructor',
+    instructorInviteUsername: 'edstest1',
 
     qtiImports: {
         'quiz1': 'Assessment QTI Export Research',
@@ -188,6 +190,7 @@ module.exports = {
     urls: {
         localRoot: 'localhost:8000',
         local: {
+            setPage: "localhost:8000/collection/1",
             setsPage: "localhost:8000/collection"
         },
         canvas: {

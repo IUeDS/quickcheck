@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use App\Models\Assessment;
+use App\Models\AssessmentGroup;
 use App\Models\Collection;
 use App\Models\User;
 
@@ -51,6 +53,26 @@ class TestController extends Controller
 
     public function newAssessment(Request $request)
     {
+        $setName = $request->input('setName');
+        $subsetName = $request->input('subsetName');
+        $qcName = $request->input('qcName');
+        
+        $username = 'testinstructor';
+        $user = User::getUserFromUsername($username);
+
+        $collection = new Collection();
+        $collection->storeCollection($name, $user);
+
+        $assessmentGroup = AssessmentGroup::create([
+            'collection_id' => $collection->id,
+            'name' => $subsetName
+        ]);
+
+        $assessment = Assessment::create([
+            'assessment_group_id' => $assessmentGroup->id,
+            'name' => $qcName
+        ]);
+
         return response()->success();
     }
 

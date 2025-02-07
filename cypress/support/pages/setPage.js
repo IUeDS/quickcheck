@@ -120,7 +120,6 @@ export class SetPage {
 
     toggleUsersAccordion() {
         this.usersAccordion().click();
-        cy.wait(1000); //wait for animation to finish
     }
 };
 
