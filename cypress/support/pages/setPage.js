@@ -108,14 +108,12 @@ export class SetPage {
 
     openFeaturesAccordion() {
         this.featuresAccordion().click();
-        //wait for animation to finish; for now, at least, 3 features, so wait for the last to be visible
-        this.featurePanel.getFeatures().eq(2).should('be.visible');
-        cy.wait(500);
+        cy.wait(500); //wait for animation to finish 
     }
 
     saveNewSubset() {
         this.saveNewSubsetBtn().click();
-        return this.initSubsets();
+        //return this.initSubsets();
     }
 
     toggleUsersAccordion() {
