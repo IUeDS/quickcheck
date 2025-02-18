@@ -191,7 +191,8 @@ module.exports = {
         localRoot: 'localhost:8000',
         local: {
             setPage: "localhost:8000/collection/1",
-            setsPage: "localhost:8000/collection"
+            setsPage: "localhost:8000/collection",
+            qcEditPage: "localhost:8000/assessment/1/edit"
         },
         canvas: {
 

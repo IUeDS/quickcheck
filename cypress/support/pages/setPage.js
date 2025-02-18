@@ -1,3 +1,5 @@
+import { SubsetPanelComponent } from "../components/subsetPanelComponent";
+
 export class SetPage {
     // this.includes = require('../common/includes.js');
     // this.common = new this.includes.Common();
@@ -95,11 +97,14 @@ export class SetPage {
 
     initSubsets() {
         this.subsets = []; //remove previous
-        const subsets = this.getSubsets();
-        subsets.each((index, subset) => {
-            var thisSubset = this.getSubsets().eq(index);
-            this.subsets.push(new this.includes.SubsetPanelComponent(thisSubset));
+
+        //NOTE: can't seem to get this to work. Going to default to 
+        //using the subsetPanelComponent and having just one per page.
+        this.getSubsets().each((subset, index, $list) => {
+            //cy.log('this subset', subset);
+            this.subsets.push(new SubsetPanelComponent(subset));
         });
+        //cy.log('this subsets', this.subsets);
     }
 
     isReadOnly() {

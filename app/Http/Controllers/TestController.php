@@ -53,6 +53,8 @@ class TestController extends Controller
 
     public function newAssessment(Request $request)
     {
+        $this->refreshDatabase();
+
         $setName = $request->input('setName');
         $subsetName = $request->input('subsetName');
         $qcName = $request->input('qcName');
@@ -61,7 +63,7 @@ class TestController extends Controller
         $user = User::getUserFromUsername($username);
 
         $collection = new Collection();
-        $collection->storeCollection($name, $user);
+        $collection->storeCollection($setName, $user);
 
         $assessmentGroup = AssessmentGroup::create([
             'collection_id' => $collection->id,

@@ -4,9 +4,9 @@ Cypress.Commands.add('newLocalAssessment', () => {
     const url = data.urls.localRoot + data.urls.testEndpoints.newAssessment;
     const setName = data.sets.toBeDeleted.name;
     const subsetName = data.sets.toBeDeleted.subsets.group1;
-    const assessmentName = data.sets.toBeDeleted.quickchecks.test;
+    const qcName = data.sets.toBeDeleted.quickchecks.test;
 
-    cy.request('POST', url, { setName, subsetName, assessmentName }).then((response) => {
+    cy.request('POST', url, { setName, subsetName, qcName }).then((response) => {
       expect(response.status).to.eq(200);
     });
 });
