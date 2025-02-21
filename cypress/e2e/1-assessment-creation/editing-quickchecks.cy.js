@@ -1,20 +1,21 @@
 import { editQcPage } from '../../support/pages/editQcPage';
 import { EditFeedbackComponent } from '../../support/components/editFeedbackComponent';
 import data from '../../support/data/data';
+import { common } from '../../support/common';
 
-describe('Editing an assessment', function () {
-    const sets = data.sets;
+// describe('Editing an assessment', function () {
+    // const sets = data.sets;
 
-    before(() => {
-        cy.newLocalAssessment();
-    });
+    // before(() => {
+    //     cy.newLocalAssessment();
+    // });
 
-    beforeEach(() => {
-        const url = data.urls.local.qcEditPage;
-        cy.visit(url);
-        cy.get('.loader').should('not.be.visible');
-        editQcPage.addQuestion();
-    });
+    // beforeEach(() => {
+    //     const url = data.urls.local.qcEditPage;
+    //     cy.visit(url);
+    //     cy.get('.loader').should('not.be.visible');
+    //     editQcPage.addQuestion();
+    // });
 
     // it('should show the correct assessment name and assessment group', function () {
     //     editQcPage.getAssessmentName().should('eq', sets.toBeDeleted.quickchecks.test);
@@ -53,56 +54,60 @@ describe('Editing an assessment', function () {
     //     editQcPage.getQuestions().should('have.length', 1);
     //     editQcPage.getQuestions().eq(0).should('contain.text', 'question #1');
     // });
-});
+// });
 
-// describe('Using the rich content editor toggle', function() {
-//     var option,
-//         question,
-//         submittedText = 'Test content, will be deleted.',
-//         richText = '<p>' + submittedText + '</p>';
+describe('Using the rich content editor toggle in multiple choice questions', function() {
+    let option,
+        question,
+        submittedText = 'Test content, will be deleted.',
+        richText = '<p>' + submittedText + '</p>';
+    
+    before(() => {
+        cy.newLocalAssessment();
+    });
 
-//     describe('in a multiple choice question', function() {
-//         beforeEach(function() {
-//             question = editQcPage.getQuestion(0);
-//             option = question.getOptions().eq(0);
-//         });
+    beforeEach(() => {
+        const url = data.urls.local.qcEditPage;
+        cy.visit(url);
+        cy.get('.loader').should('not.be.visible');
+        editQcPage.addQuestion();
+        question = editQcPage.getQuestion(0);
+        option = question.getOptions().eq(0);
+    });
 
-//         it('should show a toggle', function() {
-//             question.getRichContentToggle().should('be.visible');
-//         });
+    it('should show a toggle', function() {
+        question.getRichContentToggle().should('be.visible');
+    });
 
-//         it('should show a rich content editor when toggle is enabled', function() {
-//             question.enterMcTextOption(option, submittedText);
-//             question.toggleRichContent();
-//             common.getTinyMceIframeFromElement(option, true).should('be.visible');
-//         });
+    it('should show a rich content editor and hide input element when toggle is enabled', function() {
+        question.enterMcTextOption(option, submittedText);
+        editQcPage.getQuestion(0).toggleRichContent();
+        option = editQcPage.getQuestion(0).getOptions().eq(0); //cypress references can only be used once, I've learned...set again.
+        common.getTinyMceIframeFromElement(option, true).should('be.visible');
+        question.getMcOptionInput(option).should('not.exist');
+    });
 
-//         it('should remove the basic input element when toggle is enabled', function() {
-//             question.getOptionInput(option).should('not.exist');
-//         });
+    // it('should retain existing information when toggle is enabled', function() {
+    //     common.enterTinyMceIframeInElement(option);
+    //     common.getTinyMceText(option).should('eq', submittedText);
+    //     common.leaveTinyMceIframe();
+    //     common.enterAngularPage();
+    // });
 
-//         it('should retain existing information when toggle is enabled', function() {
-//             common.enterTinyMceIframeInElement(option);
-//             common.getTinyMceText(option).should('eq', submittedText);
-//             common.leaveTinyMceIframe();
-//             common.enterAngularPage();
-//         });
+    // it('should remove the rich content editor when toggle is disabled', function() {
+    //     question.toggleRichContent();
+    //     common.getTinyMceIframeFromElement(option).should('not.exist');
+    // });
 
-//         it('should remove the rich content editor when toggle is disabled', function() {
-//             question.toggleRichContent();
-//             common.getTinyMceIframeFromElement(option).should('not.exist');
-//         });
+    // it('should show the basic input element when the toggle is disabled', function() {
+    //     question.getOptionInput(option).should('be.visible');
+    // });
 
-//         it('should show the basic input element when the toggle is disabled', function() {
-//             question.getOptionInput(option).should('be.visible');
-//         });
-
-//         it('should retain existing information when the toggle is disabled', function() {
-//             question.getMcOptionInputValue(option).should('eq', richText);
-//             editQcPage.addQuestion(data.questionTypes.mcorrect);
-//             editQcPage.initQuestions();
-//         });
-//     });
+    // it('should retain existing information when the toggle is disabled', function() {
+    //     question.getMcOptionInputValue(option).should('eq', richText);
+    //     editQcPage.addQuestion(data.questionTypes.mcorrect);
+    //     editQcPage.initQuestions();
+    // });
 
 //     describe('in a multiple correct question', function() {
 //         beforeEach(function() {
@@ -240,7 +245,7 @@ describe('Editing an assessment', function () {
 //             question.getRichContentToggle().should('not.exist');
 //         });
 //     });
-// });
+});
 
 // describe('Reordering questions', function() {
 //     it('should not show a reorder up arrow if it is the first question', function() {

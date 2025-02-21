@@ -17,9 +17,10 @@ export class EditQuestionComponent {
         this.feedback = new EditFeedbackComponent(question);
 
         //elements
+        this.addMcOptionBtn = () => this.question.findByText('Add option');
         this.deleteBtn = () => this.question.find('.qc-delete-question-btn');
         this.headerText = () => this.question.find('.qc-question-header-number');
-        this.options = () => this.question.findAll('.qc-edit-option');
+        this.options = () => this.question.find('.qc-edit-option');
         this.questionTypeDropdown = () => this.question.find('.qc-edit-question-type');
         this.randomizedCheckbox = () => this.question.find('.qc-randomize-checkbox');
         this.reorderDownBtn = () => this.question.find('.qc-reorder-down-btn');
@@ -28,44 +29,13 @@ export class EditQuestionComponent {
 
         //string references (for sub-elements)
         this.deleteOptionBtn = '.qc-delete-option-btn-inline';
-
-        //functions
-        this.composeQuestionType();
+        this.inputElement = 'input[type="text"]';
+        this.mcIsCorrectClass = '.qc-selected-correct';
+        this.mcMarkCorrectClass = '.qc-correct-symbol';
     }
 
-    composeQuestionType(newQuestionType) {
-        let questionType = this.questionType;
-        let questionTypeComponent;
-
-        if (!this.questionType && !newQuestionType) {
-            return;
-        }
-        if (newQuestionType) {
-            questionType = newQuestionType;
-        }
-
-        switch(questionType) {
-            case this.questionTypes.mc:
-            case this.questionTypes.mcorrect:
-                questionTypeComponent = new this.includes.QuestionTypeMcComponent(this.question);
-                break;
-            case this.questionTypes.matrix:
-                questionTypeComponent = new this.includes.QuestionTypeMatrixComponent(this.question);
-                break;
-            case this.questionTypes.matching:
-                questionTypeComponent = new this.includes.QuestionTypeMatchingComponent(this.question);
-                break;
-            case this.questionTypes.dropdowns:
-                questionTypeComponent = new this.includes.QuestionTypeDropdownsComponent(this.question);
-                break;
-            case this.questionTypes.numerical:
-                questionTypeComponent = new this.includes.QuestionTypeNumericalComponent(this.question);
-                break;
-            case this.questionTypes.textmatch:
-                questionTypeComponent = new this.includes.QuestionTypeTextmatchComponent(this.question);
-                break;
-        }
-        Object.assign(this, questionTypeComponent);
+    addMcOption() {
+        this.addMcOptionBtn().click();
     }
 
     deleteOption(option) {
@@ -74,6 +44,10 @@ export class EditQuestionComponent {
 
     deleteQuestion() {
         this.deleteBtn().click();
+    }
+
+    enterMcTextOption(option, text) {
+        option.find(this.inputElement).type(text);
     }
 
     getDeleteBtn() {
@@ -86,6 +60,18 @@ export class EditQuestionComponent {
 
     getHeaderText() {
         return this.headerText().invoke('text').then(text => text.toLowerCase());
+    }
+
+    getMcOptionInputValue(option) {
+        return option.find(this.inputElement).invoke('val');
+    }
+
+    getMcOptionInput(option) {
+        return option.find(this.inputElement);
+    }
+
+    getMcOptionToggleCorrect(option) {
+        return option.find(this.mcMarkCorrectClass);
     }
 
     getOptions() {
@@ -116,6 +102,10 @@ export class EditQuestionComponent {
         return this.richContentToggle();
     }
 
+    isMcOptionMarkedCorrect(option) {
+        return option.find(this.mcIsCorrectClass).should('exist');
+    }
+
     isRandomized() {
         return this.randomizedCheckbox().invoke('attr', 'checked');
     }
@@ -126,6 +116,10 @@ export class EditQuestionComponent {
 
     setQuestionType(questionType) {
         this.questionTypeDropdown().find(`option:contains(${questionType})`).click();
+    }
+
+    toggleMcOptionCorrect(option) {
+        option.find(this.mcMarkCorrectClass).click();
     }
 
     toggleRandomized() {
