@@ -1,3 +1,4 @@
+import { EditFeedbackComponent } from '../components/editFeedbackComponent';
 import { EditQuestionComponent } from '../components/editQuestionComponent';
 import { data } from '../data/data';
 
@@ -92,6 +93,10 @@ export class EditQcPage {
 
     getDescriptionInput() {
         return this.descriptionInput();
+    }
+
+    getFeedback(index) {
+        return new EditFeedbackComponent(index);
     }
 
     getNameInput() {

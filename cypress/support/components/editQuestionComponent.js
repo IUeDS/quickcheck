@@ -1,4 +1,5 @@
-import data from '../data/data';    
+import data from '../data/data';   
+import { EditFeedbackComponent } from './editFeedbackComponent';
 
 export class EditQuestionComponent {
     constructor(question, questionType) {
@@ -13,7 +14,7 @@ export class EditQuestionComponent {
         }
 
         //sub-components
-        //this.feedback = new this.includes.EditFeedbackComponent(question);
+        this.feedback = new EditFeedbackComponent(question);
 
         //elements
         this.deleteBtn = () => this.question.find('.qc-delete-question-btn');

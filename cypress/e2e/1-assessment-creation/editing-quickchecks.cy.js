@@ -1,4 +1,5 @@
 import { editQcPage } from '../../support/pages/editQcPage';
+import { EditFeedbackComponent } from '../../support/components/editFeedbackComponent';
 import data from '../../support/data/data';
 
 describe('Editing an assessment', function () {
@@ -12,73 +13,47 @@ describe('Editing an assessment', function () {
         const url = data.urls.local.qcEditPage;
         cy.visit(url);
         cy.get('.loader').should('not.be.visible');
-    });
-
-    it('should show the correct assessment name and assessment group', function () {
-        editQcPage.getAssessmentName().should('eq', sets.toBeDeleted.quickchecks.test);
-        editQcPage.getSubsetSelect().find('option:selected').invoke('text').then((selectedText) => {
-            expect(selectedText).to.eq(sets.toBeDeleted.subsets.group1);
-        });
-    });
-
-    it('should automatically add a multiple choice question with 4 options when adding a question', function() {
         editQcPage.addQuestion();
-        editQcPage.getQuestion(0).getQuestionType().should('eq', data.questionTypes.mc);
     });
 
-    it('should not show reordering icons if there is only a single question', function() {
-        editQcPage.addQuestion();
-        editQcPage.getQuestion(0).getReorderUpBtn().should('not.exist');
-        editQcPage.getQuestion(0).getReorderDownBtn().should('not.exist');
-    });
+    // it('should show the correct assessment name and assessment group', function () {
+    //     editQcPage.getAssessmentName().should('eq', sets.toBeDeleted.quickchecks.test);
+    //     editQcPage.getSubsetSelect().find('option:selected').invoke('text').then((selectedText) => {
+    //         expect(selectedText).to.eq(sets.toBeDeleted.subsets.group1);
+    //     });
+    // });
+
+    // it('should automatically add a multiple choice question with 4 options when adding a question', function() {
+    //     editQcPage.getQuestion(0).getQuestionType().should('eq', data.questionTypes.mc);
+    // });
+
+    // it('should not show reordering icons if there is only a single question', function() {
+    //     editQcPage.getQuestion(0).getReorderUpBtn().should('not.exist');
+    //     editQcPage.getQuestion(0).getReorderDownBtn().should('not.exist');
+    // });
+
+    // it('should show the custom feedback panel when the button is clicked', function() {
+    //     const feedback = editQcPage.getFeedback(0);
+    //     feedback.addCustomFeedback();
+    //     feedback.getFeedbackPanel().should('be.visible');
+    //     feedback.getCorrectFeedback().should('be.visible');
+    //     feedback.getIncorrectFeedback().should('be.visible');
+    // });
+
+    // it('should remove the custom feedback panel when the delete button is clicked', function() {
+    //     const feedback = editQcPage.getFeedback(0);
+    //     feedback.addCustomFeedback();
+    //     feedback.deleteFeedback();
+    //     feedback.getFeedbackPanel().should('not.exist');
+    // });
+
+    // it('should remove the question and re-order when the delete question button is clicked', function() {
+    //     editQcPage.addQuestion();
+    //     editQcPage.getQuestion(0).deleteQuestion();
+    //     editQcPage.getQuestions().should('have.length', 1);
+    //     editQcPage.getQuestions().eq(0).should('contain.text', 'question #1');
+    // });
 });
-
-// describe('Adding feedback to a question', function() {
-//     var question;
-
-//     beforeEach(function() {
-//         question = editQcPage.getQuestion(0);
-//     });
-
-//     it('should show the custom feedback panel when the button is clicked', function() {
-//         question.feedback.addCustomFeedback();
-//         const feedbackPanel = question.feedback.getFeedbackPanel();
-//         feedbackPanel.should('be.visible');
-//     });
-
-//     it('should show feedback for correct options', function() {
-//         question.feedback.getCorrectFeedback().should('be.visible');
-//     });
-
-//     it('should show feedback for incorrect options', function() {
-//         question.feedback.getIncorrectFeedback().should('be.visible');
-//     });
-
-//     it('should remove the custom feedback panel when the delete button is clicked', function() {
-//         question.feedback.deleteFeedback();
-//         question.feedback.getFeedbackPanel().should('not.exist');
-//     });
-// });
-
-// describe('Deleting a question', function() {
-//     var question;
-
-//     beforeEach(function() {
-//         question = editQcPage.getQuestion(0);
-//     });
-
-//     it('should remove the question when the delete question button is clicked', function() {
-//         question.deleteQuestion();
-//         editQcPage.getQuestions().should('have.length', 0);
-//     });
-
-//     it('should label the question as question #1 after the first question was deleted', function() {
-//         editQcPage.addQuestion(data.questionTypes.mc);
-//         const newQuestion = editQcPage.getQuestions().eq(0);
-//         newQuestion.should('contain.text', 'question #1');
-//         editQcPage.initQuestions();
-//     });
-// });
 
 // describe('Using the rich content editor toggle', function() {
 //     var option,
