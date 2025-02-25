@@ -20,7 +20,8 @@ export class EditQuestionComponent {
         this.addMcOptionBtn = () => this.question.findByText('Add option');
         this.deleteBtn = () => this.question.find('.qc-delete-question-btn');
         this.headerText = () => this.question.find('.qc-question-header-number');
-        this.options = () => this.question.find('.qc-edit-option');
+        this.mcOptions = () => this.question.find('.qc-edit-option');
+        this.mCorrectOptions = () => this.question.find('.qc-edit-option');
         this.questionTypeDropdown = () => this.question.find('.qc-edit-question-type');
         this.randomizedCheckbox = () => this.question.find('.qc-randomize-checkbox');
         this.reorderDownBtn = () => this.question.find('.qc-reorder-down-btn');
@@ -70,12 +71,24 @@ export class EditQuestionComponent {
         return option.find(this.inputElement);
     }
 
+    getMCorrectOptionInput(option) {
+        return option.find(this.inputElement);
+    }
+
+    getMCorrectOptionInputValue(option) {
+        return option.find(this.inputElement).invoke('val');
+    }
+
     getMcOptionToggleCorrect(option) {
         return option.find(this.mcMarkCorrectClass);
     }
 
-    getOptions() {
-        return this.options();
+    getMcOptions() {
+        return this.mcOptions();
+    }
+
+    getMCorrectOptions() {
+        return this.mCorrectOptions();
     }
 
     getQuestionTypeDropdown() {
@@ -115,7 +128,8 @@ export class EditQuestionComponent {
     }
 
     setQuestionType(questionType) {
-        this.questionTypeDropdown().find(`option:contains(${questionType})`).click();
+        //this.questionTypeDropdown().select(`option:contains(${questionType})`);
+        this.questionTypeDropdown().select(questionType);
     }
 
     toggleMcOptionCorrect(option) {

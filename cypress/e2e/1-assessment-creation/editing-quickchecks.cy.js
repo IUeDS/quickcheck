@@ -56,7 +56,7 @@ import { common } from '../../support/common';
     // });
 // });
 
-describe('Using the rich content editor toggle in multiple choice questions', function() {
+describe('Using the rich content editor toggle', function() {
     let option,
         question,
         submittedText = 'Test content, will be deleted.',
@@ -66,79 +66,75 @@ describe('Using the rich content editor toggle in multiple choice questions', fu
         cy.newLocalAssessment();
     });
 
-    beforeEach(() => {
-        const url = data.urls.local.qcEditPage;
-        cy.visit(url);
-        cy.get('.loader').should('not.be.visible');
-        editQcPage.addQuestion();
-        question = editQcPage.getQuestion(0);
-        option = question.getOptions().eq(0);
-    });
+    // describe('in multiple choice questions', function() {  
+    //     beforeEach(() => {
+    //         const url = data.urls.local.qcEditPage;
+    //         cy.visit(url);
+    //         cy.get('.loader').should('not.be.visible');
+    //         editQcPage.addQuestion();
+    //         question = editQcPage.getQuestion(0);
+    //         option = question.getMcOptions().eq(0);
+    //     });
 
-    // it('should show a toggle', function() {
-    //     question.getRichContentToggle().should('be.visible');
+    //     it('should show a toggle', function() {
+    //         question.getRichContentToggle().should('be.visible');
+    //     });
+
+    //     it('should show a rich content editor and hide input element when toggle is enabled', function() {
+    //         question.enterMcTextOption(option, submittedText);
+    //         editQcPage.getQuestion(0).toggleRichContent();
+    //         option = editQcPage.getQuestion(0).getMcOptions().eq(0); //cypress references can only be used once, I've learned...set again.
+    //         common.getTinyMceIframeFromElement(option, true).should('be.visible');
+    //         question.getMcOptionInput(option).should('not.exist');
+    //         option = editQcPage.getQuestion(0).getMcOptions().eq(0);
+    //         common.getTinyMceText(option).should('eq', submittedText);
+    //     });
+
+    //     it('should remove the rich content editor when toggle is disabled and retain information', function() {
+    //         question.enterMcTextOption(option, submittedText);
+    //         editQcPage.getQuestion(0).toggleRichContent();
+    //         editQcPage.getQuestion(0).toggleRichContent();
+    //         option = editQcPage.getQuestion(0).getMcOptions().eq(0);
+    //         editQcPage.getQuestion(0).getMcOptionInput(option).should('be.visible');
+    //         option = editQcPage.getQuestion(0).getMcOptions().eq(0);
+    //         editQcPage.getQuestion(0).getMcOptionInputValue(option).should('eq', richText);
+    //     });
     // });
 
-    // it('should show a rich content editor and hide input element when toggle is enabled', function() {
-    //     question.enterMcTextOption(option, submittedText);
-    //     editQcPage.getQuestion(0).toggleRichContent();
-    //     option = editQcPage.getQuestion(0).getOptions().eq(0); //cypress references can only be used once, I've learned...set again.
-    //     common.getTinyMceIframeFromElement(option, true).should('be.visible');
-    //     question.getMcOptionInput(option).should('not.exist');
-    //     option = editQcPage.getQuestion(0).getOptions().eq(0);
-    //     common.getTinyMceText(option).should('eq', submittedText);
-    // });
+    describe('in a multiple correct question', function() {
+        beforeEach(() => {
+            const url = data.urls.local.qcEditPage;
+            cy.visit(url);
+            cy.get('.loader').should('not.be.visible');
+            editQcPage.addQuestion();
+            editQcPage.getQuestion(0).setQuestionType(data.questionTypes.mcorrect);
+            option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
+            question = editQcPage.getQuestion(0);
+        });
 
-    it('should remove the rich content editor when toggle is disabled and retain information', function() {
-        question.enterMcTextOption(option, submittedText);
-        editQcPage.getQuestion(0).toggleRichContent();
-        editQcPage.getQuestion(0).toggleRichContent();
-        option = editQcPage.getQuestion(0).getOptions().eq(0);
-        editQcPage.getQuestion(0).getMcOptionInput(option).should('be.visible');
-        option = editQcPage.getQuestion(0).getOptions().eq(0);
-        editQcPage.getQuestion(0).getMcOptionInputValue(option).should('eq', richText);
+        it('should show a toggle', function() {
+            question.getRichContentToggle().should('be.visible');
+        });
+
+        it('should show a rich content editor when toggle is enabled', function() {
+            question.enterMcTextOption(option, submittedText);
+            question.toggleRichContent();
+            option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
+            common.getTinyMceText(option).should('eq', submittedText);
+            option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
+            question.getMCorrectOptionInput(option).should('not.exist');
+        });
+
+        it('should remove the rich content editor when toggle is disabled', function() {
+            question.enterMcTextOption(option, submittedText);
+            editQcPage.getQuestion(0).toggleRichContent();
+            editQcPage.getQuestion(0).toggleRichContent();
+            option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
+            editQcPage.getQuestion(0).getMCorrectOptionInput(option).should('be.visible');
+            option = editQcPage.getQuestion(0).getMcOptions().eq(0);
+            editQcPage.getQuestion(0).getMCorrectOptionInputValue(option).should('eq', richText);
+        });
     });
-
-//     describe('in a multiple correct question', function() {
-//         beforeEach(function() {
-//             question = editQcPage.getQuestion(1);
-//             option = question.getOptions().eq(0);
-//         });
-
-//         it('should show a toggle', function() {
-//             question.getRichContentToggle().should('be.visible');
-//         });
-
-//         it('should show a rich content editor when toggle is enabled', function() {
-//             question.enterMcTextOption(option, submittedText);
-//             question.toggleRichContent();
-//             common.getTinyMceIframeFromElement(option, true).should('be.visible');
-//         });
-
-//         it('should remove the basic input element when toggle is enabled', function() {
-//             question.getOptionInput(option).should('not.exist');
-//         });
-
-//         it('should retain existing information when toggle is enabled', function() {
-//             common.enterTinyMceIframeInElement(option);
-//             common.getTinyMceText(option).should('eq', submittedText);
-//             common.leaveTinyMceIframe();
-//             common.enterAngularPage();
-//         });
-
-//         it('should remove the rich content editor when toggle is disabled', function() {
-//             question.toggleRichContent();
-//             common.getTinyMceIframeFromElement(option).should('not.exist');
-//         });
-
-//         it('should show the basic input element when the toggle is disabled', function() {
-//             question.getOptionInput(option).should('be.visible');
-//         });
-
-//         it('should retain existing information when the toggle is disabled', function() {
-//             question.getMcOptionInputValue(option).should('eq', richText);
-//         });
-//     });
 
 //     describe('in the feedback panel', function() {
 //         var correctFeedbackContainer,
