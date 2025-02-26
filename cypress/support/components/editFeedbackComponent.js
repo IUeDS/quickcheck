@@ -1,15 +1,17 @@
 export class EditFeedbackComponent {
     constructor(questionIndex) {
 
+        this.questionIndex = questionIndex;
+
         //elements
-        this.correctFeedback = () => cy.get('.qc-question-panel').eq(questionIndex).find('.qc-custom-feedback-correct textarea');
-        this.correctFeedbackContainer = () => cy.get('.qc-question-panel').eq(questionIndex).find('.qc-custom-feedback-correct');
-        this.customFeedbackBtn = () => cy.get('.qc-question-panel').eq(questionIndex).find('.qc-btn-add-feedback');
-        this.customFeedbackPanel = () => cy.get('.qc-question-panel').eq(questionIndex).find('.qc-custom-feedback-container');
-        this.deleteFeedbackBtn = () => cy.get('.qc-question-panel').eq(questionIndex).find('.qc-delete-feedback-btn');
-        this.incorrectFeedback = () => cy.get('.qc-question-panel').eq(questionIndex).find('.qc-custom-feedback-incorrect textarea');
-        this.questionLevelFeedbackContainer = () => cy.get('.qc-question-panel').eq(questionIndex).find('.qc-custom-feedback-general');
-        this.perResponseFeedbackCheckbox = () => cy.get('.qc-question-panel').eq(questionIndex).find('.qc-custom-feedback-response-checkbox input');
+        this.correctFeedback = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-custom-feedback-correct textarea');
+        this.correctFeedbackContainer = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-custom-feedback-correct');
+        this.customFeedbackBtn = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-btn-add-feedback');
+        this.customFeedbackPanel = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-custom-feedback-container');
+        this.deleteFeedbackBtn = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-delete-feedback-btn');
+        this.incorrectFeedback = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-custom-feedback-incorrect textarea');
+        this.questionLevelFeedbackContainer = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-custom-feedback-general');
+        this.perResponseFeedbackCheckbox = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-custom-feedback-response-checkbox input');
         this.perResponseFeedbackOptions = () => this.customFeedbackPanel().findAll('.qc-edit-response-feedback-option');
         this.richContentToggle = () => this.customFeedbackPanel().find('.qc-rich-content-toggle label');
 

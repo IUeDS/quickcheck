@@ -104,7 +104,7 @@ export class EditQcPage {
     }
 
     getQuestion(index) {
-        return new EditQuestionComponent(this.getQuestions().eq(index));
+        return new EditQuestionComponent(this.getQuestions().eq(index), index);
     }
 
     getQuestions() {

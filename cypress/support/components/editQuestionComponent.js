@@ -2,9 +2,9 @@ import data from '../data/data';
 import { EditFeedbackComponent } from './editFeedbackComponent';
 
 export class EditQuestionComponent {
-    constructor(question, questionType) {
+    constructor(question, questionIndex = 0) {
         this.questionTypes = data.questionTypes;
-        this.questionType = questionType;
+        this.questionIndex = questionIndex;
 
         //default to first question; can be set manually as well
         if (question) {
@@ -14,7 +14,7 @@ export class EditQuestionComponent {
         }
 
         //sub-components
-        this.feedback = new EditFeedbackComponent(question);
+        this.feedback = new EditFeedbackComponent(this.questionIndex);
 
         //elements
         this.addMcOptionBtn = () => this.question.findByText('Add option');
@@ -128,7 +128,6 @@ export class EditQuestionComponent {
     }
 
     setQuestionType(questionType) {
-        //this.questionTypeDropdown().select(`option:contains(${questionType})`);
         this.questionTypeDropdown().select(questionType);
     }
 

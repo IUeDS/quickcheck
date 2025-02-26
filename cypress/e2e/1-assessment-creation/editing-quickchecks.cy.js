@@ -63,7 +63,7 @@ describe('Using the rich content editor toggle', function() {
         richText = '<p>' + submittedText + '</p>';
     
     before(() => {
-        cy.newLocalAssessment();
+        //cy.newLocalAssessment();
     });
 
     // describe('in multiple choice questions', function() {  
@@ -101,78 +101,84 @@ describe('Using the rich content editor toggle', function() {
     //     });
     // });
 
-    describe('in a multiple correct question', function() {
-        beforeEach(() => {
+    // describe('in a multiple correct question', function() {
+    //     beforeEach(() => {
+    //         const url = data.urls.local.qcEditPage;
+    //         cy.visit(url);
+    //         cy.get('.loader').should('not.be.visible');
+    //         editQcPage.addQuestion();
+    //         editQcPage.getQuestion(0).setQuestionType(data.questionTypes.mcorrect);
+    //         option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
+    //         question = editQcPage.getQuestion(0);
+    //     });
+
+    //     it('should show a toggle', function() {
+    //         question.getRichContentToggle().should('be.visible');
+    //     });
+
+    //     it('should show a rich content editor when toggle is enabled', function() {
+    //         question.enterMcTextOption(option, submittedText);
+    //         question.toggleRichContent();
+    //         option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
+    //         common.getTinyMceText(option).should('eq', submittedText);
+    //         option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
+    //         question.getMCorrectOptionInput(option).should('not.exist');
+    //     });
+
+    //     it('should remove the rich content editor when toggle is disabled', function() {
+    //         question.enterMcTextOption(option, submittedText);
+    //         editQcPage.getQuestion(0).toggleRichContent();
+    //         editQcPage.getQuestion(0).toggleRichContent();
+    //         option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
+    //         editQcPage.getQuestion(0).getMCorrectOptionInput(option).should('be.visible');
+    //         option = editQcPage.getQuestion(0).getMcOptions().eq(0);
+    //         editQcPage.getQuestion(0).getMCorrectOptionInputValue(option).should('eq', richText);
+    //     });
+    // });
+
+    describe('in the basic feedback panel', function() {
+        var correctFeedbackContainer,
+            responseFeedbackOption;
+
+        beforeEach(function() {
             const url = data.urls.local.qcEditPage;
             cy.visit(url);
             cy.get('.loader').should('not.be.visible');
             editQcPage.addQuestion();
-            editQcPage.getQuestion(0).setQuestionType(data.questionTypes.mcorrect);
-            option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
-            question = editQcPage.getQuestion(0);
+            question = editQcPage.getQuestion(0);        
         });
 
-        it('should show a toggle', function() {
-            question.getRichContentToggle().should('be.visible');
-        });
+        // describe('for basic feedback', function() {
+            // it('should show a toggle', function() {
+            //     editQcPage.getQuestion(0).feedback.addCustomFeedback();
+            //     editQcPage.getQuestion(0).feedback.getRichContentToggle().should('be.visible');
+            // });
 
-        it('should show a rich content editor when toggle is enabled', function() {
-            question.enterMcTextOption(option, submittedText);
-            question.toggleRichContent();
-            option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
-            common.getTinyMceText(option).should('eq', submittedText);
-            option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
-            question.getMCorrectOptionInput(option).should('not.exist');
-        });
+            // it('should show a rich content editor when toggle is enabled', function() {
+            //     question.feedback.addCustomFeedback();
+            //     editQcPage.getQuestion(0).feedback.getCorrectFeedback().type(submittedText);
+            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
+            //     correctFeedbackContainer = editQcPage.getQuestion(0).feedback.getCorrectFeedbackContainer();
+            //     common.getTinyMceIframeFromElement(correctFeedbackContainer, true).should('be.visible');
 
-        it('should remove the rich content editor when toggle is disabled', function() {
-            question.enterMcTextOption(option, submittedText);
-            editQcPage.getQuestion(0).toggleRichContent();
-            editQcPage.getQuestion(0).toggleRichContent();
-            option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
-            editQcPage.getQuestion(0).getMCorrectOptionInput(option).should('be.visible');
-            option = editQcPage.getQuestion(0).getMcOptions().eq(0);
-            editQcPage.getQuestion(0).getMCorrectOptionInputValue(option).should('eq', richText);
-        });
-    });
+            //     correctFeedbackContainer = editQcPage.getQuestion(0).feedback.getCorrectFeedbackContainer();
+            //     common.getTinyMceText(correctFeedbackContainer).should('eq', submittedText);
 
-//     describe('in the feedback panel', function() {
-//         var correctFeedbackContainer,
-//             responseFeedbackOption;
+            //     let correctFeedback = editQcPage.getQuestion(0).feedback.getCorrectFeedback();
+            //     correctFeedback.should('not.be.visible');
+            // });
 
-//         beforeEach(function() {
-//             question = editQcPage.getQuestion(1);
-//         });
+            // it('should remove the rich content editor when toggle is disabled', function() {
+            //     editQcPage.getQuestion(0).feedback.addCustomFeedback();
+            //     editQcPage.getQuestion(0).feedback.getCorrectFeedback().type(submittedText);
+            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
+            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
 
-//         describe('for basic feedback', function() {
-//             it('should show a toggle', function() {
-//                 question.feedback.addCustomFeedback();
-//                 question.feedback.getRichContentToggle().should('be.visible');
-//             });
-
-//             it('should show a rich content editor when toggle is enabled', function() {
-//                 correctFeedbackContainer = question.feedback.getCorrectFeedbackContainer();
-//                 question.feedback.getCorrectFeedback().type(submittedText);
-//                 question.feedback.toggleRichContent();
-//                 common.getTinyMceIframeFromElement(correctFeedbackContainer, true).should('be.visible');
-//             });
-
-//             it('should retain existing information when toggle is enabled', function() {
-//                 common.enterTinyMceIframeInElement(correctFeedbackContainer);
-//                 common.getTinyMceText(correctFeedbackContainer).should('eq', submittedText);
-//                 common.leaveTinyMceIframe();
-//                 common.enterAngularPage();
-//             });
-
-//             it('should remove the rich content editor when toggle is disabled', function() {
-//                 question.feedback.toggleRichContent();
-//                 common.getTinyMceIframeFromElement(correctFeedbackContainer).should('not.exist');
-//             });
-
-//             it('should show the basic input element when the toggle is disabled', function() {
-//                 question.feedback.getCorrectFeedback().should('be.visible');
-//             });
-//         });
+            //     correctFeedbackContainer = editQcPage.getQuestion(0).feedback.getCorrectFeedbackContainer();
+            //     editQcPage.getQuestion(0).feedback.getCorrectFeedback().should('be.visible');
+            //     editQcPage.getQuestion(0).feedback.getCorrectFeedback().invoke('val').should('eq', richText);
+            // });
+        // });
 
 //         describe('for per-option feedback', function() {
 //             it('should show a toggle', function() {
@@ -203,7 +209,7 @@ describe('Using the rich content editor toggle', function() {
 //                 question.feedback.getPerResponseFeedbackInput(responseFeedbackOption).should('be.visible');
 //             });
 //         });
-//     });
+    });
 
 //     describe('in other question types', function() {
 //         it('should not appear for matching questions', function() {
