@@ -136,26 +136,24 @@ describe('Using the rich content editor toggle', function() {
     //     });
     // });
 
-    describe('in the basic feedback panel', function() {
-        var correctFeedbackContainer,
-            responseFeedbackOption;
+    // describe('in the feedback panel', function() {
+    //     var correctFeedbackContainer,
+    //         responseFeedbackOption;
 
-        beforeEach(function() {
-            const url = data.urls.local.qcEditPage;
-            cy.visit(url);
-            cy.get('.loader').should('not.be.visible');
-            editQcPage.addQuestion();
-            question = editQcPage.getQuestion(0);        
-        });
+    //     beforeEach(function() {
+    //         const url = data.urls.local.qcEditPage;
+    //         cy.visit(url);
+    //         cy.get('.loader').should('not.be.visible');
+    //         editQcPage.addQuestion();
+    //         editQcPage.getQuestion(0).feedback.addCustomFeedback();        
+    //     });
 
         // describe('for basic feedback', function() {
             // it('should show a toggle', function() {
-            //     editQcPage.getQuestion(0).feedback.addCustomFeedback();
             //     editQcPage.getQuestion(0).feedback.getRichContentToggle().should('be.visible');
             // });
 
             // it('should show a rich content editor when toggle is enabled', function() {
-            //     question.feedback.addCustomFeedback();
             //     editQcPage.getQuestion(0).feedback.getCorrectFeedback().type(submittedText);
             //     editQcPage.getQuestion(0).feedback.toggleRichContent();
             //     correctFeedbackContainer = editQcPage.getQuestion(0).feedback.getCorrectFeedbackContainer();
@@ -169,7 +167,6 @@ describe('Using the rich content editor toggle', function() {
             // });
 
             // it('should remove the rich content editor when toggle is disabled', function() {
-            //     editQcPage.getQuestion(0).feedback.addCustomFeedback();
             //     editQcPage.getQuestion(0).feedback.getCorrectFeedback().type(submittedText);
             //     editQcPage.getQuestion(0).feedback.toggleRichContent();
             //     editQcPage.getQuestion(0).feedback.toggleRichContent();
@@ -180,36 +177,40 @@ describe('Using the rich content editor toggle', function() {
             // });
         // });
 
-//         describe('for per-option feedback', function() {
-//             it('should show a toggle', function() {
-//                 question.feedback.togglePerResponseFeedback();
-//                 question.feedback.getRichContentToggle().should('be.visible');
-//             });
+        // describe('for per-option feedback', function() {
+            // it('should show a toggle', function() {
+            //     editQcPage.getQuestion(0).feedback.togglePerResponseFeedback();
+            //     editQcPage.getQuestion(0).feedback.getRichContentToggle().should('be.visible');
+            // });
 
-//             it('should show a rich content editor when toggle is enabled', function() {
-//                 responseFeedbackOption = question.feedback.getPerResponseFeedbackOptions().eq(0);
-//                 question.feedback.enterResponseFeedback(responseFeedbackOption, submittedText);
-//                 question.feedback.toggleRichContent();
-//                 common.getTinyMceIframeFromElement(responseFeedbackOption, true).should('be.visible');
-//             });
+            // it('should show a rich content editor when toggle is enabled and retain content', function() {
+            //     editQcPage.getQuestion(0).feedback.togglePerResponseFeedback();
+            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
+            //     editQcPage.getQuestion(0).feedback.enterResponseFeedback(responseFeedbackOption, submittedText);
+            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
 
-//             it('should retain existing information when toggle is enabled', function() {
-//                 common.enterTinyMceIframeInElement(responseFeedbackOption);
-//                 common.getTinyMceText(responseFeedbackOption).should('eq', submittedText);
-//                 common.leaveTinyMceIframe();
-//                 common.enterAngularPage();
-//             });
+            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
+            //     common.getTinyMceIframeFromElement(responseFeedbackOption, true).should('be.visible');
 
-//             it('should remove the rich content editor when toggle is disabled', function() {
-//                 question.feedback.toggleRichContent();
-//                 common.getTinyMceIframeFromElement(responseFeedbackOption).should('not.exist');
-//             });
+            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
+            //     common.getTinyMceText(responseFeedbackOption).should('eq', submittedText);
+            // });
 
-//             it('should show the basic input element when the toggle is disabled', function() {
-//                 question.feedback.getPerResponseFeedbackInput(responseFeedbackOption).should('be.visible');
-//             });
-//         });
-    });
+            // it('should remove the rich content editor when toggle is disabled', function() {
+            //     editQcPage.getQuestion(0).feedback.togglePerResponseFeedback();
+            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
+            //     editQcPage.getQuestion(0).feedback.enterResponseFeedback(responseFeedbackOption, submittedText);
+            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
+            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
+
+            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
+            //     editQcPage.getQuestion(0).feedback.getPerResponseFeedbackInput(responseFeedbackOption).should('be.visible');
+
+            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
+            //     editQcPage.getQuestion(0).feedback.getPerResponseFeedbackInput(responseFeedbackOption).invoke('val').should('eq', richText);
+            // });
+    //     });
+    // });
 
 //     describe('in other question types', function() {
 //         it('should not appear for matching questions', function() {

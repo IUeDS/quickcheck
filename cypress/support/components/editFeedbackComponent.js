@@ -12,7 +12,7 @@ export class EditFeedbackComponent {
         this.incorrectFeedback = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-custom-feedback-incorrect textarea');
         this.questionLevelFeedbackContainer = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-custom-feedback-general');
         this.perResponseFeedbackCheckbox = () => cy.get('.qc-question-panel').eq(this.questionIndex).find('.qc-custom-feedback-response-checkbox input');
-        this.perResponseFeedbackOptions = () => this.customFeedbackPanel().findAll('.qc-edit-response-feedback-option');
+        this.perResponseFeedbackOptions = () => this.customFeedbackPanel().find('.qc-edit-response-feedback-option');
         this.richContentToggle = () => this.customFeedbackPanel().find('.qc-rich-content-toggle label');
 
         //strings for sub-elements
