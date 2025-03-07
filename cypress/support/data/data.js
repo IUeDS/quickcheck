@@ -1,3 +1,5 @@
+const { homePage } = require("../pages/homePage");
+
 module.exports = {
     customActivity: {
         'name': 'Test custom activity',
@@ -190,6 +192,7 @@ module.exports = {
     urls: {
         localRoot: 'localhost:8000',
         local: {
+            homePage: "localhost:8000",
             setPage: "localhost:8000/collection/1",
             setsPage: "localhost:8000/collection",
             qcEditPage: "localhost:8000/assessment/1/edit"
