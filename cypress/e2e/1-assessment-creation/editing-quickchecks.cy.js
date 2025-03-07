@@ -1,300 +1,61 @@
 import { editQcPage } from '../../support/pages/editQcPage';
-import { EditFeedbackComponent } from '../../support/components/editFeedbackComponent';
 import data from '../../support/data/data';
 import { common } from '../../support/common';
 
-// describe('Editing an assessment', function () {
-    // const sets = data.sets;
+describe('Editing an assessment', function () {
+    const sets = data.sets;
 
-    // before(() => {
-    //     cy.newLocalAssessment();
-    // });
-
-    // beforeEach(() => {
-    //     const url = data.urls.local.qcEditPage;
-    //     cy.visit(url);
-    //     cy.get('.loader').should('not.be.visible');
-    //     editQcPage.addQuestion();
-    // });
-
-    // it('should show the correct assessment name and assessment group', function () {
-    //     editQcPage.getAssessmentName().should('eq', sets.toBeDeleted.quickchecks.test);
-    //     editQcPage.getSubsetSelect().find('option:selected').invoke('text').then((selectedText) => {
-    //         expect(selectedText).to.eq(sets.toBeDeleted.subsets.group1);
-    //     });
-    // });
-
-    // it('should automatically add a multiple choice question with 4 options when adding a question', function() {
-    //     editQcPage.getQuestion(0).getQuestionType().should('eq', data.questionTypes.mc);
-    // });
-
-    // it('should not show reordering icons if there is only a single question', function() {
-    //     editQcPage.getQuestion(0).getReorderUpBtn().should('not.exist');
-    //     editQcPage.getQuestion(0).getReorderDownBtn().should('not.exist');
-    // });
-
-    // it('should show the custom feedback panel when the button is clicked', function() {
-    //     const feedback = editQcPage.getFeedback(0);
-    //     feedback.addCustomFeedback();
-    //     feedback.getFeedbackPanel().should('be.visible');
-    //     feedback.getCorrectFeedback().should('be.visible');
-    //     feedback.getIncorrectFeedback().should('be.visible');
-    // });
-
-    // it('should remove the custom feedback panel when the delete button is clicked', function() {
-    //     const feedback = editQcPage.getFeedback(0);
-    //     feedback.addCustomFeedback();
-    //     feedback.deleteFeedback();
-    //     feedback.getFeedbackPanel().should('not.exist');
-    // });
-
-    // it('should remove the question and re-order when the delete question button is clicked', function() {
-    //     editQcPage.addQuestion();
-    //     editQcPage.getQuestion(0).deleteQuestion();
-    //     editQcPage.getQuestions().should('have.length', 1);
-    //     editQcPage.getQuestions().eq(0).should('contain.text', 'question #1');
-    // });
-// });
-
-describe('Using the rich content editor toggle', function() {
-    let option,
-        question,
-        submittedText = 'Test content, will be deleted.',
-        richText = '<p>' + submittedText + '</p>';
-    
     before(() => {
-        //cy.newLocalAssessment();
+        cy.newLocalAssessment();
     });
 
-    // describe('in multiple choice questions', function() {  
-    //     beforeEach(() => {
-    //         const url = data.urls.local.qcEditPage;
-    //         cy.visit(url);
-    //         cy.get('.loader').should('not.be.visible');
-    //         editQcPage.addQuestion();
-    //         question = editQcPage.getQuestion(0);
-    //         option = question.getMcOptions().eq(0);
-    //     });
+    beforeEach(() => {
+        const url = data.urls.local.qcEditPage;
+        cy.visit(url);
+        cy.get('.loader').should('not.be.visible');
+        editQcPage.addQuestion();
+    });
 
-    //     it('should show a toggle', function() {
-    //         question.getRichContentToggle().should('be.visible');
-    //     });
+    it('should show the correct assessment name and assessment group', function () {
+        editQcPage.getAssessmentName().should('eq', sets.toBeDeleted.quickchecks.test);
+        editQcPage.getSubsetSelect().find('option:selected').invoke('text').then((selectedText) => {
+            expect(selectedText).to.eq(sets.toBeDeleted.subsets.group1);
+        });
+    });
 
-    //     it('should show a rich content editor and hide input element when toggle is enabled', function() {
-    //         question.enterMcTextOption(option, submittedText);
-    //         editQcPage.getQuestion(0).toggleRichContent();
-    //         option = editQcPage.getQuestion(0).getMcOptions().eq(0); //cypress references can only be used once, I've learned...set again.
-    //         common.getTinyMceIframeFromElement(option, true).should('be.visible');
-    //         question.getMcOptionInput(option).should('not.exist');
-    //         option = editQcPage.getQuestion(0).getMcOptions().eq(0);
-    //         common.getTinyMceText(option).should('eq', submittedText);
-    //     });
+    it('should automatically add a multiple choice question with 4 options when adding a question', function() {
+        editQcPage.getQuestion(0).getQuestionType().should('eq', data.questionTypes.mc);
+    });
 
-    //     it('should remove the rich content editor when toggle is disabled and retain information', function() {
-    //         question.enterMcTextOption(option, submittedText);
-    //         editQcPage.getQuestion(0).toggleRichContent();
-    //         editQcPage.getQuestion(0).toggleRichContent();
-    //         option = editQcPage.getQuestion(0).getMcOptions().eq(0);
-    //         editQcPage.getQuestion(0).getMcOptionInput(option).should('be.visible');
-    //         option = editQcPage.getQuestion(0).getMcOptions().eq(0);
-    //         editQcPage.getQuestion(0).getMcOptionInputValue(option).should('eq', richText);
-    //     });
-    // });
+    it('should not show reordering icons if there is only a single question', function() {
+        editQcPage.getQuestion(0).getReorderUpBtn().should('not.exist');
+        editQcPage.getQuestion(0).getReorderDownBtn().should('not.exist');
+    });
 
-    // describe('in a multiple correct question', function() {
-    //     beforeEach(() => {
-    //         const url = data.urls.local.qcEditPage;
-    //         cy.visit(url);
-    //         cy.get('.loader').should('not.be.visible');
-    //         editQcPage.addQuestion();
-    //         editQcPage.getQuestion(0).setQuestionType(data.questionTypes.mcorrect);
-    //         option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
-    //         question = editQcPage.getQuestion(0);
-    //     });
+    it('should show the custom feedback panel when the button is clicked', function() {
+        const feedback = editQcPage.getFeedback(0);
+        feedback.addCustomFeedback();
+        feedback.getFeedbackPanel().should('be.visible');
+        feedback.getCorrectFeedback().should('be.visible');
+        feedback.getIncorrectFeedback().should('be.visible');
+    });
 
-    //     it('should show a toggle', function() {
-    //         question.getRichContentToggle().should('be.visible');
-    //     });
+    it('should remove the custom feedback panel when the delete button is clicked', function() {
+        const feedback = editQcPage.getFeedback(0);
+        feedback.addCustomFeedback();
+        feedback.deleteFeedback();
+        feedback.getFeedbackPanel().should('not.exist');
+    });
 
-    //     it('should show a rich content editor when toggle is enabled', function() {
-    //         question.enterMcTextOption(option, submittedText);
-    //         question.toggleRichContent();
-    //         option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
-    //         common.getTinyMceText(option).should('eq', submittedText);
-    //         option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
-    //         question.getMCorrectOptionInput(option).should('not.exist');
-    //     });
+    it('should remove the question and re-order when the delete question button is clicked', function() {
+        editQcPage.addQuestion();
+        editQcPage.getQuestion(0).deleteQuestion();
+        editQcPage.getQuestions().should('have.length', 1);
+        editQcPage.getQuestions().eq(0).should('contain.text', 'question #1');
+    });
 
-    //     it('should remove the rich content editor when toggle is disabled', function() {
-    //         question.enterMcTextOption(option, submittedText);
-    //         editQcPage.getQuestion(0).toggleRichContent();
-    //         editQcPage.getQuestion(0).toggleRichContent();
-    //         option = editQcPage.getQuestion(0).getMCorrectOptions().eq(0);
-    //         editQcPage.getQuestion(0).getMCorrectOptionInput(option).should('be.visible');
-    //         option = editQcPage.getQuestion(0).getMcOptions().eq(0);
-    //         editQcPage.getQuestion(0).getMCorrectOptionInputValue(option).should('eq', richText);
-    //     });
-    // });
-
-    // describe('in the feedback panel', function() {
-    //     var correctFeedbackContainer,
-    //         responseFeedbackOption;
-
-    //     beforeEach(function() {
-    //         const url = data.urls.local.qcEditPage;
-    //         cy.visit(url);
-    //         cy.get('.loader').should('not.be.visible');
-    //         editQcPage.addQuestion();
-    //         editQcPage.getQuestion(0).feedback.addCustomFeedback();        
-    //     });
-
-        // describe('for basic feedback', function() {
-            // it('should show a toggle', function() {
-            //     editQcPage.getQuestion(0).feedback.getRichContentToggle().should('be.visible');
-            // });
-
-            // it('should show a rich content editor when toggle is enabled', function() {
-            //     editQcPage.getQuestion(0).feedback.getCorrectFeedback().type(submittedText);
-            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
-            //     correctFeedbackContainer = editQcPage.getQuestion(0).feedback.getCorrectFeedbackContainer();
-            //     common.getTinyMceIframeFromElement(correctFeedbackContainer, true).should('be.visible');
-
-            //     correctFeedbackContainer = editQcPage.getQuestion(0).feedback.getCorrectFeedbackContainer();
-            //     common.getTinyMceText(correctFeedbackContainer).should('eq', submittedText);
-
-            //     let correctFeedback = editQcPage.getQuestion(0).feedback.getCorrectFeedback();
-            //     correctFeedback.should('not.be.visible');
-            // });
-
-            // it('should remove the rich content editor when toggle is disabled', function() {
-            //     editQcPage.getQuestion(0).feedback.getCorrectFeedback().type(submittedText);
-            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
-            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
-
-            //     correctFeedbackContainer = editQcPage.getQuestion(0).feedback.getCorrectFeedbackContainer();
-            //     editQcPage.getQuestion(0).feedback.getCorrectFeedback().should('be.visible');
-            //     editQcPage.getQuestion(0).feedback.getCorrectFeedback().invoke('val').should('eq', richText);
-            // });
-        // });
-
-        // describe('for per-option feedback', function() {
-            // it('should show a toggle', function() {
-            //     editQcPage.getQuestion(0).feedback.togglePerResponseFeedback();
-            //     editQcPage.getQuestion(0).feedback.getRichContentToggle().should('be.visible');
-            // });
-
-            // it('should show a rich content editor when toggle is enabled and retain content', function() {
-            //     editQcPage.getQuestion(0).feedback.togglePerResponseFeedback();
-            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
-            //     editQcPage.getQuestion(0).feedback.enterResponseFeedback(responseFeedbackOption, submittedText);
-            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
-
-            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
-            //     common.getTinyMceIframeFromElement(responseFeedbackOption, true).should('be.visible');
-
-            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
-            //     common.getTinyMceText(responseFeedbackOption).should('eq', submittedText);
-            // });
-
-            // it('should remove the rich content editor when toggle is disabled', function() {
-            //     editQcPage.getQuestion(0).feedback.togglePerResponseFeedback();
-            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
-            //     editQcPage.getQuestion(0).feedback.enterResponseFeedback(responseFeedbackOption, submittedText);
-            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
-            //     editQcPage.getQuestion(0).feedback.toggleRichContent();
-
-            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
-            //     editQcPage.getQuestion(0).feedback.getPerResponseFeedbackInput(responseFeedbackOption).should('be.visible');
-
-            //     responseFeedbackOption = editQcPage.getQuestion(0).feedback.getPerResponseFeedbackOptions().eq(0);
-            //     editQcPage.getQuestion(0).feedback.getPerResponseFeedbackInput(responseFeedbackOption).invoke('val').should('eq', richText);
-            // });
-    //     });
-    // });
-
-//     describe('in other question types', function() {
-//         it('should not appear for matching questions', function() {
-//             question.setQuestionType(data.questionTypes.matching);
-//             question.getRichContentToggle().should('not.exist');
-//         });
-
-//         it('should not appear for matrix questions', function() {
-//             question.setQuestionType(data.questionTypes.matrix);
-//             question.getRichContentToggle().should('not.exist');
-//         });
-
-//         it('should not appear for dropdown questions', function() {
-//             question.setQuestionType(data.questionTypes.dropdowns);
-//             question.getRichContentToggle().should('not.exist');
-//         });
-
-//         it('should not appear for textmatch questions', function() {
-//             question.setQuestionType(data.questionTypes.textmatch);
-//             question.getRichContentToggle().should('not.exist');
-//         });
-
-//         it('should not appear for numerical questions', function() {
-//             question.setQuestionType(data.questionTypes.numerical);
-//             question.getRichContentToggle().should('not.exist');
-//         });
-//     });
+    it('should display a confirm message when navigating away from a quick check without saving', function () {
+        editQcPage.goBack();
+        common.acceptAlert();
+    });
 });
-
-// describe('Reordering questions', function() {
-//     it('should not show a reorder up arrow if it is the first question', function() {
-//         const question = editQcPage.getQuestion(0);
-//         question.getReorderUpBtn().should('not.exist');
-//     });
-
-//     it('should not show a reorder down arrow if it is the last question', function() {
-//         const question = editQcPage.getQuestion(1);
-//         question.getReorderDownBtn().should('not.exist');
-//     });
-
-//     it('should move a question up if the reorder up arrow is clicked', function() {
-//         const question = editQcPage.getQuestion(1);
-//         question.getReorderUpBtn().click();
-//         editQcPage.initQuestions();
-//         const movedQuestion = editQcPage.getQuestion(0);
-//         movedQuestion.getQuestionType().should('eq', data.questionTypes.numerical);
-//     });
-
-//     it('should show the appropriate question number when the up arrow is clicked', function() {
-//         editQcPage.getQuestion(0).getHeaderText().should('eq', 'question #1');
-//     });
-
-//     it('should displace the previous question if the reorder up arrow is clicked', function() {
-//         editQcPage.getQuestion(1).getQuestionType().should('eq', data.questionTypes.mc);
-//     });
-
-//     it('should show the appropriate question number for the displaced question below', function() {
-//         editQcPage.getQuestion(1).getHeaderText().should('eq', 'question #2');
-//     });
-
-//     it('should move a question down if the reorder down arrow is clicked', function() {
-//         const question = editQcPage.getQuestion(0);
-//         question.getReorderDownBtn().click();
-//         editQcPage.initQuestions();
-//         const movedQuestion = editQcPage.getQuestion(1);
-//         movedQuestion.getQuestionType().should('eq', data.questionTypes.numerical);
-//     });
-
-//     it('should show the appropriate question number when the down arrow is clicked', function() {
-//         editQcPage.getQuestion(1).getHeaderText().should('eq', 'question #2');
-//     });
-
-//     it('should displace the previous question if the reorder down arrow is clicked', function() {
-//         editQcPage.getQuestion(0).getQuestionType().should('eq', data.questionTypes.mc);
-//     });
-
-//     it('should show the appropriate question number for the displaced question above', function() {
-//         editQcPage.getQuestion(0).getHeaderText().should('eq', 'question #1');
-//     });
-// });
-
-// describe('Navigating away from editing a quick check without saving', function() {
-//     it('should display a confirm message', function () {
-//         editQcPage.goBack();
-//         common.acceptAlert();
-//     });
-// });
