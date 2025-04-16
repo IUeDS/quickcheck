@@ -70,8 +70,7 @@ export class Common {
 
         const textarea = cy.get('.tox-dialog__body textarea');
         textarea.type('<p>' + text + '</p>');
-        const saveBtn = cy.contains('button', 'Save');
-        saveBtn.click();
+        cy.get('.tox-button:contains("Save")').click();
     }
 
     getSelectedText(select) {

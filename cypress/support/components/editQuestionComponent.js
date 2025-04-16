@@ -17,7 +17,7 @@ export class EditQuestionComponent {
         this.feedback = new EditFeedbackComponent(this.questionIndex);
 
         //elements
-        this.addMcOptionBtn = () => this.question.findByText('Add option');
+        this.addMcOptionBtn = () => this.question.contains('Add option');
         this.deleteBtn = () => this.question.find('.qc-delete-question-btn');
         this.headerText = () => this.question.find('.qc-question-header-number');
         this.mcOptions = () => this.question.find('.qc-edit-option');
@@ -31,8 +31,7 @@ export class EditQuestionComponent {
         //string references (for sub-elements)
         this.deleteOptionBtn = '.qc-delete-option-btn-inline';
         this.inputElement = 'input[type="text"]';
-        this.mcIsCorrectClass = '.qc-selected-correct';
-        this.mcMarkCorrectClass = '.qc-correct-symbol';
+        this.mcMarkCorrectClass = '.qc-mc-correct-wrapper input';
     }
 
     addMcOption() {
@@ -57,6 +56,10 @@ export class EditQuestionComponent {
 
     getDeleteOptionBtns() {
         return cy.get(this.deleteOptionBtn);
+    }
+
+    getFeedback() {
+        return this.feedback;
     }
 
     getHeaderText() {
@@ -116,11 +119,11 @@ export class EditQuestionComponent {
     }
 
     isMcOptionMarkedCorrect(option) {
-        return option.find(this.mcIsCorrectClass).should('exist');
+        return option.find(this.mcMarkCorrectClass).invoke('prop', 'checked');
     }
 
     isRandomized() {
-        return this.randomizedCheckbox().invoke('attr', 'checked');
+        return this.randomizedCheckbox().invoke('prop', 'checked');
     }
 
     setCurrentQuestion(question) {

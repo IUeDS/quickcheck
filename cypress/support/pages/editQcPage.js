@@ -162,24 +162,20 @@ export class EditQcPage {
 
     save() {
         this.saveBtn().click();
-        cy.wait('@saveRequest'); // Assuming you have an alias for the save request
         this.getSaveSuccess().should('exist').then(saveSuccess => {
             if (!saveSuccess) {
                 this.saveBtn().click();
-                cy.wait('@saveRequest');
             }
         });
     }
 
     saveWithError() {
         this.saveBtn().click();
-        cy.wait('@saveRequest'); // Assuming you have an alias for the save request
         this.waitForSaveFailure();
     }
 
     saveWithoutSuccess() {
         this.saveBtn().click();
-        cy.wait('@saveRequest'); // Assuming you have an alias for the save request
     }
 
     waitForSaveFailure() {
