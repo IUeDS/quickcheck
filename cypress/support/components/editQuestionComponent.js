@@ -28,6 +28,14 @@ export class EditQuestionComponent {
         this.reorderUpBtn = () => this.question.find('.qc-reorder-up-btn');
         this.richContentToggle = () => this.question.find('.qc-rich-content-toggle label');
 
+        //matrix elements
+        this.matrixAddColumnBtn = () => this.question.find('button').contains('Add column');
+        this.matrixAddRowBtn = () => this.question.find('button').contains('Add row');
+        this.matrixCheckboxes = () => this.question.find('table input[type="radio"]');
+        this.matrixColumns = () => this.question.find('.qc-edit-matrix-column');
+        this.matrixRows = () => this.question.find('.qc-edit-matrix-row');
+        this.matrixTextInputs = () => this.question.find('table input[type="text"]');
+
         //string references (for sub-elements)
         this.deleteOptionBtn = '.qc-delete-option-btn-inline';
         this.inputElement = 'input[type="text"]';
@@ -144,5 +152,30 @@ export class EditQuestionComponent {
 
     toggleRichContent() {
         this.richContentToggle().click();
+    }
+
+    //matrix functions 
+    addMatrixColumn() {
+        this.matrixAddColumnBtn().click();
+    }
+
+    addMatrixRow() {
+        this.matrixAddRowBtn().click();
+    }
+
+    getMatrixCheckboxes() {
+        return this.matrixCheckboxes();
+    }
+
+    getMatrixColumns() {
+        return this.matrixColumns();
+    }
+
+    getMatrixRows() {
+        return this.matrixRows();
+    }
+
+    getMatrixTextInputs() {
+        return this.matrixTextInputs();
     }
 }
