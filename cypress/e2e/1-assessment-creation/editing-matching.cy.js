@@ -46,7 +46,7 @@ describe('Adding a matching question', function() {
 
     it('should allow adding distractors', function() {
         editQcPage.getQuestion(0).addDistractor();
-        editQcPage.getQuestion(0).getDistractors().should('have.length', 1);
+        editQcPage.getQuestion(0).getMatchingDistractors().should('have.length', 1);
     });
 
     it('should throw a validation error if a distractor field isn\'t filled', function() {
@@ -58,8 +58,8 @@ describe('Adding a matching question', function() {
     it('should allow deleting distractors', function() {
         editQcPage.getQuestion(0).addDistractor();
         editQcPage.getQuestion(0).addDistractor();
-        editQcPage.getQuestion(0).deleteOption(editQcPage.getQuestion(0).getDistractors().eq(0));
-        editQcPage.getQuestion(0).getDistractors().should('have.length', 1);
+        editQcPage.getQuestion(0).deleteOption(editQcPage.getQuestion(0).getMatchingDistractors().eq(0));
+        editQcPage.getQuestion(0).getMatchingDistractors().should('have.length', 1);
     });
 
     it('should not show an option for per-response feedback', function() {

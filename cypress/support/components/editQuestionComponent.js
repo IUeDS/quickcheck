@@ -39,10 +39,29 @@ export class EditQuestionComponent {
         //matching elements
         this.addDistractorBtn = () => this.question.find('button').contains('Add distractor');
         this.addMatchingPairBtn = () => this.question.find('button').contains('Add matching pair');
-        this.distractors = () => this.question.find('.qc-edit-matching-distractor');
+        this.matchingDistractors = () => this.question.find('.qc-edit-matching-distractor');
         this.matchingPairInputs = () => this.question.find('table input[type="text"]');
         this.matchingPrompts = () => this.question.find('.qc-edit-matching-prompt');
         this.distractorInputElement = 'input[type="text"]';
+
+        //dropdowns
+        this.addDropdownPairBtn = () => this.question.find('button').contains('Add dropdown pair');
+        this.dropdownDistractors = () => this.question.find('.qc-edit-dropdown-distractor');
+        this.dropdownPrompts = () => this.question.find('.qc-edit-dropdown-prompt');
+        this.dropdownTextInputs = () => this.question.find('table input[type="text"]');
+
+        //textmatch
+        this.addTextmatchAnswerBtn = () => this.question.find('button').contains('Add possible answer');
+        this.textMatchOptions = () => this.question.find('.qc-edit-option');
+
+        //numerical
+        this.addNumericalAnswerBtn = () => this.question.find('button').contains('Add possible answer');
+        this.numericalOptions = () => this.question.find('.qc-edit-option');
+        this.answerTypeElement = '.qc-edit-numerical-answer-type';
+        this.exactAnswerElement = '.qc-edit-numerical-answer';
+        this.marginOfErrorElement = '.qc-edit-numerical-margin';
+        this.rangeMinElement = '.qc-edit-numerical-range-min';
+        this.rangeMaxElement = '.qc-edit-numerical-range-max';
 
         //string references (for sub-elements)
         this.deleteOptionBtn = '.qc-delete-option-btn-inline';
@@ -200,8 +219,8 @@ export class EditQuestionComponent {
         distractor.find(this.distractorInputElement).type(text);
     }
 
-    getDistractors() {
-        return this.distractors();
+    getMatchingDistractors() {
+        return this.matchingDistractors();
     }
 
     getDistractorInput(distractor) {
@@ -214,5 +233,83 @@ export class EditQuestionComponent {
 
     getMatchingPrompts() {
         return this.matchingPrompts();
+    }
+
+    //drodown functions
+    addDropdownPair() {
+        this.addDropdownPairBtn().click();
+    }
+
+    getDropdownDistractors() {
+        return this.dropdownDistractors();
+    }
+
+    getDropdownPrompts() {
+        return this.dropdownPrompts();
+    }
+
+    getDropdownTextInputs() {
+        return this.dropdownTextInputs();
+    }
+
+    //textmatch functions
+    addTextmatchAnswer() {
+        this.addTextmatchAnswerBtn().click();
+    }
+
+    enterTextMatchOption(option, text) {
+        option.find(this.inputElement).type(text);
+    }
+
+    getOptionInput(option) {
+        return option.find(this.inputElement);
+    }
+
+    getTextMatchOptions() {
+        return this.textMatchOptions();
+    }
+
+    //numerical functions
+
+    addNumericalAnswer() {
+        this.addNumericalAnswerBtn().click();
+    }
+
+    enterNumericalExactOption(option, answer, marginOfError) {
+        option.find(this.exactAnswerElement).type(answer);
+        option.find(this.marginOfErrorElement).type(marginOfError);
+    }
+
+    enterNumericalRangeOption(option, rangeMin, rangeMax) {
+        option.find(this.rangeMinElement).type(rangeMin);
+        option.find(this.rangeMaxElement).type(rangeMax);
+    }
+
+    getExactAnswerInput(option) {
+        return option.find(this.exactAnswerElement);
+    }
+
+    getMarginOfErrorInput(option) {
+        return option.find(this.marginOfErrorElement);
+    }
+
+    getNumericalOptions() {
+        return this.numericalOptions();
+    }
+
+    getRangeMinInput(option) {
+        return option.find(this.rangeMinElement);
+    }
+
+    getRangeMaxInput(option) {
+        return option.find(this.rangeMaxElement);
+    }
+
+    setOptionAsExactAnswer(option) {
+        option.find(this.answerTypeElement).select('Exact');
+    }
+
+    setOptionAsRange(option) {
+        option.find(this.answerTypeElement).select('Answer in the range');
     }
 }
