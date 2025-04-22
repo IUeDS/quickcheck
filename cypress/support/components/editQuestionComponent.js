@@ -36,6 +36,14 @@ export class EditQuestionComponent {
         this.matrixRows = () => this.question.find('.qc-edit-matrix-row');
         this.matrixTextInputs = () => this.question.find('table input[type="text"]');
 
+        //matching elements
+        this.addDistractorBtn = () => this.question.find('button').contains('Add distractor');
+        this.addMatchingPairBtn = () => this.question.find('button').contains('Add matching pair');
+        this.distractors = () => this.question.find('.qc-edit-matching-distractor');
+        this.matchingPairInputs = () => this.question.find('table input[type="text"]');
+        this.matchingPrompts = () => this.question.find('.qc-edit-matching-prompt');
+        this.distractorInputElement = 'input[type="text"]';
+
         //string references (for sub-elements)
         this.deleteOptionBtn = '.qc-delete-option-btn-inline';
         this.inputElement = 'input[type="text"]';
@@ -177,5 +185,34 @@ export class EditQuestionComponent {
 
     getMatrixTextInputs() {
         return this.matrixTextInputs();
+    }
+
+    //matching functions
+    addDistractor() {
+        this.addDistractorBtn().click();
+    }
+
+    addMatchingPair() {
+        this.addMatchingPairBtn().click();
+    }
+
+    enterDistractor(distractor, text) {
+        distractor.find(this.distractorInputElement).type(text);
+    }
+
+    getDistractors() {
+        return this.distractors();
+    }
+
+    getDistractorInput(distractor) {
+        return distractor.find(this.distractorInputElement);
+    }
+
+    getMatchingPairInputs() {
+        return this.matchingPairInputs();
+    }
+
+    getMatchingPrompts() {
+        return this.matchingPrompts();
     }
 }
