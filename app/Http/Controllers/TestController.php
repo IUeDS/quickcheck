@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Models\Assessment;
 use App\Models\AssessmentGroup;
 use App\Models\Collection;
+use App\Models\Question;
 use App\Models\User;
 
 class TestController extends Controller
@@ -74,6 +75,18 @@ class TestController extends Controller
             'assessment_group_id' => $assessmentGroup->id,
             'name' => $qcName
         ]);
+
+        if ($request->has('assessmentData')) {
+            $assessmentData = $request->input('assessmentData.assessment');
+            $assessment->updateAssessment($assessmentData);
+
+            if (array_key_exists('questions', $assessmentData)) {
+                foreach ($assessmentData['questions'] as $updatedQuestion) {
+                    $question = new Question;
+                    $question->saveQuestion($assessment, $updatedQuestion);
+                }
+            }
+        }
 
         return response()->success();
     }

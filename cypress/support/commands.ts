@@ -1,5 +1,17 @@
 import data from './data/data';
 
+Cypress.Commands.add('newLocalAssessmentAllQuestionTypes', (assessmentId) => {
+    const url = data.urls.localRoot + data.urls.testEndpoints.newAssessment;
+    const setName = 'All question types set';
+    const subsetName = 'All question types subset';
+    const qcName = 'All question types quickcheck';
+    const assessmentData = data.allQuestionTypesData;
+
+    cy.request('POST', url, { setName, subsetName, qcName, assessmentData }).then((response) => {
+      expect(response.status).to.eq(200);
+    });
+});
+
 Cypress.Commands.add('newLocalAssessment', () => {
     const url = data.urls.localRoot + data.urls.testEndpoints.newAssessment;
     const setName = data.sets.toBeDeleted.name;
@@ -34,6 +46,7 @@ Cypress.Commands.add('refreshLocalDB', () => {
 declare global {
   namespace Cypress {
     interface Chainable {
+      newLocalAssessmentAllQuestionTypes(assessmentId): Chainable<void>,
       newLocalAssessment(): Chainable<void>,
       newLocalSet(): Chainable<void>,
       refreshLocalDB(): Chainable<void>

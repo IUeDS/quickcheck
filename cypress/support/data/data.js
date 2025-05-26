@@ -208,5 +208,367 @@ module.exports = {
         }
     },
 
-    validateNoCorrectMessage: 'A correct answer has not been marked'
+    validateNoCorrectMessage: 'A correct answer has not been marked',
+
+    allQuestionTypesData: {
+        "assessment": {
+            "id": 1,
+            "assessment_group_id": "1",
+            "name": "All question types",
+            "title": "",
+            "description": "",
+            "shuffled": "false",
+            "custom_activity_id": null,
+            "created_at": "2025-05-26T16:26:18.000000Z",
+            "updated_at": "2025-05-26T16:26:18.000000Z",
+            "deleted_at": null,
+            "assessment_group": {
+                "id": 1,
+                "collection_id": 1,
+                "name": "Test subset",
+                "created_at": "2025-04-22T15:16:39.000000Z",
+                "updated_at": "2025-04-22T15:16:39.000000Z",
+                "deleted_at": null,
+                "collection": {
+                    "id": 1,
+                    "name": "Test set",
+                    "owner": "testinstructor",
+                    "public_collection": "false",
+                    "description": null,
+                    "created_at": "2025-04-22T15:16:39.000000Z",
+                    "updated_at": "2025-04-22T15:16:39.000000Z",
+                    "deleted_at": null,
+                    "assessment_groups": [
+                        {
+                            "id": 1,
+                            "collection_id": 1,
+                            "name": "Test subset",
+                            "created_at": "2025-04-22T15:16:39.000000Z",
+                            "updated_at": "2025-04-22T15:16:39.000000Z",
+                            "deleted_at": null
+                        }
+                    ]
+                }
+            },
+            "custom_activity": null,
+            "questions": [
+                {
+                    "id": "11748276836764-temp",
+                    "question_order": 1,
+                    "question_text": "<div>\n<div>Answer is B</div>\n</div>",
+                    "question_type": "multiple_choice",
+                    "randomized": "false",
+                    "multiple_correct": "false",
+                    "options": [
+                        {
+                            "id": "11748276836780-temp",
+                            "question_id": "11748276836764-temp",
+                            "answer_text": "A",
+                            "correct": "false",
+                            "mc_option_feedback": {
+                                "mc_answer_id": "11748276836780-temp",
+                                "feedback_text": "A feedback"
+                            }
+                        },
+                        {
+                            "id": "21748276836780-temp",
+                            "question_id": "11748276836764-temp",
+                            "answer_text": "B",
+                            "correct": "true",
+                            "mc_option_feedback": {
+                                "mc_answer_id": "21748276836780-temp",
+                                "feedback_text": "B feedback"
+                            }
+                        },
+                        {
+                            "id": "31748276836780-temp",
+                            "question_id": "11748276836764-temp",
+                            "answer_text": "C",
+                            "correct": "false",
+                            "mc_option_feedback": {
+                                "mc_answer_id": "31748276836780-temp",
+                                "feedback_text": "C feedback"
+                            }
+                        },
+                        {
+                            "id": "41748276836780-temp",
+                            "question_id": "11748276836764-temp",
+                            "answer_text": "D",
+                            "correct": "false",
+                            "mc_option_feedback": {
+                                "mc_answer_id": "41748276836780-temp",
+                                "feedback_text": "D feedback"
+                            }
+                        }
+                    ],
+                    "validationError": false,
+                    "question_feedback": []
+                },
+                {
+                    "id": "21748276888973-temp",
+                    "question_order": 2,
+                    "question_text": "<p>A and B correct</p>",
+                    "question_type": "multiple_correct",
+                    "randomized": "false",
+                    "multiple_correct": "false",
+                    "options": [
+                        {
+                            "id": "11748276889121-temp",
+                            "question_id": "21748276888973-temp",
+                            "answer_text": "A",
+                            "correct": "true",
+                            "mc_option_feedback": {
+                                "mc_answer_id": "11748276889121-temp",
+                                "feedback_text": "A feedback"
+                            }
+                        },
+                        {
+                            "id": "21748276889121-temp",
+                            "question_id": "21748276888973-temp",
+                            "answer_text": "B",
+                            "correct": "true",
+                            "mc_option_feedback": {
+                                "mc_answer_id": "21748276889121-temp",
+                                "feedback_text": "B feedback"
+                            }
+                        },
+                        {
+                            "id": "31748276889121-temp",
+                            "question_id": "21748276888973-temp",
+                            "answer_text": "C",
+                            "correct": "false",
+                            "mc_option_feedback": {
+                                "mc_answer_id": "31748276889121-temp",
+                                "feedback_text": "C feedback"
+                            }
+                        },
+                        {
+                            "id": "41748276889121-temp",
+                            "question_id": "21748276888973-temp",
+                            "answer_text": "D",
+                            "correct": "false",
+                            "mc_option_feedback": {
+                                "mc_answer_id": "41748276889121-temp",
+                                "feedback_text": "D feedback"
+                            }
+                        }
+                    ],
+                    "validationError": false,
+                    "question_feedback": []
+                },
+                {
+                    "id": "31748277017590-temp",
+                    "question_order": 3,
+                    "question_text": "",
+                    "question_type": "matrix",
+                    "randomized": "false",
+                    "multiple_correct": "false",
+                    "validationError": false,
+                    "question_feedback": [
+                        {
+                            "question_id": "31748277017590-temp",
+                            "feedback_text": "This is correct feedback",
+                            "correct": "true"
+                        },
+                        {
+                            "question_id": "31748277017590-temp",
+                            "feedback_text": "This is incorrect feedback",
+                            "correct": "false"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "id": "1-temp",
+                            "question_id": "31748277017590-temp",
+                            "answer_text": "One",
+                            "row_or_column": "column"
+                        },
+                        {
+                            "id": "2-temp",
+                            "question_id": "31748277017590-temp",
+                            "answer_text": "Two",
+                            "row_or_column": "column"
+                        }
+                    ],
+                    "rows": [
+                        {
+                            "id": "1-temp",
+                            "question_id": "31748277017590-temp",
+                            "answer_text": "1",
+                            "row_or_column": "row",
+                            "matrix_answer_text": "",
+                            "columnAnswerId": "1-temp"
+                        },
+                        {
+                            "id": "2-temp",
+                            "question_id": "31748277017590-temp",
+                            "answer_text": "2",
+                            "row_or_column": "row",
+                            "matrix_answer_text": "",
+                            "columnAnswerId": "2-temp"
+                        }
+                    ]
+                },
+                {
+                    "id": "41748277061865-temp",
+                    "question_order": 4,
+                    "question_text": "",
+                    "question_type": "matching",
+                    "randomized": "false",
+                    "multiple_correct": "false",
+                    "options": [
+                        {
+                            "id": "1-temp",
+                            "question_id": "41748277061865-temp",
+                            "option_text": "A",
+                            "prompt_or_answer": "prompt",
+                            "matching_answer_text": "A"
+                        },
+                        {
+                            "id": "2-temp",
+                            "question_id": "41748277061865-temp",
+                            "option_text": "B",
+                            "prompt_or_answer": "prompt",
+                            "matching_answer_text": "B"
+                        },
+                        {
+                            "id": "3-temp",
+                            "question_id": "41748277061865-temp",
+                            "option_text": "C",
+                            "prompt_or_answer": "answer",
+                            "matching_answer_text": ""
+                        }
+                    ],
+                    "validationError": false,
+                    "question_feedback": [],
+                    "prompts": [
+                        {
+                            "id": "1-temp",
+                            "question_id": "41748277061865-temp",
+                            "option_text": "A",
+                            "prompt_or_answer": "prompt",
+                            "matching_answer_text": "A"
+                        },
+                        {
+                            "id": "2-temp",
+                            "question_id": "41748277061865-temp",
+                            "option_text": "B",
+                            "prompt_or_answer": "prompt",
+                            "matching_answer_text": "B"
+                        }
+                    ],
+                    "selectableAnswers": [],
+                    "distractors": [
+                        {
+                            "id": "3-temp",
+                            "question_id": "41748277061865-temp",
+                            "option_text": "C",
+                            "prompt_or_answer": "answer",
+                            "matching_answer_text": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "51748277128044-temp",
+                    "question_order": 5,
+                    "question_text": "",
+                    "question_type": "dropdown",
+                    "randomized": "true",
+                    "multiple_correct": "false",
+                    "options": [
+                        {
+                            "id": "1-temp",
+                            "question_id": "51748277128044-temp",
+                            "answer_text": "A",
+                            "prompt_or_answer": "prompt",
+                            "dropdown_answer_text": "A",
+                            "answer_order": 1
+                        },
+                        {
+                            "id": "2-temp",
+                            "question_id": "51748277128044-temp",
+                            "answer_text": "B",
+                            "prompt_or_answer": "prompt",
+                            "dropdown_answer_text": "B",
+                            "answer_order": 2
+                        },
+                        {
+                            "id": "3-temp",
+                            "question_id": "51748277128044-temp",
+                            "answer_text": "C",
+                            "prompt_or_answer": "answer",
+                            "dropdown_answer_text": ""
+                        }
+                    ],
+                    "validationError": false,
+                    "question_feedback": [],
+                    "prompts": [
+                        {
+                            "id": "1-temp",
+                            "question_id": "51748277128044-temp",
+                            "answer_text": "A",
+                            "prompt_or_answer": "prompt",
+                            "dropdown_answer_text": "A",
+                            "answer_order": 1
+                        },
+                        {
+                            "id": "2-temp",
+                            "question_id": "51748277128044-temp",
+                            "answer_text": "B",
+                            "prompt_or_answer": "prompt",
+                            "dropdown_answer_text": "B",
+                            "answer_order": 2
+                        }
+                    ],
+                    "selectableAnswers": [],
+                    "distractors": [
+                        {
+                            "id": "3-temp",
+                            "question_id": "51748277128044-temp",
+                            "answer_text": "C",
+                            "prompt_or_answer": "answer",
+                            "dropdown_answer_text": ""
+                        }
+                    ]
+                },
+                {
+                    "id": "61748277149254-temp",
+                    "question_order": 6,
+                    "question_text": "",
+                    "question_type": "textmatch",
+                    "randomized": "true",
+                    "multiple_correct": "false",
+                    "options": [
+                        {
+                            "id": "1-temp",
+                            "question_id": "61748277149254-temp",
+                            "textmatch_answer_text": "A"
+                        }
+                    ],
+                    "validationError": false,
+                    "question_feedback": []
+                },
+                {
+                    "id": "71748277163516-temp",
+                    "question_order": 7,
+                    "question_text": "",
+                    "question_type": "numerical",
+                    "randomized": "true",
+                    "multiple_correct": "false",
+                    "options": [
+                        {
+                            "id": "1-temp",
+                            "answer_type": "exact",
+                            "numerical_answer": 1,
+                            "margin_of_error": 0,
+                            "range_min": null,
+                            "range_max": null
+                        }
+                    ],
+                    "validationError": false,
+                    "question_feedback": []
+                }
+            ]
+        }
+    }
 };
