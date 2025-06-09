@@ -54,7 +54,11 @@ class TestController extends Controller
 
     public function newAssessment(Request $request)
     {
-        $this->refreshDatabase();
+        //only refresh the database if assessmentData is not provided
+        //refresh is called manually in these cases so multiple assessments can be created
+        if (!$request->has('assessmentData')) {
+            $this->refreshDatabase();
+        }
 
         $setName = $request->input('setName');
         $subsetName = $request->input('subsetName');

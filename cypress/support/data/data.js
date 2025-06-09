@@ -570,5 +570,157 @@ module.exports = {
                 }
             ]
         }
-    }
+    },
+
+    multipleChoiceData: {
+        "assessment": {
+          "id": 2,
+          "assessment_group_id": "1",
+          "name": "1 MC",
+          "title": "",
+          "description": "",
+          "shuffled": "false",
+          "custom_activity_id": null,
+          "created_at": "2025-06-09T17:39:55.000000Z",
+          "updated_at": "2025-06-09T17:39:55.000000Z",
+          "deleted_at": null,
+          "assessment_group": {
+            "id": 1,
+            "collection_id": 1,
+            "name": "All question types subset",
+            "created_at": "2025-05-26T20:48:01.000000Z",
+            "updated_at": "2025-05-26T20:48:01.000000Z",
+            "deleted_at": null,
+            "collection": {
+              "id": 1,
+              "name": "All question types set",
+              "owner": "testinstructor",
+              "public_collection": "false",
+              "description": null,
+              "created_at": "2025-05-26T20:48:01.000000Z",
+              "updated_at": "2025-05-26T20:48:01.000000Z",
+              "deleted_at": null,
+              "assessment_groups": [
+                {
+                  "id": 1,
+                  "collection_id": 1,
+                  "name": "All question types subset",
+                  "created_at": "2025-05-26T20:48:01.000000Z",
+                  "updated_at": "2025-05-26T20:48:01.000000Z",
+                  "deleted_at": null
+                }
+              ]
+            }
+          },
+          "custom_activity": null,
+          "questions": [
+            {
+              "id": "11749490806071-temp",
+              "question_order": 1,
+              "question_text": "<p>Answer is true</p>",
+              "question_type": "multiple_choice",
+              "randomized": "false",
+              "multiple_correct": "false",
+              "options": [
+                {
+                  "id": "11749490806090-temp",
+                  "question_id": "11749490806071-temp",
+                  "answer_text": "True",
+                  "correct": "true"
+                },
+                {
+                  "id": "21749490806090-temp",
+                  "question_id": "11749490806071-temp",
+                  "answer_text": "False",
+                  "correct": "false"
+                }
+              ],
+              "validationError": false,
+              "question_feedback": []
+            }
+          ]
+        }
+      },
+
+      numericalData: {
+        "assessment": {
+          "id": 3,
+          "assessment_group_id": "1",
+          "name": "Numerical",
+          "title": "",
+          "description": "",
+          "shuffled": "false",
+          "custom_activity_id": null,
+          "created_at": "2025-06-09T17:48:25.000000Z",
+          "updated_at": "2025-06-09T17:48:25.000000Z",
+          "deleted_at": null,
+          "assessment_group": {
+            "id": 1,
+            "collection_id": 1,
+            "name": "All question types subset",
+            "created_at": "2025-05-26T20:48:01.000000Z",
+            "updated_at": "2025-05-26T20:48:01.000000Z",
+            "deleted_at": null,
+            "collection": {
+              "id": 1,
+              "name": "All question types set",
+              "owner": "testinstructor",
+              "public_collection": "false",
+              "description": null,
+              "created_at": "2025-05-26T20:48:01.000000Z",
+              "updated_at": "2025-05-26T20:48:01.000000Z",
+              "deleted_at": null,
+              "assessment_groups": [
+                {
+                  "id": 1,
+                  "collection_id": 1,
+                  "name": "All question types subset",
+                  "created_at": "2025-05-26T20:48:01.000000Z",
+                  "updated_at": "2025-05-26T20:48:01.000000Z",
+                  "deleted_at": null
+                }
+              ]
+            }
+          },
+          "custom_activity": null,
+          "questions": [
+            {
+              "id": "11749491308163-temp",
+              "question_order": 1,
+              "question_text": "",
+              "question_type": "numerical",
+              "randomized": "true",
+              "multiple_correct": "false",
+              "options": [
+                {
+                  "id": "1-temp",
+                  "answer_type": "exact",
+                  "numerical_answer": 0,
+                  "margin_of_error": 0,
+                  "range_min": null,
+                  "range_max": null
+                },
+                {
+                  "id": "2-temp",
+                  "answer_type": "exact",
+                  "numerical_answer": 10,
+                  "margin_of_error": 1,
+                  "range_min": null,
+                  "range_max": null
+                },
+                {
+                  "id": "3-temp",
+                  "answer_type": "range",
+                  "numerical_answer": "",
+                  "margin_of_error": 0,
+                  "range_min": 4,
+                  "range_max": 6
+                }
+              ],
+              "validationError": false,
+              "question_feedback": []
+            }
+          ]
+        }
+      }
 };

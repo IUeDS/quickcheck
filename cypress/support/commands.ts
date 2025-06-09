@@ -1,6 +1,6 @@
 import data from './data/data';
 
-Cypress.Commands.add('newLocalAssessmentAllQuestionTypes', (assessmentId) => {
+Cypress.Commands.add('newLocalAssessmentAllQuestionTypes', () => {
     const url = data.urls.localRoot + data.urls.testEndpoints.newAssessment;
     const setName = 'All question types set';
     const subsetName = 'All question types subset';
@@ -10,6 +10,30 @@ Cypress.Commands.add('newLocalAssessmentAllQuestionTypes', (assessmentId) => {
     cy.request('POST', url, { setName, subsetName, qcName, assessmentData }).then((response) => {
       expect(response.status).to.eq(200);
     });
+});
+
+Cypress.Commands.add('newLocalAssessmentMultipleChoice', () => {
+  const url = data.urls.localRoot + data.urls.testEndpoints.newAssessment;
+  const setName = '1 MC set';
+  const subsetName = '1 MC subset';
+  const qcName = '1 MC quickcheck';
+  const assessmentData = data.multipleChoiceData;
+
+  cy.request('POST', url, { setName, subsetName, qcName, assessmentData }).then((response) => {
+    expect(response.status).to.eq(200);
+  });
+});
+
+Cypress.Commands.add('newLocalAssessmentNumerical', () => {
+  const url = data.urls.localRoot + data.urls.testEndpoints.newAssessment;
+  const setName = 'Numerical set';
+  const subsetName = 'Numerical subset';
+  const qcName = 'Numerical quickcheck';
+  const assessmentData = data.numericalData;
+
+  cy.request('POST', url, { setName, subsetName, qcName, assessmentData }).then((response) => {
+    expect(response.status).to.eq(200);
+  });
 });
 
 Cypress.Commands.add('newLocalAssessment', () => {
@@ -47,6 +71,8 @@ declare global {
   namespace Cypress {
     interface Chainable {
       newLocalAssessmentAllQuestionTypes(assessmentId): Chainable<void>,
+      newLocalAssessmentMultipleChoice(): Chainable<void>,
+      newLocalAssessmentNumerical(): Chainable<void>,
       newLocalAssessment(): Chainable<void>,
       newLocalSet(): Chainable<void>,
       refreshLocalDB(): Chainable<void>

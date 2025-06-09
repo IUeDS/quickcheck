@@ -13,4 +13,5 @@ node_modules/
 public/assets/dist/
 public/assets/config/env.js
 public/assets/src/js/tests/protractor/usercreds.js
+cypress/support/data/config.js
 public/customActivities/

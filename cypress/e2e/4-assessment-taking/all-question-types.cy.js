@@ -3,6 +3,7 @@ import data from '../../support/data/data';
 
 describe('Taking an assessment with all question types', function() {
     before(() => {
+        cy.refreshLocalDB();
         cy.newLocalAssessmentAllQuestionTypes();
     });
 
