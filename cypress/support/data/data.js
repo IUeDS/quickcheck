@@ -195,7 +195,8 @@ module.exports = {
             homePage: "localhost:8000",
             setPage: "localhost:8000/collection/1",
             setsPage: "localhost:8000/collection",
-            qcEditPage: "localhost:8000/assessment/1/edit"
+            qcEditPage: "localhost:8000/assessment/1/edit",
+            qcPreviewPage: "localhost:8000/assessment/1?preview=true",
         },
         canvas: {
 
