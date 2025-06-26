@@ -13,9 +13,9 @@ class Caliper
 
     public function __construct()
     {
-        $this->isEnabled = env('CALIPER_ENABLED', false);
-        $this->sensorHost = env('CALIPER_SENSOR_HOST', null);
-        $this->baseIdUrl = env('APP_URL') . '/api/caliper/';
+        $this->isEnabled = config('qc.caliper_enabled', false);
+        $this->sensorHost = config('qc.caliper_sensor_host', null);
+        $this->baseIdUrl = config('app.url') . '/api/caliper/';
     }
 
     /**
@@ -114,7 +114,7 @@ class Caliper
         $data['assessmentId'] = $this->baseIdUrl . 'assessment/' . $assessmentId;
         $data['timestamp'] = $attempt->updated_at->getTimeStamp();
         $data['attemptId'] = $this->baseIdUrl . 'attempt/' . $attempt->id;
-        $data['appUrl'] = env('APP_URL');
+        $data['appUrl'] = config('app.url');
         $data['custom_canvas_assignment_id'] = $attempt->getAssignmentId();
         $data['custom_canvas_course_id'] = $courseContext->getCourseId();
         $data['custom_canvas_user_id'] = $student->getCanvasUserId();
