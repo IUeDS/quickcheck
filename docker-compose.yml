@@ -15,6 +15,11 @@ services:
     volumes:
       - .:/var/www/html # Mount entire project for code changes
       - ./storage:/var/www/html/storage # Explicitly mount storage for writability
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache # Ensure this is also writable
+    tmpfs: #tmpfs mounts for ephemeral writable needs
+      - /tmp # Common for many apps/PHP
+      - /run/apache2:rw,size=16m # Apache lock files; rw is default, size helps limit memory usage
+    #read_only: true # <--- OPTIONAL: This makes the container's root filesystem read-only, for testing before production
     depends_on:
       - db # Ensure 'db' service starts before 'app'
     env_file:
