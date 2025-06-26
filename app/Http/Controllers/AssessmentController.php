@@ -245,18 +245,18 @@ class AssessmentController extends \BaseController
             return response()->error(400, ['Image file not included.']);
         }
 
-        $fileDriver = env('IMAGE_UPLOAD_FILE_DRIVER', 'local');
+        $fileDriver = config('qc.image_upload_file_driver', 'local');
         $path = null;
 
         //for local file system, build absolute path; otherwise, if using S3, we should already have it
         if ($fileDriver === 'local') {
             $path = $request->file->store('public/images', $fileDriver);
             $path = str_replace('public', 'storage', $path); //change to public symlink path rather than internal path
-            $path = env('APP_URL') . '/' . $path;
+            $path = config('app.url') . '/' . $path;
         }
         else if ($fileDriver === 's3') {
             $path = $request->file->store('uploads', $fileDriver);
-            $path = 'https://' . env('S3_BUCKET') . '.s3.' . env('S3_REGION') . '.amazonaws.com/' . $path;
+            $path = 'https://' . config('filesystems.disks.s3.bucket') . '.s3.' . config('filesystems.disks.s3.region') . '.amazonaws.com/' . $path;
         }
 
         //tinymce expects response in specific format, giving url of file location, can't

@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
         Log::info($info);
 
         //if sentry is being used and in prod environment, then send error info
-        if (app()->bound('sentry') && env('APP_ENV') === 'prod') {
+        if (app()->bound('sentry') && config('app.env') === 'prod') {
             //capture as either error or info depending on severity
             if (!$this->shouldReport($e)) {
                 app('sentry')->configureScope(function (Scope $scope) {
@@ -78,7 +78,7 @@ class Handler extends ExceptionHandler
         $statusCode = 500; //default
 
         //if in development, render the default
-        if (env('APP_ENV') === 'local') {
+        if (config('app.env') === 'local') {
             return parent::render($request, $e);
         }
 

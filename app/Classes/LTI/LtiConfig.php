@@ -18,8 +18,8 @@ class LtiConfig {
 
     public function __construct()
     {
-        $this->appUrl = env('APP_URL');
-        $this->environment = env('APP_ENV');
+        $this->appUrl = config('app.url');
+        $this->environment = config('app.env');
         $this->domainUrl = $this->appUrl;
         $this->launchUrl = $this->appUrl . '/index.php/assessment';
         $this->navUrl = $this->appUrl . '/index.php/home';
@@ -112,9 +112,9 @@ class LtiConfig {
                 "kty" => "RSA",
                 "e" => "AQAB",
                 "use" => "sig",
-                "kid" => env('LTI_JWK_KID'),
+                "kid" => config('qc.lti_jwk_kid'),
                 "alg" => "RS256",
-                "n" => env('LTI_JWK_N')
+                "n" => config('qc.lti_jwk_n')
             ],
             "description" => "This LTI 1.3 tool allows embedding formative assessments, as well as reviewing and grading student results through the left nav.",
             "custom_fields" => [

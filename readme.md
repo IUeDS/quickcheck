@@ -12,26 +12,21 @@ Quick Check is an LTI (Learning Tools Interoperability) tool for creating format
 
 The application can be run within a docker container or locally in a LAMP environment. Regardless of setup, the application will rely on an external mysql database, and the following steps should be taken first:
 
-1. Create a mysql database in your local environment
-2. Copy the .example.env file in the root directory to a new file called .env
-3. Enter configuration information in the .env file, such as DB access creds, but wait to fill in `APP_KEY`, which will be generated later
+1. Copy the .example.env file in the root directory to a new file called .env.docker_local
+2. Enter configuration information in the .env file, such as DB access creds, but wait to fill in `APP_KEY`, which will be generated later. Note that docker-compose will launch its own mysql container and you can set new credentials as you see fit in the env file. 
+3. Docker for Mac/Windows should be installed.
 
 ## Docker install (recommended)
 
-1. Make sure that Docker for Mac/Windows is running. To build the image: `docker build -t quickcheck:1.0 .`
-2. Once built, the image can be run with the following command (replacing PATH_TO_APP with the absolute path to the application on your local filesystem, and assuming that the default port of 8000 is being used): `docker run -p 8000:80 -v PATH_TO_APP:/var/www/html:delegated -v /var/www/html/node_modules -v /var/www/html/vendor -v /var/www/html/public/assets/dist --rm quickcheck:1.0`
-  -The `-v` flags are for mapping volumes from your local system to the docker container. The first volume argument allows for making changes to the code in your local filesystem and having the changes reflected inside the docker container. The remaining volume arguments ensure that all dependencies are isolated within the docker container instead of being on the local filesystem.
-3. One-time setup is required for the app key and database: `exec` inside the running container, and run `php artisan key:generate` to generate an app key. (Alternatively, the command can be passed as the last argument to the `run` command to pass to the container on startup.)
-  -To `exec` into the container, start the container and run `docker ps` to get the container ID
-  -Replacing `CONTAINER_ID` with the actual value, run the command: `docker exec -it CONTAINER_ID sh`
-4. Next, run `php artisan migrate --seed` to run database migrations/seeds.
-5. The application should be ready and available at localhost:8000.
+1. Make sure that Docker for Mac/Windows is running. To build the image, `cd` to the directory of the app on your local machine and run: `docker-compose up --build`. In the future, the `--build` flag can be omitted to run the app without building.
+2. One-time setup is required for migrating and seeding the database. Run the following command separately: `docker-compose exec app php artisan migrate --seed`
+3. The application should be ready and available at localhost:8000. Changes to your local code (either back-end or front-end) will be reflected in the app for local development purposes. For production, do not use the docker-compose functionality, and instead incorporate only the Dockerfile in your build pipeline for a production-ready image.
 
 A `php.ini` file is located in `resources/php.ini`, which is copied into the docker container. Additional ini setup can be added to that file to suit additional configuration needs. An `.htaccess` file is located in the `public` folder for additional configuration.
 
 ## Local install
 
-If installing locally, PHP >= 7.1.3 is required, as is [Composer](https://getcomposer.org). For front-end dependencies, node/npm is required.
+If installing locally, PHP >= 8.2 is required, as is [Composer](https://getcomposer.org). For front-end dependencies, node/npm is required.
 
 ### Back-end setup
 1. In the root directory, run: `composer install` to install Laravel PHP dependencies
@@ -115,14 +110,6 @@ Whenever a new version of the app is released, the following commands should be 
 ## Image uploads
 
 Instructors are allowed to upload images to embed in quick checks. By default, the storage driver is "local" and is stored on the local disk in a public directory. The storage driver can also be set to "s3" for AWS S3 cloud storage. If using the local driver, a public directory must be symlinked with the command `php artisan storage:link` before users can upload public images.
-
-## Local development in Docker
-
-To make changes to the code and develop locally, 2 containers need to be run: a container to run the back-end server (use the same `docker run` command listed above in the Docker Install section), and a second container for the front-end, to watch for changes and recompile the angular code. 
-
-In the initial docker build process, the `node_modules` folder is removed to save space in the container for production use. When developing locally and node modules are required for angular recompilation, either the line in the dockefile can be commented out before building, or, preferably, node modules can be installed on the local machine with `npm install` (which allows for more flexibility for additional updates/installs to node dependencies in the course of development). If node modules are installed locally, use the following Docker command to run a process to watch for front-end changes and recompile, replacing `PATH_TO_APP_HERE` with the absolute location of the code on your local machine:
-
-`docker run -v PATH_TO_APP_HERE:/var/www/html:delegated -v /var/www/html/vendor --rm quickcheck:1.0 npm run build:watch`
 
 ## License
 Quick Check is open-sourced software licensed under the [Educational Community License, Version 2.0](https://opensource.org/licenses/ECL-2.0).

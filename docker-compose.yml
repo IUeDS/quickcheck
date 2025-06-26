@@ -1,0 +1,59 @@
+# docker-compose.yml
+# For development purposes only on a local machine, not production.
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+         TZ: US/Eastern
+    container_name: quickcheck
+    ports:
+      - "8000:80" # Map host_port:container_port
+    volumes:
+      - .:/var/www/html # Mount entire project for code changes
+      - ./storage:/var/www/html/storage # Explicitly mount storage for writability
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache # Ensure this is also writable
+    tmpfs: #tmpfs mounts for ephemeral writable needs
+      - /tmp # Common for many apps/PHP
+      - /run/apache2:rw,size=16m # Apache lock files; rw is default, size helps limit memory usage
+    #read_only: true # <--- OPTIONAL: This makes the container's root filesystem read-only, for testing before production
+    depends_on:
+      - db # Ensure 'db' service starts before 'app'
+    env_file:
+      - .env.docker_local # Use a specific .env for local Docker configuration
+
+  db:
+    image: mysql:8.0 # Using official MySQL 8.0 image
+    container_name: quickcheck_db_dev
+    # Using env_file here to load DB credentials and other MySQL-specific env vars
+    env_file:
+      - .env.docker_local # DB service also gets its variables from here
+      # Include the following in .env.docker_local if developing locally with a mysql container:
+      # MYSQL_ROOT_PASSWORD: supersecretpassword_changeme # Change this for security
+      # MYSQL_DATABASE: quickcheck_dev # Your database name
+      # MYSQL_USER: root # Your database user
+      # MYSQL_PASSWORD: password_changeme # Your database password 
+      # Also set DB_HOST=db in your .env.docker_local if using this service.
+      # The database can be reached on your local machine in a MySQL client like Sequel Pro
+      # using localhost:3306 with the credentials above.
+    ports:
+      - "3306:3306" # Map host_port:container_port for Sequel Pro access
+    volumes:
+      - db_data:/var/lib/mysql # Persistent volume for database data
+
+  angular_builder: # Angular build service for development
+    image: node:22 # Use a recent Node.js image, matching your Dockerfile's Node.js version
+    container_name: angular_builder_dev
+    working_dir: /app # Set a working directory inside the container
+    volumes:
+      - .:/app # Mount your entire project root (including package.json for Angular)
+      # You might explicitly mount node_modules here if you don't want it in your host dir
+      # - /app/node_modules # This would be an anonymous volume to keep node_modules isolated
+    command: bash -c "npm install && npx ng build --watch" 
+    # You might not need ports or depends_on for this service, as it's mainly for building.
+
+volumes:
+  db_data: # Define a named volume for persistent database data

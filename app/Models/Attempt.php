@@ -851,7 +851,7 @@ class Attempt extends Eloquent {
         }
 
         //timeout length can be specified in env, but defaults to constant defined in class
-        $timeoutLength = env('TIMEOUT_LENGTH', $this->TIMEOUT_LENGTH);
+        $timeoutLength = config('qc.timeout_length', $this->TIMEOUT_LENGTH);
         $lastValidAttempt = $recentAttempts->last();
         $endTimeout = new DateTime($lastValidAttempt->updated_at);
         $endTimeout->modify('+' . $timeoutLength);

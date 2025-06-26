@@ -46,7 +46,7 @@ class CollectionController extends \BaseController
 
         //redirect with input vars added as query params to make them available to the front-end
         $redirectUrl = 'select';
-        $launchUrlStem = urlencode(env('APP_URL') . '/index.php/assessment?id=');
+        $launchUrlStem = urlencode(config('app.url') . '/index.php/assessment?id=');
         $redirectUrl .= '?redirectUrl=' . $canvasRedirectUrl;
         $redirectUrl .= '&deploymentId=' . $deploymentId;
         $redirectUrl .= '&launchUrlStem=' . $launchUrlStem;
