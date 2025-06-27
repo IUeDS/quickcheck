@@ -130,6 +130,7 @@ RUN mkdir -p ${WORK_DIR}
 RUN apt-get update -yqq && \
     apt-get install -yqq --no-install-recommends \
     libjpeg62-turbo \
+    gosu \
     libpng16-16 \
     libwebp7 \
     libxpm4 \
@@ -157,18 +158,22 @@ COPY --from=builder ${WORK_DIR} ${WORK_DIR}
 # This `entrypoint.sh` script will run at container startup and set correct permissions
 # for the `www-data` user on the *mounted* volume.
 
-# Include and use the entrypoint script:
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-# Switch to the non-privileged www-data user for running the Apache service.
-# This is a fundamental security measure, as Apache will now execute with minimal privileges.
-USER www-data
+# Include and use the entrypoint script.
+# NOTE: we will begin running the entrypoint script as root, but it will switch to the `www-data` user
+# before starting the Apache service. This is a common pattern to ensure that the web server has
+# the necessary permissions to write to the storage directory while still running with minimal privileges.
+COPY setup.sh /usr/local/bin/setup.sh
+RUN chmod +x /usr/local/bin/setup.sh
 
 # Expose port 80 to indicate that the container listens on this port for incoming traffic.
 EXPOSE 80
 
-# Define the default command that runs when the container starts.
-# `apache2-foreground` runs Apache in the foreground, which is necessary for Docker to keep the container alive.
-CMD ["apache2-foreground"]
+# We will use Docker's exec form ENTRYPOINT and pass our setup script as a command to it.
+# The `docker-php-entrypoint` script (default ENTRYPOINT) handles user switching, permissions, etc.
+# The setup script will run *before* apache.
+# NO CUSTOM ENTRYPOINT HERE. Let the base image manage it.
+# The`setup.sh` will be executed by the default `docker-php-entrypoint`
+# before `apache2-foreground` is run.
+
+# CMD is the setup script followed by the original Apache command
+CMD ["/usr/local/bin/setup.sh", "apache2-foreground"]
