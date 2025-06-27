@@ -64,7 +64,7 @@ class LTIAdvantage {
             'response_type' => 'id_token', // OIDC response is always an id token
             'response_mode' => 'form_post', // OIDC response is always a form post
             'prompt' => 'none', // don't prompt user on redirect
-            'client_id' => env('LTI_CLIENT_ID'), //registered developer key ID in Canvas
+            'client_id' => config('qc.lti_client_id'), //registered developer key ID in Canvas
             'redirect_uri' => $targetLinkUri,
             'state' => $state,
             'nonce' => $nonce,
@@ -163,7 +163,7 @@ class LTIAdvantage {
         ];
 
         $jwtData= [
-            "iss" => env('LTI_CLIENT_ID'),
+            "iss" => config('qc.lti_client_id'),
             "aud" => $this->iss,
             "exp" => time() + 600,
             "iat" => time(),
@@ -174,8 +174,8 @@ class LTIAdvantage {
             "https://purl.imsglobal.org/spec/lti-dl/claim/content_items" => [$resource]
         ];
 
-        $privateKey = $this->getRsaKeyFromEnv('LTI_PRIVATE_KEY');
-        $kid = env('LTI_JWK_KID', null);
+        $privateKey = $this->getRsaKeyFromEnv('qc.lti_private_key');
+        $kid = config('qc.lti_jwk_kid', null);
         $jwt = JWT::encode($jwtData, $privateKey, 'RS256', $kid);
 
         return $jwt;
@@ -295,7 +295,7 @@ class LTIAdvantage {
         $iss = $this->iss;
 
         if (!$iss) {
-            $canvasDomain = env('CANVAS_API_DOMAIN', 'https://iu.instructure.com/api/v1');
+            $canvasDomain = config('qc.canvas_api_domain');
             if (strpos($canvasDomain, 'test')) {
                 $iss = 'https://canvas.test.instructure.com';
             }
@@ -409,16 +409,16 @@ class LTIAdvantage {
         $this->oauthTokenEndpoint = $endpoint . '/login/oauth2/token';
         //send JWT to get oauth token
         $jwtToken = [
-            "iss" => env('LTI_CLIENT_ID'),
-            "sub" => env('LTI_CLIENT_ID'),
+            "iss" => config('qc.lti_client_id'),
+            "sub" => config('qc.lti_client_id'),
             "aud" => $this->oauthTokenEndpoint,
             "iat" => time() - 5,
             "exp" => time() + 60,
             "jti" => 'lti-service-token' . hash('sha256', random_bytes(64)) //unique identifier to prevent replays
         ];
 
-        $privateKey = $this->getRsaKeyFromEnv('LTI_PRIVATE_KEY');
-        $kid = env('LTI_JWK_KID', null);
+        $privateKey = $this->getRsaKeyFromEnv('qc.lti_private_key');
+        $kid = config('qc.lti_jwk_kid');
         $oauthRequestJWT = JWT::encode($jwtToken, $privateKey, 'RS256', $kid);
         $params = [];
         $params['grant_type'] = 'client_credentials';
@@ -675,7 +675,7 @@ class LTIAdvantage {
     */
 
     private function getRsaKeyFromEnv($envVar) {
-        $initialValue = env($envVar);
+        $initialValue = config($envVar);
         $parsedValue = str_replace('\n', '', $initialValue);
         return $parsedValue;
     }
@@ -759,7 +759,7 @@ class LTIAdvantage {
     {
         $iss = $this->iss;
         $aud = $this->aud;
-        $existingAud = env('LTI_CLIENT_ID');
+        $existingAud = config('qc.lti_client_id');
 
         if ($iss !== 'https://canvas.instructure.com' && $iss !== 'https://canvas.beta.instructure.com' && $iss !== 'https://canvas.test.instructure.com') {
             abort(400, 'LTI launch failed: invalid issuer.');

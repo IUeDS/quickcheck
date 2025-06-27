@@ -4,6 +4,7 @@
 composer.phar
 *.env
 .env
+.env.*
 .DS_Store
 Thumbs.db
 _notes/

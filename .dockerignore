@@ -1,0 +1,10 @@
+.env
+.env.*
+*.env
+vendor/
+node_modules/
+.git
+.gitignore
+.dockerignore
+storage/
+bootstrap/cache/

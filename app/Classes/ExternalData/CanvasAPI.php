@@ -18,9 +18,9 @@ class CanvasAPI
 
     public function __construct()
     {
-        $this->apiToken = env('CANVAS_API_TOKEN');
-        $this->canvasDomain = env('CANVAS_API_DOMAIN');
-        $this->canvasHeader = env('CANVAS_API_HEADER', 'Authorization: Bearer ');
+        $this->apiToken = config('qc.canvas_api_token');
+        $this->canvasDomain = config('qc.canvas_api_domain');
+        $this->canvasHeader = config('qc.canvas_api_header');
     }
 
     /**

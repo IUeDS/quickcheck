@@ -16,7 +16,7 @@ class CASFilter
         $casProdUrl = 'https://idp.login.iu.edu';
         $casTestUrl = 'https://idp-stg.login.iu.edu';
 
-        $currentEnvironment = env('APP_ENV');
+        $currentEnvironment = config('app.env');
         if ($currentEnvironment === 'prod') {
             $this->casUrl = $casProdUrl;
         }
@@ -38,8 +38,8 @@ class CASFilter
 
     public function casEnabled()
     {
-        $appUrl = env('APP_URL');
-        $currentEnvironment = env('APP_ENV');
+        $appUrl = config('app.url');
+        $currentEnvironment = config('app.env');
         if (strpos($appUrl, 'iu.edu') !== false || $currentEnvironment === 'local' || $currentEnvironment === 'dev') {
             return true;
         }
@@ -83,7 +83,7 @@ class CASFilter
     public function getRedirectUrl($route)
     {
         $authenticated = Session::has('CAS');
-        $baseUrl = env('APP_URL');
+        $baseUrl = config('app.url');
         $appUrl = $this->getAppUrl($baseUrl, $route);
 
         if (App::environment('local')) {
