@@ -137,8 +137,10 @@ RUN apt-get update -yqq && \
     libfreetype6 \
     libzip4 \
     libmariadb3 \
+    # OpenSSL runtime libraries and tools (CRUCIAL FOR JWT/LTI SSL VALIDATION)
     openssl \
     ca-certificates \
+    libcurl4 \
     # Clean up apt cache immediately after install and other temporary files
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/lastlog /var/log/faillog
 
