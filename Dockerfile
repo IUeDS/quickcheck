@@ -103,7 +103,8 @@ COPY resources/php.ini $PHP_INI_DIR/conf.d/
 RUN sed -i 's!CustomLog \${APACHE_LOG_DIR}/access.log combined!CustomLog /proc/self/fd/1 combined!g' /etc/apache2/apache2.conf && \
     sed -i 's!ErrorLog \${APACHE_LOG_DIR}/error.log!ErrorLog /proc/self/fd/2!g' /etc/apache2/apache2.conf && \
     # Also adjust any site-specific log directives if they exist in sites-available.
-    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!CustomLog .*!CustomLog /proc/self/fd/1 combined!g' {} + && \
+    # Redirect the custom log to /dev/null to avoid writing to disk, it would otherwise log every request made to the app.
+    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!CustomLog .*!CustomLog /dev/null combined!g' {} + && \
     find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!ErrorLog .*!ErrorLog /proc/self/fd/2!g' {} + && \
     # Disable specific Apache configurations that might cause issues with read-only filesystems.
     a2disconf serve-cgi-bin.conf
