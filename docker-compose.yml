@@ -52,7 +52,7 @@ services:
       - .:/app # Mount your entire project root (including package.json for Angular)
       # You might explicitly mount node_modules here if you don't want it in your host dir
       # - /app/node_modules # This would be an anonymous volume to keep node_modules isolated
-    command: bash -c "npm install && npx ng build --watch" 
+    command: bash -c "npm install && npx ng build --watch --poll=2000" 
     # You might not need ports or depends_on for this service, as it's mainly for building.
 
 volumes:

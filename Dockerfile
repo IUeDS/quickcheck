@@ -170,6 +170,12 @@ COPY --from=builder ${WORK_DIR} ${WORK_DIR}
 COPY setup.sh /usr/local/bin/setup.sh
 RUN chmod +x /usr/local/bin/setup.sh
 
+# Copy the migration entrypoint script, which will handle database migrations and other setup tasks.
+# This script is only run if the task being run is a database migration as its own separate task.
+# It is not run as part of the main application startup. A CMD override must be provided to run it.
+COPY migrate_entrypoint.sh /usr/local/bin/migrate_entrypoint.sh
+RUN chmod +x /usr/local/bin/migrate_entrypoint.sh
+
 # Expose port 80 to indicate that the container listens on this port for incoming traffic.
 EXPOSE 80
 
