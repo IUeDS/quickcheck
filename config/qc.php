@@ -10,6 +10,7 @@ return [
     'lti_client_id' => env('LTI_CLIENT_ID', ''), //LTI client ID for the app
     'lti_jwk_kid' => env('LTI_JWK_KID', ''), //LTI JWK key ID
     'lti_jwk_n' => env('LTI_JWK_N', ''), //LTI JWK n value
+    'lti_private_key' => env('LTI_PRIVATE_KEY', ''), //LTI private key for signing requests
     'timeout_length' => env('TIMEOUT_LENGTH', 60), //timeout length in seconds for students retrying too many times
     'image_upload_file_driver' => env('IMAGE_UPLOAD_FILE_DRIVER', 'local'), //file driver for image uploads, local default, s3 for AWS, etc.
 

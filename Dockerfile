@@ -71,7 +71,7 @@ RUN npm install
 RUN ng build --configuration "production"
 
 # Copy hashed CSS output to a non-hashed file for TinyMCE editor compatibility.
-RUN cp public/assets/dist/browser/styles-*.css public/assets/dist/styles.css
+RUN cp public/assets/dist/browser/styles-*.css public/assets/dist/browser/styles.css
 
 # Specific to IU: install/compile dependencies for custom activity angular projects.
 # This block is executed only if the specified directory exists, making it optional.
