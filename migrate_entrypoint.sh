@@ -62,7 +62,6 @@ echo "All required volume permissions set."
 echo "Generating Laravel cache files for migration task..."
 gosu "$APP_USER" php artisan config:cache
 gosu "$APP_USER" php artisan route:cache # Even if less critical, ensures full boot context
-gosu "$APP_USER" php artisan view:cache   # Ensures view cache is compiled
 
 echo "Laravel cache generation complete."
 
