@@ -19,7 +19,25 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
+      # This section prevents the LOCAL Docker daemon from having a 'latest' tag
+      # associated with the repository's image, so it doesn't get pushed.
+      - >
+        if docker images -q $REPOSITORY_URI:latest; then
+          echo "Local 'latest' tag for $REPOSITORY_URI found, removing it."
+          docker rmi $REPOSITORY_URI:latest || true
+        else
+          echo "No local 'latest' tag for $REPOSITORY_URI found."
+        fi
       - docker push $REPOSITORY_URI:$IMAGE_TAG
+      # This section explicitly removes the 'latest' tag from ECR if it exists there,
+      # acting as a safeguard against any 'latest' tags left by other processes/past builds.
+      - echo Attempting to remove 'latest' tag from ECR...
+      - >
+        aws ecr batch-delete-image
+        --repository-name elearn/qc-prod
+        --image-ids imageTag=latest
+        --region $AWS_REGION || true
+      - echo 'Finished attempting to remove "latest" tag.'
       - echo Writing image definitions files...
       - printf '[{"name":"elearn-qc-prod-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsserver.json
       - printf '[{"name":"elearn-qc-prod-artisan","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsartisan.json
