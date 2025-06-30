@@ -51,15 +51,13 @@ class Handler extends ExceptionHandler
         $info .= $this->getErrorRequest();
         Log::info($info);
 
+        //if listed in the dontReport array above, don't continue to send to Sentry
+        if ($this->shouldReport($e) === false) {
+            return parent::report($e);
+        }
+
         //if sentry is being used and in prod environment, then send error info
         if (app()->bound('sentry') && config('app.env') === 'prod') {
-            //capture as either error or info depending on severity
-            if (!$this->shouldReport($e)) {
-                app('sentry')->configureScope(function (Scope $scope) {
-                  $scope->setLevel(Severity::info());
-                });
-            }
-
             app('sentry')->captureException($e);
         }
 
