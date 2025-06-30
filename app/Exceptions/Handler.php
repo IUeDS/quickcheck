@@ -30,7 +30,8 @@ class Handler extends ExceptionHandler
         LtiLaunchDataMissingException::class,
         MissingLtiContextException::class,
         OAuthExpiredTimestampException::class,
-        GradePassbackException::class
+        GradePassbackException::class,
+        NotFoundHttpException::class
     ];
 
     /**
