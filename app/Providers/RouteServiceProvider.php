@@ -25,6 +25,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         parent::boot();
+        $this->configureRateLimiting(); //MGM 6/30/25: added this for rate limiting 404s to prevent malicious bot crawling
     }
 
     /**
@@ -32,8 +33,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(): void 
     {
-        $this->configureRateLimiting(); 
-
         Route::middleware('api')
             ->prefix('api')
             ->group(base_path('routes/api.php'));
