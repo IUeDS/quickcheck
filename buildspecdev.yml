@@ -6,7 +6,7 @@ phases:
       - aws --version
       - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-      - REPOSITORY_URI=783293427012.dkr.ecr.us-east-2.amazonaws.com/elearn/qc-dev
+      - REPOSITORY_URI=783293427012.dkr.ecr.$AWS_REGION.amazonaws.com/elearn/qc-dev
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - cp -r $CODEBUILD_SRC_DIR_customActivities $CODEBUILD_SRC_DIR/public/customActivities
   build:
@@ -14,13 +14,11 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - touch .env
-      - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions files...
       - printf '[{"name":"elearn-qc-dev-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsserver.json
