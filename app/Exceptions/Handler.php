@@ -30,7 +30,9 @@ class Handler extends ExceptionHandler
         LtiLaunchDataMissingException::class,
         MissingLtiContextException::class,
         OAuthExpiredTimestampException::class,
-        GradePassbackException::class
+        GradePassbackException::class,
+        NotFoundHttpException::class,
+        RateLimitException::class
     ];
 
     /**
@@ -132,6 +134,11 @@ class Handler extends ExceptionHandler
                 $e = new NotFoundHttpException($message, $e);
                 break;
             case ($e instanceof GradePassbackException):
+                $message = $e->getMessage();
+                $data = $this->getErrorRequest();
+                $this->logNotice($message . $data, $errorId);
+                break;
+            case ($e instanceof RateLimitException):
                 $message = $e->getMessage();
                 $data = $this->getErrorRequest();
                 $this->logNotice($message . $data, $errorId);

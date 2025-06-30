@@ -84,6 +84,7 @@ fi
 
 # 3. Generate Laravel cache files at runtime
 echo "Generating Laravel cache files at runtime..."
+gosu "$APP_USER" php artisan optimize:clear
 gosu "$APP_USER" php artisan config:cache
 gosu "$APP_USER" php artisan route:cache
 gosu "$APP_USER" php artisan view:cache
