@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route; 
+use App\Exceptions\RateLimitException;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -56,14 +57,14 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('global_web_protection', function (Request $request) {
             return Limit::perMinute(20)->by($request->ip())
                 ->response(function (Request $request, array $headers) {
-                    return response('Too many web requests. Please try again later.', 429, $headers);
+                    throw new RateLimitException;
                 });
         });
 
         RateLimiter::for('api_protection', function (Request $request) {
             return Limit::perMinute(10)->by($request->ip())
                 ->response(function (Request $request, array $headers) {
-                    return response('Too many API requests. Please try again later.', 429, $headers);
+                    throw new RateLimitException;
                 });
         });
     }
