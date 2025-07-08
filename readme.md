@@ -1,6 +1,6 @@
 # Quick Check
 
-Quick Check is an LTI (Learning Tools Interoperability) tool for creating formative assessments inline with course content in Canvas. Quick Check is best used for frequent, low-stakes assessments. Students receive instant feedback on their responses and, optionally, automatic grading. Instructors can review detailed student results and analytics. Quick Check was built by eLearning Design and Services at Indiana University, in response to faculty need for a robust formative assessment tool.
+Quick Check is an LTI 1.3 (Learning Tools Interoperability) tool for creating formative assessments inline with course content in Canvas. Quick Check is best used for frequent, low-stakes assessments. Students receive instant feedback on their responses and, optionally, automatic grading. Instructors can review detailed student results and analytics. Quick Check was built by eLearning Design and Services at Indiana University, in response to faculty need for a robust formative assessment tool.
 
 [Watch the overview video](https://iu.mediaspace.kaltura.com/media/Quick+Check/1_yy7hbu19).
 
