@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\CustomActivity;
 use App\Models\Question;
 use App\Models\CollectionFeature;
+use Log;
 
 class AssessmentController extends \BaseController
 {
@@ -246,6 +247,7 @@ class AssessmentController extends \BaseController
         }
 
         $fileDriver = config('qc.image_upload_file_driver', 'local');
+        Log::info('Image upload file driver: ' . $fileDriver);
         $path = null;
 
         //for local file system, build absolute path; otherwise, if using S3, we should already have it
@@ -255,7 +257,14 @@ class AssessmentController extends \BaseController
             $path = config('app.url') . '/' . $path;
         }
         else if ($fileDriver === 's3') {
-            $path = $request->file->store('uploads', $fileDriver);
+            try {
+                $path = $request->file->store('uploads', $fileDriver);
+            } catch (\Exception $e) {
+                Log::error('S3 storage not configured properly, message: ' . $e->getMessage());
+                Log::error('S3 storage not configured properly, body: ' . (string) $e->getResponse()->getBody());
+                return response()->error(500, ['Error storing image upload.']);
+            }
+            
             $path = 'https://' . config('filesystems.disks.s3.bucket') . '.s3.' . config('filesystems.disks.s3.region') . '.amazonaws.com/' . $path;
         }
 
