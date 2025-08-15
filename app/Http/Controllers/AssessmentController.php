@@ -263,8 +263,8 @@ class AssessmentController extends \BaseController
                 Log::error('S3 storage not configured properly, body: ' . (string) $e->getResponse()->getBody());
                 return response()->error(500, ['Error storing image upload.']);
             }
-            
-            $path = 'https://' . config('filesystems.disks.s3.bucket') . '.s3.' . config('filesystems.disks.s3.region') . '.amazonaws.com/' . $path;
+
+            $path = config('filesystems.disks.s3.url') . '/' . $path;            
         }
 
         //tinymce expects response in specific format, giving url of file location, can't
