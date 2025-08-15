@@ -28,7 +28,7 @@ services:
       - .env.docker_local # Use a specific .env for local Docker configuration
 
   db:
-    image: mysql:8.0 # Using official MySQL 8.0 image
+    image: mysql:8.4 # Using official MySQL 8.4 image
     container_name: quickcheck_db_dev
     # Using env_file here to load DB credentials and other MySQL-specific env vars
     env_file:

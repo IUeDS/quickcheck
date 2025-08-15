@@ -247,7 +247,6 @@ class AssessmentController extends \BaseController
         }
 
         $fileDriver = config('qc.image_upload_file_driver', 'local');
-        Log::info('Image upload file driver: ' . $fileDriver);
         $path = null;
 
         //for local file system, build absolute path; otherwise, if using S3, we should already have it
