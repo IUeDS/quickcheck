@@ -19,7 +19,7 @@ The application can be run within a docker container or locally in a LAMP enviro
 ## Docker install (recommended)
 
 1. Make sure that Docker for Mac/Windows is running. To build the image, `cd` to the directory of the app on your local machine and run: `docker-compose up --build`. In the future, the `--build` flag can be omitted to run the app without building.
-2. One-time setup is required for migrating and seeding the database. Run the following command separately: `docker-compose exec app php artisan migrate --seed`
+2. One-time setup is required for migrating and seeding the database. Run the following command separately: `docker-compose exec quickcheck php artisan migrate --seed`
 3. The application should be ready and available at localhost:8000. Changes to your local code (either back-end or front-end) will be reflected in the app for local development purposes. For production, do not use the docker-compose functionality, and instead incorporate only the Dockerfile in your build pipeline for a production-ready image.
 
 A `php.ini` file is located in `resources/php.ini`, which is copied into the docker container. Additional ini setup can be added to that file to suit additional configuration needs. An `.htaccess` file is located in the `public` folder for additional configuration.
@@ -48,7 +48,10 @@ If installing locally, PHP >= 8.2 is required, as is [Composer](https://getcompo
 
 On the production server, please ensure that there is a new .env file with configuration information that is specific to the production environment. It is best practice to not sync the local .env file to the production server, because the configuration values will be different depending on the environment.
 
-Front-end and back-end dependencies should be installed, and database migrations/seeding on the production database should be initialized.
+Front-end and back-end dependencies should be installed, and database migrations/seeding on the production database should be initialized. Note that for running migrations or custom artisan commands, a separate entrypoint script has been created for one-off Docker tasks. Examples:
+
+Migration CMD ("--seed" is optional): `["/usr/local/bin/migrate_entrypoint.sh", "--seed"]`
+Artisan CMD: `["/usr/local/bin/artisan_entrypoint.sh", "config:cache"]`
 
 Hosting should be configured to point the application root URL to the "public" directory in the application. This is common practice for Laravel applications. If this step is not completed, and the "public" directory is visible in the URL, the app may not function properly.
 

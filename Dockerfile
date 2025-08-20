@@ -73,13 +73,6 @@ RUN ng build --configuration "production"
 # Copy hashed CSS output to a non-hashed file for TinyMCE editor compatibility.
 RUN cp public/assets/dist/browser/styles-*.css public/assets/dist/browser/styles.css
 
-# Specific to IU: install/compile dependencies for custom activity angular projects.
-# This block is executed only if the specified directory exists, making it optional.
-# `rm -rf node_modules` helps reduce the final image size after build by cleaning up temp files.
-ARG LABS_DIR=/var/www/html/public/customActivities/jsomelec/labs
-ARG DRAG_DIR=/var/www/html/public/customActivities/drag-and-drop
-RUN bash -c 'if [ -d "${LABS_DIR}" ]; then echo "Installing labs dependencies"; cd ${LABS_DIR}; npm install; ng build --prod --base-href="/customActivities/jsomelec/labs/dist/"; rm -rf node_modules; cd ${WORK_DIR}; fi'
-
 # --- Stage 2: Production - The lean final image for deployment ---
 # This stage starts from a fresh base image, ensuring no build tools are included.
 FROM public.ecr.aws/docker/library/php:8.2-apache AS production
@@ -175,6 +168,10 @@ RUN chmod +x /usr/local/bin/setup.sh
 # It is not run as part of the main application startup. A CMD override must be provided to run it.
 COPY migrate_entrypoint.sh /usr/local/bin/migrate_entrypoint.sh
 RUN chmod +x /usr/local/bin/migrate_entrypoint.sh
+
+# Also copy the artisan entrypoint script, which is used for one-off artisan tasks.
+COPY artisan_entrypoint.sh /usr/local/bin/artisan_entrypoint.sh
+RUN chmod +x /usr/local/bin/artisan_entrypoint.sh
 
 # Expose port 80 to indicate that the container listens on this port for incoming traffic.
 EXPOSE 80
