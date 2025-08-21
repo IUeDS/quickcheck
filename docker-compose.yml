@@ -14,6 +14,8 @@ services:
       - "8000:80" # Map host_port:container_port
     volumes:
       - .:/var/www/html # Mount entire project for code changes
+      - /var/www/html/vendor # Mount vendor directory for Composer dependencies
+      - /var/www/html/node_modules # Mount node_modules for npm dependencies
       - ./storage:/var/www/html/storage # Explicitly mount storage for writability
       - ./bootstrap/cache:/var/www/html/bootstrap/cache # Ensure this is also writable
       # Named volumes to make /tmp and /run/apache2 writable and ephemeral *within Docker*
@@ -26,7 +28,7 @@ services:
       - .env.docker_local # Use a specific .env for local Docker configuration
 
   db:
-    image: mysql:8.0 # Using official MySQL 8.0 image
+    image: mysql:8.4 # Using official MySQL 8.4 image
     container_name: quickcheck_db_dev
     # Using env_file here to load DB credentials and other MySQL-specific env vars
     env_file:

@@ -68,7 +68,8 @@ return [
             'secret' => env('S3_SECRET', null),
             'region' => env('S3_REGION', null),
             'bucket' => env('S3_BUCKET', null),
-            'visibility' => 'public'
+            'visibility' => 'private',
+            'url' => env('AWS_URL')
         ],
 
         'rackspace' => [
