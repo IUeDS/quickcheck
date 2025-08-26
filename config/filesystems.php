@@ -69,7 +69,8 @@ return [
             'region' => env('S3_REGION', null),
             'bucket' => env('S3_BUCKET', null),
             'visibility' => 'private',
-            'url' => env('AWS_URL')
+            'url' => env('AWS_URL'),
+            'root' => env('AWS_BUCKET_ROOT', null)
         ],
 
         'rackspace' => [
