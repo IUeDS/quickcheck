@@ -264,7 +264,10 @@ class AssessmentController extends \BaseController
                 return response()->error(500, ['Error storing image upload.']);
             }
 
-            $path = config('filesystems.disks.s3.url') . '/' . $path;            
+            $bucketRoot = config('filesystems.disks.s3.root'); //optional root folder for bucket
+            $path = rtrim(config('filesystems.disks.s3.url'), '/') //trim trailing slash if present
+                . ($bucketRoot ? '/' . trim($bucketRoot, '/') : '') //make sure no slashes around root
+                . '/' . ltrim($path, '/'); //make sure no leading slash on path
         }
 
         //tinymce expects response in specific format, giving url of file location, can't
