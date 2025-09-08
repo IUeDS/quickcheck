@@ -85,6 +85,17 @@
         margin-bottom: 0;
         padding-left: 10px;
     }
+
+    // ensure multi-line multiple correct options don't break inline format
+    .qc-assessment-multiple-correct-option {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    // align checkbox with top of text
+    input {
+        margin-top: 8px;
+    }
 }
 
 //for matching and dropdowns
