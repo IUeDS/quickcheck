@@ -20,6 +20,7 @@ class LTIAdvantage {
     private $jwtBody;
     private $jwtSignature;
     private $oauthHeader;
+    private $userAgentHeader = 'User-Agent: IU-QuickCheck/6.0';
     private $oauthTokenEndpoint;
     private $publicKey;
     private $request = false;
@@ -433,10 +434,10 @@ class LTIAdvantage {
             $scope .= ($scopeItem . ' ');
         }
         $params['scope'] = $scope;
-        $jsonResponse = $this->curlPost($this->oauthTokenEndpoint, [], $params);
+        $jsonResponse = $this->curlPost($this->oauthTokenEndpoint, [$this->userAgentHeader], $params);
         $response = json_decode($jsonResponse, true);
         $oauthToken = $response['access_token'];
-        $this->oauthHeader = ['Authorization: Bearer ' . $oauthToken];
+        $this->oauthHeader = ['Authorization: Bearer ' . $oauthToken, $this->userAgentHeader];
 
         return $oauthToken;
     }
@@ -523,7 +524,7 @@ class LTIAdvantage {
 
     public function setOauthToken($oauthToken)
     {
-        $this->oauthHeader = ['Authorization: Bearer ' . $oauthToken];
+        $this->oauthHeader = ['Authorization: Bearer ' . $oauthToken, $this->userAgentHeader];
     }
 
     /**

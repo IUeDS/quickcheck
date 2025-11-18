@@ -209,8 +209,8 @@ class CASFilter
     private function setLocalAuth()
     {
         //locally, you can comment out either Session line below to test what an admin vs. instructor sees
-        Session::put('user', 'testinstructor');
-        //Session::put('user', 'testadmin');
+        //Session::put('user', 'testinstructor');
+        Session::put('user', 'testadmin');
         $authenticated = true; //if on a local machine for development, skip all the CAS business
     }
 }
