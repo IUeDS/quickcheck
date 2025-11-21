@@ -119,7 +119,7 @@ RUN mkdir -p ${WORK_DIR}
 # libwebp7 for GD's WebP support
 # libxpm4 for GD's XPM support
 # libfreetype6 for GD's FreeType (fonts) support
-# libzip4 for PHP's ZIP extension
+# libzip5 for PHP's ZIP extension
 # libmariadb3 for PHP's PDO MySQL extension
 RUN apt-get update -yqq && \
     apt-get install -yqq --no-install-recommends \
@@ -129,7 +129,7 @@ RUN apt-get update -yqq && \
     libwebp7 \
     libxpm4 \
     libfreetype6 \
-    libzip4 \
+    libzip5 \
     libmariadb3 \
     # OpenSSL runtime libraries and tools (CRUCIAL FOR JWT/LTI SSL VALIDATION)
     openssl \

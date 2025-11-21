@@ -464,7 +464,7 @@ class CanvasAPI
 
     private function curlGet($url, $apiToken, $perPage = false, $includes = false, $pagination = false)
     {
-        $tokenHeader = [$this->canvasHeader . $apiToken];
+        $tokenHeader = [$this->canvasHeader . $apiToken, 'User-Agent: IU-QuickCheck/6.0',];
         if ($perPage) {
             $url = $url . '?per_page=' . $perPage;
         }
