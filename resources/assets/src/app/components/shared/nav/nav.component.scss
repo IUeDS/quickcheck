@@ -44,3 +44,35 @@
         }
     }
 }
+
+//home-specific nav style
+:host.home-nav-style {
+    //position over the content so background image shows through
+    position: absolute;
+    top: 0;
+    left: 0;   // Pin to the left edge
+    width: 100%;
+    z-index: 1000;
+    padding: 30px;
+
+    h1,
+    h2 {
+        color: $white;
+        padding-left: 30px;
+    }
+
+    h1 {
+        font-size: 3em;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-style: normal;
+        text-transform: none;
+    }
+
+    nav {
+        background-color: transparent;
+    }
+}

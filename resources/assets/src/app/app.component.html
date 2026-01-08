@@ -1,1 +1,15 @@
-<router-outlet></router-outlet>
+<a class="skip-to-content" 
+   href="javascript:void(0)" 
+   (click)="skipToContent($event)">
+   Skip to main content
+</a>
+<qc-nav 
+  *ngIf="navState.visible" 
+  [currentPage]="pageTitle"
+  [class.home-nav-style]="pageTitle === 'Home'"
+  aria-label="Quick Check">
+</qc-nav>
+
+<main id="main-content" tabindex="-1" class="container-fluid" aria-label="Quick Check">
+  <router-outlet></router-outlet>
+</main>

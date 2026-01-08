@@ -1,72 +1,70 @@
-<qc-nav [currentPage]="this.currentPage" aria-label="Quick Check"></qc-nav>
-<main class="container-fluid" aria-label="Quick Check">
-    <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
-    <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
-    <div class="row section-white qc-results-page">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-6">
-                    <h1>Student Results</h1>
-                </div>
-                <div class="col-6 text-right">
-                    <a class="btn btn-light qc-btn qc-btn-download-csv" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId">
-                        <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
-                    </a>
-                </div>
+
+<qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
+<qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+<div class="row section-white qc-results-page">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-6">
+                <h1>Student Results</h1>
             </div>
-            <div *ngIf="!this.isViewingByStudent()">
-                <h2>Quick checks</h2>
-                <p class="lead">Quick checks will only appear in the list below if at least one attempt has been made. Click on a quick check to see student results.</p>
+            <div class="col-6 text-right">
+                <a class="btn btn-light qc-btn qc-btn-download-csv" target="_blank" [href]="'/index.php/attempts/csv/download/' + this.utilitiesService.contextId">
+                    <span class="fa fa-cloud-download fa-2x" aria-hidden="true"></span> Download attempts <strong>CSV</strong>
+                </a>
+            </div>
+        </div>
+        <div *ngIf="!this.isViewingByStudent()">
+            <h2>Quick checks</h2>
+            <p class="lead">Quick checks will only appear in the list below if at least one attempt has been made. Click on a quick check to see student results.</p>
+        </div>
+        <div *ngIf="this.isViewingByStudent()">
+            <h2>Students</h2>
+            <p class="lead">Students will only appear in the list below if they have made at least one quick check attempt in this course. Click on a student to see their results.</p>
+        </div>
+        <div [hidden]="this.utilitiesService.loading" >
+            <div class="row" *ngIf="this.attempts.length || this.students.length">
+                <div class="col-4 col-md-3 text-left">
+                    <div class="form-group">
+                        <label for="search-name" class="sr-only">Search: </label>
+                        <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.assessmentName" placeholder="Search quick check name" *ngIf="!this.isViewingByStudent()">
+                        <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.studentName" placeholder="Search by last name" *ngIf="this.isViewingByStudent()">
+                    </div>
+                </div>
+                <div class="col-8 col-md-9 text-right">
+                    <div class="qc-student-results-toggle">
+                        <input class="tgl tgl-ios sr-only" type="checkbox"
+                            id="qc-student-results-toggle"
+                            [(ngModel)]="this.isResultsByStudentToggled"
+                            [checked]="this.isResultsByStudentToggled === true"
+                            (click)="this.toggleStudentResultsView()">
+                        <label class="tgl-btn inline-block" for="qc-student-results-toggle"><span class="sr-only">Toggle to view results by student</span></label>
+                        <p class="qc-toggle-student-results-text">{{ this.isResultsByStudentToggled === true ? 'Hide' : 'View' }} results by student</p>
+                    </div>
+                </div>
             </div>
             <div *ngIf="this.isViewingByStudent()">
-                <h2>Students</h2>
-                <p class="lead">Students will only appear in the list below if they have made at least one quick check attempt in this course. Click on a student to see their results.</p>
+                <div class="list-group attempt-overview-list" *ngIf="this.students.length">
+                    <ng-container *ngFor="let student of this.students">
+                        <a target="_self" [routerLink]="'/student/' + student.id + '/attempts'" queryParamsHandling="preserve" class="list-group-item list-group-item-action qc-attempt-overview-student" *ngIf="!this.isSubstringNotFound(student.lis_person_name_family, this.search.studentName)">{{ student.lis_person_name_family }}, {{ student.lis_person_name_given }}</a>
+                    </ng-container>
+                </div>
             </div>
-            <div [hidden]="this.utilitiesService.loading" >
-                <div class="row" *ngIf="this.attempts.length || this.students.length">
-                    <div class="col-4 col-md-3 text-left">
-                        <div class="form-group">
-                            <label for="search-name" class="sr-only">Search: </label>
-                            <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.assessmentName" placeholder="Search quick check name" *ngIf="!this.isViewingByStudent()">
-                            <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.studentName" placeholder="Search by last name" *ngIf="this.isViewingByStudent()">
-                        </div>
-                    </div>
-                    <div class="col-8 col-md-9 text-right">
-                        <div class="qc-student-results-toggle">
-                            <input class="tgl tgl-ios sr-only" type="checkbox"
-                                id="qc-student-results-toggle"
-                                [(ngModel)]="this.isResultsByStudentToggled"
-                                [checked]="this.isResultsByStudentToggled === true"
-                                (click)="this.toggleStudentResultsView()">
-                            <label class="tgl-btn inline-block" for="qc-student-results-toggle"><span class="sr-only">Toggle to view results by student</span></label>
-                            <p class="qc-toggle-student-results-text">{{ this.isResultsByStudentToggled === true ? 'Hide' : 'View' }} results by student</p>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf="this.isViewingByStudent()">
-                    <div class="list-group attempt-overview-list" *ngIf="this.students.length">
-                        <ng-container *ngFor="let student of this.students">
-                            <a target="_self" [routerLink]="'/student/' + student.id + '/attempts'" queryParamsHandling="preserve" class="list-group-item list-group-item-action qc-attempt-overview-student" *ngIf="!this.isSubstringNotFound(student.lis_person_name_family, this.search.studentName)">{{ student.lis_person_name_family }}, {{ student.lis_person_name_given }}</a>
-                        </ng-container>
-                    </div>
-                </div>
 
-                <div *ngIf="!this.isViewingByStudent()">
-                    <div class="list-group attempt-overview-list" *ngIf="this.attempts.length">
-                        <ng-container *ngFor="let attempt of this.attempts">
-                            <!-- if assessment deleted, then don't include, otherwise will throw errors -->
-                            <ng-container *ngIf="attempt.assessment">
-                                <a target="_self" [routerLink]="'/assessment/' + attempt.assessment_id + '/attempts/' + (this.getAssignmentId(attempt) ? this.getAssignmentId(attempt) : '0') + (this.getResourceLinkId(attempt) ? '/' + this.getResourceLinkId(attempt) : '0' )" queryParamsHandling="preserve" class="list-group-item list-group-item-action qc-attempt-overview-assessment" *ngIf="!this.isSubstringNotFound(attempt.assessment.name, this.search.assessmentName)">{{ attempt.assessment.name }} {{ this.getDuplicateEmbedName(attempt) }}</a>
-                            </ng-container>
+            <div *ngIf="!this.isViewingByStudent()">
+                <div class="list-group attempt-overview-list" *ngIf="this.attempts.length">
+                    <ng-container *ngFor="let attempt of this.attempts">
+                        <!-- if assessment deleted, then don't include, otherwise will throw errors -->
+                        <ng-container *ngIf="attempt.assessment">
+                            <a target="_self" [routerLink]="'/assessment/' + attempt.assessment_id + '/attempts/' + (this.getAssignmentId(attempt) ? this.getAssignmentId(attempt) : '0') + (this.getResourceLinkId(attempt) ? '/' + this.getResourceLinkId(attempt) : '0' )" queryParamsHandling="preserve" class="list-group-item list-group-item-action qc-attempt-overview-assessment" *ngIf="!this.isSubstringNotFound(attempt.assessment.name, this.search.assessmentName)">{{ attempt.assessment.name }} {{ this.getDuplicateEmbedName(attempt) }}</a>
                         </ng-container>
-                    </div>
+                    </ng-container>
                 </div>
+            </div>
 
-                <div *ngIf="!this.attempts.length && !this.students.length" [hidden]="this.utilitiesService.loading">
-                    <h3>Looks like there aren't any results yet.</h3>
-                    <p>If you're curious to see how the results might appear, you can take a quick check you've embedded in an assignment, and even as an instructor, you can see your attempts and responses here.</p>
-                </div>
+            <div *ngIf="!this.attempts.length && !this.students.length" [hidden]="this.utilitiesService.loading">
+                <h3>Looks like there aren't any results yet.</h3>
+                <p>If you're curious to see how the results might appear, you can take a quick check you've embedded in an assignment, and even as an instructor, you can see your attempts and responses here.</p>
             </div>
         </div>
     </div>
-</main>
+</div>

@@ -1,12 +1,11 @@
 @import '../../../styles/colors';
 @import '../../../styles/mixins';
 
-//use ng-deep so styles cascade down to nav component, and added specificity to override global styles
 ::ng-deep body .qc-home-page {
     background-color: #333333;
     background-image: url('/assets/img/home_background_darkened.jpg');
     background-size: cover;
-    padding: 30px;
+    padding: 150px 30px;
 
     body,
     h1,
@@ -72,10 +71,6 @@
             background-color: $seventy-percent-opaque;
             color: $light-gray;
         }
-    }
-
-    .qc-nav {
-        background-color: transparent;
     }
 
     .qc-home-add-panel {

@@ -11,9 +11,9 @@ label {
     font-weight: 400;
 }
 
-//set max-width the same as Canvas's, so that the layout doesn't get funky in a new tab
-main {
-    max-width: 1366px;
+body main.container-fluid {
+    //set max-width the same as Canvas's, so that the layout doesn't get funky in a new tab
+    //max-width: 1366px;
 }
 
 //add back in bottom border that bootstrap v4 took out
