@@ -1,13 +1,15 @@
 <p class="lead" *ngIf="!this.studentResponses.length">No responses were recorded for this attempt.</p>
 <table class="table table-sm qc-responses-table" *ngIf="this.showTableView">
     <thead>
-        <th>Time</th>
-        <th class="text-center">Is Correct</th>
-        <th>Partial Credit</th>
-        <th>Retry #</th>
-        <th>Question</th>
-        <th>Answer</th>
-        <th>Answer Key</th>
+        <tr>
+            <th>Time</th>
+            <th class="text-center">Is Correct</th>
+            <th>Partial Credit</th>
+            <th>Retry #</th>
+            <th>Question</th>
+            <th>Answer</th>
+            <th>Answer Key</th>
+        </tr>
     </thead>
     <tbody>
         <tr *ngFor="let response of this.studentResponses"

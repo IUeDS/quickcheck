@@ -3,10 +3,12 @@
     <table class="table table-striped">
         <caption class="sr-only">Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.</caption>
         <thead>
-            <th><span class="sr-only">Row name</span></th>
-            <th *ngFor="let column of this.columns">
-                <span [innerHTML]="column.answer_text | safe: 'html'"></span>
-            </th>
+            <tr>
+                <th><span class="sr-only">Row name</span></th>
+                <th *ngFor="let column of this.columns">
+                    <span [innerHTML]="column.answer_text | safe: 'html'"></span>
+                </th>
+            </tr>
         </thead>
         <tbody>
             <tr *ngFor="let row of this.rows" [ngClass]="{'table-danger': !this.checkRowCorrectness(row)}">

@@ -1,18 +1,20 @@
 <table class="table table-sm table-striped qc-attempts-table">
     <thead>
-        <th *ngIf="!this.isStudent">Name</th>
-        <th>Last Milestone</th>
-        <th class="success text-center">Correct</th>
-        <th class="danger text-center">Incorrect</th>
-        <th>Score</th>
-        <th class="text-center">Complete</th>
-        <th class="text-center" *ngIf="!this.isStudent">Past Due</th>
-        <th>Start Time</th>
-        <th>Elapsed Time</th>
-        <th *ngIf="this.isAttemptLimit">Attempt #</th>
-        <th *ngIf="this.isAttemptLimit">Attempt limit</th>
-        <th *ngIf="this.showResponses">Responses</th>
-        <th *ngIf="!this.isStudent && !this.largeClassSize">Grade</th>
+        <tr>
+            <th *ngIf="!this.isStudent">Name</th>
+            <th>Last Milestone</th>
+            <th class="success text-center">Correct</th>
+            <th class="danger text-center">Incorrect</th>
+            <th>Score</th>
+            <th class="text-center">Complete</th>
+            <th class="text-center" *ngIf="!this.isStudent">Past Due</th>
+            <th>Start Time</th>
+            <th>Elapsed Time</th>
+            <th *ngIf="this.isAttemptLimit">Attempt #</th>
+            <th *ngIf="this.isAttemptLimit">Attempt limit</th>
+            <th *ngIf="this.showResponses">Responses</th>
+            <th *ngIf="!this.isStudent && !this.largeClassSize">Grade</th>
+        </tr>
     </thead>
     <tbody>
         <tr *ngFor="let attempt of this.attempts; index as $index; trackBy:this.identify"

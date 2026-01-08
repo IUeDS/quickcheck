@@ -11,8 +11,10 @@
         <table class="table table-striped">
             <caption class="sr-only" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></caption>
             <thead class="sr-only">
-                <th>Prompt</th>
-                <th>Selection</th>
+                <tr>
+                    <th>Prompt</th>
+                    <th>Selection</th>
+                </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let prompt of this.prompts" [ngClass]="{'table-danger': !this.checkRowCorrectness(prompt)}">
