@@ -58,7 +58,7 @@
         }
 
         background-color: $thirty-percent-opaque;
-        border: solid $white 2px;
+        border: solid $white 3px;
         border-radius: 20px;
         color: $white;
         font-family: 'BentonSans';
@@ -67,9 +67,10 @@
         padding: 35px;
         text-transform: uppercase;
 
-        &:hover {
+        &:hover,
+        &:focus {
             background-color: $seventy-percent-opaque;
-            color: $light-gray;
+            border: solid $electric-blue-lighter 3px !important;
         }
     }
 
