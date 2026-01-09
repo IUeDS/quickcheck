@@ -80,6 +80,11 @@ textarea {
     }
 }
 
+.tox-tinymce.is-focused {
+    outline: 2px solid $iron-gray !important; 
+    outline-offset: 2px;
+}
+
 //light color focus for contrast against dark background for nav links
 nav a {
     &:focus {
