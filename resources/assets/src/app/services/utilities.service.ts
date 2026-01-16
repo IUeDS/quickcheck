@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import {environment} from '../../environments/environment';
 import moment from 'moment-timezone';
 import { Title } from '@angular/platform-browser';
 import cloneDeep from 'lodash/cloneDeep';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,22 +16,28 @@ export class UtilitiesService {
   errorList = [];
   isLti = false;
   loading = false;
+  params = null;
   scrollingLtiHeight = 0;
   sessionExpired = false;
 
-  constructor(private route: ActivatedRoute, private titleService: Title) {
-    let params = this.route.snapshot.queryParamMap;
+  constructor(private router: Router, private route: ActivatedRoute, private titleService: Title) {
+    // Listen for navigation to finish before updating query params
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.params = this.getQueryParams();
+      const contextId = this.getQueryParam('context');
 
-    let contextId = params.get('context');
-    if (contextId) {
-      this.contextId = contextId;
-      this.isLti = true;
-    }
+      if (contextId) {
+        this.contextId = contextId;
+        this.isLti = true;
+      }
 
-    let sessionExpired = params.get('sessionexpired');
-    if (sessionExpired) {
-      this.sessionExpired = true;
-    }
+      const sessionExpired = this.getQueryParam('session_expired');
+      if (sessionExpired) {
+        this.sessionExpired = true;
+      }
+    });
   }
 
   areCookiesEnabled() {
@@ -176,10 +183,7 @@ export class UtilitiesService {
   }
 
   getAssessmentIdFromQueryParams() {
-    let params = this.route.snapshot.queryParamMap;
-
-    let id = params.get('id');
-    return id ? id : false;
+    return this.getQueryParam('id');
   }
 
   getCookieErrorMsg() {
@@ -250,17 +254,25 @@ export class UtilitiesService {
   }
 
   getAssessmentPreviewFromQueryParams() {
-    let params = this.route.snapshot.queryParamMap;
-
-    let preview = params.get('preview');
-    return preview ? preview : false;
+    return this.getQueryParam('preview');
   }
 
   getQueryParam(paramName) {
-    let params = this.route.snapshot.queryParamMap;
-
-    let value = params.get(paramName);
+    const value = this.params.get(paramName);
     return value ? value : false;
+  }
+
+  getQueryParams() {
+    // Start at the root of the application
+    let child = this.route.root;
+    
+    // Dig down to the deepest active route
+    while (child.firstChild) {
+      child = child.firstChild;
+    }
+
+    const params = child.snapshot.queryParamMap;
+    return params;
   }
 
   //all of the successful API calls conform to the same structure, of:
