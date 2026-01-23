@@ -33,7 +33,7 @@ export class UtilitiesService {
         this.isLti = true;
       }
 
-      const sessionExpired = this.getQueryParam('session_expired');
+      const sessionExpired = this.getQueryParam('sessionexpired');
       if (sessionExpired) {
         this.sessionExpired = true;
       }
