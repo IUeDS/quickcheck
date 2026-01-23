@@ -39,6 +39,7 @@ export class CollectionTileComponent implements OnInit {
 
   collectionEditingClose () {
     this.collection.isEditing = false;
+    this.utilitiesService.focusToElement('#qc-collection-edit-btn-' + this.collection.id);
   }
 
   async deleteCollection() {

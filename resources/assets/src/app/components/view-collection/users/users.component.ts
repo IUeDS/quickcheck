@@ -49,6 +49,7 @@ export class UsersComponent implements OnInit {
 
   addUserCancel() {
     this.isAddingUser.init = false;
+    this.utilitiesService.focusToElement('.qc-btn-user-add');
   }
 
   deleteMembership(user) {
@@ -57,6 +58,7 @@ export class UsersComponent implements OnInit {
 
   editUsersCancel() {
     this.isEditingUsers.init = false; //reset
+    this.utilitiesService.focusToElement('.qc-users-edit-btn');
   }
 
   async getCollectionUsers() {

@@ -10,7 +10,7 @@
                     <button type="button" class="btn btn-sm" (click)="this.editAssessmentGroupCancel()">Cancel <span class="sr-only">edits to subset {{this.assessmentGroup.name}}</span></button>
                 </form>
             </div>
-            <button class="qc-edit-btn qc-subset-edit-btn" (click)="this.editAssessmentGroup($event)" [hidden]="this.isEditing" *ngIf="!this.readOnly">
+            <button class="qc-edit-btn qc-subset-edit-btn" id="qc-subset-edit-btn-{{this.assessmentGroup.id}}" (click)="this.editAssessmentGroup($event)" [hidden]="this.isEditing" *ngIf="!this.readOnly">
                 <qc-edit-icon aria-hidden="true"></qc-edit-icon>
                 <span class="sr-only">Edit subset {{this.assessmentGroup.name}}</span>
             </button>
@@ -117,7 +117,14 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-lg qc-btn qc-btn-add qc-btn-add-quiz" (click)="this.initNewAssessment()" [hidden]="this.isAddingAssessment" type="button" *ngIf="!this.readOnly"><span class="fa fa-plus" aria-hidden="true"></span> Add new quick check to subset <span class="sr-only">{{ this.assessmentGroup.name }}</span></button>
+            <button class="btn btn-lg qc-btn qc-btn-add qc-btn-add-quiz" 
+                (click)="this.initNewAssessment()" 
+                [hidden]="this.isAddingAssessment" 
+                type="button"
+                id="qc-btn-add-{{this.assessmentGroup.id}}" 
+                *ngIf="!this.readOnly">
+                    <span class="fa fa-plus" aria-hidden="true"></span> Add new quick check to subset <span class="sr-only">{{ this.assessmentGroup.name }}</span>
+            </button>
             <div class="row" *ngIf="this.isAddingAssessment">
                 <div class="col-12 col-sm-6">
                     <div class="card">

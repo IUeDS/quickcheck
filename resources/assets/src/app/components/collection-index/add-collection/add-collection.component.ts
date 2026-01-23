@@ -26,6 +26,7 @@ export class AddCollectionComponent implements OnInit {
 
   collectionAddClose() {
     this.isAddingCollection = false;
+    this.utilitiesService.focusToElement('.qc-btn-add-set');
   }
 
   async saveNewCollection() {

@@ -2,7 +2,7 @@
     <div [hidden]="this.collection.isEditing">
         <div class="qc-collection-header">
             <h2 id="collection-header-{{this.collection.id}}" tabindex="-1">{{ this.collection.name }}</h2>
-            <button class="qc-edit-btn qc-collection-edit-btn" (click)="this.editCollection()" *ngIf="!this.isReadOnly">
+            <button class="qc-edit-btn qc-collection-edit-btn" id="qc-collection-edit-btn-{{this.collection.id}}" (click)="this.editCollection()" *ngIf="!this.isReadOnly">
                 <qc-edit-icon aria-hidden="true"></qc-edit-icon>
                 <span class="sr-only">Edit set {{ this.collection.name }}</span>
             </button>

@@ -153,6 +153,7 @@ export class AssessmentGroupComponent implements OnInit {
 
   editAssessmentGroupCancel() {
     this.isEditing = false;
+    this.utilitiesService.focusToElement('#qc-subset-edit-btn-' + this.assessmentGroup.id);
   }
 
   async getMemberships() {
@@ -195,6 +196,8 @@ export class AssessmentGroupComponent implements OnInit {
 
   newAssessmentCancel() {
     this.isAddingAssessment = false;
+    const addButton = '#qc-btn-add-' + this.assessmentGroup.id;
+    this.utilitiesService.focusToElement(addButton);
   }
 
   onCopyAssessmentCollectionSelected(assessment) {
