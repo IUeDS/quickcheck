@@ -94,6 +94,8 @@ export class AssessmentGroupComponent implements OnInit {
   copyAssessmentCancel(assessment) {
     assessment.isCopying = false;
     assessment.copyData = {};
+    const copyButton = '#qc-copy-button-' + assessment.id;
+    this.utilitiesService.focusToElement(copyButton);
     this.utilitiesService.setLtiHeight();
   }
 
