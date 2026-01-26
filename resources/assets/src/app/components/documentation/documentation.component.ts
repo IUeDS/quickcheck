@@ -29,9 +29,26 @@ export class DocumentationComponent implements OnInit {
       anchor.addEventListener('click', function (e) {
           e.preventDefault();
 
-          document.querySelector(this.getAttribute('href')).scrollIntoView({
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+
+          if (targetElement) {
+            // 1. Scroll to the element
+            targetElement.scrollIntoView({
               behavior: 'instant'
-          });
+            });
+
+            // 2. Ensure the element can receive focus 
+            // (This is a safety check if not added to the HTML)
+            if (!targetElement.hasAttribute('tabindex')) {
+              targetElement.setAttribute('tabindex', '-1');
+            }
+
+            // 3. Move the focus
+            targetElement.focus({
+              preventScroll: true // Prevents "double scrolling" in some browsers
+            });
+          }
       });
     });
   }
