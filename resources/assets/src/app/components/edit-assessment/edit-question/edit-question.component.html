@@ -7,12 +7,16 @@
             <!-- arrows to reorder question -->
             <span class="qc-reorder-btn-group">
                 <button class="qc-reorder-up-btn"
+                    type="button"
+                    id="qc-reorder-up-btn-{{this.question.id}}"
                     (click)="this.reorderQuestionUp($event)"
                     *ngIf="!this.readOnly && !this.isFirstQuestion()">
                     <qc-arrow-up-icon aria-hidden="true"></qc-arrow-up-icon>
                     <span class="sr-only">Move question #{{this.question.question_order}} up in order></span>
                 </button>
                 <button class="qc-reorder-down-btn"
+                    type="button"
+                    id="qc-reorder-down-btn-{{this.question.id}}"
                     (click)="this.reorderQuestionDown($event)"
                     *ngIf="!this.readOnly && !this.isLastQuestion()">
                     <qc-arrow-down-icon aria-hidden="true"></qc-arrow-down-icon>
@@ -21,6 +25,8 @@
             </span>
             <!-- delete question button -->
             <button class="qc-delete-btn qc-delete-question-btn"
+                type="button"
+                id="qc-delete-question-button-{{this.question.id}}"
                 (click)="this.deleteQuestion($event)"
                 *ngIf="!this.readOnly">
                 <qc-delete-icon aria-hidden="true"></qc-delete-icon>

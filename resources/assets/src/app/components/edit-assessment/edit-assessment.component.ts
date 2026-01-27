@@ -245,13 +245,29 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
     const newQuestionIndex = $event.newQuestionIndex;
     const questionIndex = $event.questionIndex;
     const tempQuestion = cloneDeep(this.questions[newQuestionIndex]);
+    const reorderUp = newQuestionIndex < questionIndex;
 
     //swap
     this.questions[newQuestionIndex] = this.questions[questionIndex];
     this.questions[questionIndex] = tempQuestion;
     this.updateQuestionOrder();
-    this.focusToQuestion(this.questions[newQuestionIndex]);
+
     this.onEdited();
+
+    //set focus to the button that was used to reorder the question;
+    //if first or last question, focus to the only available button
+    if (newQuestionIndex === 0) {
+      this.utilitiesService.focusToElement('#qc-reorder-down-btn-' + this.questions[newQuestionIndex].id);
+    }
+    else if (newQuestionIndex === this.questions.length - 1) {
+      this.utilitiesService.focusToElement('#qc-reorder-up-btn-' + this.questions[newQuestionIndex].id);
+    }
+    else if (reorderUp) {
+      this.utilitiesService.focusToElement('#qc-reorder-up-btn-' + this.questions[newQuestionIndex].id);
+    }
+    else {
+      this.utilitiesService.focusToElement('#qc-reorder-down-btn-' + this.questions[newQuestionIndex].id);
+    }
   }
 
   async saveAssessment() {

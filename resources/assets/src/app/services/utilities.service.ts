@@ -87,6 +87,7 @@ export class UtilitiesService {
   focusToElement(element) {
     setTimeout(() => {
       document.querySelector(element).focus();
+      document.querySelector(element).scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 0);
   }
 
