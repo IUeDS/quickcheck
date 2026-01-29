@@ -448,7 +448,13 @@ export class AssessmentComponent implements OnInit {
       errorMessage: this.errorMessage,
       showRestartBtn
     };
-    this.modalService.show(ErrorModalComponent, {initialState, backdrop: 'static', keyboard: false});
+    this.modalService.show(ErrorModalComponent, {
+      initialState, 
+      backdrop: 'static', 
+      keyboard: false, 
+      focus: true,        
+      ignoreBackdropClick: true
+    });
     this.modalVisible = true;
   }
 
