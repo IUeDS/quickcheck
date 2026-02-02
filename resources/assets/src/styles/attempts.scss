@@ -48,11 +48,11 @@
 }
 
 .qc-autograde-btn {
-    background-color: $electric-blue;
+    background-color: $dark-blue;
     color: $white;
 
     &:hover {
-        background-color: $dark-blue;
+        background-color: $dark-blue-darker;
         color: $white;
     }
 }
