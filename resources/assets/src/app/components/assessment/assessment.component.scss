@@ -80,7 +80,7 @@ $border-radius: 20px;
         color: $white;
 
         &:hover {
-            color: $dark-gray;
+            background-color: $restart-red-darker;
             cursor: pointer;
         }
     }
