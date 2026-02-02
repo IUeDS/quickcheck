@@ -23,7 +23,7 @@ RUN docker-php-ext-configure gd
 RUN docker-php-ext-install gd
 
 # Get Composer
-COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+COPY --from=public.ecr.aws/docker/library/composer:2.7 /usr/bin/composer /usr/bin/composer
 
 # Install Node.js, npm, and Angular CLI for frontend build.
 # The NodeSource script adds the Node.js APT repository, then installs nodejs.
