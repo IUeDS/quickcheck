@@ -1,11 +1,19 @@
 <div class="numerical">
-    <p class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></p>
+    <p class="lead qc-assessment-question"
+        [id]="'qc-question-' + this.currentQuestion.id"
+        (click)="numInput.focus()" 
+        [innerHTML]="this.currentQuestion.question_text | safe: 'html'">
+    </p>
     <div class="form-group">
-        <label for="numerical-answer-box">Type your answer here</label>
-        <input type="number" step="any" class="form-control"
+        <small [id]="'qc-help-' + this.currentQuestion.id" class="form-text text-muted">
+            Type your numeric answer here
+        </small>
+        <input #numInput type="number" step="any" class="form-control"
             [(ngModel)]="this.answer"
             [attr.tabindex]="this.modalVisible ? -1 : 0"
             (ngModelChange)="this.onInput()"
-            id="numerical-answer-box">
+            id="numerical-answer-box"
+            [attr.aria-labelledby]="'qc-question-' + this.currentQuestion.id"
+            [attr.aria-describedby]="'qc-help-' + this.currentQuestion.id">
     </div>
 </div>
