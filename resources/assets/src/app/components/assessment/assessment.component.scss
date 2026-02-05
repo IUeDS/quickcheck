@@ -106,15 +106,17 @@ $border-radius: 20px;
     }
 
     //h2 within the quiz is different from h2s in the instructor view; keep the blue Oswald font since it pops more
-    .qc-quiz-view h2,
-    #qc-feedback-modal h2,
-    #qc-completion-modal h2 {
+    .qc-quiz-view .qc-h2-style,
+    #qc-feedback-modal .qc-h2-style,
+    #qc-completion-modal .qc-h2-style {
         color: $ocean-blue-muted;
         font-family: 'Oswald', sans-serif;
         font-size: 1.9rem;
         font-style: normal; //don't make these italic in the quiz view
         font-weight: 400;
+        line-height: 1.2;
         margin-bottom: 35px; //add extra room between header and continue button
+        text-transform: none;
     }
 
     .qc-quiz-view {

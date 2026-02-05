@@ -345,7 +345,13 @@ export class AssessmentComponent implements OnInit {
       pointsPossible: this.pointsPossible,
       score: this.score,
     };
-    this.modalService.show(CompletionModalComponent, {initialState, backdrop: 'static', keyboard: false});
+    this.modalService.show(CompletionModalComponent, {
+      initialState, 
+      backdrop: 'static', 
+      keyboard: false,
+      ariaLabelledBy: 'qc-completion-label',
+      ariaDescribedby: 'qc-completion-dialog-content'
+    });
     this.modalVisible = true;
     this.utilitiesService.focusToElement('#qc-completion-modal');
   }
@@ -453,7 +459,9 @@ export class AssessmentComponent implements OnInit {
       backdrop: 'static', 
       keyboard: false, 
       focus: true,        
-      ignoreBackdropClick: true
+      ignoreBackdropClick: true,
+      ariaLabelledBy: 'qc-assessment-error-label',
+      ariaDescribedby: 'qc-assessment-error-modal-description'
     });
     this.modalVisible = true;
   }
@@ -473,7 +481,13 @@ export class AssessmentComponent implements OnInit {
         isCorrect: this.isCorrect,
         isNextBtnDisabled: this.isNextBtnDisabled
       };
-      this.modalService.show(FeedbackModalComponent, {initialState, backdrop: 'static', keyboard: false});
+      this.modalService.show(FeedbackModalComponent, {
+        initialState, 
+        backdrop: 'static', 
+        keyboard: false,
+        ariaLabelledBy: 'qc-feedback-label',
+        ariaDescribedby: 'qc-feedback-dialog-content'
+      });
       this.modalVisible = true;
       this.utilitiesService.formatMath(); //if equations are shown in the feedback
       this.utilitiesService.focusToElement('#qc-feedback-modal');
@@ -485,7 +499,13 @@ export class AssessmentComponent implements OnInit {
     const initialState = {
       timeoutSecondsRemaining: this.timeoutSecondsRemaining
     };
-    this.modalService.show(TimeoutModalComponent, {initialState, backdrop: 'static', keyboard: false});
+    this.modalService.show(TimeoutModalComponent, {
+      initialState, 
+      backdrop: 'static', 
+      keyboard: false,
+      ariaLabelledBy: 'qc-assessment-timeout-label',
+      ariaDescribedby: 'qc-assessment-timeout-dialog-content'
+    });
     this.modalVisible = true;
   }
 

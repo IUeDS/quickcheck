@@ -1,24 +1,24 @@
 <div class="modal-content" id="qc-completion-modal">
-    <div class="modal-header sr-only">
-        <h1 class="modal-title" id="qc-completion-label">Completed</h1>
+    <div class="sr-only" id="qc-completion-label">
+        Quick Check completed
     </div>
     <div class="modal-body" id="qc-completion-dialog-content">
-        <h2 class="qc-finished-msg">You have finished the quick check!</h2>
+        <p class="qc-finished-msg qc-h2-style" role="status" aria-live="polite">You have finished the quick check!</p>
         <div *ngIf="!this.loading && !this.error" class="clearfix">
-            <h2 *ngIf="this.isAutomaticPassback()" class="qc-graded-msg">Your score has been delivered to the gradebook. Only your highest score is kept.</h2>
-            <h2 *ngIf="this.isPendingPassback()" class="qc-grade-pending-msg">This assignment has been submitted to your instructor for grading.</h2>
-            <h2 *ngIf="this.isUngraded()" class="qc-ungraded-msg">This attempt was not graded.</h2>
-            <h2 class="qc-final-score">Score: {{ this.score }} / {{ this.pointsPossible }} questions correct</h2>
+            <p *ngIf="this.isAutomaticPassback()" class="qc-graded-msg qc-h2-style">Your score has been delivered to the gradebook. Only your highest score is kept.</p>
+            <p *ngIf="this.isPendingPassback()" class="qc-grade-pending-msg qc-h2-style">This assignment has been submitted to your instructor for grading.</p>
+            <p *ngIf="this.isUngraded()" class="qc-ungraded-msg qc-h2-style">This attempt was not graded.</p>
+            <p class="qc-final-score qc-h2-style">Score: {{ this.score }} / {{ this.pointsPossible }} questions correct</p>
             <qc-checkmark></qc-checkmark>
             <p><button class="btn btn-lg qc-btn-restart-assessment qc-btn" (click)="this.restart()" type="button">Restart the quick check</button></p>
             <p *ngIf="this.isInModule" class="qc-module-msg">Or, click the "next" button in Canvas to continue.</p>
         </div>
         <div *ngIf="this.loading">
-            <h2>Grade passback in progress...</h2>
+            <p class="qc-h2-style">Grade passback in progress...</p>
             <span class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"></span>
         </div>
         <div *ngIf="this.error">
-            <h2>Uh-oh: error saving grade.</h2>
+            <p class="qc-h2-style">Uh-oh: error saving grade.</p>
             <p class="lead">{{ this.error }}</p>
             <p><button class="btn btn-lg btn-outline-dark qc-btn" (click)="this.submitGrade()" type="button">Try again</button></p>
         </div>

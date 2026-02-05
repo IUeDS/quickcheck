@@ -1,10 +1,10 @@
 <div class="modal-content" id="qc-feedback-modal" tabindex="-1">
-    <div class="modal-header sr-only">
-        <h1 class="modal-title" id="qc-feedback-label">Quick Check question feedback</h1>
+    <div class="sr-only" id="qc-feedback-label">
+        Quick Check question feedback
     </div>
     <div class="modal-body" id="qc-feedback-dialog-content">
-        <h2 class="clearfix" *ngIf="this.isCorrect">Correct</h2>
-        <h2 class="clearfix" *ngIf="!this.isCorrect">Incorrect</h2>
+        <p class="clearfix qc-h2-style" *ngIf="this.isCorrect" role="status" aria-live="polite">Correct</p>
+        <p class="clearfix qc-h2-style" *ngIf="!this.isCorrect" role="status" aria-live="polite">Incorrect</p>
         <p class="custom-feedback" *ngFor="let feedbackItem of this.feedback" [innerHTML]="feedbackItem.feedback_text | safe: 'html'"></p>
         <button type="button" class="btn qc-btn qc-continue-btn"
             [ngClass]="{'btn-success': this.isCorrect, 'btn-danger': !this.isCorrect}"

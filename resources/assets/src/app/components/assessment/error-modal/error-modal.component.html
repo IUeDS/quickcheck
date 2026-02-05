@@ -1,9 +1,9 @@
 <div class="modal-content" id="qc-assessment-error-modal" >
-    <div class="modal-header sr-only">
-        <h2 class="modal-title" id="qc-assessment-error-label">Error</h2>
+    <div class="sr-only" id="qc-assessment-error-label">
+        Error
     </div>
-    <div class="modal-body">
-        <h2>There was an error processing your request.</h2>
+    <div class="modal-body" id="qc-assessment-error-modal-description">
+        <p class="qc-h2-style" role="status" aria-live="polite">There was an error processing your request.</p>
         <p class="lead" [innerHTML]="this.errorMessage | safe: 'html'"></p>
         <p *ngIf="this.utilitiesService.isIU()">If the problem persists, please <a href="https://kb.iu.edu/d/abxl" target="_blank">contact the support center.</a></p>
         <p><button class="btn btn-lg qc-btn-restart-assessment qc-btn" (click)="this.restart()" type="button">Restart the quick check</button></p>
