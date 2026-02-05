@@ -2,13 +2,13 @@
 <table class="table table-sm qc-responses-table" *ngIf="this.showTableView">
     <thead>
         <tr>
-            <th>Time</th>
-            <th class="text-center">Is Correct</th>
-            <th>Partial Credit</th>
-            <th>Retry #</th>
-            <th>Question</th>
-            <th>Answer</th>
-            <th>Answer Key</th>
+            <th scope="col">Time</th>
+            <th scope="col" class="text-center">Is Correct</th>
+            <th scope="col">Partial Credit</th>
+            <th scope="col">Retry #</th>
+            <th scope="col">Question</th>
+            <th scope="col">Answer</th>
+            <th scope="col">Answer Key</th>
         </tr>
     </thead>
     <tbody>
@@ -109,8 +109,8 @@
                                 <caption class="sr-only">Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.</caption>
                                 <thead>
                                     <tr>
-                                        <th><span class="sr-only">Row label</span></th>
-                                        <th *ngFor="let column of currentQuestion.columns" class="qc-responses-matrix-column">
+                                        <th scope="col"><span class="sr-only">Row label</span></th>
+                                        <th *ngFor="let column of currentQuestion.columns" class="qc-responses-matrix-column" scope="col">
                                             <span [innerHTML]="column.answer_text | safe: 'html'"></span>
                                         </th>
                                     </tr>
@@ -140,9 +140,9 @@
                                 <table class="table table-striped">
                                     <caption class="sr-only">Student respones for matching question #{{$index + 1}}.</caption>
                                     <tr>
-                                        <th>Prompt</th>
-                                        <th><span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student's</span> answer</th>
-                                        <th>Correct Answer <span class="fa fa-check qc-correct-icon" aria-hidden="true"></span></th>
+                                        <th scope="col">Prompt</th>
+                                        <th scope="col"><span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student's</span> answer</th>
+                                        <th scope="col">Correct Answer <span class="fa fa-check qc-correct-icon" aria-hidden="true"></span></th>
                                     </tr>
                                     <tr *ngFor="let prompt of currentQuestion.prompts">
                                         <td>

@@ -11,8 +11,8 @@
     <table class="table table-striped table-bordered qc-matrix-entry-table" [hidden]="!this.question.columns.length && !this.question.rows.length">
         <thead>
             <tr>
-                <th></th>
-                <th *ngFor="let column of this.question.columns; index as $index;" class="qc-matrix-row-header qc-edit-matrix-column">
+                <th scope="col"><span class="sr-only">Row name</span></th>
+                <th *ngFor="let column of this.question.columns; index as $index;" class="qc-matrix-row-header qc-edit-matrix-column" scope="col">
                     <div class="qc-matrix-header-container">
                         <label for="matrix-{{question.id}}-column-{{column.id}}" class="sr-only">
                             Column text

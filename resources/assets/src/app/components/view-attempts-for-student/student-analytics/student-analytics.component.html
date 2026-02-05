@@ -43,15 +43,15 @@
                 <table class="table table-striped qc-student-analytics-table">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Before due date</th>
-                            <th>After due date</th>
-                            <th>Overall</th>
+                            <th scope="col"><span class="sr-only">Metric</span></th>
+                            <th scope="col">Before due date</th>
+                            <th scope="col">After due date</th>
+                            <th scope="col">Overall</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th>Total time spent:</th>
+                            <th scope="row">Total time spent:</th>
                             <td>
                                 <p class="lead qc-student-analytics-time-before-due">{{ this.utilitiesService.formatDuration(this.totalTimeBeforeDueDate) }}</p>
                             </td>
@@ -63,7 +63,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Average attempt duration:</th>
+                            <th scope="row">Average attempt duration:</th>
                             <td>
                                 <p class="lead qc-student-analytics-avg-time-before-due">{{  this.utilitiesService.formatDuration(this.averageTimeBeforeDueDate) }}</p>
                             </td>

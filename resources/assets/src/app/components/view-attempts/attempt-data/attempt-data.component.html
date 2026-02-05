@@ -1,19 +1,19 @@
 <table class="table table-sm table-striped qc-attempts-table">
     <thead>
         <tr>
-            <th *ngIf="!this.isStudent">Name</th>
-            <th>Last Milestone</th>
-            <th class="success text-center">Correct</th>
-            <th class="danger text-center">Incorrect</th>
-            <th>Score</th>
-            <th class="text-center">Complete</th>
-            <th class="text-center" *ngIf="!this.isStudent">Past Due</th>
-            <th>Start Time</th>
-            <th>Elapsed Time</th>
-            <th *ngIf="this.isAttemptLimit">Attempt #</th>
-            <th *ngIf="this.isAttemptLimit">Attempt limit</th>
-            <th *ngIf="this.showResponses">Responses</th>
-            <th *ngIf="!this.isStudent && !this.largeClassSize">Grade</th>
+            <th *ngIf="!this.isStudent" scope="col">Name</th>
+            <th scope="col">Last Milestone</th>
+            <th class="success text-center" scope="col">Correct</th>
+            <th class="danger text-center" scope="col">Incorrect</th>
+            <th scope="col">Score</th>
+            <th class="text-center" scope="col">Complete</th>
+            <th class="text-center" *ngIf="!this.isStudent" scope="col">Past Due</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Elapsed Time</th>
+            <th *ngIf="this.isAttemptLimit" scope="col">Attempt #</th>
+            <th *ngIf="this.isAttemptLimit" scope="col">Attempt limit</th>
+            <th *ngIf="this.showResponses" scope="col">Responses</th>
+            <th *ngIf="!this.isStudent && !this.largeClassSize" scope="col">Grade</th>
         </tr>
     </thead>
     <tbody>
