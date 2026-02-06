@@ -87,6 +87,8 @@ textarea {
 
 //light color focus for contrast against dark background for nav links
 nav a {
+    text-decoration: none; //a11y link underline not necessary for obvious link groups
+    
     &:focus {
         border: solid $white 2px !important;
         box-shadow: none !important;
@@ -101,5 +103,20 @@ input[type="radio"] {
         outline: solid $iron-gray 2px !important;
         outline-offset: 3px;
         border: none !important;
+    }
+}
+
+//a11y-friendly hover and focus styles
+.list-group-item {
+
+    &:hover {
+        background-color: $light-gray; // A slightly darker, more visible gray
+        box-shadow: inset 4px 0 0 0 $dark-blue;       
+        cursor: pointer;
+    }
+
+    &:focus {
+        /* Ensure keyboard users see the same as mouse users */
+        background-color: $light-gray;
     }
 }

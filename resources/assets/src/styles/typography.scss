@@ -1,12 +1,19 @@
 $font-directory: '/assets/fonts';
 
 a {
-    color: $ocean-blue; // darkened for accessibility in color contrast
+    color: $dark-blue; // darkened for accessibility in color contrast
+    text-decoration: underline; //a11y requirement
 
     //for popovers, make sure to underline the links so they're really obvious
     //that they can be clicked
     &[data-toggle='popover'] {
         text-decoration: underline;
+    }
+
+    &:hover, &:focus {
+        color: $dark-blue-darker; // Darker blue
+        text-decoration-thickness: 2px; // Makes the "interaction" feel physical
+        outline: none; // Handled by focus-visible globally
     }
 }
 
