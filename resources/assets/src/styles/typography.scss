@@ -10,7 +10,7 @@ a {
         text-decoration: underline;
     }
 
-    &:hover, &:focus {
+    &:hover {
         color: $dark-blue-darker; // Darker blue
         text-decoration-thickness: 2px; // Makes the "interaction" feel physical
         outline: none; // Handled by focus-visible globally

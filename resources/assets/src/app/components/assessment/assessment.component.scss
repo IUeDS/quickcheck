@@ -79,7 +79,8 @@ $border-radius: 20px;
         background-color: $restart-red;
         color: $white;
 
-        &:hover {
+        &:hover,
+        &:focus {
             background-color: $restart-red-darker;
             cursor: pointer;
         }
@@ -90,7 +91,8 @@ $border-radius: 20px;
         color: $black;
         margin-bottom: 30px;
 
-        &:hover {
+        &:hover,
+        &:focus {
             background-color: $seafoam-green-darker;
             cursor: pointer;
         }
@@ -98,7 +100,8 @@ $border-radius: 20px;
         &:disabled {
             background-color: $neutral-gray;
 
-            &:hover {
+            &:hover,
+            &:focus {
                 color: $black;
                 cursor: not-allowed;
             }

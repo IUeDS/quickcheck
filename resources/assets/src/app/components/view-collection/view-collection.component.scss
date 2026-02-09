@@ -57,7 +57,8 @@
             background-color: $dark-gray;
             border-left: solid $muted-purple 10px;
 
-            &:hover {
+            &:hover,
+            &:focus {
                 background-color: $medium-gray;
                 cursor: pointer;
                 transition: color .3s;
