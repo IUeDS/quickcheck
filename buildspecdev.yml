@@ -6,26 +6,52 @@ phases:
       - aws --version
       - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-      - REPOSITORY_URI=783293427012.dkr.ecr.$AWS_REGION.amazonaws.com/elearn/qc-dev
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      
+      # Define Repository
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/elearn/qc-dev
+      
+      # Generate Tags
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - TIMESTAMP=$(date +%Y%m%d%H%M%S)
+      # This unique tag ensures the build never fails on ECR Immutability
+      - DEPLOY_TAG=${COMMIT_HASH}-${TIMESTAMP}
+      
+      - echo "Commit Hash is $COMMIT_HASH"
+      - echo "Unique Deploy Tag is $DEPLOY_TAG"
+      
+      # Prepare custom activities
       - cp -r $CODEBUILD_SRC_DIR_customActivities $CODEBUILD_SRC_DIR/public/customActivities
+
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
       - touch .env
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+      # Tag the local build with the unique deploy tag
+      - docker build -t $REPOSITORY_URI:$DEPLOY_TAG .
+
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      
+      # 1. Push the UNIQUE tag (This will always succeed)
+      - docker push $REPOSITORY_URI:$DEPLOY_TAG
+      
+      # 2. Attempt to push the COMMIT_HASH tag (For traceability)
+      # We use '|| true' so that if the SHA already exists (scheduled build), the pipeline doesn't stop.
+      - docker tag $REPOSITORY_URI:$DEPLOY_TAG $REPOSITORY_URI:$COMMIT_HASH
+      - docker push $REPOSITORY_URI:$COMMIT_HASH || echo "Tag $COMMIT_HASH already exists in ECR, skipping SHA-only push..."
+      
       - echo Writing image definitions files...
-      - printf '[{"name":"elearn-qc-dev-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsserver.json
-      - printf '[{"name":"elearn-qc-dev-artisan","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsartisan.json
-      - printf '[{"name":"elearn-qc-reg-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsserverreg.json
-      - printf '[{"name":"elearn-qc-preview-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsserverpreview.json
+      # We use $DEPLOY_TAG here to force ECS to pull the newest image layer
+      - printf '[{"name":"elearn-qc-dev-server","imageUri":"%s"}]' $REPOSITORY_URI:$DEPLOY_TAG > imagedefinitionsserver.json
+      - printf '[{"name":"elearn-qc-dev-artisan","imageUri":"%s"}]' $REPOSITORY_URI:$DEPLOY_TAG > imagedefinitionsartisan.json
+      - printf '[{"name":"elearn-qc-reg-server","imageUri":"%s"}]' $REPOSITORY_URI:$DEPLOY_TAG > imagedefinitionsserverreg.json
+      - printf '[{"name":"elearn-qc-preview-server","imageUri":"%s"}]' $REPOSITORY_URI:$DEPLOY_TAG > imagedefinitionsserverpreview.json
+      
       - echo Finish post build tasks
+
 artifacts:
     files:
       - imagedefinitionsserver.json
