@@ -86,7 +86,8 @@
             transition: left .3s cubic-bezier(.175, .885, .32, 1.275), padding .3s ease, margin .3s ease;
         }
 
-        &:hover {
+        &:hover,
+        &:focus {
             &::after {
                 will-change: padding;
             }
@@ -118,7 +119,8 @@
 
 //hover on disable
 .toggle-disabled {
-    &:hover {
+    &:hover,
+    &:focus {
         cursor: not-allowed !important;
     }
 }
