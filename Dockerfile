@@ -147,7 +147,27 @@ COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions
 # Copy the built application code and its production dependencies from the 'builder' stage.
 # This crucial step ensures that build tools like Node.js, npm, and Composer are NOT included
 # in the final production image, minimizing its size and attack surface.
-COPY --from=builder ${WORK_DIR} ${WORK_DIR}
+# Explicitly copy only necessary files/directories, exclude node_modules, etc. for clean security scans.
+
+# 1. Copy core Laravel directories
+COPY --from=builder ${WORK_DIR}/app ${WORK_DIR}/app
+COPY --from=builder ${WORK_DIR}/bootstrap ${WORK_DIR}/bootstrap
+COPY --from=builder ${WORK_DIR}/config ${WORK_DIR}/config
+COPY --from=builder ${WORK_DIR}/database ${WORK_DIR}/database
+COPY --from=builder ${WORK_DIR}/resources ${WORK_DIR}/resources
+COPY --from=builder ${WORK_DIR}/routes ${WORK_DIR}/routes
+
+# 2. Copy the production dependencies (PHP)
+COPY --from=builder ${WORK_DIR}/vendor ${WORK_DIR}/vendor
+
+# 3. Copy the compiled Angular assets
+COPY --from=builder ${WORK_DIR}/public ${WORK_DIR}/public
+
+# 4. Copy root-level runtime files
+COPY --from=builder ${WORK_DIR}/artisan ${WORK_DIR}/artisan
+COPY --from=builder ${WORK_DIR}/server.php ${WORK_DIR}/server.php
+COPY --from=builder ${WORK_DIR}/composer.json ${WORK_DIR}/composer.json
+COPY --from=builder ${WORK_DIR}/.env ${WORK_DIR}/.env
 
 # --- Runtime Entrypoint for Writable Volumes ---
 # This part is critical for setting permissions on volumes mounted at runtime.
