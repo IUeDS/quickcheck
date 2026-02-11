@@ -98,16 +98,21 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Copy custom php.ini settings for the production runtime.
 COPY resources/php.ini $PHP_INI_DIR/conf.d/
 
-# Configure Apache Logs to stdout/stderr. This is crucial for enabling a read-only root filesystem,
-# as Apache will no longer attempt to write to local log files. Docker will capture these streams.
-RUN sed -i 's!CustomLog \${APACHE_LOG_DIR}/access.log combined!CustomLog /proc/self/fd/1 combined!g' /etc/apache2/apache2.conf && \
-    sed -i 's!ErrorLog \${APACHE_LOG_DIR}/error.log!ErrorLog /proc/self/fd/2!g' /etc/apache2/apache2.conf && \
-    # Also adjust any site-specific log directives if they exist in sites-available.
-    # Redirect the custom log to /dev/null to avoid writing to disk, it would otherwise log every request made to the app.
-    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!CustomLog .*!CustomLog /dev/null combined!g' {} + && \
-    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!ErrorLog .*!ErrorLog /proc/self/fd/2!g' {} + && \
-    # Disable specific Apache configurations that might cause issues with read-only filesystems.
-    a2disconf serve-cgi-bin.conf
+# Send Apache error logs to stdout via a pipe (works even when /proc fd paths are blocked with www-data user)
+# Disable access logs to avoid noisy per-request logging costs
+RUN sed -i 's!ErrorLog ${APACHE_LOG_DIR}/error.log!ErrorLog "|/bin/cat"!g' /etc/apache2/apache2.conf && \
+    sed -i 's!CustomLog ${APACHE_LOG_DIR}/access.log combined!CustomLog /dev/null combined!g' /etc/apache2/apache2.conf && \
+    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!^\s*ErrorLog .*!ErrorLog "|/bin/cat"!g' {} + && \
+    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!^\s*CustomLog .*!CustomLog /dev/null combined!g' {} + && \
+    a2disconf other-vhosts-access-log || true && \
+    a2disconf serve-cgi-bin.conf || true
+
+# Disable the default Apache access log for vhosts to prevent permission issues with writing logs from www-data
+RUN a2disconf other-vhosts-access-log || true
+
+# Change Apache to 8080 to run as non-root user without needing to bind to privileged port 80. This is a common practice for security.
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf && \
+    sed -i 's/:80/:8080/' /etc/apache2/sites-available/*.conf
 
 # Set Apache's document root to Laravel's public directory.
 ARG WORK_DIR=/var/www/html
@@ -200,8 +205,8 @@ RUN chmod +x /usr/local/bin/migrate_entrypoint.sh
 COPY artisan_entrypoint.sh /usr/local/bin/artisan_entrypoint.sh
 RUN chmod +x /usr/local/bin/artisan_entrypoint.sh
 
-# Expose port 80 to indicate that the container listens on this port for incoming traffic.
-EXPOSE 80
+# Expose port 8080 to indicate that the container listens on this port for incoming traffic.
+EXPOSE 8080
 
 # We will use Docker's exec form ENTRYPOINT and pass our setup script as a command to it.
 # The `docker-php-entrypoint` script (default ENTRYPOINT) handles user switching, permissions, etc.
