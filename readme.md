@@ -114,6 +114,10 @@ Whenever a new version of the app is released, the following commands should be 
 
 Instructors are allowed to upload images to embed in quick checks. By default, the storage driver is "local" and is stored on the local disk in a public directory. The storage driver can also be set to "s3" for AWS S3 cloud storage. If using the local driver, a public directory must be symlinked with the command `php artisan storage:link` before users can upload public images.
 
+## Dependency updates
+
+Dependency updates for security fixes can be run locally in a dev environment using Docker, without having to install php or npm locally. See instructions in the `docker-compose.dev.yml` file.
+
 ## License
 Quick Check is open-sourced software licensed under the [Educational Community License, Version 2.0](https://opensource.org/licenses/ECL-2.0).
 

@@ -9,6 +9,7 @@ composer.phar
 Thumbs.db
 _notes/
 node_modules/
+.npm-cache/
 .sass-cache/
 /app/config/eds/config-credentials.php
 public/assets/dist/

@@ -1,0 +1,24 @@
+# docker-compose.dev.yml
+# Only used for local development npm and composer updates.
+# Command: docker compose -f docker-compose.yml -f docker-compose.dev.yml up 
+# Exec for audits:
+# docker exec -it quickcheck composer audit
+# docker exec -it quickcheck npm audit
+# Exec for updates:
+# docker exec -it quickcheck composer update
+# docker exec -it quickcheck npm update
+# docker exec -it quickcheck npm audit fix
+# Ensure that the read-only flag is set to false in the docker compose file beforehand.
+# Afterward, make sure to run docker-compose up --build to rebuild the image with the new dependencies.
+services:
+  app:
+    build:
+      context: .
+      target: builder
+    # These three lines prevent the container from exiting
+    command: tail -f /dev/null
+    tty: true
+    stdin_open: true
+    # Ensures your Mac files stay in sync with the container
+    volumes:
+      - .:/var/www/html
