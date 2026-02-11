@@ -110,6 +110,6 @@ fi
 
 # 5. Execute the original Apache command.
 # This will be the actual `apache2-foreground` command passed as an argument to this script.
-# The base image's entrypoint will ensure this runs as www-data with correct file descriptors.
-echo "Executing main application command: '$@'"
-exec "$@" # Pass control to the final command (e.g., apache2-foreground)
+echo "Dropping privileges to $APP_USER and starting Apache on 8080..."
+# We pass "apache2-foreground" (the CMD) through gosu
+exec gosu "$APP_USER" "$@"
