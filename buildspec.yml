@@ -6,25 +6,42 @@ phases:
       - aws --version
       - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-      - REPOSITORY_URI=783293427012.dkr.ecr.us-east-2.amazonaws.com/elearn/qc-prod
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/elearn/qc-prod
+      
+      # 1. Define specific tag components
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - TIMESTAMP=$(date +%Y-%m-%d-%H%M)
+      
+      # 2. This is the unique tag used for the actual deployment
+      - DEPLOY_TAG=${COMMIT_HASH}-${TIMESTAMP}
+      
       - cp -r $CODEBUILD_SRC_DIR_customActivities $CODEBUILD_SRC_DIR/public/customActivities
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
       - touch .env
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+      # Build with the unique deployment tag
+      - docker build -t $REPOSITORY_URI:$DEPLOY_TAG .
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      
+      # 1. Push the UNIQUE deployment tag (Hash + Timestamp)
+      - docker push $REPOSITORY_URI:$DEPLOY_TAG
+      
+      # 2. Attempt to push the COMMIT_HASH-only tag for traceability
+      # We use '|| true' so that if the tag already exists, the build continues
+      - docker tag $REPOSITORY_URI:$DEPLOY_TAG $REPOSITORY_URI:$COMMIT_HASH
+      - docker push $REPOSITORY_URI:$COMMIT_HASH || echo "Tag $COMMIT_HASH already exists in ECR, skipping SHA-only push..."
+
       - echo Writing image definitions files...
-      - printf '[{"name":"elearn-qc-prod-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsserver.json
-      - printf '[{"name":"elearn-qc-prod-artisan","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsartisan.json
-      - printf '[{"name":"ucr-qc-prod-server","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsserverucr.json
-      - printf '[{"name":"ucr-qc-prod-artisan","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitionsartisanucr.json
+      # We use DEPLOY_TAG (unique) to ensure Fargate always pulls the fresh build
+      - printf '[{"name":"elearn-qc-prod-server","imageUri":"%s"}]' $REPOSITORY_URI:$DEPLOY_TAG > imagedefinitionsserver.json
+      - printf '[{"name":"elearn-qc-prod-artisan","imageUri":"%s"}]' $REPOSITORY_URI:$DEPLOY_TAG > imagedefinitionsartisan.json
+      - printf '[{"name":"ucr-qc-prod-server","imageUri":"%s"}]' $REPOSITORY_URI:$DEPLOY_TAG > imagedefinitionsserverucr.json
+      - printf '[{"name":"ucr-qc-prod-artisan","imageUri":"%s"}]' $REPOSITORY_URI:$DEPLOY_TAG > imagedefinitionsartisanucr.json
       - echo Finish post build tasks
 artifacts:
     files:
