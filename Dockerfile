@@ -66,6 +66,13 @@ ENV PATH ./vendor/bin:/composer/vendor/bin:$PATH
 ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN composer install --optimize-autoloader
 
+# Remove node modules, etc., from Laravel vendor libraries to prevent security alerts on npm packges
+RUN find vendor -type d -name "node_modules" -exec rm -rf {} + \
+    && find vendor -type f -name "package-lock.json" -delete \
+    && find vendor -type f -name "package.json" -delete \
+    && find vendor -type d -name "tests" -exec rm -rf {} + \
+    && find vendor -type d -name ".git" -exec rm -rf {} +
+
 # Install front-end (npm/Angular) dependencies and build the Angular application into static assets.
 RUN npm install
 RUN ng build --configuration "production"
