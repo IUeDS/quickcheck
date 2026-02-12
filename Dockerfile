@@ -157,13 +157,10 @@ COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
 
 # For optional SSL connections to AWS RDS, we need to include the RDS CA certificates.
-# Download the AWS RDS Global Bundle certificate
 # This bundle contains the root and intermediate certificates for all AWS Regions.
-ADD https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /var/www/html/storage/amazon-rds-ca-cert.pem
-
-# Ensure the web user can read the certificate
-RUN chown www-data:www-data /var/www/html/storage/amazon-rds-ca-cert.pem && \
-    chmod 644 /var/www/html/storage/amazon-rds-ca-cert.pem
+# Copy the RDS CA bundle into a stable location
+COPY docker/certs/rds-global-bundle.pem /etc/ssl/certs/rds-global-bundle.pem
+RUN chmod 0644 /etc/ssl/certs/rds-global-bundle.pem
 
 # Copy the built application code and its production dependencies from the 'builder' stage.
 # This crucial step ensures that build tools like Node.js, npm, and Composer are NOT included
