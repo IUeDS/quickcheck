@@ -156,6 +156,12 @@ COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 # Also copy the actual extension .so files if they are not part of the base image or were custom-built
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
 
+# For optional SSL connections to AWS RDS, we need to include the RDS CA certificates.
+# This bundle contains the root and intermediate certificates for all AWS Regions.
+# Copy the RDS CA bundle into a stable location
+COPY docker/certs/rds-global-bundle.pem /etc/ssl/certs/rds-global-bundle.pem
+RUN chmod 0644 /etc/ssl/certs/rds-global-bundle.pem
+
 # Copy the built application code and its production dependencies from the 'builder' stage.
 # This crucial step ensures that build tools like Node.js, npm, and Composer are NOT included
 # in the final production image, minimizing its size and attack surface.
