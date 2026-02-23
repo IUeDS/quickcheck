@@ -23,7 +23,7 @@ RUN docker-php-ext-configure gd
 RUN docker-php-ext-install gd
 
 # Get Composer
-COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+COPY --from=public.ecr.aws/docker/library/composer:2.7 /usr/bin/composer /usr/bin/composer
 
 # Install Node.js, npm, and Angular CLI for frontend build.
 # The NodeSource script adds the Node.js APT repository, then installs nodejs.
@@ -66,6 +66,13 @@ ENV PATH ./vendor/bin:/composer/vendor/bin:$PATH
 ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN composer install --optimize-autoloader
 
+# Remove node modules, etc., from Laravel vendor libraries to prevent security alerts on npm packges
+RUN find vendor -type d -name "node_modules" -exec rm -rf {} + \
+    && find vendor -type f -name "package-lock.json" -delete \
+    && find vendor -type f -name "package.json" -delete \
+    && find vendor -type d -name "tests" -exec rm -rf {} + \
+    && find vendor -type d -name ".git" -exec rm -rf {} +
+
 # Install front-end (npm/Angular) dependencies and build the Angular application into static assets.
 RUN npm install
 RUN ng build --configuration "production"
@@ -91,16 +98,21 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Copy custom php.ini settings for the production runtime.
 COPY resources/php.ini $PHP_INI_DIR/conf.d/
 
-# Configure Apache Logs to stdout/stderr. This is crucial for enabling a read-only root filesystem,
-# as Apache will no longer attempt to write to local log files. Docker will capture these streams.
-RUN sed -i 's!CustomLog \${APACHE_LOG_DIR}/access.log combined!CustomLog /proc/self/fd/1 combined!g' /etc/apache2/apache2.conf && \
-    sed -i 's!ErrorLog \${APACHE_LOG_DIR}/error.log!ErrorLog /proc/self/fd/2!g' /etc/apache2/apache2.conf && \
-    # Also adjust any site-specific log directives if they exist in sites-available.
-    # Redirect the custom log to /dev/null to avoid writing to disk, it would otherwise log every request made to the app.
-    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!CustomLog .*!CustomLog /dev/null combined!g' {} + && \
-    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!ErrorLog .*!ErrorLog /proc/self/fd/2!g' {} + && \
-    # Disable specific Apache configurations that might cause issues with read-only filesystems.
-    a2disconf serve-cgi-bin.conf
+# Send Apache error logs to stdout via a pipe (works even when /proc fd paths are blocked with www-data user)
+# Disable access logs to avoid noisy per-request logging costs
+RUN sed -i 's!ErrorLog ${APACHE_LOG_DIR}/error.log!ErrorLog "|/bin/cat"!g' /etc/apache2/apache2.conf && \
+    sed -i 's!CustomLog ${APACHE_LOG_DIR}/access.log combined!CustomLog /dev/null combined!g' /etc/apache2/apache2.conf && \
+    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!^\s*ErrorLog .*!ErrorLog "|/bin/cat"!g' {} + && \
+    find /etc/apache2/sites-available -type f -name "*.conf" -exec sed -i 's!^\s*CustomLog .*!CustomLog /dev/null combined!g' {} + && \
+    a2disconf other-vhosts-access-log || true && \
+    a2disconf serve-cgi-bin.conf || true
+
+# Disable the default Apache access log for vhosts to prevent permission issues with writing logs from www-data
+RUN a2disconf other-vhosts-access-log || true
+
+# Change Apache to 8080 to run as non-root user without needing to bind to privileged port 80. This is a common practice for security.
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf && \
+    sed -i 's/:80/:8080/' /etc/apache2/sites-available/*.conf
 
 # Set Apache's document root to Laravel's public directory.
 ARG WORK_DIR=/var/www/html
@@ -144,10 +156,36 @@ COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 # Also copy the actual extension .so files if they are not part of the base image or were custom-built
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
 
+# For optional SSL connections to AWS RDS, we need to include the RDS CA certificates.
+# This bundle contains the root and intermediate certificates for all AWS Regions.
+# Copy the RDS CA bundle into a stable location
+COPY docker/certs/rds-global-bundle.pem /etc/ssl/certs/rds-global-bundle.pem
+RUN chmod 0644 /etc/ssl/certs/rds-global-bundle.pem
+
 # Copy the built application code and its production dependencies from the 'builder' stage.
 # This crucial step ensures that build tools like Node.js, npm, and Composer are NOT included
 # in the final production image, minimizing its size and attack surface.
-COPY --from=builder ${WORK_DIR} ${WORK_DIR}
+# Explicitly copy only necessary files/directories, exclude node_modules, etc. for clean security scans.
+
+# 1. Copy core Laravel directories
+COPY --from=builder ${WORK_DIR}/app ${WORK_DIR}/app
+COPY --from=builder ${WORK_DIR}/bootstrap ${WORK_DIR}/bootstrap
+COPY --from=builder ${WORK_DIR}/config ${WORK_DIR}/config
+COPY --from=builder ${WORK_DIR}/database ${WORK_DIR}/database
+COPY --from=builder ${WORK_DIR}/resources ${WORK_DIR}/resources
+COPY --from=builder ${WORK_DIR}/routes ${WORK_DIR}/routes
+
+# 2. Copy the production dependencies (PHP)
+COPY --from=builder ${WORK_DIR}/vendor ${WORK_DIR}/vendor
+
+# 3. Copy the compiled Angular assets
+COPY --from=builder ${WORK_DIR}/public ${WORK_DIR}/public
+
+# 4. Copy root-level runtime files
+COPY --from=builder ${WORK_DIR}/artisan ${WORK_DIR}/artisan
+COPY --from=builder ${WORK_DIR}/server.php ${WORK_DIR}/server.php
+COPY --from=builder ${WORK_DIR}/composer.json ${WORK_DIR}/composer.json
+COPY --from=builder ${WORK_DIR}/.env ${WORK_DIR}/.env
 
 # --- Runtime Entrypoint for Writable Volumes ---
 # This part is critical for setting permissions on volumes mounted at runtime.
@@ -173,8 +211,8 @@ RUN chmod +x /usr/local/bin/migrate_entrypoint.sh
 COPY artisan_entrypoint.sh /usr/local/bin/artisan_entrypoint.sh
 RUN chmod +x /usr/local/bin/artisan_entrypoint.sh
 
-# Expose port 80 to indicate that the container listens on this port for incoming traffic.
-EXPOSE 80
+# Expose port 8080 to indicate that the container listens on this port for incoming traffic.
+EXPOSE 8080
 
 # We will use Docker's exec form ENTRYPOINT and pass our setup script as a command to it.
 # The `docker-php-entrypoint` script (default ENTRYPOINT) handles user switching, permissions, etc.
