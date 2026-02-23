@@ -167,43 +167,58 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="dropdown-options" *ngIf="currentQuestion.question_type == 'dropdown'" >
-                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
-                            <div class="row student-dropdown-answer">
-                                <div class="col-12">
-                                    <p *ngIf="!currentQuestion.studentResponse.isCorrect"><span class="fa fa-remove qc-incorrect-icon" aria-hidden="true"></span> <span *ngIf="this.isStudent">Your</span><span *ngIf="!this.isStudent">Student's</span> Answer:</p>
-                                    <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section">
-                                        <label [innerHTML]="prompt.answer_text | safe: 'html'" for="{{'select-dropdown-' + prompt.id}}"></label>
-                                        <select class="form-control"
-                                                id="{{'select-dropdown-' + prompt.id}}" disabled>
-                                            <option></option> <!-- blank option -->
-                                            <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
-                                                value="{{selectableAnswer.id}}"
-                                                [innerHTML]="selectableAnswer.answer_text | safe: 'html'"
-                                                [selected]="selectableAnswer.id == prompt.studentAnswer.id">
-                                            </option>
-                                        </select>
-                                    </span>
+                        <div class="dropdown-options" *ngIf="currentQuestion.question_type == 'dropdown'">
+                            <fieldset [attr.aria-labelledby]="'qc-review-question-' + currentQuestion.id">
+                                <legend class="sr-only">
+                                    Dropdown Question Review: {{ currentQuestion.question_text | stripHtml }}
+                                </legend>
+                                <p class="qc-assessment-question" 
+                                [id]="'qc-review-question-' + currentQuestion.id" 
+                                [innerHTML]="currentQuestion.question_text | safe: 'html'">
+                                </p>
+                                <div class="row student-dropdown-answer">
+                                    <div class="col-12">
+                                        <p [id]="'student-answer-header-' + currentQuestion.id">
+                                            <span class="fa fa-remove qc-incorrect-icon" aria-hidden="true" *ngIf="!currentQuestion.studentResponse.isCorrect"></span>
+                                            <strong>{{ isStudent ? 'Your' : "Student's" }} Answer:</strong>
+                                        </p>
+
+                                        <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section">
+                                            <label [innerHTML]="prompt.answer_text | safe: 'html'" [for]="'select-dropdown-' + prompt.id"></label>
+                                            <select class="form-control" [id]="'select-dropdown-' + prompt.id" disabled
+                                                    [attr.aria-describedby]="'student-answer-header-' + currentQuestion.id">
+                                                <option></option>
+                                                <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
+                                                    [value]="selectableAnswer.id"
+                                                    [innerHTML]="selectableAnswer.answer_text | safe: 'html'"
+                                                    [selected]="selectableAnswer.id == prompt.studentAnswer.id">
+                                                </option>
+                                            </select>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row qc-correct-dropdown-answer" *ngIf="!currentQuestion.studentResponse.isCorrect">
-                                <div class="col-12">
-                                    <hr>
-                                    <p><span class="fa fa-check qc-correct-icon" aria-hidden="true"></span> Correct Answer:</p>
-                                    <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section">
-                                        <label [innerHTML]="prompt.answer_text | safe: 'html'" for="{{'select-dropdown-correct-' + prompt.id}}"></label>
-                                        <select class="form-control"
-                                                id="{{'select-dropdown-correct-' + prompt.id}}" disabled>
-                                            <option></option> <!-- blank option -->
-                                            <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
-                                                value="{{selectableAnswer.id}}"
-                                                [innerHTML]="selectableAnswer.answer_text | safe: 'html'"
-                                                [selected]="prompt.dropdown_answer_text == selectableAnswer.answer_text">
-                                            </option>
-                                        </select>
-                                    </span>
+                                <div class="row qc-correct-dropdown-answer" *ngIf="!currentQuestion.studentResponse.isCorrect">
+                                    <div class="col-12">
+                                        <hr aria-hidden="true">
+                                        <p [id]="'correct-answer-header-' + currentQuestion.id">
+                                            <span class="fa fa-check qc-correct-icon" aria-hidden="true"></span> 
+                                            <strong>Correct Answer:</strong>
+                                        </p>
+                                        <span *ngFor="let prompt of currentQuestion.prompts | orderBy: 'answer_order'" class="qc-dropdown-section">
+                                            <label [innerHTML]="prompt.answer_text | safe: 'html'" [for]="'select-dropdown-correct-' + prompt.id"></label>
+                                            <select class="form-control" [id]="'select-dropdown-correct-' + prompt.id" disabled
+                                                    [attr.aria-describedby]="'correct-answer-header-' + currentQuestion.id">
+                                                <option></option>
+                                                <option *ngFor="let selectableAnswer of currentQuestion.selectableAnswers"
+                                                    [value]="selectableAnswer.id"
+                                                    [innerHTML]="selectableAnswer.answer_text | safe: 'html'"
+                                                    [selected]="prompt.dropdown_answer_text == selectableAnswer.answer_text">
+                                                </option>
+                                            </select>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
+                            </fieldset>
                         </div>
                         <div class="textmatch" *ngIf="currentQuestion.question_type == 'textmatch'" >
                             <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
