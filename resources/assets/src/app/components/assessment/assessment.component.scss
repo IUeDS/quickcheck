@@ -110,6 +110,7 @@ $border-radius: 20px;
 
     //h2 within the quiz is different from h2s in the instructor view; keep the blue Oswald font since it pops more
     .qc-quiz-view .qc-h2-style,
+    .qc-quiz-view h2,
     #qc-feedback-modal .qc-h2-style,
     #qc-completion-modal .qc-h2-style {
         color: $ocean-blue-muted;
@@ -126,6 +127,10 @@ $border-radius: 20px;
         //remove horizontal scrollbar from containing row
         margin-left: 0;
         margin-right: 0;
+
+        //add more space around content
+        padding-left: 50px;
+        padding-right: 50px;
 
         h2 {
             text-transform: uppercase;

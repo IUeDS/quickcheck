@@ -1,5 +1,5 @@
 <div class="qc-mcorrect-options">
-    <fieldset [attr.aria-labelledby]="'qc-assessment-question-' + currentQuestion.id"></fieldset>>
+    <fieldset [attr.aria-labelledby]="'qc-assessment-question-' + currentQuestion.id">
         <div class="lead qc-assessment-question" [id]="'qc-assessment-question-' + currentQuestion.id" [innerHTML]="currentQuestion.question_text | safe: 'html'"></div>
         <legend class="sr-only">Multiple correct question</legend>
         <div class="form-check qc-assessment-multiple-correct-option" *ngFor="let answerOption of currentQuestion.options">

@@ -66,6 +66,7 @@ export class EditAssessmentConfigService {
         class: 'table table-bordered'
       },
       height: 300,
+      content_style: ` body { padding: 15px; }`,
       images_upload_url: '/api/assessment/imageupload',
       selector: '#editor',
       setup: (editor) => {

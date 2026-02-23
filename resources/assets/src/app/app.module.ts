@@ -94,6 +94,7 @@ import { SelectAssessmentComponent } from './components/select/select-assessment
 
 import { SafePipe } from './pipes/safe.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
+import { StripHtmlPipe } from './pipes/strip-html.pipe';
 
 import { CanDeactivateGuard } from './guards/can-deactivate-guard.service';
 
@@ -208,6 +209,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         EditorModule,
         RoundProgressModule,
         RouterModule,
+        StripHtmlPipe,
         DragDropModule], providers: [
         Title,
         CanDeactivateGuard,

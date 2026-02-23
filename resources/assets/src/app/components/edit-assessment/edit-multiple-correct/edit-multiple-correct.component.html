@@ -1,6 +1,9 @@
 <div>
     <fieldset>
-        <legend class="qc-question-options-header qc-h3-style">Question options <span class="sr-only">for question #{{ this.question.question_order }}</span></legend>
+        <legend class="sr-only">
+            Multiple correct: {{ question.question_text | stripHtml }}
+        </legend>
+        <div class="qc-question-options-header qc-h3-style" aria-hidden="true">Question options</div>        
         <qc-rich-content-toggle *ngIf="!this.readOnly"
             (onRichContentToggle)="this.onRichContentToggle($event)"
             [question]="this.question"
