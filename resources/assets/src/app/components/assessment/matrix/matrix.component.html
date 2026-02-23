@@ -1,30 +1,33 @@
 <div class="qc-matrix-options">
-    <p class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></p>
-    <table class="table table-striped">
-        <caption class="sr-only">Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.</caption>
+    <p class="lead qc-assessment-question" [id]="'matrix-label-' + currentQuestion.id" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
+    <small class="qc-matrix-instructions text-muted" [id]="'matrix-desc-' + currentQuestion.id">
+        <strong>Instructions:</strong> Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.
+    </small>
+    <table class="table table-striped" [attr.aria-labelledby]="'matrix-label-' + currentQuestion.id" [attr.aria-describedby]="'matrix-desc-' + currentQuestion.id">
+        <caption class="sr-only">Matrix question table</caption>
         <thead>
             <tr>
                 <th scope="col"><span class="sr-only">Row name</span></th>
-                <th *ngFor="let column of this.columns" scope="col">
+                <th *ngFor="let column of columns" scope="col">
                     <span [innerHTML]="column.answer_text | safe: 'html'"></span>
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let row of this.rows" [ngClass]="{'table-danger': !this.checkRowCorrectness(row)}">
-                <td>
-                    <span *ngIf="!this.checkRowCorrectness(row)" class="qc-matrix-row-content">
+            <tr *ngFor="let row of rows" [ngClass]="{'table-danger': !checkRowCorrectness(row)}">
+                <th scope="row">
+                    <span *ngIf="!checkRowCorrectness(row)" class="qc-matrix-row-content">
                         <span class="fa fa-remove fa-2x" aria-hidden="true"></span>
                         <span class="sr-only">This selection is incorrect</span>
                     </span>
                     <span [innerHTML]="row.answer_text | safe: 'html'" class="qc-matrix-row-content"></span>
-                </td>
+                </th>
                 <td *ngFor="let column of row.columns">
                     <div class="form-check">
-                        <input type="radio" name="{{row.id}}" value="{{column.answer_text}}"
+                        <input type="radio" [name]="row.id" [value]="column.answer_text"
                             [checked]="false"
-                            (click)='this.onAnswerSelected(row, column)'
-                            [attr.aria-invalid]="!this.checkRowCorrectness(row) ? 'true' : 'false'"
+                            (click)='onAnswerSelected(row, column)'
+                            [attr.aria-invalid]="!checkRowCorrectness(row) ? 'true' : 'false'"
                             [attr.aria-label]="'Match ' + row.answer_text + ' to ' + column.answer_text"
                             id="matrixrow-{{row.id}}-column-{{column.id}}">
                     </div>

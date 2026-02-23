@@ -105,10 +105,10 @@
                             </fieldset>
                         </div>
                         <div class="qc-matrix-options" *ngIf="currentQuestion.question_type == 'matrix'" >
-                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'"></p>
+                            <p class="qc-assessment-question" [innerHTML]="currentQuestion.question_text | safe: 'html'" [id]="'matrix-label-' + currentQuestion.id"></p>
                             <p *ngIf="currentQuestion.studentResponse.partial_credit">Partial credit: {{ currentQuestion.studentResponse.partial_credit * 100 | number }}%</p>
-                            <table class="table table-striped">
-                                <caption class="sr-only">Matrix question types require you to match a row to a column. For each row in the table, you can select one column option, to match the row to the column. You can only select a maximum of one match for each row.</caption>
+                            <table class="table table-striped" [attr.aria-labelledby]="'matrix-label-' + currentQuestion.id">
+                                <caption class="sr-only">Matrix question table</caption>
                                 <thead>
                                     <tr>
                                         <th scope="col"><span class="sr-only">Row label</span></th>
