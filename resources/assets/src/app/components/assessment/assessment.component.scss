@@ -97,7 +97,7 @@ $border-radius: 20px;
             cursor: pointer;
         }
 
-        &:disabled {
+        &.is-disabled {
             background-color: $neutral-gray;
 
             &:hover,

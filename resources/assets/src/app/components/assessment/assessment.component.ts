@@ -523,7 +523,18 @@ export class AssessmentComponent implements OnInit {
     this.utilitiesService.shuffle(this.questions);
   }
 
-  async submitAnswer() {
+  async submitAnswer(event?: Event) {
+    if (this.isSubmitDisabled()) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        
+        document.getElementById('qc-submit-requirements').focus(); // Move focus to the error message for screen readers
+        
+        return; 
+    }
+
     let data;
     this.utilitiesService.loadingStarted(); //do this right away to prevent super fast double clicks
     var submission = {
