@@ -1,91 +1,69 @@
 @import '../../../styles/colors';
 @import '../../../styles/mixins';
 
-::ng-deep body .qc-home-page {
+::ng-deep body {
+    // Ensure the background covers the entire viewport at any zoom
     background-color: #333333;
     background-image: url('/assets/img/home_background_darkened.jpg');
     background-size: cover;
-    padding: 150px 30px;
+    background-position: center;
+    background-attachment: fixed;
+}
 
-    body,
-    h1,
-    h2,
-    p {
-        color: $white;
+::ng-deep body .qc-home-page {
+    background: transparent; // Let the body background show through
+    padding: 50px 20px;     // Mobile padding
+
+    @include respond-to('medium') {
+        padding: 150px 30px; // Desktop padding
     }
 
-    //make sure danger alert keeps same text coloring
-    .alert {
-        p {
-            color: inherit;
-        }
-    }
+    h1, h2, p { color: $white; }
 
     h1 {
-        font-size: 3em;
+        font-size: 2em; 
         font-weight: 700;
-        margin-bottom: 20px;
-    }
+        margin-bottom: 15px;
 
-    h2 {
-        font-style: normal;
-        text-transform: none;
-    }
-
-    .qc-add-indent {
-        margin: 20px;
-    }
-
-    //not currently in use
-    .qc-home-description {
-        @include respond-to('xs') {
-            display: none;
+        @include respond-to('medium') {
+            font-size: 3em;
         }
-
-        font-weight: 700;
-        padding: 100px 50px 30px;
-        text-align: left;
-    }
-
-    .qc-home-hero {
-        padding: 50px 20px 150px 30px;
     }
 
     .qc-hero-add-btn {
-        @include respond-to('xs') {
-            font-size: 2.5em;
-            padding: 15px;
-        }
-
         background-color: $thirty-percent-opaque;
         border: solid $white 3px;
         border-radius: 20px;
         color: $white;
         font-family: 'BentonSans';
-        font-size: 3.5em;
-        font-weight: 300;
-        padding: 35px;
+        font-size: 2em;
+        padding: 30px;
+        width: 100%;       // Full width on mobile/high zoom
+        margin-top: 40px;  // Space below nav
+        white-space: normal;
         text-transform: uppercase;
+        font-weight: 300;
 
-        &:hover,
-        &:focus {
+        @include respond-to('medium') {
+            font-size: 3.5em;
+            padding: 35px;
+            width: auto;   // Shrink to fit text on desktop
+            margin-top: 100px;
+        }
+
+        &:hover, &:focus {
             background-color: $seventy-percent-opaque;
-            border: solid $electric-blue-lighter 3px !important;
+            border-color: $electric-blue-lighter !important;
         }
     }
 
     .qc-home-add-panel {
         padding: 30px;
+        margin-top: 50px;
 
         h2 {
             color: $black;
             text-transform: uppercase;
         }
-    }
-
-    //extra space above so nav isn't sitting right on top of the button/panel
-    .qc-home-add-panel,
-    .qc-hero-add-btn {
-        margin-top: 100px;
     }
 }
