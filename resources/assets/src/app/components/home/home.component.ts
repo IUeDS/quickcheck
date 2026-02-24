@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   currentPage = 'home';
   isAddingAssessment = false;
   sessionExpired = false;
+  alertKey: string = 'homeError';
 
   constructor(public utilitiesService: UtilitiesService, public userService: UserService) { }
 
@@ -31,7 +32,7 @@ export class HomeComponent implements OnInit {
     }
     catch (error) {
       const errorMessage = this.utilitiesService.getCookieErrorMsg();
-      this.utilitiesService.setError(errorMessage);
+      this.utilitiesService.showError(errorMessage, this.alertKey);
     }
 
     this.utilitiesService.loadingFinished();

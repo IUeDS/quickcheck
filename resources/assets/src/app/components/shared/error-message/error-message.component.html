@@ -1,8 +1,28 @@
 <div class="row">
     <div class="col-12">
-        <div class="alert alert-danger error-message" role="alert" tabindex="-1">
+        <div
+            #host
+            class="alert error-message"
+            [ngClass]="bsClass"
+            [class.sr-only]="!visible"
+            [attr.role]="currentRole"
+            [attr.aria-live]="ariaLive"
+            aria-atomic="true"
+            tabindex="-1"
+            [attr.id]="id"
+            >
+
             <p class="lead">Error</p>
-            <p *ngFor="let errorReason of this.utilitiesService.errorList" [innerHtml]="errorReason"></p>
+
+            <div *ngIf="message" class="alert-message" [innerHtml]="message"></div>
+
+            <ul *ngIf="items?.length" class="alert-items">
+                <li *ngFor="let it of items">{{ it }}</li>
+            </ul>
+
+            <ng-content></ng-content>
         </div>
     </div>
 </div>
+
+
