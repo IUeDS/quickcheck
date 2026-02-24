@@ -43,7 +43,7 @@
                             <button class="btn btn-sm btn-primary qc-btn" type="submit">Validate and add user</button>
                             <button type="button" class="btn btn-outline-dark qc-btn" (click)="this.addUserCancel()">Cancel</button>
                         </div>
-                        <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="this.isAddingUser.validationError">
+                        <div class="alert alert-danger" role="alert" *ngIf="this.isAddingUser.validationError">
                             <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>
                             <p>User cannot be found. Please try again.</p>
                         </div>
@@ -59,8 +59,7 @@
                             <h4>Saving...</h4>
                             <p><span class="fa fa-circle-o-notch fa-spin fa-2x" aria-hidden="true"></span></p>
                         </div>
-                        <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="this.isAddingUser.saveError">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="alert alert-danger" role="alert" *ngIf="this.isAddingUser.saveError">
                             <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>
                             <p>{{ this.isAddingUser.saveErrorReason }}</p>
                             <button class="btn btn-primary btn-sm qc-btn" (click)="this.isAddingUserInit()" type="button">Add another user</button>
