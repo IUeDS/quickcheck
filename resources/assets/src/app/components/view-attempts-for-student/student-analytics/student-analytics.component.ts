@@ -11,6 +11,7 @@ export class StudentAnalyticsComponent implements OnInit {
   @Input() studentName;
   @Input() utilitiesService;
 
+  alertKey: string = 'viewAttemptsForStudentAlert';
   averageRetries = 0;
   averageScore = 0;
   averageTime = 0;
@@ -38,7 +39,7 @@ export class StudentAnalyticsComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

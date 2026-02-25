@@ -15,6 +15,7 @@ export class UsersComponent implements OnInit {
   @Input() readOnly;
   @Input() utilitiesService;
 
+  alertKey: string = 'viewSetError';
   collectionUsers = [];
   isAddingUser = {
     init: false,
@@ -69,7 +70,7 @@ export class UsersComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

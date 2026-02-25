@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12">
         <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+        <qc-error-message alertKey="selectAlert" [utilitiesService]="this.utilitiesService"></qc-error-message>
         <div [hidden]="this.utilitiesService.loading">
             <h1>Select a quick check</h1>
             <p>See the <a href="/documentation#embedding-assessments" target="_blank">embedding section in the documentation</a> for more information on embedding quick checks.</p>
@@ -18,7 +18,7 @@
                     <p class="lead">Looks like you haven't added any sets yet. You can add sets by clicking on the quick check tool in the course navigation.</p>
                 </div>
                 <div *ngIf="this.admin">
-                    <qc-view-all-collections-toggle [collectionData]="this.adminCollectionData" [utilitiesService]="this.utilitiesService"></qc-view-all-collections-toggle>
+                    <qc-view-all-collections-toggle alertKey="selectAlert" [collectionData]="this.adminCollectionData" [utilitiesService]="this.utilitiesService"></qc-view-all-collections-toggle>
                 </div>
                 <div id="accordion-collections" role="tablist" aria-multiselectable="true">
                     <div *ngIf="this.adminCollectionData.viewAll">

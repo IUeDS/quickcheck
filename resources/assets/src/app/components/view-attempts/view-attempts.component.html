@@ -17,7 +17,7 @@
                 </a>
             </div>
         </div>
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+        <qc-error-message alertKey="viewAttemptsAlert" [utilitiesService]="this.utilitiesService"></qc-error-message>
         <div class="row" *ngIf="this.largeClassSize" [hidden]="!this.isAttemptsView()">
             <div class="col-12">
                 <div class="card card-body bg-light">

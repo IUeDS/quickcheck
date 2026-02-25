@@ -12,6 +12,7 @@ export class QtiImportComponent implements OnInit {
   @Input() isImportingQti;
   @Output() onQtiImportCancel = new EventEmitter();
 
+  alertKey: string = 'viewSetError';
   assessmentGroupId = null;
   criticalNotices = [];
   done = false;
@@ -65,7 +66,7 @@ export class QtiImportComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

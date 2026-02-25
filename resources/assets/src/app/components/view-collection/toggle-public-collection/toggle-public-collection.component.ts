@@ -9,6 +9,7 @@ import { CollectionService } from '../../../services/collection.service';
 export class TogglePublicCollectionComponent implements OnInit {
   @Input() collection;
   @Input() utilitiesService;
+  alertKey: string = 'viewSetError';
 
   constructor(private collectionService: CollectionService) { }
 
@@ -71,7 +72,7 @@ export class TogglePublicCollectionComponent implements OnInit {
       await this.collectionService.togglePublic(this.collection);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
   }

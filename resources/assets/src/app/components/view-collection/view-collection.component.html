@@ -1,7 +1,7 @@
 <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
 <div class="row">
     <div class="col-12">
-        <qc-error-message *ngIf="this.utilitiesService.errorFound" [utilitiesService]="this.utilitiesService"></qc-error-message>
+        <qc-error-message alertKey="viewSetError" [utilitiesService]="this.utilitiesService"></qc-error-message>
         <div *ngIf="this.collection">
             <div class="row">
                 <div class="col-6">

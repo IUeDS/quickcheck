@@ -16,6 +16,7 @@ interface ComponentCanDeactivate {
 })
 export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
   admin = false;
+  alertKey: string = 'editAssessmentAlert';
   assessment = null;
   assessmentGroups = null;
   assessmentId = null;
@@ -87,7 +88,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -183,7 +184,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -288,7 +289,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
     }
     catch (error) {
       this.saved = false;
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

@@ -17,6 +17,7 @@ export class AssessmentGroupComponent implements OnInit {
   @Output() onAssessmentCopy = new EventEmitter();
   @Output() onDelete = new EventEmitter();
 
+  alertKey: string = 'viewSetError';
   editingData = null;
   focusEditAssessmentGroup = '';
   focusNewAssessment = '';
@@ -65,7 +66,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -110,7 +111,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -131,7 +132,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -165,7 +166,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -223,7 +224,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -262,7 +263,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

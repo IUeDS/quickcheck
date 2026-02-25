@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ViewAttemptsComponent implements OnInit {
 
+  alertKey: string = 'viewAttemptsAlert';
   analyticsViewVisible = false;
   assessment = null;
   assessmentId = '';
@@ -53,7 +54,7 @@ export class ViewAttemptsComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       this.fatalError = true;
       return;
     }
@@ -127,7 +128,7 @@ export class ViewAttemptsComponent implements OnInit {
       data  = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -152,7 +153,7 @@ export class ViewAttemptsComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -272,7 +273,7 @@ export class ViewAttemptsComponent implements OnInit {
     catch(error) {
       const serverError = this.utilitiesService.getQuizError(error);
       const errorMessage = serverError ? serverError : 'Error retrieving assessment data.';
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       this.utilitiesService.loadingFinished();
       return;
     }
@@ -338,7 +339,7 @@ export class ViewAttemptsComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

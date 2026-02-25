@@ -14,6 +14,7 @@ export class CollectionIndexComponent implements OnInit {
     'viewAll': false,
     'collections': []
   };
+  alertKey: string = 'indexError';
   currentPage = 'sets';
   searchedMemberships = [];
   memberships = [];
@@ -42,7 +43,7 @@ export class CollectionIndexComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -60,7 +61,7 @@ export class CollectionIndexComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
