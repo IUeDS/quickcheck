@@ -13,11 +13,11 @@ let nextId = 0;
 type Variant = 'danger' | 'success' | 'warning' | 'info';
 
 @Component({ 
-  selector: 'qc-error-message', 
-  templateUrl: './error-message.component.html',
-  styleUrls: ['./error-message.component.scss'] 
+  selector: 'qc-alert-message', 
+  templateUrl: './alert-message.component.html',
+  styleUrls: ['./alert-message.component.scss'] 
 })
-export class ErrorMessageComponent implements OnInit, OnDestroy {
+export class AlertMessageComponent implements OnInit, OnDestroy {
   @ViewChild('host', { static: true }) host!: ElementRef<HTMLElement>;
 
   @Input() utilitiesService: UtilitiesService;

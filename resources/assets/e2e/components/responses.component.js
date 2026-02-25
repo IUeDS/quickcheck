@@ -6,7 +6,7 @@ var ResponsesComponent = function(browserRef) {
     component.backLink = component.browser.element(by.partialLinkText('Back to attempts'));
     component.countCorrect = component.browser.element(by.css('.qc-attempt-questions-correct'));
     component.questions = component.browser.element.all(by.css('.qc-responses-question'));
-    component.responseErrors = component.browser.element.all(by.css('.qc-error-message'));
+    component.responseErrors = component.browser.element.all(by.css('.qc-alert-message'));
     component.score = component.browser.element(by.css('.qc-attempt-percentage-score'));
 
     //string sub-references

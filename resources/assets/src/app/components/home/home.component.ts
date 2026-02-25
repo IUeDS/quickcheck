@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
     }
     catch (error) {
       const errorMessage = this.utilitiesService.getCookieErrorMsg();
-      this.utilitiesService.showError(errorMessage, this.alertKey);
+      this.utilitiesService.showAlert(this.alertKey, errorMessage, null, { variant: 'danger', focus: true });
     }
 
     this.utilitiesService.loadingFinished();

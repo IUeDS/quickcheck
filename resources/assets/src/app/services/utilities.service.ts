@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 import { Title } from '@angular/platform-browser';
 import cloneDeep from 'lodash/cloneDeep';
 import { filter } from 'rxjs/operators';
-import { ErrorMessageComponent } from '../components/shared/error-message/error-message.component';
+import { AlertMessageComponent } from '../components/shared/alert-message/alert-message.component';
 
 //pending error messages from ngOnInit, if alert child component not yet available
 interface Pending {
@@ -28,7 +28,7 @@ export class UtilitiesService {
   params = null;
   scrollingLtiHeight = 0;
   sessionExpired = false;
-  private alerts = new Map<string, ErrorMessageComponent>();
+  private alerts = new Map<string, AlertMessageComponent>();
   private pending = new Map<string, Pending[]>();
 
   constructor(private router: Router, private route: ActivatedRoute, private titleService: Title) {
@@ -378,7 +378,7 @@ export class UtilitiesService {
     event.stopPropagation();
   }
 
-  registerAlert(key: string, comp: ErrorMessageComponent) {
+  registerAlert(key: string, comp: AlertMessageComponent) {
     this.alerts.set(key, comp);
 
     // If there were pending messages for this key, deliver them now
@@ -494,13 +494,13 @@ export class UtilitiesService {
       this.showAlert(alertKey, error, null, { variant: 'danger', focus: true });
       this.errorFound = true;
       this.loadingFinished();
-      this.focusToElement('.error-message');
+      this.focusToElement('.qc-alert-message');
       return;
     }
 
     this.errorFound = true;
     this.loadingFinished();
-    this.focusToElement('.error-message');
+    this.focusToElement('.qc-alert-message');
   }
 
   shuffle(o) {
