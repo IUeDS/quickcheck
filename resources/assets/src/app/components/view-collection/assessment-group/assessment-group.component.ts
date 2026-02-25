@@ -18,7 +18,7 @@ export class AssessmentGroupComponent implements OnInit {
   @Output() onDelete = new EventEmitter();
 
   alertKey: string = 'viewSetError';
-  copyAssessmentSuccessKey: string = 'copyAssessmentSuccess';
+  copyAssessmentSuccessKey: string = null;
   editingData = null;
   focusEditAssessmentGroup = '';
   focusNewAssessment = '';
@@ -61,6 +61,9 @@ export class AssessmentGroupComponent implements OnInit {
       'assessment_group_id': assessment.copyData.assessment_group_id,
       'assessment_name': assessment.copyData.assessment_name
     };
+
+    //set unique alert key for copying success message
+    this.copyAssessmentSuccessKey = 'copyAssessmentSuccess-' + assessment.id;
 
     try {
       const resp = await this.collectionService.copyAssessment(assessment.id, paramData);

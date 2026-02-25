@@ -14,6 +14,9 @@ export class AutoGradeComponent implements OnInit {
   @Input() utilitiesService;
   @Output() onSuccess = new EventEmitter();
 
+  alertKeyLoading: string = 'autoGradeLoading';
+  alertKeyError: string = 'autoGradeError';
+  alertKeySuccess: string = 'autoGradeSuccess';
   error;
   graded = false;
   loading = false;
@@ -44,10 +47,16 @@ export class AutoGradeComponent implements OnInit {
     //reset if necessary
     this.error = false;
     this.success = false;
+    this.utilitiesService.clearAlert(this.alertKeyError);
+    this.utilitiesService.clearAlert(this.alertKeySuccess);
+
+    this.utilitiesService.showAlert(this.alertKeyLoading, `Auto-grade in progress. This may take several minutes if you have a large class.`, null, { variant: 'info', focus: true });
 
     if (!this.ungradedAttempts.length) {
       this.error = 'There are no ungraded attempts for this assessment.';
       this.loading = false;
+      this.utilitiesService.clearAlert(this.alertKeyLoading);
+      this.utilitiesService.showAlert(this.alertKeyError, `Auto-grade failed: ${this.error}`, null, { variant: 'danger', focus: true });
       return;
     }
 
@@ -86,13 +95,17 @@ export class AutoGradeComponent implements OnInit {
 
   onAutogradeFinished(resp, data) {
     this.loading = false;
+    this.utilitiesService.clearAlert(this.alertKeyLoading);
+
     if (!this.utilitiesService.isSuccessResponse(resp)) {
       var errorMessage = data.reason;
       this.error = errorMessage;
+      this.utilitiesService.showAlert(this.alertKeyError, `Auto-grade failed: ${errorMessage}`, null, { variant: 'danger', focus: true });
       return;
     }
 
     this.success = true;
+    this.utilitiesService.showAlert(this.alertKeySuccess, `Auto-grade successful.`, null, { variant: 'success', focus: true });
     this.onSuccess.emit({ successfulSubmissions: this.successfulSubmissions });
   }
 
@@ -118,6 +131,8 @@ export class AutoGradeComponent implements OnInit {
     catch(error) {
       this.error = this.utilitiesService.getError(error);
       this.loading = false;
+      this.utilitiesService.clearAlert(this.alertKeyLoading)
+      this.utilitiesService.showAlert(this.alertKeyError, `Auto-grade failed: ${this.error}`, null, { variant: 'danger', focus: true });
       return;
     }
 

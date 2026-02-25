@@ -5,16 +5,11 @@
 </div>
 <div class="row">
     <div class="col-12 text-center">
-        <div *ngIf="this.loading" class="alert alert-info text-center" role="alert">
-            <p><strong>Auto-grade in progress. This may take several minutes if you have a large class.</strong></p>
-            <p class="text-center"><span class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></span><span class="sr-only">Loading...</span></p>
-        </div>
-        <div *ngIf="this.error" class="alert alert-danger text-center" role="alert">
-            <p><span class="fa fa-exclamation" aria-hidden="true"></span> Auto-grade error: {{ this.error }}</p>
-        </div>
-        <div *ngIf="this.success" class="alert alert-success text-center" role="alert">
-            <p><span class="fa fa-check" aria-hidden="true"></span> Auto-grade successful</p>
-        </div>
+        <qc-alert-message alertKey="autoGradeLoading" [utilitiesService]="this.utilitiesService">
+            <p class="text-center"><span class="fa fa-spinner fa-3x fa-spin" aria-hidden="true"></span><span class="sr-only">Loading...</span></p>
+        </qc-alert-message>
+        <qc-alert-message alertKey="autoGradeError" [utilitiesService]="this.utilitiesService"></qc-alert-message>
+        <qc-alert-message alertKey="autoGradeSuccess" [utilitiesService]="this.utilitiesService"></qc-alert-message>
     </div>
 </div>
 <div class="form-group text-light text-center qc-graded-message" [hidden]="!this.graded">

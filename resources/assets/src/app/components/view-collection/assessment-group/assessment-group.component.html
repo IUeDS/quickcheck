@@ -100,7 +100,7 @@
                                 </div>
                             </div>
                             <div [hidden]="!assessment.copyData.copied">
-                                <qc-alert-message alertKey="copyAssessmentSuccess" [utilitiesService]="this.utilitiesService"></qc-alert-message>
+                                <qc-alert-message [alertKey]="'copyAssessmentSuccess-' + assessment.id" [utilitiesService]="this.utilitiesService"></qc-alert-message>
                                 <div class="form-group">
                                     <a [href]="assessment.copyData.editUrl" target="_self" class="btn btn-sm btn-primary qc-btn qc-quiz-copy-edit-btn">
                                             <span class="fa fa-pencil" aria-hidden="true"></span>

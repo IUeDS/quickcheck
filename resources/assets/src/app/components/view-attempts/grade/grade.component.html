@@ -22,9 +22,6 @@
                     <span class="sr-only">Grade submission in progress, please wait.</span>
                 </p>
             </div>
-            <div *ngIf="this.error" class="alert alert-danger" role="alert">
-                <p><span class="fa fa-exclamation" aria-hidden="true"></span> Error: {{ this.error }}</p>
-            </div>
             <div class="btn-group">
                 <button class="btn btn-primary btn-sm qc-btn" (click)="this.submitGrade()" type="submit">Submit</button>
                 <!-- only allow instructor to cancel grading if editing and grade already present -->
@@ -32,4 +29,5 @@
             </div>
         </span>
     </span>
+    <qc-alert-message [alertKey]="'gradeError-' + attempt.id" [utilitiesService]="this.utilitiesService"></qc-alert-message>
 </span>
