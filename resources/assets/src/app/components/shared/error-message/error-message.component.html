@@ -12,7 +12,12 @@
             [attr.id]="id"
             >
 
-            <p class="lead">Error</p>
+            <p class="lead">
+                <span *ngIf="variant === 'danger'">Error</span>
+                <span *ngIf="variant === 'warning'">Warning</span>
+                <span *ngIf="variant === 'info'">Notice</span>
+                <span *ngIf="variant === 'success'">Success</span>
+            </p>
 
             <div *ngIf="message" class="alert-message" [innerHtml]="message"></div>
 

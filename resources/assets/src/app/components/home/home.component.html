@@ -1,9 +1,7 @@
 <div class="qc-home-page">
-    <div class="row">
+    <div class="row justify-content-center">
         <qc-error-message alertKey="homeError" [utilitiesService]="this.utilitiesService"></qc-error-message>
-        <div class="alert alert-warning text-center" *ngIf="this.sessionExpired">
-            <p class="lead"><span class="fa fa-exclamation" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Your session has expired due to inactivity.</p>
-        </div>
+        <qc-error-message alertKey="sessionError" [utilitiesService]="this.utilitiesService"></qc-error-message>
     </div>
     <div class="row">
         <div class="col-12 col-sm-7 qc-home-hero">

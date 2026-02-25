@@ -491,7 +491,7 @@ export class UtilitiesService {
 
     if (alertKey) {
       const error = this.getError(resp);
-      this.showAlert(alertKey, error);
+      this.showAlert(alertKey, error, null, { variant: 'danger', focus: true });
       return;
     }
 
