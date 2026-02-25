@@ -80,6 +80,15 @@ textarea {
     }
 }
 
+input[type="text"],
+input[type="number"],
+textarea,
+select,
+.form-control {
+    // 1. Darken the default border to pass 3:1 contrast
+    border: 1px solid #828282 !important;
+}
+
 .tox-tinymce.is-focused {
     outline: 2px solid $iron-gray !important; 
     outline-offset: 2px;
