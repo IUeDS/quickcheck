@@ -71,6 +71,11 @@ export class UtilitiesService {
     return false;
   }
 
+  clearAlert(key: string) {
+    const comp = this.alerts.get(key);
+    if (comp) comp.clear();
+  }
+
   convertSqlTimestamp(timestamp) {
     const date = new Date(Date.parse(timestamp));
 

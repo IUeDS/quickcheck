@@ -13,6 +13,10 @@ export class QtiImportComponent implements OnInit {
   @Output() onQtiImportCancel = new EventEmitter();
 
   alertKey: string = 'viewSetError';
+  qtiImportErrorKey: string = 'qtiImportError';
+  qtiImportCriticalNoticeKey: string = 'qtiImportCriticalNotice';
+  qtiImportNoticeKey: string = 'qtiImportNotice';
+  qtiImportSuccessKey: string = 'qtiImportSuccess';
   assessmentGroupId = null;
   criticalNotices = [];
   done = false;
@@ -53,6 +57,10 @@ export class QtiImportComponent implements OnInit {
     this.quizzes = [];
     this.uploading = false;
     this.zipFile = null;
+    this.utilitiesService.clearAlert(this.qtiImportErrorKey);
+    this.utilitiesService.clearAlert(this.qtiImportCriticalNoticeKey);
+    this.utilitiesService.clearAlert(this.qtiImportNoticeKey);
+    this.utilitiesService.clearAlert(this.qtiImportSuccessKey);
     this.utilitiesService.setLtiHeight();
   }
 
@@ -89,6 +97,7 @@ export class QtiImportComponent implements OnInit {
       this.uploading = false;
       this.done = true;
       this.error = this.utilitiesService.getError(error);
+      this.utilitiesService.showAlert(this.qtiImportErrorKey, `Error importing QTI package: ${this.error}`, null, { variant: 'danger', focus: true });
       return;
     }
 
@@ -96,6 +105,7 @@ export class QtiImportComponent implements OnInit {
     this.done = true;
     if (!this.utilitiesService.isSuccessResponse(resp)) {
       this.error = this.utilitiesService.getError(resp);
+      this.utilitiesService.showAlert(this.qtiImportErrorKey, `Error importing QTI package: ${this.error}`, null, { variant: 'danger', focus: true });
       return;
     }
 
@@ -103,8 +113,17 @@ export class QtiImportComponent implements OnInit {
     const warnings = data.warnings;
     if (warnings.critical.length) {
       this.criticalNotices = warnings.critical;
+      this.utilitiesService.showAlert(this.qtiImportCriticalNoticeKey, `Error importing one or more quizzes. Please review the critical notices and save quizzes that were imported successfully, if desired.`, this.criticalNotices, { variant: 'danger', focus: true });  
     }
-    this.notices = warnings.notices;
+    if (warnings.notices.length) {
+      this.notices = warnings.notices;
+      this.utilitiesService.showAlert(this.qtiImportNoticeKey, `QTI package imported with some minor issues. Please review the notices for details.`, warnings.notices, { variant: 'warning' });
+    }
+
+    if (!warnings.critical.length && !warnings.notices.length) {
+      this.utilitiesService.showAlert(this.qtiImportSuccessKey, `QTI package imported successfully.`, null, { variant: 'success' });
+    }
+    
     this.quizzes = data.quizzes;
   }
 
