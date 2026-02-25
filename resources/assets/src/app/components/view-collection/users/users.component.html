@@ -30,7 +30,13 @@
                     <form (ngSubmit)="this.validateUser()">
                         <div class="form-inline">
                             <label for="username">IU Username: </label>
-                            <input type="text" class="form-control ml-2" id="username" name="username" [(ngModel)]="this.isAddingUser.username">
+                            <input type="text" 
+                                class="form-control ml-2" 
+                                id="username" 
+                                name="username" 
+                                [(ngModel)]="this.isAddingUser.username"
+                                [attr.aria-invalid]="this.isAddingUser.validationError"
+                                aria-describedby="validate-user-alert">
                         </div>
                         <div class="form-group">
                             <div class="checkbox">
@@ -43,25 +49,18 @@
                             <button class="btn btn-sm btn-primary qc-btn" type="submit">Validate and add user</button>
                             <button type="button" class="btn btn-outline-dark qc-btn" (click)="this.addUserCancel()">Cancel</button>
                         </div>
-                        <div class="alert alert-danger" role="alert" *ngIf="this.isAddingUser.validationError">
-                            <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>
-                            <p>User cannot be found. Please try again.</p>
-                        </div>
+                        <qc-alert-message [alertKey]="userValidationErrorAlertKey" id="validate-user-alert" [utilitiesService]="this.utilitiesService"></qc-alert-message>
                     </form>
                 </div>
                 <div *ngIf="this.isAddingUser.userValidated">
-                    <div class="alert alert-success" role="alert">
-                        <h4><span class="fa fa-thumbs-o-up" aria-hidden="true"></span> User validated</h4>
-                        <h5>Name: {{ this.isAddingUser.validatedUser.name }}</h5>
-                    </div>
+                    <qc-alert-message [alertKey]="userValidationSuccessAlertKey" [utilitiesService]="this.utilitiesService"></qc-alert-message>
                     <div *ngIf="!this.isAddingUser.userAdded">
                         <div *ngIf="!this.isAddingUser.saveError">
                             <h4>Saving...</h4>
                             <p><span class="fa fa-circle-o-notch fa-spin fa-2x" aria-hidden="true"></span></p>
                         </div>
-                        <div class="alert alert-danger" role="alert" *ngIf="this.isAddingUser.saveError">
-                            <h4><span class="fa fa-thumbs-o-down" aria-hidden="true"></span> Error</h4>
-                            <p>{{ this.isAddingUser.saveErrorReason }}</p>
+                        <qc-alert-message [alertKey]="userErrorAlertKey" [utilitiesService]="this.utilitiesService"></qc-alert-message>
+                        <div *ngIf="this.isAddingUser.saveError">
                             <button class="btn btn-primary btn-sm qc-btn" (click)="this.isAddingUserInit()" type="button">Add another user</button>
                             <button type="button" class="btn btn-outline-dark qc-btn" (click)="this.addUserCancel()">Close</button>
                         </div>
@@ -109,24 +108,14 @@
                         </tr>
                     </tbody>
                 </table>
-                <div *ngIf="this.isEditingUsers.error">
-                    <div class="alert alert-danger" role="alert">
-                        <h4>Error</h4>
-                        <p>There was an error updating the membership for this set. Please try again.</p>
-                    </div>
-                </div>
+                <qc-alert-message [alertKey]="membershipErrorAlertKey" [utilitiesService]="this.utilitiesService"></qc-alert-message>
                 <button type="submit" class="btn btn-primary btn-sm qc-btn" (click)="this.saveUserEdits()" [hidden]="this.isEditingUsers.loading || this.isEditingUsers.users.length == 1">Save User Edits</button>
                 <button type="button" class="btn btn-outline-dark btn-sm qc-btn" (click)="this.editUsersCancel()" [hidden]="this.isEditingUsers.loading">Cancel</button>
             </div>
             <div *ngIf="this.isEditingUsers.loading" class="text-center" aria-live="polite">
                 <span class="fa fa-refresh fa-spin fa-3x" aria-hidden="true"></span><span class="sr-only">Saving user membership edits, please wait.</span>
             </div>
-            <div *ngIf="this.isEditingUsers.success">
-                <div class="alert alert-success" role="alert">
-                    <h4><span class="fa fa-thumbs-up" aria-hidden="true"></span> Success</h4>
-                    <p>User membership has been successfully updated.</p>
-                </div>
-            </div>
+            <qc-alert-message [alertKey]="membershipSuccessAlertKey" [utilitiesService]="this.utilitiesService"></qc-alert-message>
         </div>
     </div>
 </div>
