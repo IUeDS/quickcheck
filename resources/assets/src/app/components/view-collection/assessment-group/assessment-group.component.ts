@@ -18,6 +18,7 @@ export class AssessmentGroupComponent implements OnInit {
   @Output() onDelete = new EventEmitter();
 
   alertKey: string = 'viewSetError';
+  copyAssessmentSuccessKey: string = 'copyAssessmentSuccess';
   editingData = null;
   focusEditAssessmentGroup = '';
   focusNewAssessment = '';
@@ -89,6 +90,7 @@ export class AssessmentGroupComponent implements OnInit {
       this.onAssessmentCopy.emit({ assessment: data.assessment });
     }
 
+    this.utilitiesService.showAlert(this.copyAssessmentSuccessKey, `Assessment copied successfully.`, null, { variant: 'success', focus: true });
     this.utilitiesService.setLtiHeight();
   }
 

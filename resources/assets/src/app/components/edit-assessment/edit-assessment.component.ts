@@ -17,6 +17,8 @@ interface ComponentCanDeactivate {
 export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
   admin = false;
   alertKey: string = 'editAssessmentAlert';
+  saveSuccessKey: string = 'saveSuccess';
+  validationErrorKey: string = 'validationError';
   assessment = null;
   assessmentGroups = null;
   assessmentId = null;
@@ -97,9 +99,9 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
     if (assessmentSaved) {
       this.saved = true;
       //scroll to bottom, to make sure success alert is visible (it was jumping around with focus)
-      //$('html, body').animate({ scrollTop: $(document).height() }, 'slow');
       document.body.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest'});
-      this.utilitiesService.focusToElement('#qc-save-success');
+      this.utilitiesService.showAlert(this.saveSuccessKey, 'Quick check saved successfully.', null, { variant: 'success', focus: true });
+      this.utilitiesService.clearAlert(this.validationErrorKey); //clear any validation errors that may have been showing
     }
   }
 
@@ -351,6 +353,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
 
     if (this.validationErrorList.length) {
       this.validationError = true;
+      this.utilitiesService.showAlert(this.validationErrorKey, 'Validation errors found. Please fix the following errors before saving: ', this.validationErrorList, { variant: 'danger', focus: true });
       return false;
     }
 

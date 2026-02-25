@@ -92,20 +92,10 @@
                 <button type="submit" class="btn btn-success btn-lg qc-btn qc-btn-save-quiz" *ngIf="!this.readOnly">Save quick check</button>
             </div>
             <qc-loading [hidden]="!this.utilitiesService.loading"></qc-loading>
-            <div *ngIf="this.validationError" class="alert alert-danger" id="qc-validation-error" role="alert" tabindex="-1" >
-                <span class="fa fa-thumbs-o-down fa-3x" aria-hidden="true"></span>
-                <span class="sr-only">Error</span>
-                <h2>There was a validation error in saving your quick check.</h2>
-                <ul>
-                    <li *ngFor="let error of this.validationErrorList">{{ error }}</li>
-                </ul>
-            </div>
-            <div *ngIf="this.saved && this.edited" class="alert alert-success" role="alert" tabindex="-1" id="qc-save-success">
-                <span class="fa fa-thumbs-o-up fa-3x" aria-hidden="true"></span>
-                <span class="sr-only">Success</span>
-                <h2 id="assessment-save-success" tabindex="-1">Quick check saved</h2>
+            <qc-alert-message alertKey="validationError" [utilitiesService]="this.utilitiesService" id="qc-validation-error"></qc-alert-message>
+            <qc-alert-message alertKey="saveSuccess" [utilitiesService]="this.utilitiesService" id="assessment-save-success">
                 <a [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_self">Return to set "{{ this.collection.name }}"</a>
-            </div>
+            </qc-alert-message>
         </form>
     </div>
 </div>
