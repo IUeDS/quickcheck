@@ -96,12 +96,18 @@ export class AssessmentComponent implements OnInit {
   studentId = null;
   timeoutSecondsRemaining = null; //seconds of timeout remaining, if feature enabled
 
+  //keyboard control specific to drag and drop
   resetSelected: boolean = false;
   submitSelected: boolean = false;
 
 
   @HostListener('window:keyup', ['$event'])
   keyEventUp(event: KeyboardEvent) {
+    //only apply keyboard controls for drag and drop questions
+    if (!this.isQuestionType('drag_and_drop')) {
+      return;
+    }
+
     switch (event.code) {
 
       case KEY_CODE.KEY_R:
