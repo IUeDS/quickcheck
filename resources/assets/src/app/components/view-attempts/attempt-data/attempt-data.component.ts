@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Submission } from '../../../classes/submission';
+import { Users } from '../../../classes/users';
 
 @Component({
   selector: 'qc-attempt-data',
@@ -23,6 +24,7 @@ export class AttemptDataComponent implements OnInit {
   isAttemptLimit = false; //show attempt count/limit if applicable
   itemSize = 45; //angular infinite scrolling requires item size
   studentsWithFirstRow = {}; //for tracking table borders, etc.
+  usersService: Users;
 
   constructor() { }
 
@@ -36,6 +38,10 @@ export class AttemptDataComponent implements OnInit {
     //we need to reformat the incoming data
     if (changes.attempts) {
       this.parseAttempts();
+    }
+
+    if (changes.users) {
+      this.usersService = new Users(this.users);
     }
   }
 
