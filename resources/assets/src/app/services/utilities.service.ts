@@ -430,12 +430,12 @@ export class UtilitiesService {
       var height = document.querySelector('body').clientHeight + 75;
       var modal = document.querySelector('modal-container');
 
-      //if page accessed from the left nav of Canvas, add 1000px of extra space to
+      //if page accessed from the left nav of Canvas, add extra space to
       //ensure that we don't have scroll bars (since there is nothing below the
       //LTI iframe in this case, completely exact height isn't necessary and can
       //cause problems if even off by a few pixels due to small UI actions)
       if (this.isLti) {
-        height = document.querySelector('body').clientHeight + 1000;
+        height = document.querySelector('body').clientHeight + 200;
       }
 
       //modal height exists outside of the body, unfortunately, so scroll bars appear if not selected
