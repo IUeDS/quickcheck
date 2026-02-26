@@ -1,9 +1,10 @@
 @import '../../../../styles/colors';
+@import '../../../../styles/mixins';
 
 .qc-nav {
-    background-color: $iron-gray-lighter;
+    background-color: $iron-gray-lighter; 
     color: $white;
-    padding: 20px;
+    padding: 15px;
 
     .logo {
         font-family: 'BentonSansComp';
@@ -26,21 +27,55 @@
     ul {
         border-bottom: solid 1px $white;
         display: flex;
-        flex-direction: row;
+        flex-direction: column; // Stacked by default for Reflow
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        border-top: 1px solid rgba(255,255,255,0.2);
+        text-transform: uppercase;
         font-family: 'BentonSans';
         font-weight: 300;
-        list-style: none;
-        margin-bottom: 20px;
-        text-transform: uppercase;
 
         li {
-            flex-grow: 1;
-            padding: 20px 15px 5px 5px;
-            text-align: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            text-align: left;
         }
 
-        a {
-            color: $white;
+        @include respond-to('medium') {
+            flex-direction: row; // Horizontal on desktop
+            border-top: none;
+            border-bottom: solid 1px $white;
+
+            li {
+                flex-grow: 1;
+                border-bottom: none;
+                text-align: center;
+                padding: 20px 15px 5px 5px;
+            }
         }
+    }
+
+    a { color: $white; text-decoration: none; }
+}
+
+:host.home-nav-style {
+    position: relative; // Pushes content down by default
+    width: 100%;
+    z-index: 1000;
+
+    h1, h2 { 
+        color: $white; 
+        margin: 0;
+        padding: 10px 20px;
+    }
+
+    // Transparent background at larger sizes to show background image
+    @include respond-to('medium') {
+        position: absolute;
+        background-color: transparent;
+        padding: 30px;
+
+        .qc-nav { background-color: transparent; }
     }
 }

@@ -14,6 +14,7 @@ export class CustomActivitySelectionComponent implements OnInit {
   @Input() readOnly;
   @Input() utilitiesService;
 
+  alertKey: string = 'editAssessmentAlert';
   customActivities = [];
   saved = false;
 
@@ -43,7 +44,7 @@ export class CustomActivitySelectionComponent implements OnInit {
       this.customActivities = data.customActivities;
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
   }

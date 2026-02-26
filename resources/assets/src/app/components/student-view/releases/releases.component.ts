@@ -10,6 +10,7 @@ export class ReleasesComponent implements OnInit {
   @Input() utilitiesService;
   @Output() onViewAttempts = new EventEmitter();
 
+  alertKey: string = 'studentViewAlert';
   releases = [];
   search = {'assessmentName': ''}; //for searching through attempts
 
@@ -24,7 +25,7 @@ export class ReleasesComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

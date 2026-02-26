@@ -14,6 +14,7 @@ export class GradeComponent implements OnInit {
   @Input() users;
   @Input() utilitiesService;
 
+  alertKeyError: string = null;
   editedGradeValue;
   editingGrade = false;
   error;
@@ -24,6 +25,7 @@ export class GradeComponent implements OnInit {
   constructor(private manageService: ManageService) { }
 
   ngOnInit() {
+	this.alertKeyError = 'gradeError-' + this.attempt.id; //set unique alert key for component
   }
 
   ngOnChanges() {
@@ -37,6 +39,7 @@ export class GradeComponent implements OnInit {
 		this.error = false;
 		this.editingGrade = false;
 		this.gradeLoading = false;
+		this.utilitiesService.clearAlert(this.alertKeyError);
 	}
 
 	editGrade() {
@@ -87,12 +90,14 @@ export class GradeComponent implements OnInit {
 		}
 		catch (error) {
 			this.error = this.utilitiesService.getError(error);
-		  this.gradeLoading = false;
-		  return;
+		  	this.gradeLoading = false;
+		  	this.utilitiesService.showAlert(this.alertKeyError, `Grade submission failed: ${this.error}`, null, { variant: 'danger', focus: true });
+		  	return;
 		}
 
 		//if previously received an error, then undo it
 		this.error = false;
+		this.utilitiesService.clearAlert(this.alertKeyError);
 		this.submission.update(this.editedGradeValue);
 		this.gradeLoading = false;
 		this.editingGrade = false;

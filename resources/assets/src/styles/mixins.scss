@@ -1,21 +1,25 @@
-//responsive design, as defined by bootstrap, but I added "huge" in
-$breakpoints: (
+// 1. Give it a unique name and keep the media query logic
+$qc-map: (
     'xs': (max-width: 767px),
+    'sm': (min-width: 768px),
     'small': (min-width: 768px),
+    'md': (min-width: 992px),
     'medium': (min-width: 992px),
+    'lg': (min-width: 1200px),
     'large': (min-width: 1200px),
     'huge': (min-width: 1500px)
 );
 
-//Responsive breakpoint manager
-//Source: http://sass-guidelin.es/#breakpoint-manager
+// 2. Update the mixin to ONLY look at your unique map
 @mixin respond-to($breakpoint) {
-    @if map-has-key($breakpoints, $breakpoint) {
-        @media #{inspect(map-get($breakpoints, $breakpoint))} {
+    @if map-has-key($qc-map, $breakpoint) {
+        @media #{inspect(map-get($qc-map, $breakpoint))} {
             @content;
         }
     }
     @else {
-        @error 'No value found for `#{$breakpoint}`';
+        // This helper will show up in your terminal to tell you exactly 
+        // which key failed and what is available.
+        @error 'No value found for "#{$breakpoint}". Available: #{map-keys($qc-map)}';
     }
 }

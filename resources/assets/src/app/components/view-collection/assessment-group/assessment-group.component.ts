@@ -17,6 +17,8 @@ export class AssessmentGroupComponent implements OnInit {
   @Output() onAssessmentCopy = new EventEmitter();
   @Output() onDelete = new EventEmitter();
 
+  alertKey: string = 'viewSetError';
+  copyAssessmentSuccessKey: string = null;
   editingData = null;
   focusEditAssessmentGroup = '';
   focusNewAssessment = '';
@@ -60,12 +62,15 @@ export class AssessmentGroupComponent implements OnInit {
       'assessment_name': assessment.copyData.assessment_name
     };
 
+    //set unique alert key for copying success message
+    this.copyAssessmentSuccessKey = 'copyAssessmentSuccess-' + assessment.id;
+
     try {
       const resp = await this.collectionService.copyAssessment(assessment.id, paramData);
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -88,12 +93,15 @@ export class AssessmentGroupComponent implements OnInit {
       this.onAssessmentCopy.emit({ assessment: data.assessment });
     }
 
+    this.utilitiesService.showAlert(this.copyAssessmentSuccessKey, `Assessment copied successfully.`, null, { variant: 'success', focus: true });
     this.utilitiesService.setLtiHeight();
   }
 
   copyAssessmentCancel(assessment) {
     assessment.isCopying = false;
     assessment.copyData = {};
+    const copyButton = '#qc-copy-button-' + assessment.id;
+    this.utilitiesService.focusToElement(copyButton);
     this.utilitiesService.setLtiHeight();
   }
 
@@ -108,7 +116,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -129,7 +137,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -151,6 +159,7 @@ export class AssessmentGroupComponent implements OnInit {
 
   editAssessmentGroupCancel() {
     this.isEditing = false;
+    this.utilitiesService.focusToElement('#qc-subset-edit-btn-' + this.assessmentGroup.id);
   }
 
   async getMemberships() {
@@ -162,7 +171,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -193,6 +202,8 @@ export class AssessmentGroupComponent implements OnInit {
 
   newAssessmentCancel() {
     this.isAddingAssessment = false;
+    const addButton = '#qc-btn-add-' + this.assessmentGroup.id;
+    this.utilitiesService.focusToElement(addButton);
   }
 
   onCopyAssessmentCollectionSelected(assessment) {
@@ -218,7 +229,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -257,7 +268,7 @@ export class AssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

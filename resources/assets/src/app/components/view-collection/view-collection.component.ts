@@ -10,6 +10,7 @@ import { UtilitiesService } from '../../services/utilities.service';
 })
 export class ViewCollectionComponent implements OnInit {
 
+  alertKey: string = 'viewSetError';
   collectionId;
   collection = null;
   currentPage = 'sets';
@@ -45,7 +46,7 @@ export class ViewCollectionComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -74,7 +75,7 @@ export class ViewCollectionComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -149,7 +150,7 @@ export class ViewCollectionComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

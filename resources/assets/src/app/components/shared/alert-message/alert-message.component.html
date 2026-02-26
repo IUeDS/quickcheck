@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-12">
+        <div
+            #host
+            class="alert qc-alert-message"
+            [ngClass]="bsClass"
+            [class.sr-only]="!visible"
+            [attr.role]="currentRole"
+            [attr.aria-live]="ariaLive"
+            aria-atomic="true"
+            tabindex="-1"
+            [attr.id]="id"
+            >
+
+            <p class="lead">
+                <span *ngIf="variant === 'danger'">Error</span>
+                <span *ngIf="variant === 'warning'">Warning</span>
+                <span *ngIf="variant === 'info'">Notice</span>
+                <span *ngIf="variant === 'success'">Success</span>
+            </p>
+
+            <div *ngIf="message" class="alert-message" [innerHtml]="message"></div>
+
+            <ul *ngIf="items?.length" class="alert-items">
+                <li *ngFor="let it of items">{{ it }}</li>
+            </ul>
+
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>
+
+

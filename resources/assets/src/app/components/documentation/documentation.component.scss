@@ -21,5 +21,6 @@
     .list-group-item {
         border-radius: 0;
         border-width: 1px 0 0;
+        text-decoration: none; //a11y link underline not necessary for obvious link groups
     }
 }

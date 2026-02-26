@@ -66,7 +66,20 @@ export class EditAssessmentConfigService {
         class: 'table table-bordered'
       },
       height: 300,
-      images_upload_url: '/api/assessment/imageupload'
+      content_style: ` body { padding: 15px; }`,
+      images_upload_url: '/api/assessment/imageupload',
+      selector: '#editor',
+      setup: (editor) => {
+        //need to add custom class on focus for accessibility outline styling
+        editor.on('focus', () => {
+          // Find the TinyMCE container and add our custom class
+          editor.getContainer().classList.add('is-focused');
+        });
+        editor.on('blur', () => {
+          // Remove it when the user leaves
+          editor.getContainer().classList.remove('is-focused');
+        });
+      },
     };
   }
 }

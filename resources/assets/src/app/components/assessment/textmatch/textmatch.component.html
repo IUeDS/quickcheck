@@ -1,11 +1,19 @@
 <div class="textmatch">
-    <p class="lead qc-assessment-question" [innerHTML]="this.currentQuestion.question_text | safe: 'html'"></p>
+    <p class="lead qc-assessment-question"
+        [attr.id]="'qc-question-' + this.currentQuestion.id"
+        (click)="textInput.focus()" 
+        [innerHTML]="this.currentQuestion.question_text | safe: 'html'">
+    </p>
     <div class="form-group">
-        <label for="textmatch-answer-box">Type your answer here</label>
-        <input type="text" class="form-control"
+        <small [id]="'qc-help-' + this.currentQuestion.id" class="form-text text-muted">
+            Type your answer here
+        </small>
+        <input #textInput type="text" class="form-control"
             [(ngModel)]="this.answer"
             [attr.tabindex]="this.modalVisible ? -1 : 0"
             (ngModelChange)="this.onInput()"
-            id="textmatch-answer-box">
+            id="textmatch-answer-box"
+            [attr.aria-labelledby]="'qc-question-' + this.currentQuestion.id"
+            [attr.aria-describedby]="'qc-help-' + this.currentQuestion.id">
     </div>
 </div>

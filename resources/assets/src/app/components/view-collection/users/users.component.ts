@@ -15,13 +15,21 @@ export class UsersComponent implements OnInit {
   @Input() readOnly;
   @Input() utilitiesService;
 
+  alertKey: string = 'viewSetError';
+  membershipErrorAlertKey: string = 'membershipError';
+  membershipSuccessAlertKey: string = 'membershipSuccess';
+  userSuccessAlertKey: string = 'addUserSuccess';
+  userErrorAlertKey: string = 'addUserError';
+  userValidationErrorAlertKey: string = 'validateUserAlert';
+  userValidationSuccessAlertKey: string = 'validateUserSuccess';
+
   collectionUsers = [];
   isAddingUser = {
     init: false,
     checkUser: false,
     readOnly: null,
     saveError: false,
-    saveErrorReason: false,
+    saveErrorReason: null,
     username: '',
     userAdded: false,
     userValidated: false,
@@ -49,6 +57,7 @@ export class UsersComponent implements OnInit {
 
   addUserCancel() {
     this.isAddingUser.init = false;
+    this.utilitiesService.focusToElement('.qc-btn-user-add');
   }
 
   deleteMembership(user) {
@@ -57,6 +66,7 @@ export class UsersComponent implements OnInit {
 
   editUsersCancel() {
     this.isEditingUsers.init = false; //reset
+    this.utilitiesService.focusToElement('.qc-users-edit-btn');
   }
 
   async getCollectionUsers() {
@@ -67,7 +77,7 @@ export class UsersComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -124,6 +134,7 @@ export class UsersComponent implements OnInit {
         this.isEditingUsers.loading = false;
         this.collectionUsers = data.users;
         this.isEditingUsers.success = true;
+        this.utilitiesService.showAlert(this.membershipSuccessAlertKey, 'User membership has been successfully updated.', null, { variant: 'success', focus: true });
 
         if (data.length === 0) {
           this.router.navigateByUrl('/');
@@ -131,7 +142,8 @@ export class UsersComponent implements OnInit {
       }, error => {
         this.isEditingUsers.loading = false;
         this.isEditingUsers.error = true;
-        this.isEditingUsers.init = true; //show editing view again so they can redo
+        this.isEditingUsers.init = true; //show editing view again so they can redo 
+        this.utilitiesService.showAlert(this.membershipErrorAlertKey, 'There was an error updating the membership for this set. Please try again.', null, { variant: 'danger', focus: true });
         return;
       });
 
@@ -155,6 +167,7 @@ export class UsersComponent implements OnInit {
     catch (error) {
       this.isAddingUser.saveError = true;
       this.isAddingUser.saveErrorReason = this.utilitiesService.getError(error);
+      this.utilitiesService.showAlert(this.userErrorAlertKey, `Error adding user: ${this.isAddingUser.saveErrorReason}`, null, { variant: 'danger', focus: true });
       return;
     }
   }
@@ -185,18 +198,27 @@ export class UsersComponent implements OnInit {
     }
     catch (error) {
       this.isAddingUser.validationError = true;
+      this.validateUserError();
       return;
     }
 
     if (!this.utilitiesService.isSuccessResponse(resp)) {
       this.isAddingUser.validationError = true;
+      this.validateUserError();
       return;
     }
 
     this.isAddingUser.validatedUser = data.user;
     this.isAddingUser.checkUser = false;
     this.isAddingUser.userValidated = true;
+    this.utilitiesService.showAlert(this.userValidationSuccessAlertKey, `User validated successfully: ${this.isAddingUser.validatedUser.name}.`, null, { variant: 'success' });
     await this.saveUserMembership();
+  }
+
+  validateUserError() {
+    this.utilitiesService.showAlert(this.userValidationErrorAlertKey, 'Error validating user. Please try again.', null, { variant: 'danger' });
+    this.utilitiesService.loadingFinished();
+    document.getElementById('username')?.focus();
   }
 
 }

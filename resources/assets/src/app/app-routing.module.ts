@@ -20,35 +20,148 @@ import cloneDeep from 'lodash/cloneDeep';
 import { CanDeactivateGuard } from './guards/can-deactivate-guard.service';
 
 const routes: Routes = [
-    { path: '', component: HomeComponent },
-    { path: 'index.php', component: HomeComponent },
-    { path: 'home', component: HomeComponent },
-    { path: 'index.php/home', component: HomeComponent }, //if index.php included (as is in LTI routes), separate rule needed
-    { path: 'collection', component: CollectionIndexComponent },
-    { path: 'collection/:id', component: ViewCollectionComponent },
-    { path: 'documentation', component: DocumentationComponent },
-    { path: 'assessment/:id/edit', component: EditAssessmentComponent, canDeactivate: [CanDeactivateGuard] },
-    { path: 'assessment', component: AssessmentComponent },
-    { path: 'index.php/assessment', component: AssessmentComponent },
-    { path: 'assessment/:id', component: AssessmentComponent },
-    { path: 'select', component: SelectComponent },
+    { 
+      path: '', 
+      component: HomeComponent,
+      data: { showNav: true, title: 'Home' } 
+    },
+    { 
+      path: 'index.php', 
+      component: HomeComponent,
+      data: { showNav: true, title: 'Home' } 
+    },
+    { 
+      path: 'home', 
+      component: HomeComponent,
+      data: { showNav: true, title: 'Home' } 
+    },
+    { 
+      path: 'index.php/home', 
+      component: HomeComponent,
+      data: { showNav: true, title: 'Home' } 
+    }, //if index.php included (as is in LTI routes), separate rule needed
+    { 
+      path: 'collection', 
+      component: CollectionIndexComponent,
+      data: { showNav: true, title: 'Sets' } 
+    },
+    { 
+      path: 'collection/:id', 
+      component: ViewCollectionComponent,
+      data: { showNav: true, title: 'View set' } 
+    },
+    { 
+      path: 'documentation', 
+      component: DocumentationComponent,
+      data: { showNav: true, title: 'Help' } 
+    },
+    { 
+      path: 'assessment/:id/edit', 
+      component: EditAssessmentComponent,
+      data: { showNav: true, title: 'Edit quick check' }, 
+      canDeactivate: [CanDeactivateGuard] 
+    },
+    { 
+      path: 'assessment', 
+      component: AssessmentComponent,
+      data: { showNav: false, title: 'Quick Check' } 
+    },
+    { 
+      path: 'index.php/assessment', 
+      component: AssessmentComponent,
+      data: { showNav: false, title: 'Quick Check' } 
+    },
+    { 
+      path: 'assessment/:id', 
+      component: AssessmentComponent,
+      data: { showNav: false, title: 'Quick Check' }  
+    },
+    { 
+      path: 'select', 
+      component: SelectComponent,
+      data: { showNav: false, title: 'Select quick check' }  
+    },
     { path: 'index.php/select', component: SelectComponent },
-    { path: 'student', component: StudentViewComponent },
-    { path: 'index.php/student', component: StudentViewComponent },
-    { path: 'manage', component: AttemptsOverviewComponent },
-    { path: 'index.php/manage', component: AttemptsOverviewComponent },
-    { path: 'assessment/:assessmentId/attempts/:assignmentId/:resourceLinkId', component: ViewAttemptsComponent },
-    { path: 'assessment/:assessmentId/attempts', component: ViewAttemptsComponent },
-    { path: 'assessment/:assessmentId/attempts/:assignmentId', component: ViewAttemptsComponent },
-    { path: 'student/:studentId/attempts', component: ViewAttemptsForStudentComponent },
-    { path: 'usernotfound', component: UsernotfoundComponent },
-    { path: 'sessionnotvalid', component: SessionnotvalidComponent },
-    { path: 'index.php/sessionnotvalid', component: SessionnotvalidComponent },
-    { path: 'ltisessionnotvalid', component: LtisessionnotvalidComponent },
-    { path: 'error', component: ErrorComponent },
-    { path: 'index.php/error', component: ErrorComponent },
-    { path: 'establishcookietrust', component: EstablishCookieTrustComponent },
-    { path: 'index.php/establishcookietrust', component: EstablishCookieTrustComponent }
+    { 
+      path: 'student', 
+      component: StudentViewComponent,
+      data: { showNav: false, title: 'View released results' }  
+    },
+    { 
+      path: 'index.php/student', 
+      component: StudentViewComponent,
+      data: { showNav: false, title: 'View released results' }  
+    },
+    { 
+      path: 'manage', 
+      component: AttemptsOverviewComponent,
+      data: { showNav: true, title: 'Results' } 
+    },
+    { 
+      path: 'index.php/manage', 
+      component: AttemptsOverviewComponent,
+      data: { showNav: true, title: 'Results' } 
+    },
+    { 
+      path: 'assessment/:assessmentId/attempts/:assignmentId/:resourceLinkId', 
+      component: ViewAttemptsComponent,
+      data: { showNav: true, title: 'View Quick Check Attempts' } 
+    },
+    { 
+      path: 'assessment/:assessmentId/attempts', 
+      component: ViewAttemptsComponent,
+      data: { showNav: true, title: 'View Quick Check Attempts' }  
+    },
+    { 
+      path: 'assessment/:assessmentId/attempts/:assignmentId', 
+      component: ViewAttemptsComponent,
+      data: { showNav: true, title: 'View Quick Check Attempts' }  
+    },
+    { 
+      path: 'student/:studentId/attempts', 
+      component: ViewAttemptsForStudentComponent,
+      data: { showNav: true, title: 'View Student Attempts' }  
+    },
+    { 
+      path: 'usernotfound', 
+      component: UsernotfoundComponent,
+      data: { showNav: false, title: 'User not found' }  
+    },
+    { 
+      path: 'sessionnotvalid', 
+      component: SessionnotvalidComponent,
+      data: { showNav: false, title: 'Session not valid' }  
+    },
+    { 
+      path: 'index.php/sessionnotvalid', 
+      component: SessionnotvalidComponent,
+      data: { showNav: false, title: 'Session not valid' }  
+    },
+    { 
+      path: 'ltisessionnotvalid', 
+      component: LtisessionnotvalidComponent,
+      data: { showNav: false, title: 'LTI session not valid' }  
+    },
+    { 
+      path: 'error', 
+      component: ErrorComponent,
+      data: { showNav: false, title: 'Quick Check - error' } 
+    },
+    { 
+      path: 'index.php/error', 
+      component: ErrorComponent,
+      data: { showNav: false, title: 'Quick Check - error' } 
+    },
+    { 
+      path: 'establishcookietrust', 
+      component: EstablishCookieTrustComponent,
+      data: { showNav: false, title: 'Establish Cookie Trust' } 
+    },
+    { 
+      path: 'index.php/establishcookietrust', 
+      component: EstablishCookieTrustComponent,
+      data: { showNav: false, title: 'Establish Cookie Trust' } 
+    }
 ];
 
 @NgModule({

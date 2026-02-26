@@ -10,6 +10,7 @@ export class AddCustomActivityComponent implements OnInit {
   @Input() utilitiesService;
   @Output() onSave = new EventEmitter();
 
+  alertKey: string = 'indexError';
   customActivityData;
   isOpen = false;
 
@@ -47,7 +48,7 @@ export class AddCustomActivityComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

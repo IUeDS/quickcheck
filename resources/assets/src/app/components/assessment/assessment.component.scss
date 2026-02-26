@@ -79,8 +79,9 @@ $border-radius: 20px;
         background-color: $restart-red;
         color: $white;
 
-        &:hover {
-            color: $dark-gray;
+        &:hover,
+        &:focus {
+            background-color: $restart-red-darker;
             cursor: pointer;
         }
     }
@@ -90,15 +91,17 @@ $border-radius: 20px;
         color: $black;
         margin-bottom: 30px;
 
-        &:hover {
+        &:hover,
+        &:focus {
             background-color: $seafoam-green-darker;
             cursor: pointer;
         }
 
-        &:disabled {
+        &.is-disabled {
             background-color: $neutral-gray;
 
-            &:hover {
+            &:hover,
+            &:focus {
                 color: $black;
                 cursor: not-allowed;
             }
@@ -106,15 +109,18 @@ $border-radius: 20px;
     }
 
     //h2 within the quiz is different from h2s in the instructor view; keep the blue Oswald font since it pops more
-    .qc-quiz-view h2,
-    #qc-feedback-modal h2,
-    #qc-completion-modal h2 {
+    .qc-quiz-view .qc-h2-style,
+    .qc-quiz-view .qc-question-number,
+    #qc-feedback-modal .qc-h2-style,
+    #qc-completion-modal .qc-h2-style {
         color: $ocean-blue-muted;
         font-family: 'Oswald', sans-serif;
         font-size: 1.9rem;
         font-style: normal; //don't make these italic in the quiz view
         font-weight: 400;
+        line-height: 1.2;
         margin-bottom: 35px; //add extra room between header and continue button
+        text-transform: none;
     }
 
     .qc-quiz-view {
@@ -122,7 +128,11 @@ $border-radius: 20px;
         margin-left: 0;
         margin-right: 0;
 
-        h2 {
+        //add more space around content
+        padding-left: 50px;
+        padding-right: 50px;
+
+        .qc-question-number {
             text-transform: uppercase;
         }
     }

@@ -7,6 +7,7 @@ import { CollectionService } from '../../../services/collection.service';
   styleUrls: ['./view-all-collections-toggle.component.scss']
 })
 export class ViewAllCollectionsToggleComponent implements OnInit {
+  @Input() alertKey;
   @Input() collectionData;
   @Input() utilitiesService;
 
@@ -35,7 +36,7 @@ export class ViewAllCollectionsToggleComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

@@ -9,6 +9,7 @@ import { CustomActivityService } from '../../../services/custom-activity.service
 export class CustomActivitiesPanelComponent implements OnInit {
   @Input() utilitiesService;
 
+  alertKey: string = 'indexError';
   customActivities = [];
   isOpen = false;
   loading = false;
@@ -43,7 +44,7 @@ export class CustomActivitiesPanelComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

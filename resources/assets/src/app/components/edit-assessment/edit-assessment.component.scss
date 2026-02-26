@@ -43,7 +43,8 @@
         border-color: $golden-yellow-darker;
         color: $black;
 
-        &:hover {
+        &:hover,
+        &:focus {
             background-color: $golden-yellow-darker;
         }
     }
@@ -127,6 +128,7 @@
     .qc-feedback-header {
         display: inline-block;
         margin-right: 20px;
+        padding-top: 20px;
     }
 
     legend {
@@ -183,10 +185,13 @@
             svg {
                 height: 25px;
                 width: 25px;
+            }
 
-                &:hover {
+            &:hover,
+            &:focus {
+                svg {
                     path {
-                        fill: $seafoam-green;
+                        fill: $toggle-green;
                     }
                 }
             }
@@ -214,7 +219,8 @@
     .qc-selected-correct {
         color: $green;
 
-        &:hover {
+        &:hover,
+        &:focus {
             cursor: pointer;
         }
     }
@@ -222,7 +228,8 @@
     .qc-selected-incorrect {
         color: $darker-gray;
 
-        &:hover {
+        &:hover,
+        &:focus {
             color: $green;
             cursor: pointer;
         }

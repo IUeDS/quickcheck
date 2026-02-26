@@ -13,6 +13,7 @@ export class StudentAssessmentAttemptsComponent implements OnInit {
   @Input() user;
   @Input() utilitiesService;
 
+  alertKey: string = 'viewAttemptsForStudentAlert';
   attempts = [];
   accordionClosed = true;
   dueAt = false;
@@ -75,7 +76,7 @@ export class StudentAssessmentAttemptsComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -109,7 +110,7 @@ export class StudentAssessmentAttemptsComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

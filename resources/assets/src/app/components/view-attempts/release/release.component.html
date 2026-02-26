@@ -4,9 +4,13 @@
 <button *ngIf="this.release" (click)="this.rollbackRelease()" class="btn qc-btn qc-release-btn" data-toggle="tooltip" data-placement="top" title="If student results were released in error, they can be rolled back and hidden from students.">
     <span class="fa fa-undo" aria-hidden="true"></span>&nbsp;&nbsp;Rollback released results from students
 </button>
+<qc-alert-message alertKey="releaseError" [utilitiesService]="this.utilitiesService"></qc-alert-message>
+<qc-alert-message alertKey="releaseSuccess" [utilitiesService]="this.utilitiesService"></qc-alert-message>
+<!--
 <div *ngIf="this.error" class="alert alert-danger text-center" role="alert">
     <p><span class="fa fa-exclamation" aria-hidden="true"></span> Release Error: {{ this.error }}</p>
 </div>
 <div *ngIf="this.success" class="alert alert-success text-center release-alert" role="alert">
     <p><span class="fa fa-check" aria-hidden="true"></span> {{ this.success }}</p>
 </div>
+-->

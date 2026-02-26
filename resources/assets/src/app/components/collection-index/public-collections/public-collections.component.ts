@@ -11,6 +11,7 @@ export class PublicCollectionsComponent implements OnInit {
   @Input() user;
   @Input() utilitiesService;
 
+  alertKey: string = 'indexError';
   publicCollections = [];
 
   constructor(private collectionService: CollectionService, private userService: UserService) { }
@@ -22,7 +23,7 @@ export class PublicCollectionsComponent implements OnInit {
       this.publicCollections = data.publicCollections;
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
     }
   }
 
@@ -35,7 +36,7 @@ export class PublicCollectionsComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -54,7 +55,7 @@ export class PublicCollectionsComponent implements OnInit {
       collection.user_membership = false;
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
   }

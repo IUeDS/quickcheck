@@ -11,6 +11,7 @@ export class FeaturesComponent implements OnInit {
   @Input() readOnly;
   @Input() utilitiesService;
 
+  alertKey: string = 'viewSetError';
   collectionFeatures = [];
   showFeatures = false;
 
@@ -24,7 +25,7 @@ export class FeaturesComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -48,7 +49,7 @@ export class FeaturesComponent implements OnInit {
       await this.collectionService.updateFeature(collectionFeature.id, { 'collectionFeature': collectionFeature });
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
     }
   }
 }
