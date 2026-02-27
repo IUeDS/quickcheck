@@ -544,22 +544,22 @@ class LtiContext {
         $logMessage = 'LTI launch data missing for the following value: ';
 
         if (!$this->getContextId()) {
-            Log::info($logMessage + 'context ID');
+            Log::info($logMessage . 'context ID');
             $missingValue = true;
         }
 
         if (!$this->getCourseId()) {
-            Log::info($logMessage + 'course ID');
+            Log::info($logMessage . 'course ID');
             $missingValue = true;
         }
 
         if (!$this->getUserId()) {
-            Log::info($logMessage + 'user ID');
+            Log::info($logMessage . 'user ID');
             $missingValue = true;
         }
 
-        if (!$this->getUserLoginId()) {
-            Log::info($logMessage + 'user login ID');
+        if ($this->isInstructor() && !$this->getUserLoginId()) {
+            Log::info($logMessage . 'user login ID');
             $missingValue = true;
         }
 
