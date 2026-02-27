@@ -9,9 +9,6 @@ use Log;
 class Student extends Eloquent {
     protected $table = "students";
     protected $fillable = [
-        "lis_person_name_given",
-        "lis_person_name_family",
-        "lti_custom_canvas_user_login_id",
         "lti_custom_user_id",
         "lti_person_sourcedid"
     ];
@@ -70,17 +67,6 @@ class Student extends Eloquent {
     }
 
     /**
-    * Return the canvas user login ID of the student (string)
-    *
-    * @return string
-    */
-
-    public function getCanvasUserLoginId()
-    {
-        return $this->lti_custom_canvas_user_login_id;
-    }
-
-    /**
     * Return the sourced ID of the student (string)
     *
     * @return string
@@ -98,14 +84,14 @@ class Student extends Eloquent {
     */
 
     public static function getCurrentStudent() {
-        $username = Session::get('student');
-        if (!$username) {
+        $userId = Session::get('student');
+        if (!$userId) {
             abort(500, 'Session expired.');
         }
 
-        $student = Student::where('lti_custom_canvas_user_login_id', '=', $username)->first();
+        $student = Student::where('lti_custom_user_id', '=', $userId)->first();
         if (!$student) {
-            Log::error('Student not found in database. User is: ' . $username);
+            Log::error('Student not found in database. User ID is: ' . $userId);
             abort(500, 'Student not found');
         }
         return $student;
@@ -114,19 +100,13 @@ class Student extends Eloquent {
     /**
     * Initialize a new student
     *
-    * @param  string $givenName
-    * @param  string $familyName
     * @param  string $canvasUserId
-    * @param  string $canvasLoginId
     * @param  string $personSourcedId
     * @return void
     */
 
-    public function initialize($givenName, $familyName, $canvasUserId, $canvasLoginId, $personSourcedId)
+    public function initialize($canvasUserId, $personSourcedId)
     {
-        $this->lis_person_name_given = $givenName;
-        $this->lis_person_name_family = $familyName ? $familyName : ''; //service accounts may not have last name, default blank string
-        $this->lti_custom_canvas_user_login_id = $canvasLoginId;
         $this->lti_custom_user_id = $canvasUserId;
         $this->lis_person_sourcedid = $personSourcedId;
         $this->save();

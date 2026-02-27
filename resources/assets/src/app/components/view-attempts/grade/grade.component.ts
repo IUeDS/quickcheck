@@ -29,9 +29,7 @@ export class GradeComponent implements OnInit {
   }
 
   ngOnChanges() {
-		if (!this.isTestStudent()) { //do not show test student as dropped; not in course roster
-			this.isUserInCourse = this.users[this.attempt.student.lti_custom_user_id] ? true : false;
-		}
+		this.isUserInCourse = this.users[this.attempt.student.lti_custom_user_id] ? true : false;
 		this.submission = new Submission(this.attempt, this.pointsPossible, this.submissions);
   }
 
@@ -63,16 +61,6 @@ export class GradeComponent implements OnInit {
 		}
 
 		return true;
-	}
-
-	//ensure that Canvas Test Student is not shown as dropped, since not in course
-	isTestStudent() {
-		var student = this.attempt.student;
-		if (student.lis_person_name_given === 'Test' && student.lis_person_name_family === 'Student') {
-			return true;
-		}
-
-		return false;
 	}
 
 	async submitGrade() {

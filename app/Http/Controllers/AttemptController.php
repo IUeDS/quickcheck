@@ -174,7 +174,7 @@ class AttemptController extends \BaseController
             }
         })->toArray();
 
-        return response()->success(['attempts' => array_values($sortedAttempts), 'sourcedId' => $sourcedId]);
+        return response()->success(['attempts' => array_values($sortedAttempts), 'sourcedId' => $sourcedId, 'courseContext' => $courseContext]);
     }
 
     /**

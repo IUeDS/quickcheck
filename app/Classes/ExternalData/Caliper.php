@@ -118,7 +118,6 @@ class Caliper
         $data['custom_canvas_assignment_id'] = $attempt->getAssignmentId();
         $data['custom_canvas_course_id'] = $courseContext->getCourseId();
         $data['custom_canvas_user_id'] = $student->getCanvasUserId();
-        $data['custom_canvas_user_login_id'] = $student->getCanvasUserLoginId();
         $data['ltiConsumerUrl'] = $attempt->getLtiConsumerUrl();
         $data['ltiNonce'] = $attempt->getNonce();
         $data['lis_course_offering_sourcedid'] = $courseContext->getCourseOfferingSourcedid();

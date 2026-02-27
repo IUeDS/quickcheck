@@ -232,36 +232,6 @@ class LtiContext {
     }
 
     /**
-    * Get student's given name for the current launch
-    *
-    * @return string
-    */
-
-    public function getGivenName()
-    {
-        if (!$this->launchValues) {
-            return false;
-        }
-
-        return $this->launchValues['given_name'];
-    }
-
-    /**
-    * Get student's family name for the current launch
-    *
-    * @return string
-    */
-
-    public function getFamilyName()
-    {
-        if (!$this->launchValues) {
-            return false;
-        }
-
-        return $this->launchValues['family_name'];
-    }
-
-    /**
     * Get decoded launch values from JWT after it's been unencrypted
     *
     * @return []
@@ -588,11 +558,6 @@ class LtiContext {
             $missingValue = true;
         }
 
-        if (!$this->getGivenName()) {
-            Log::info($logMessage + 'given name');
-            $missingValue = true;
-        }
-
         if ($missingValue) {
             throw new LtiLaunchDataMissingException;
         }
@@ -654,12 +619,9 @@ class LtiContext {
         $student = Student::where('lti_custom_user_id', '=', $canvasUserId)->first();
         if (!$student) {
             $student = new Student();
-            $givenName = $this->getGivenName();
-            $familyName = $this->getFamilyName();
             $canvasUserId = $this->getUserId();
-            $canvasLoginId = $this->getUserLoginId();
             $personSourcedId = $this->getPersonSourcedid();
-            $student->initialize($givenName, $familyName, $canvasUserId, $canvasLoginId, $personSourcedId);
+            $student->initialize($canvasUserId, $personSourcedId);
         }
 
         //M. Mallon, 5/26/20: person sourced ID was not previously saved, so add to existing users if needed.

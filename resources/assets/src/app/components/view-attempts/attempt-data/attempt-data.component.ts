@@ -42,6 +42,7 @@ export class AttemptDataComponent implements OnInit {
 
     if (changes.users) {
       this.usersService = new Users(this.users);
+      this.parseAttempts();
     }
   }
 
@@ -111,21 +112,43 @@ export class AttemptDataComponent implements OnInit {
   }
 
   parseAttempts() {
-    for (let attempt of this.attempts) {
-      if (attempt.allowed_attempts) {
-        this.isAttemptLimit = true;
+  // First, sort attempts alphabetically by sortable_name while preserving created_at order within each user
+  if (this.usersService) {
+        console.log('sorted users', this.usersService.getSortedUsers());
+
+    this.attempts.sort((a, b) => {
+      const nameA = this.usersService.getStudentSortableName(a.student.lti_custom_user_id).toLowerCase();
+      const nameB = this.usersService.getStudentSortableName(b.student.lti_custom_user_id).toLowerCase();
+      
+      // If same user, sort by created_at ascending
+      if (a.student.lti_custom_user_id === b.student.lti_custom_user_id) {
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
       }
-      if (this.isLate(attempt)) {
-        attempt.isLate = true;
-      }
-      if (this.isStudent) { //skip the last part if a student
-        continue;
-      }
-      if (this.isFirstRowForStudent(attempt)) {
-        attempt.firstRowForStudent = true;
-      }
+      
+      // Otherwise sort alphabetically by name
+      return nameA.localeCompare(nameB);
+    });
+  }
+
+  // Reset the tracking object since we've re-sorted
+  this.studentsWithFirstRow = {};
+
+  // Now apply the existing logic
+  for (let attempt of this.attempts) {
+    if (attempt.allowed_attempts) {
+      this.isAttemptLimit = true;
+    }
+    if (this.isLate(attempt)) {
+      attempt.isLate = true;
+    }
+    if (this.isStudent) { //skip the last part if a student
+      continue;
+    }
+    if (this.isFirstRowForStudent(attempt)) {
+      attempt.firstRowForStudent = true;
     }
   }
+}
 
   responsesAvailable(attempt) {
     if (!attempt.student_responses.length) {

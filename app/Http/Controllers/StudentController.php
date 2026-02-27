@@ -54,12 +54,7 @@ class StudentController extends \BaseController
             array_push($students, $attempt->student);
         }
 
-        //sort by last name -- ideally would be more efficient if done directly in the DB,
-        //but would require a join to sort by related model and make it difficult to
-        //extricate the student from the joined attempt.
         $students = collect($students);
-        $students = $students->sortBy('lis_person_name_family')->values()->all();
-
         return response()->success(['students' => $students, 'sourcedId' => $sourcedId]);
     }
 }
