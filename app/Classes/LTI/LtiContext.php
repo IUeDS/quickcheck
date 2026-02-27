@@ -420,7 +420,12 @@ class LtiContext {
     public function getUserLoginId()
     {
         if (!$this->launchValues) {
-            return false;
+            return null;
+        }
+
+        //login ID only stored for instructors, not students
+        if (!$this->isInstructor()) {
+            return null;
         }
 
         return $this->launchValues[$this->customKey]->canvas_user_login_id;
