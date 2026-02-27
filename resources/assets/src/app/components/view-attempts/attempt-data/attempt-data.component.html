@@ -18,7 +18,7 @@
     </thead>
     <tbody>
         <ng-container *ngFor="let attempt of this.attempts; index as $index; trackBy:this.identify">
-            <tr *ngIf="this.usersService.userExists(attempt.student.lti_custom_user_id)"
+            <tr *ngIf="this.isStudent || this.usersService?.userExists(attempt.student.lti_custom_user_id)"
                 [ngClass]="{'qc-no-top-border': !attempt.firstRowForStudent}"
                 class="qc-attempts-table-attempt">
                 <td class="qc-attempt-name" *ngIf="!this.isStudent">

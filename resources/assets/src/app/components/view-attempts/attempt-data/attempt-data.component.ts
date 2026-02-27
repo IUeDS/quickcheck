@@ -148,6 +148,8 @@ export class AttemptDataComponent implements OnInit {
       attempt.firstRowForStudent = true;
     }
   }
+
+  this.utilitiesService.setLtiHeight();
 }
 
   responsesAvailable(attempt) {
