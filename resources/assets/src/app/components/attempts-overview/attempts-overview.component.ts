@@ -151,6 +151,7 @@ export class AttemptsOverviewComponent implements OnInit {
     this.users = data.users;
     this.usersService = new Users(this.users);
     this.sortedUsers = this.usersService.getSortedUsers();
+    this.utilitiesService.setLtiHeight();
   }
 
   isResultsByStudentToggleEnabled() {
