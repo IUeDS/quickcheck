@@ -13,6 +13,7 @@ export class CustomActivityComponent implements OnInit {
   @Output() onDelete = new EventEmitter();
   @Input() utilitiesService;
 
+  alertKey: string = 'indexError';
   editingData; //copy to separate object so if user cancels edit, data is intact
   isEditing = false;
 
@@ -49,7 +50,7 @@ export class CustomActivityComponent implements OnInit {
       const resp = await this.customActivityService.deleteCustom(this.customActivity.id);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -102,7 +103,7 @@ export class CustomActivityComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

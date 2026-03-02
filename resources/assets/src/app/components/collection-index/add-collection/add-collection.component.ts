@@ -10,6 +10,7 @@ export class AddCollectionComponent implements OnInit {
   @Input() utilitiesService;
   @Output() onSave = new EventEmitter();
 
+  alertKey: string = 'indexError';
   isAddingCollection = false;
   newCollection = { name: null, description: null };
 
@@ -26,6 +27,7 @@ export class AddCollectionComponent implements OnInit {
 
   collectionAddClose() {
     this.isAddingCollection = false;
+    this.utilitiesService.focusToElement('.qc-btn-add-set');
   }
 
   async saveNewCollection() {
@@ -38,7 +40,7 @@ export class AddCollectionComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

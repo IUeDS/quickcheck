@@ -8,6 +8,7 @@ import { ManageService } from '../../services/manage.service';
   styleUrls: ['./student-view.component.scss']
 })
 export class StudentViewComponent implements OnInit {
+  alertKey: string = 'studentViewAlert';
   attemptAssessment = null;
   courseContext = null;
   displayedAttempts = [];
@@ -56,7 +57,7 @@ export class StudentViewComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

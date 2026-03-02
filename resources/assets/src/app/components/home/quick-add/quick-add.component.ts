@@ -11,6 +11,7 @@ export class QuickAddComponent implements OnInit {
   @Input() utilitiesService: UtilitiesService;
   @Output() onCancel = new EventEmitter();
 
+  alertKey: string = 'homeError';
   assessment = { collection: { id: '', name: null, assessment_groups: [] }, assessmentGroup: { id: '', name: null }, name: null }; //data to be passed back if adding a new quick check
   memberships = []; //if adding, possible collections/assessment groups new assessment can belong to
   newCollectionAdded = false; //if adding a new collection on the fly
@@ -56,7 +57,7 @@ export class QuickAddComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
     }
 
     this.memberships = data.memberships;
@@ -88,7 +89,7 @@ export class QuickAddComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
     }
 
     const assessmentId = data.assessmentId;

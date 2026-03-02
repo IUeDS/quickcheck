@@ -11,9 +11,9 @@ label {
     font-weight: 400;
 }
 
-//set max-width the same as Canvas's, so that the layout doesn't get funky in a new tab
-main {
-    max-width: 1366px;
+body main.container-fluid {
+    //set max-width the same as Canvas's, so that the layout doesn't get funky in a new tab
+    //max-width: 1366px;
 }
 
 //add back in bottom border that bootstrap v4 took out
@@ -68,6 +68,15 @@ h6,
     background-color: $light-gray;
 }
 
+input[type="text"],
+input[type="number"],
+textarea,
+select,
+.form-control {
+    // 1. Darken the default border to pass 3:1 contrast
+    border: 1px solid #828282;
+}
+
 a,
 button,
 input,
@@ -80,8 +89,15 @@ textarea {
     }
 }
 
+.tox-tinymce.is-focused {
+    outline: 2px solid $iron-gray !important; 
+    outline-offset: 2px;
+}
+
 //light color focus for contrast against dark background for nav links
 nav a {
+    text-decoration: none; //a11y link underline not necessary for obvious link groups
+    
     &:focus {
         border: solid $white 2px !important;
         box-shadow: none !important;
@@ -96,5 +112,16 @@ input[type="radio"] {
         outline: solid $iron-gray 2px !important;
         outline-offset: 3px;
         border: none !important;
+    }
+}
+
+//a11y-friendly hover and focus styles
+.list-group-item {
+
+    &:hover,
+    &:focus {
+        background-color: $light-gray; // A slightly darker, more visible gray
+        box-shadow: inset 4px 0 0 0 $dark-blue;       
+        cursor: pointer;
     }
 }

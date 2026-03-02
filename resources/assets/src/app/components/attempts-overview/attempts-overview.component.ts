@@ -8,6 +8,7 @@ import { ManageService } from '../../services/manage.service';
   styleUrls: ['./attempts-overview.component.scss']
 })
 export class AttemptsOverviewComponent implements OnInit {
+  alertKey: string = 'attemptsOverviewAlert';
   attempts = [];
   currentPage = 'results';
   embeds = {}; //if same assessment is embedded in multiple assignments, split into separate entries
@@ -40,7 +41,7 @@ export class AttemptsOverviewComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -108,7 +109,7 @@ export class AttemptsOverviewComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

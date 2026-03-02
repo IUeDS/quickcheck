@@ -96,12 +96,18 @@ export class AssessmentComponent implements OnInit {
   studentId = null;
   timeoutSecondsRemaining = null; //seconds of timeout remaining, if feature enabled
 
+  //keyboard control specific to drag and drop
   resetSelected: boolean = false;
   submitSelected: boolean = false;
 
 
   @HostListener('window:keyup', ['$event'])
   keyEventUp(event: KeyboardEvent) {
+    //only apply keyboard controls for drag and drop questions
+    if (!this.isQuestionType('drag_and_drop')) {
+      return;
+    }
+
     switch (event.code) {
 
       case KEY_CODE.KEY_R:
@@ -345,7 +351,13 @@ export class AssessmentComponent implements OnInit {
       pointsPossible: this.pointsPossible,
       score: this.score,
     };
-    this.modalService.show(CompletionModalComponent, {initialState, backdrop: 'static', keyboard: false});
+    this.modalService.show(CompletionModalComponent, {
+      initialState, 
+      backdrop: 'static', 
+      keyboard: false,
+      ariaLabelledBy: 'qc-completion-label',
+      ariaDescribedby: 'qc-completion-dialog-content'
+    });
     this.modalVisible = true;
     this.utilitiesService.focusToElement('#qc-completion-modal');
   }
@@ -448,7 +460,15 @@ export class AssessmentComponent implements OnInit {
       errorMessage: this.errorMessage,
       showRestartBtn
     };
-    this.modalService.show(ErrorModalComponent, {initialState, backdrop: 'static', keyboard: false});
+    this.modalService.show(ErrorModalComponent, {
+      initialState, 
+      backdrop: 'static', 
+      keyboard: false, 
+      focus: true,        
+      ignoreBackdropClick: true,
+      ariaLabelledBy: 'qc-assessment-error-label',
+      ariaDescribedby: 'qc-assessment-error-modal-description'
+    });
     this.modalVisible = true;
   }
 
@@ -467,7 +487,13 @@ export class AssessmentComponent implements OnInit {
         isCorrect: this.isCorrect,
         isNextBtnDisabled: this.isNextBtnDisabled
       };
-      this.modalService.show(FeedbackModalComponent, {initialState, backdrop: 'static', keyboard: false});
+      this.modalService.show(FeedbackModalComponent, {
+        initialState, 
+        backdrop: 'static', 
+        keyboard: false,
+        ariaLabelledBy: 'qc-feedback-label',
+        ariaDescribedby: 'qc-feedback-dialog-content'
+      });
       this.modalVisible = true;
       this.utilitiesService.formatMath(); //if equations are shown in the feedback
       this.utilitiesService.focusToElement('#qc-feedback-modal');
@@ -479,7 +505,13 @@ export class AssessmentComponent implements OnInit {
     const initialState = {
       timeoutSecondsRemaining: this.timeoutSecondsRemaining
     };
-    this.modalService.show(TimeoutModalComponent, {initialState, backdrop: 'static', keyboard: false});
+    this.modalService.show(TimeoutModalComponent, {
+      initialState, 
+      backdrop: 'static', 
+      keyboard: false,
+      ariaLabelledBy: 'qc-assessment-timeout-label',
+      ariaDescribedby: 'qc-assessment-timeout-dialog-content'
+    });
     this.modalVisible = true;
   }
 
@@ -497,7 +529,18 @@ export class AssessmentComponent implements OnInit {
     this.utilitiesService.shuffle(this.questions);
   }
 
-  async submitAnswer() {
+  async submitAnswer(event?: Event) {
+    if (this.isSubmitDisabled()) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        
+        document.getElementById('qc-submit-requirements').focus(); // Move focus to the error message for screen readers
+        
+        return; 
+    }
+
     let data;
     this.utilitiesService.loadingStarted(); //do this right away to prevent super fast double clicks
     var submission = {

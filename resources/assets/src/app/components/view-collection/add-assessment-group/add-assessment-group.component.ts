@@ -11,6 +11,7 @@ export class AddAssessmentGroupComponent implements OnInit {
   @Input() utilitiesService;
   @Output() onSave = new EventEmitter();
 
+  alertKey: string = 'viewSetError';
   formOpen = false;
   newAssessmentGroup = null;
 
@@ -48,7 +49,7 @@ export class AddAssessmentGroupComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

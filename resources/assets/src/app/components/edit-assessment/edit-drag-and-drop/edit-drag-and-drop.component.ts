@@ -17,6 +17,7 @@ export class EditDragAndDropComponent implements OnInit {
   @Output() onQuestionEdited = new EventEmitter();
   @Output() onSavedOptionDeleted = new EventEmitter();
 
+  alertKey: string = 'editAssessmentAlert';
   tinymceOptions;
   DRAG_TYPE = 'DRAGGABLE';
   DROP_TYPE = 'DROPPABLE';
@@ -499,7 +500,7 @@ export class EditDragAndDropComponent implements OnInit {
       data = await this.assessmentEditService.uploadImage(file);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
     

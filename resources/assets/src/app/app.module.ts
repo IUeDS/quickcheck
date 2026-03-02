@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
-import { ErrorMessageComponent } from './components/shared/error-message/error-message.component';
+import { AlertMessageComponent } from './components/shared/alert-message/alert-message.component';
 import { NavComponent } from './components/shared/nav/nav.component';
 import { QuickAddComponent } from './components/home/quick-add/quick-add.component';
 import { CollectionIndexComponent } from './components/collection-index/collection-index.component';
@@ -94,6 +94,7 @@ import { SelectAssessmentComponent } from './components/select/select-assessment
 
 import { SafePipe } from './pipes/safe.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
+import { StripHtmlPipe } from './pipes/strip-html.pipe';
 
 import { CanDeactivateGuard } from './guards/can-deactivate-guard.service';
 
@@ -110,7 +111,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({ declarations: [
         AppComponent,
         HomeComponent,
-        ErrorMessageComponent,
+        AlertMessageComponent,
         NavComponent,
         QuickAddComponent,
         CollectionIndexComponent,
@@ -208,6 +209,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         EditorModule,
         RoundProgressModule,
         RouterModule,
+        StripHtmlPipe,
         DragDropModule], providers: [
         Title,
         CanDeactivateGuard,

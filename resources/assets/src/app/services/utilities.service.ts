@@ -1,9 +1,19 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import {environment} from '../../environments/environment';
 import moment from 'moment-timezone';
 import { Title } from '@angular/platform-browser';
 import cloneDeep from 'lodash/cloneDeep';
+import { filter } from 'rxjs/operators';
+import { AlertMessageComponent } from '../components/shared/alert-message/alert-message.component';
+
+//pending error messages from ngOnInit, if alert child component not yet available
+interface Pending {
+  msg: string;
+  items?: string[];
+  opts?: any;
+  timestamp?: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -15,22 +25,30 @@ export class UtilitiesService {
   errorList = [];
   isLti = false;
   loading = false;
+  params = null;
   scrollingLtiHeight = 0;
   sessionExpired = false;
+  private alerts = new Map<string, AlertMessageComponent>();
+  private pending = new Map<string, Pending[]>();
 
-  constructor(private route: ActivatedRoute, private titleService: Title) {
-    let params = this.route.snapshot.queryParamMap;
+  constructor(private router: Router, private route: ActivatedRoute, private titleService: Title) {
+    // Listen for navigation to finish before updating query params
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.params = this.getQueryParams();
+      const contextId = this.getQueryParam('context');
 
-    let contextId = params.get('context');
-    if (contextId) {
-      this.contextId = contextId;
-      this.isLti = true;
-    }
+      if (contextId) {
+        this.contextId = contextId;
+        this.isLti = true;
+      }
 
-    let sessionExpired = params.get('sessionexpired');
-    if (sessionExpired) {
-      this.sessionExpired = true;
-    }
+      const sessionExpired = this.getQueryParam('sessionexpired');
+      if (sessionExpired) {
+        this.sessionExpired = true;
+      }
+    });
   }
 
   areCookiesEnabled() {
@@ -51,6 +69,11 @@ export class UtilitiesService {
     }
 
     return false;
+  }
+
+  clearAlert(key: string) {
+    const comp = this.alerts.get(key);
+    if (comp) comp.clear();
   }
 
   convertSqlTimestamp(timestamp) {
@@ -80,6 +103,7 @@ export class UtilitiesService {
   focusToElement(element) {
     setTimeout(() => {
       document.querySelector(element).focus();
+      document.querySelector(element).scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 0);
   }
 
@@ -176,10 +200,7 @@ export class UtilitiesService {
   }
 
   getAssessmentIdFromQueryParams() {
-    let params = this.route.snapshot.queryParamMap;
-
-    let id = params.get('id');
-    return id ? id : false;
+    return this.getQueryParam('id');
   }
 
   getCookieErrorMsg() {
@@ -250,17 +271,25 @@ export class UtilitiesService {
   }
 
   getAssessmentPreviewFromQueryParams() {
-    let params = this.route.snapshot.queryParamMap;
-
-    let preview = params.get('preview');
-    return preview ? preview : false;
+    return this.getQueryParam('preview');
   }
 
   getQueryParam(paramName) {
-    let params = this.route.snapshot.queryParamMap;
-
-    let value = params.get(paramName);
+    const value = this.params.get(paramName);
     return value ? value : false;
+  }
+
+  getQueryParams() {
+    // Start at the root of the application
+    let child = this.route.root;
+    
+    // Dig down to the deepest active route
+    while (child.firstChild) {
+      child = child.firstChild;
+    }
+
+    const params = child.snapshot.queryParamMap;
+    return params;
   }
 
   //all of the successful API calls conform to the same structure, of:
@@ -354,6 +383,18 @@ export class UtilitiesService {
     event.stopPropagation();
   }
 
+  registerAlert(key: string, comp: AlertMessageComponent) {
+    this.alerts.set(key, comp);
+
+    // If there were pending messages for this key, deliver them now
+    const queued = this.pending.get(key);
+    if (queued && queued.length) {
+      // deliver all queued messages (or pick last depending on desired behavior)
+      queued.forEach(p => comp.show(p.msg, p.items, p.opts));
+      this.pending.delete(key);
+    }
+  }
+
   removeScrollHeight() {
     this.scrollingLtiHeight = 0;
     this.setLtiHeight();
@@ -367,16 +408,16 @@ export class UtilitiesService {
 
   setContextLink(link) {
     if (this.isLti) {
-      link += ('?context=' + this.contextId);
+      link += ('?context= ' + this.contextId);
     }
     return link;
   }
 
   //for custom/front-end errors, manually set the error message
-  setError(error) {
+  setError(error, alertKey: string = null) {
     //mock the back-end format so it can be passed in to the same centralized function
     var errorResponse = { error: { errorList: [ error ]}};
-    this.showError(errorResponse);
+    this.showError(errorResponse, alertKey);
   }
 
   setLtiHeight() {
@@ -389,12 +430,12 @@ export class UtilitiesService {
       var height = document.querySelector('body').clientHeight + 75;
       var modal = document.querySelector('modal-container');
 
-      //if page accessed from the left nav of Canvas, add 1000px of extra space to
+      //if page accessed from the left nav of Canvas, add extra space to
       //ensure that we don't have scroll bars (since there is nothing below the
       //LTI iframe in this case, completely exact height isn't necessary and can
       //cause problems if even off by a few pixels due to small UI actions)
       if (this.isLti) {
-        height = document.querySelector('body').clientHeight + 1000;
+        height = document.querySelector('body').clientHeight + 200;
       }
 
       //modal height exists outside of the body, unfortunately, so scroll bars appear if not selected
@@ -423,7 +464,23 @@ export class UtilitiesService {
     window.parent.postMessage({subject: 'iu.frameTitle', title }, '*');
   }
 
-  showError(resp) {
+  showAlert(key: string, msg: string, items?: string[], opts?: any) {
+    const comp = this.alerts.get(key); //get alert component by key
+    if (comp) {
+      comp.show(msg, items, opts);
+      return;
+    }
+
+    // Not registered yet — queue it
+    const q = this.pending.get(key) ?? [];
+    q.push({ msg, items, opts, timestamp: Date.now() });
+    this.pending.set(key, q);
+
+    // Optionally trim queue to avoid memory growth (keep last N)
+    if (q.length > 5) { q.splice(0, q.length - 5); }
+  }
+
+  showError(resp, alertKey: string = null) {
     const data = resp.error;
     const defaultMessage = 'There was an error processing your request.';
 
@@ -437,14 +494,27 @@ export class UtilitiesService {
       this.errorList = [defaultMessage];
     }
 
+    if (alertKey) {
+      const error = this.getError(resp);
+      this.showAlert(alertKey, error, null, { variant: 'danger', focus: true });
+      this.errorFound = true;
+      this.loadingFinished();
+      this.focusToElement('.qc-alert-message');
+      return;
+    }
+
     this.errorFound = true;
     this.loadingFinished();
-    this.focusToElement('.error-message');
+    this.focusToElement('.qc-alert-message');
   }
 
   shuffle(o) {
     for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
+  }
+
+  unregisterAlert(key: string) {
+    this.alerts.delete(key);
   }
 
   generateUniqueId(): string{

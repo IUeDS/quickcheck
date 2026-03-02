@@ -11,6 +11,8 @@ export class ReleaseComponent implements OnInit {
   @Input('existingRelease') release;
   @Input() utilitiesService;
 
+  alertKeyError: string = 'releaseError';
+  alertKeySuccess: string = 'releaseSuccess';
   error;
   success;
 
@@ -20,7 +22,7 @@ export class ReleaseComponent implements OnInit {
   }
 
   async createRelease() {
-  	let data;
+  		let data;
 		const releaseData = { 'assessmentId': this.assessmentId, 'ltiContextId': this.utilitiesService.contextId };
 
 		try {
@@ -29,13 +31,15 @@ export class ReleaseComponent implements OnInit {
 		}
 		catch (error) {
 			this.error = this.utilitiesService.getError(error);
-		  this.success = false; //reset if necessary
-		  return;
+		  	this.success = false; //reset if necessary
+			this.utilitiesService.showAlert(this.alertKeyError, `Release failed: ${this.error}`, null, { variant: 'danger', focus: true });
+		  	return;
 		}
 
 	  this.release = data.release;
 		this.error = false; //reset this if it was set previously
 		this.success = 'Release successful';
+		this.utilitiesService.showAlert(this.alertKeySuccess, this.success, null, { variant: 'success', focus: true });
 	}
 
 	async rollbackRelease() {
@@ -47,12 +51,14 @@ export class ReleaseComponent implements OnInit {
 		}
 		catch (error) {
 			this.error = this.utilitiesService.getError(error);
-		  this.success = false; //reset if necessary
-		  return;
+		  	this.success = false; //reset if necessary
+		  	this.utilitiesService.showAlert(this.alertKeyError, `Rollback failed: ${this.error}`, null, { variant: 'danger', focus: true });
+		  	return;
 		}
 
 		this.release = false; //remove the existing release
 		this.success = 'Release successfully rolled back';
 		this.error = false; //reset this if it was set previously
+		this.utilitiesService.showAlert(this.alertKeySuccess, this.success, null, { variant: 'success', focus: true });
 	}
 }

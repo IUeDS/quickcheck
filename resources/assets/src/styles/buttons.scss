@@ -8,7 +8,8 @@
     border-color: $primary-blue-darker-border;
     color: $white;
 
-    &:hover {
+    &:hover,
+    &:focus {
         background-color: $primary-blue-darker-hover
     }
 }
@@ -20,7 +21,8 @@
     color: $white;
     font-size: 0.9rem;
 
-    &:hover {
+    &:hover,
+    &:focus {
         background-color: $success-green-darker;
         color: $white;
     }
@@ -99,14 +101,9 @@
     }
 
     &:hover,
-    &:hover::after { //sass-lint:disable-line force-pseudo-nesting
-        background-color: $white;
-        border-color: $iron-gray;
-        border-width: 3px;
-    }
-
+    &:hover::after,
     &:focus,
-    &:focus::after {
+    &:focus::after { //sass-lint:disable-line force-pseudo-nesting
         background-color: $light-gray;
         border-color: $iron-gray;
         border-width: 3px;
@@ -134,7 +131,8 @@
     &:disabled {
         background-color: $light-gray;
 
-        &:hover {
+        &:hover,
+        &:focus {
             background-color: $light-gray;
         }
     }
@@ -169,17 +167,17 @@
         }
     }
 
-    &:hover {
+    &:hover,
+    &:focus {
         cursor: pointer;
     }
 }
 
 .qc-copy-btn {
-    svg {
-        &:hover {
-            path {
-                fill: $muted-purple;
-            }
+    &:hover,
+    &:focus {
+        svg path {
+            fill: $muted-purple !important;
         }
     }
 
@@ -192,15 +190,15 @@
 
 .qc-delete-btn {
     svg {
-        
         path {
             fill: $darker-gray;
         }
+    }
 
-        &:hover {
-            path {
-                fill: $crimson-red !important;
-            }
+    &:hover,
+    &:focus {
+        svg path {
+            fill: $crimson-red !important;
         }
     }
 
@@ -216,11 +214,12 @@
         path {
             fill: $darker-gray;
         }
+    }
 
-        &:hover {
-            path {
-                fill: $electric-blue !important;
-            }
+    &:hover,
+    &:focus {
+        svg path {
+            fill: $electric-blue !important;
         }
     }
 
@@ -230,13 +229,15 @@
                 fill: $dark-gray;
             }
 
-            &:hover {
+            &:hover,
+            &:focus {
                 cursor: not-allowed;
                 fill: $dark-gray;
             }
         }
 
-        &:hover {
+        &:hover,
+        &:focus {
             cursor: not-allowed;
         }
     }
@@ -254,11 +255,10 @@
 }
 
 .qc-view-btn {
-    svg {
-        &:hover {
-            path {
-                fill: $seafoam-green;
-            }
+    &:hover,
+    &:focus {
+        svg path {
+            fill: $seafoam-green !important;
         }
     }
 
@@ -286,7 +286,8 @@
     background-color: $crimson-red;
     color: $white;
 
-    &:hover {
+    &:hover,
+    &:focus {
         background-color: $crimson-red-darker;
         color: $white;
     }
@@ -297,7 +298,8 @@
     border: solid $black 1px;
     color: $black;
 
-    &:hover {
+    &:hover,
+    &:focus {
         background-color: $thirty-percent-opaque-white;
         color: $black;
     }
@@ -314,4 +316,11 @@
         background-color: $iron-gray-lighter;
         color: $white;
     }
+}
+
+.btn-outline-dark:hover,
+.btn-outline-dark:focus {
+    background-color: $iron-gray;
+    border-color: $iron-gray;
+    color: $white;
 }

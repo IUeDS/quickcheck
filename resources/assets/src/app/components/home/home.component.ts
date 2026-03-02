@@ -11,6 +11,8 @@ export class HomeComponent implements OnInit {
   currentPage = 'home';
   isAddingAssessment = false;
   sessionExpired = false;
+  alertKey: string = 'homeError';
+  sessionAlertKey: string = 'sessionError';
 
   constructor(public utilitiesService: UtilitiesService, public userService: UserService) { }
 
@@ -31,7 +33,7 @@ export class HomeComponent implements OnInit {
     }
     catch (error) {
       const errorMessage = this.utilitiesService.getCookieErrorMsg();
-      this.utilitiesService.setError(errorMessage);
+      this.utilitiesService.showAlert(this.alertKey, errorMessage, null, { variant: 'danger', focus: true });
     }
 
     this.utilitiesService.loadingFinished();
@@ -51,5 +53,10 @@ export class HomeComponent implements OnInit {
   //session warning
   checkForExpiredSession() {
     this.sessionExpired = this.utilitiesService.isSessionExpired();
+
+    if (this.sessionExpired) {
+      const message = 'Your session has expired due to inactivity.';
+      this.utilitiesService.showAlert(this.sessionAlertKey, message, null, { variant: 'warning', focus: true });
+    }
   }
 }

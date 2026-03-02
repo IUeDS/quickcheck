@@ -10,6 +10,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./select.component.scss']
 })
 export class SelectComponent implements OnInit {
+  alertKey: string = 'selectAlert';
   user;
   admin = false;
   memberships = [];
@@ -82,7 +83,7 @@ export class SelectComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -99,7 +100,7 @@ export class SelectComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return false;
     }
 

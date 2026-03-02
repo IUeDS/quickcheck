@@ -13,6 +13,7 @@ export class CollectionTileComponent implements OnInit {
   @Input() membership;
   @Input() index;
   @Input() utilitiesService: UtilitiesService;
+  alertKey: string = 'indexError';
   isReadOnly = false;
 
   constructor(private collectionService: CollectionService) { }
@@ -39,6 +40,7 @@ export class CollectionTileComponent implements OnInit {
 
   collectionEditingClose () {
     this.collection.isEditing = false;
+    this.utilitiesService.focusToElement('#qc-collection-edit-btn-' + this.collection.id);
   }
 
   async deleteCollection() {
@@ -54,7 +56,7 @@ export class CollectionTileComponent implements OnInit {
       await this.collectionService.deleteCollection(this.collection.id);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -71,7 +73,7 @@ export class CollectionTileComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

@@ -13,6 +13,7 @@ export class QuizAnalyticsComponent implements OnInit {
   @Input() resourceLinkId;
   @Input() utilitiesService : UtilitiesService;
 
+  alertKey: string = 'viewAttemptsAlert';
   analytics = null;
   avgAttempts;
   avgTime;
@@ -35,7 +36,7 @@ export class QuizAnalyticsComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

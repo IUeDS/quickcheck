@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { ErrorMessageComponent } from './error-message.component';
+import { AlertMessageComponent } from './alert-message.component';
 
-describe('ErrorMessageComponent', () => {
-  let component: ErrorMessageComponent;
-  let fixture: ComponentFixture<ErrorMessageComponent>;
+describe('AlertMessageComponent', () => {
+  let component: AlertMessageComponent;
+  let fixture: ComponentFixture<AlertMessageComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ErrorMessageComponent ]
+      declarations: [ AlertMessageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ErrorMessageComponent);
+    fixture = TestBed.createComponent(AlertMessageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

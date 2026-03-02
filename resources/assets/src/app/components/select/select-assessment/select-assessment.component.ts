@@ -16,6 +16,7 @@ export class SelectAssessmentComponent implements OnInit {
   @Input() collectionService: CollectionService;
   @Input() utilitiesService: UtilitiesService;
   @ViewChild('form', {static: false}) form: ElementRef;
+  alertKey: string = 'selectAlert';
   jwtValue = new UntypedFormControl('');
   jwt;
 
@@ -38,7 +39,7 @@ export class SelectAssessmentComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       this.utilitiesService.loadingFinished();
       return false;
     }

@@ -1,0 +1,37 @@
+@import '../styles/colors';
+@import '../styles/mixins';
+
+.skip-to-content {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  background-color: #0044CC; /* High contrast blue */
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  z-index: 9999;
+}
+
+/* When the user tabs to the link, it pops into view */
+.skip-to-content:focus {
+  position: fixed; /* Stays at the top of the viewport */
+  top: 10px;
+  left: 10px;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  outline: 3px solid #FFCC00; /* High contrast focus ring */
+}
+
+#main-content:focus {
+  outline: none; /* Remove default outline when skipping to main content */
+}
+main:has(qc-home)
+{
+    //remove padding that adds white space on sides on home page
+    padding-left: 0px;
+    padding-right: 0px;
+}

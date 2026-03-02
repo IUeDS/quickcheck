@@ -9,7 +9,7 @@ import { Submission } from '../../classes/submission';
   styleUrls: ['./view-attempts-for-student.component.scss']
 })
 export class ViewAttemptsForStudentComponent implements OnInit {
-
+  alertKey: string = 'viewAttemptsForStudentAlert';
   analyticsViewVisible = false;
   assessmentsWithAttempts = [];
   courseContext = null;
@@ -32,7 +32,7 @@ export class ViewAttemptsForStudentComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 

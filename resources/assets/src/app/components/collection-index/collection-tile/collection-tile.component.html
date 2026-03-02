@@ -2,7 +2,7 @@
     <div [hidden]="this.collection.isEditing">
         <div class="qc-collection-header">
             <h2 id="collection-header-{{this.collection.id}}" tabindex="-1">{{ this.collection.name }}</h2>
-            <button class="qc-edit-btn qc-collection-edit-btn" (click)="this.editCollection()" *ngIf="!this.isReadOnly">
+            <button class="qc-edit-btn qc-collection-edit-btn" id="qc-collection-edit-btn-{{this.collection.id}}" (click)="this.editCollection()" *ngIf="!this.isReadOnly">
                 <qc-edit-icon aria-hidden="true"></qc-edit-icon>
                 <span class="sr-only">Edit set {{ this.collection.name }}</span>
             </button>
@@ -11,9 +11,9 @@
                 <span class="sr-only">Delete set {{ this.collection.name }}</span>
             </button>
         </div>
-        <h3>Created by: <span class="qc-owner-name">{{ this.collection.owner }}</span></h3>
-        <h3 *ngIf="this.isReadOnly">Permissions: Read-Only</h3>
-        <h3 *ngIf="this.collection.public_collection == 'true'"><span class="fa fa-eye" aria-hidden="true"></span> Public set</h3>
+        <p class="qc-h3-style">Created by: <span class="qc-owner-name">{{ this.collection.owner }}</span></p>
+        <p *ngIf="this.isReadOnly" class="qc-h3-style">Permissions: Read-Only</p>
+        <p *ngIf="this.collection.public_collection == 'true'" class="qc-h3-style"><span class="fa fa-eye" aria-hidden="true"></span> Public set</p>
         <div class="row">
             <div class="col-6">
                 <a [routerLink]="'/collection/' + this.collection.id" queryParamsHandling="preserve" target="_self" class="btn qc-view-set-btn qc-btn">Go to set<span class="sr-only"> {{ this.collection.name }}</span></a>

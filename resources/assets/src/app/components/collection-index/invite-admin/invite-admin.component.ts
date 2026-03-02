@@ -9,6 +9,9 @@ import { UserService } from '../../../services/user.service';
 export class InviteAdminComponent implements OnInit {
   @Input() utilitiesService;
 
+  validationAlertKey: string = 'validateAdminAlert';
+  successAlertKey: string = 'addAdminSuccess';
+  errorAlertKey: string = 'addAdminError';
   isEnteringUsername = false;
   formOpen = false;
   username = null;
@@ -50,11 +53,13 @@ export class InviteAdminComponent implements OnInit {
       await this.userService.addAdmin(user);
       this.userAdded = true;
       this.utilitiesService.loadingFinished();
+      this.utilitiesService.showAlert(this.successAlertKey, `Admin user added successfully: ${this.username}.`, null, { variant: 'success' });
     }
     catch (error) {
       this.saveErrorReason = this.utilitiesService.getError(error);
       this.saveError = true;
       this.utilitiesService.loadingFinished();
+      this.utilitiesService.showAlert(this.errorAlertKey, `Error adding admin user: ${this.saveErrorReason}`, null, { variant: 'danger', focus: true });
     }
   }
 
@@ -69,8 +74,8 @@ export class InviteAdminComponent implements OnInit {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.validationError = true;
-      this.utilitiesService.loadingFinished();
+      this.validateUserError('Error validating user. Please try again.');
+      return;
     }
 
     if (this.utilitiesService.isSuccessResponse(resp)) {
@@ -79,9 +84,16 @@ export class InviteAdminComponent implements OnInit {
       await this.saveUser();
     }
     else {
-      this.validationError = true;
-      this.utilitiesService.loadingFinished();
+        this.validateUserError('User cannot be found. Please try again.');
+        return;
     }
+  }
+
+  validateUserError(message: string) {
+    this.utilitiesService.showAlert(this.validationAlertKey, message, null, { variant: 'danger' });
+    this.validationError = true;
+    this.utilitiesService.loadingFinished();
+    document.getElementById('username')?.focus();
   }
 
 }

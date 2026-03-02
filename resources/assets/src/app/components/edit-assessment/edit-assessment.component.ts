@@ -16,6 +16,9 @@ interface ComponentCanDeactivate {
 })
 export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
   admin = false;
+  alertKey: string = 'editAssessmentAlert';
+  saveSuccessKey: string = 'saveSuccess';
+  validationErrorKey: string = 'validationError';
   assessment = null;
   assessmentGroups = null;
   assessmentId = null;
@@ -87,7 +90,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch (error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -96,9 +99,9 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
     if (assessmentSaved) {
       this.saved = true;
       //scroll to bottom, to make sure success alert is visible (it was jumping around with focus)
-      //$('html, body').animate({ scrollTop: $(document).height() }, 'slow');
       document.body.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest'});
-      this.utilitiesService.focusToElement('#qc-save-success');
+      this.utilitiesService.showAlert(this.saveSuccessKey, 'Quick check saved successfully.', null, { variant: 'success', focus: true });
+      this.utilitiesService.clearAlert(this.validationErrorKey); //clear any validation errors that may have been showing
     }
   }
 
@@ -183,7 +186,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
       data = this.utilitiesService.getResponseData(resp);
     }
     catch(error) {
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -245,13 +248,29 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
     const newQuestionIndex = $event.newQuestionIndex;
     const questionIndex = $event.questionIndex;
     const tempQuestion = cloneDeep(this.questions[newQuestionIndex]);
+    const reorderUp = newQuestionIndex < questionIndex;
 
     //swap
     this.questions[newQuestionIndex] = this.questions[questionIndex];
     this.questions[questionIndex] = tempQuestion;
     this.updateQuestionOrder();
-    this.focusToQuestion(this.questions[newQuestionIndex]);
+
     this.onEdited();
+
+    //set focus to the button that was used to reorder the question;
+    //if first or last question, focus to the only available button
+    if (newQuestionIndex === 0) {
+      this.utilitiesService.focusToElement('#qc-reorder-down-btn-' + this.questions[newQuestionIndex].id);
+    }
+    else if (newQuestionIndex === this.questions.length - 1) {
+      this.utilitiesService.focusToElement('#qc-reorder-up-btn-' + this.questions[newQuestionIndex].id);
+    }
+    else if (reorderUp) {
+      this.utilitiesService.focusToElement('#qc-reorder-up-btn-' + this.questions[newQuestionIndex].id);
+    }
+    else {
+      this.utilitiesService.focusToElement('#qc-reorder-down-btn-' + this.questions[newQuestionIndex].id);
+    }
   }
 
   async saveAssessment() {
@@ -272,7 +291,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
     }
     catch (error) {
       this.saved = false;
-      this.utilitiesService.showError(error);
+      this.utilitiesService.showError(error, this.alertKey);
       return;
     }
 
@@ -334,6 +353,7 @@ export class EditAssessmentComponent implements OnInit, CanDeactivateGuard {
 
     if (this.validationErrorList.length) {
       this.validationError = true;
+      this.utilitiesService.showAlert(this.validationErrorKey, 'Validation errors found. Please fix the following errors before saving: ', this.validationErrorList, { variant: 'danger', focus: true });
       return false;
     }
 

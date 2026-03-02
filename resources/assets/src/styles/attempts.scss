@@ -1,4 +1,6 @@
 @import './colors';
+@import './mixins';
+
 
 .qc-attempts-table {
     thead {
@@ -48,11 +50,12 @@
 }
 
 .qc-autograde-btn {
-    background-color: $electric-blue;
+    background-color: $dark-blue;
     color: $white;
 
-    &:hover {
-        background-color: $dark-blue;
+    &:hover,
+    &:focus {
+        background-color: $dark-blue-darker;
         color: $white;
     }
 }
@@ -183,7 +186,8 @@
     background-color: $muted-purple;
     color: $white;
 
-    &:hover {
+    &:hover,
+    &:focus {
         background-color: $muted-purple-darker;
         color: $white;
     }
@@ -276,7 +280,8 @@
         background-color: $dark-gray;
         border-left: solid $muted-purple 10px;
 
-        &:hover {
+        &:hover,
+        &:focus {
             cursor: pointer;
         }
     }

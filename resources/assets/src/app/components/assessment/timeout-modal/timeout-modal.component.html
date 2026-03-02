@@ -1,9 +1,9 @@
 <div class="modal-content" id="qc-assessment-timeout-modal">
-    <div class="modal-header sr-only">
-        <h2 class="modal-title" id="qc-assessment-timeout-label">Timeout warning</h2>
+    <div class="sr-only" id="qc-assessment-timeout-label">
+        Timeout warning
     </div>
-    <div class="modal-body">
-        <h2>Please slow down</h2>
+    <div class="modal-body" id="qc-assessment-timeout-dialog-content">
+        <p class="qc-h2-style" role="status" aria-live="polite">Please slow down</p>
         <p>Your instructor has enabled a timeout limit for excessive attempts, to prevent random guessing of answers. The limit is 2 attempts in 1 minute. (Attempts only count when at least one question has been answered.) When you exceed this limit, there will be a timeout of 2 minutes before you can begin another quick check. This rule only applies to graded quick checks with an upcoming due date.</p>
         <p>Please take your time and think about your answers before submitting.</p>
         <div aria-hidden="true" *ngIf="!this.timeoutFinished">
