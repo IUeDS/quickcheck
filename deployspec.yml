@@ -7,13 +7,13 @@ phases:
 
   build:
     commands:
-      - echo "Deploy starting..."
-      - echo "Cluster: $CLUSTER_NAME"
-      - echo "App: $APP_NAME  Env: $ENV_NAME  UseTagFilter: $USE_TAG_FILTER  DryRun: $DRY_RUN"
+      - 'echo "Deploy starting..."'
+      - 'echo "Cluster: $CLUSTER_NAME"'
+      - 'echo "App: $APP_NAME  Env: $ENV_NAME  UseTagFilter: $USE_TAG_FILTER  DryRun: $DRY_RUN"'
 
       - test -f $CODEBUILD_SRC_DIR_BuildArtifact/image-detail.json
       - IMAGE_URI=$(jq -r '.imageUri' $CODEBUILD_SRC_DIR_BuildArtifact/image-detail.json)
-      - echo "New image: $IMAGE_URI"
+      - 'echo "New image: $IMAGE_URI"'
 
       - SERVICE_ARNS=$(aws ecs list-services --cluster "$CLUSTER_NAME" --query "serviceArns[]" --output text)
 
@@ -27,7 +27,7 @@ phases:
       - |
         for SVC_ARN in $SERVICE_ARNS; do
           SVC_NAME=$(aws ecs describe-services --cluster "$CLUSTER_NAME" --services "$SVC_ARN" --query "services[0].serviceName" --output text)
-          echo "Considering service: $SVC_NAME"
+          echo "Considering service $SVC_NAME"
 
           # Filter by tags (preferred) or by naming convention fallback
           if [ "$USE_TAG_FILTER" = "true" ]; then
@@ -46,10 +46,10 @@ phases:
           fi
 
           TD_ARN=$(aws ecs describe-services --cluster "$CLUSTER_NAME" --services "$SVC_ARN" --query "services[0].taskDefinition" --output text)
-          echo "Current task def: $TD_ARN"
+          echo "Current task def $TD_ARN"
 
           if [ "$DRY_RUN" = "true" ]; then
-            echo "DRY RUN: would register new task definition with image=$IMAGE_URI and update $SVC_NAME"
+            echo "DRY RUN would register new task definition with image=$IMAGE_URI and update $SVC_NAME"
             UPDATED_SERVICES="$UPDATED_SERVICES $SVC_NAME"
             continue
           fi
@@ -63,7 +63,7 @@ phases:
           ' > td-new.json
 
           NEW_TD_ARN=$(aws ecs register-task-definition --cli-input-json file://td-new.json --query "taskDefinition.taskDefinitionArn" --output text)
-          echo "New task def: $NEW_TD_ARN"
+          echo "New task def $NEW_TD_ARN"
 
           aws ecs update-service --cluster "$CLUSTER_NAME" --service "$SVC_ARN" --task-definition "$NEW_TD_ARN" >/dev/null
           echo "Updated $SVC_NAME"
@@ -77,7 +77,7 @@ phases:
           exit 0
         fi
 
-      - echo "Services matched: $UPDATED_SERVICES"
+      - 'echo "Services matched: $UPDATED_SERVICES"'
 
       - |
         if [ "$DRY_RUN" = "true" ]; then
@@ -86,9 +86,9 @@ phases:
         fi
 
       # Wait for all updated services to stabilize (single group wait)
-      - echo "Waiting for services to become stable..."
+      - 'echo "Waiting for services to become stable..."'
       - aws ecs wait services-stable --cluster "$CLUSTER_NAME" --services $UPDATED_SERVICES
-      - echo "Deploy complete: all services stable."
+      - 'echo "Deploy complete: all services stable."'
 
 artifacts:
   files:
