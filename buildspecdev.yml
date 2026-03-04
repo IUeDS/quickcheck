@@ -40,7 +40,7 @@ phases:
       - docker push $REPOSITORY_URI:$COMMIT_HASH || echo "Tag $COMMIT_HASH already exists; skipping"
 
       # Single artifact describing the build output
-      - printf '{"repositoryUri":"%s","deployTag":"%s","imageUri":"%s"}' "$REPOSITORY_URI" "$DEPLOY_TAG" "$REPOSITORY_URI:$DEPLOY_TAG" > image-detail.json
+      - "printf '{\"repositoryUri\":\"%s\",\"deployTag\":\"%s\",\"imageUri\":\"%s\"}' \"$REPOSITORY_URI\" \"$DEPLOY_TAG\" \"$REPOSITORY_URI:$DEPLOY_TAG\" > image-detail.json"
       - cat image-detail.json
 
 artifacts:
