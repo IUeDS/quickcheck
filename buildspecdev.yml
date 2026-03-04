@@ -15,12 +15,11 @@ phases:
       - TIMESTAMP=$(date +%Y%m%d%H%M%S)
       - DEPLOY_TAG=${COMMIT_HASH}-${TIMESTAMP}
 
-      - echo "Commit Hash: $COMMIT_HASH"
-      - echo "Deploy Tag:  $DEPLOY_TAG"
-      - echo "Repo URI:    $REPOSITORY_URI"
+      - 'echo "Commit Hash: $COMMIT_HASH"'
+      - 'echo "Deploy Tag:  $DEPLOY_TAG"'
+      - 'echo "Repo URI:    $REPOSITORY_URI"'
 
       # Copy secondary repo into the main repo's public folder.
-      # This path depends on the CodePipeline artifact name for the second repo.
       - cp -r $CODEBUILD_SRC_DIR_ActivitiesOutput $CODEBUILD_SRC_DIR/public/customActivities
 
   build:
