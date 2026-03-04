@@ -11,8 +11,8 @@ phases:
       - echo "Cluster: $CLUSTER_NAME"
       - echo "App: $APP_NAME  Env: $ENV_NAME  UseTagFilter: $USE_TAG_FILTER  DryRun: $DRY_RUN"
 
-      - test -f image-detail.json
-      - IMAGE_URI=$(cat image-detail.json | jq -r '.imageUri')
+      - test -f $CODEBUILD_SRC_DIR_BuildArtifact/image-detail.json
+      - IMAGE_URI=$(jq -r '.imageUri' $CODEBUILD_SRC_DIR_BuildArtifact/image-detail.json)
       - echo "New image: $IMAGE_URI"
 
       - SERVICE_ARNS=$(aws ecs list-services --cluster "$CLUSTER_NAME" --query "serviceArns[]" --output text)
