@@ -20,7 +20,7 @@ phases:
       - 'echo "Repo URI:    $REPOSITORY_URI"'
 
       # Copy secondary repo into the main repo's public folder.
-      - cp -r $CODEBUILD_SRC_DIR_ActivitiesOutput $CODEBUILD_SRC_DIR/public/customActivities
+      - cp -r $CODEBUILD_SRC_DIR_customActivities $CODEBUILD_SRC_DIR/public/customActivities
 
   build:
     commands:
