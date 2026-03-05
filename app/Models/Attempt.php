@@ -337,7 +337,6 @@ class Attempt extends Eloquent {
             ->where('assessment_id', '=', $assessment_id)
             ->select('attempts.*')
             ->join('students', 'attempts.student_id', '=', 'students.id')
-            ->orderBy('lis_person_name_family', 'ASC')
             ->orderBy('lti_custom_user_id', 'ASC')
             ->orderBy('attempts.created_at', 'ASC');
 

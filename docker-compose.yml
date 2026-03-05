@@ -9,6 +9,7 @@ services:
       dockerfile: Dockerfile
       args:
          TZ: US/Eastern
+         NODE_INSTALL_CMD: install # Use "install" in development to allow updates, "ci" in production for clean install
     container_name: quickcheck
     ports:
       - "8000:8080" # Map host_port:container_port

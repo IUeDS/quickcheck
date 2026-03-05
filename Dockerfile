@@ -27,10 +27,8 @@ COPY --from=public.ecr.aws/docker/library/composer:2.7 /usr/bin/composer /usr/bi
 
 # Install Node.js, npm, and Angular CLI for frontend build.
 # The NodeSource script adds the Node.js APT repository, then installs nodejs.
-RUN curl -sL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get update -yqq && \
-    apt-get install -yqq --no-install-recommends nodejs && \
-    npm install -g @angular/cli
+COPY --from=public.ecr.aws/docker/library/node:22-bookworm /usr/local /usr/local
+RUN npm install -g @angular/cli
 
 # Set Timezone for the builder stage. Default is US/Eastern, can be overridden during build.
 ARG TZ=US/Eastern
@@ -74,7 +72,9 @@ RUN find vendor -type d -name "node_modules" -exec rm -rf {} + \
     && find vendor -type d -name ".git" -exec rm -rf {} +
 
 # Install front-end (npm/Angular) dependencies and build the Angular application into static assets.
-RUN npm install
+# Default is "ci" for clean install for prod, but local docker-compose overrides to "install" to allow dependency updates.
+ARG NODE_INSTALL_CMD=ci
+RUN npm ${NODE_INSTALL_CMD}
 RUN ng build --configuration "production"
 
 # Copy hashed CSS output to a non-hashed file for TinyMCE editor compatibility.

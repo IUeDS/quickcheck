@@ -202,10 +202,15 @@ class Handler extends ExceptionHandler
     {
         $errorMessage .= ' Error ID: ' . $errorId;
         $ltiContext = new LtiContext();
-        $userId = $ltiContext->getUserLoginId();
-        if ($userId) {
+        $userLoginId = $ltiContext->getUserLoginId();
+        if ($userLoginId) { //only stored for instructors, not students
+            $errorMessage .= '. User login ID: ' . $userLoginId;
+        }
+        $userId = $ltiContext->getUserId();
+        if ($userId) { //numeric identifier, stored for both students and instructors
             $errorMessage .= '. User ID: ' . $userId;
         }
+        
         return $errorMessage;
     }
 

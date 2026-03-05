@@ -74,11 +74,9 @@ class StudentResponse extends Eloquent {
         $response['is_correct'] = $studentResponse['is_correct'];
         $response['partial_credit'] = $studentResponse['partial_credit'];
         $response['created_at'] = $studentResponse['created_at'];
-        //include student first/last and username, so it can be identified without a join
+        //include student canvas user ID
         $student = Student::find($attempt['student_id']);
-        $response['lis_person_name_given'] = $student->lis_person_name_given;
-        $response['lis_person_name_family'] = $student->lis_person_name_family;
-        $response['lti_custom_canvas_user_login_id'] = $student->lti_custom_canvas_user_login_id;
+        $response['lti_custom_user_id'] = $student->lti_custom_user_id;
         return $response;
     }
 

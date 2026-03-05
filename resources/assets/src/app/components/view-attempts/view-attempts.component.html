@@ -31,8 +31,8 @@
         <div *ngIf="!this.fatalError" [hidden]="this.utilitiesService.loading || !this.isAttemptsView()" >
             <div class="row">
                 <div class="col-6 col-md-4">
-                    <label for="search-name" *ngIf="this.attempts.length" class="sr-only">Search by last name: </label>
-                    <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.studentLastName" (ngModelChange)="this.searchStudentLastName()" *ngIf="this.attempts.length" placeholder="Search by last name">
+                    <label for="search-name" *ngIf="this.attempts.length" class="sr-only">Search by first or last name: </label>
+                    <input type="text" class="form-control qc-search-box" id="search-name" [(ngModel)]="this.search.studentLastName" (ngModelChange)="this.searchStudentLastName()" *ngIf="this.attempts.length" placeholder="Search by first or last name">
                 </div>
                 <div class="col-6 col-md-4">
                     <qc-auto-grade *ngIf="!this.gradesLoading" [hidden]="this.largeClassSize"
@@ -85,7 +85,7 @@
                 <span class="fa fa-angle-double-left" aria-hidden="true"></span>
                 Back to attempts
             </a>
-            <h1 id="response-header" tabindex="-1">Responses for {{ this.responseAttempt.student.lis_person_name_given }} {{ this.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
+            <h1 id="response-header" tabindex="-1">Responses for {{ this.usersService.getStudentFullName(this.responseAttempt.student.lti_custom_user_id) }}'s attempt</h1>
             <p class="lead">Starting at {{ this.utilitiesService.formatTimeWithTimeZone(this.responseAttempt.created_at, this.courseContext.time_zone) }}</p>
             <qc-responses
                 [attempt]="this.responseAttempt"
