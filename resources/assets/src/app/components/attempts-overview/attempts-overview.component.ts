@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../services/utilities.service';
 import { ManageService } from '../../services/manage.service';
+import { Users } from '../../classes/users';
 
 @Component({
   selector: 'qc-attempts-overview',
@@ -10,6 +11,7 @@ import { ManageService } from '../../services/manage.service';
 export class AttemptsOverviewComponent implements OnInit {
   alertKey: string = 'attemptsOverviewAlert';
   attempts = [];
+  courseContext;
   currentPage = 'results';
   embeds = {}; //if same assessment is embedded in multiple assignments, split into separate entries
   isResultsByStudentToggled = false;
@@ -18,17 +20,20 @@ export class AttemptsOverviewComponent implements OnInit {
     'assessmentName': '',
     'studentName': ''
   };
+  sortedUsers = [];
   students = [];
+  usersService: Users;
+  users = {};
 
   constructor(public utilitiesService: UtilitiesService, private manageService: ManageService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.getAssessments();
+
     if (this.isResultsByStudentToggleEnabled()) {
       this.isResultsByStudentToggled = true;
       this.getStudents();
-    }
-    else {
-      this.getAssessments();
+      this.getUsers();
     }
   }
 
@@ -62,6 +67,7 @@ export class AttemptsOverviewComponent implements OnInit {
     //attempts are grouped by unique assessment id, so we're not getting ALL attempts;
     //each attempt comes with the unique assessment, for us to put onto the page
     this.attempts = data.attempts;
+    this.courseContext = data.courseContext;
     this.setPageTitle(data.sourcedId);
 
     this.utilitiesService.loadingFinished();
@@ -100,6 +106,7 @@ export class AttemptsOverviewComponent implements OnInit {
     return '';
   }
 
+  //get students from back-end
   async getStudents() {
     let data;
     this.utilitiesService.loadingStarted();
@@ -116,6 +123,35 @@ export class AttemptsOverviewComponent implements OnInit {
     this.students = data.students;
     this.setPageTitle(data.sourcedId);
     this.utilitiesService.loadingFinished();
+  }
+
+  getStudentIdFromCanvasUserId(canvasUserId) {
+    const student = this.students.find(student => student.lti_custom_user_id == canvasUserId);
+    return student ? student.id : null;
+  }
+
+  //get users from Canvas to match names to IDs; returned from API in a hashmap with user ID as key
+  async getUsers() {
+    let data;
+    if (!this.courseContext) {
+      return;
+    }
+
+    //fetch users so we can determine if any have dropped; this is necessary
+    //since grade passback would result in an error for a dropped student
+    try {
+      const resp = await this.manageService.getUsersInCourse(this.courseContext.lti_custom_course_id);
+      data = this.utilitiesService.getResponseData(resp);
+    }
+    catch(error) {
+      this.utilitiesService.showError(error, this.alertKey);
+      return;
+    }
+
+    this.users = data.users;
+    this.usersService = new Users(this.users);
+    this.sortedUsers = this.usersService.getSortedUsers();
+    this.utilitiesService.setLtiHeight();
   }
 
   isResultsByStudentToggleEnabled() {
@@ -196,6 +232,7 @@ export class AttemptsOverviewComponent implements OnInit {
     }
 
     this.getStudents();
+    this.getUsers();
 
     return;
   }

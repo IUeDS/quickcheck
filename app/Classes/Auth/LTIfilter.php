@@ -54,14 +54,14 @@ class LTIFilter {
         //add decoded LTI launch values to request so they can be retrieved in the controller, etc.
         $this->request->merge(['ltiLaunchValues' => $context->getLaunchValues()]);
         
-        $username = $context->getUserLoginId();
-
         if ($context->isInstructor()) {
+            $username = $context->getUserLoginId();
             $this->instructorLogin($username);
             return false;
         }
         else {
-            $this->studentLogin($username);
+            $userId = $context->getUserId();
+            $this->studentLogin($userId);
             return false;
         }
     }
@@ -93,13 +93,13 @@ class LTIFilter {
     * Create active session for student; student usernames are not added to the database, so no
     * further action is required.
     *
-    * @param  string  $username
+    * @param  string  $userId
     * @return void
     */
 
-    private function studentLogin($username)
+    private function studentLogin($userId)
     {
-        Session::put('student', $username);
+        Session::put('student', $userId);
     }
 
     /**

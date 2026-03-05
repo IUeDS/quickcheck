@@ -3,6 +3,7 @@ import { UtilitiesService } from '../../services/utilities.service';
 import { AssessmentEditService } from '../../services/assessment-edit.service';
 import { ManageService } from '../../services/manage.service';
 import { Submission } from '../../classes/submission';
+import { Users } from '../../classes/users';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -38,7 +39,8 @@ export class ViewAttemptsComponent implements OnInit {
   studentResponses = [];
   submissions = [];
   ungradedAttempts = [];
-  users = [];
+  users: { [key: string]: any } = [];
+  usersService: Users;
 
   constructor(public utilitiesService: UtilitiesService, private assessmentEditService: AssessmentEditService, private manageService: ManageService, private route: ActivatedRoute) { }
 
@@ -158,6 +160,7 @@ export class ViewAttemptsComponent implements OnInit {
     }
 
     this.users = data.users;
+    this.usersService = new Users(this.users);
     this.getSubmissions(); //get submissions next; only mark ungraded if user is still in course
   }
 
@@ -255,11 +258,10 @@ export class ViewAttemptsComponent implements OnInit {
     }
 
     this.search.timer = setTimeout(() => {
-      this.displayedAttempts = this.attempts.filter((attempt) => {
-        if (this.isSubstringFound(attempt.student.lis_person_name_family, this.search.studentLastName)) {
-          return true;
-        }
-      });
+        const matchingUserIds = this.usersService.searchByName(this.search.studentLastName);
+        this.displayedAttempts = this.attempts.filter((attempt) => {
+          return matchingUserIds.has(+(attempt.student.lti_custom_user_id));
+        });
     }, 500);
   }
 

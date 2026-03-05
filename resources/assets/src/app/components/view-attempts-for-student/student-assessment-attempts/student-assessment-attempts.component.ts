@@ -55,6 +55,26 @@ export class StudentAssessmentAttemptsComponent implements OnInit {
     this.dueAt = this.utilitiesService.formatTimeWithTimeZone(dueAtInTimezone, this.timezone);
   }
 
+  getUserName(): string {
+    // Get the first (and likely only) user from the object
+    for (const userId in this.user) {
+      if (this.user[userId]) {
+        return this.user[userId].name || '';
+      }
+    }
+    return '';
+  }
+
+  getUserSortableName(): string {
+    // Get the first (and likely only) user from the object
+    for (const userId in this.user) {
+      if (this.user[userId]) {
+        return this.user[userId].sortable_name || '';
+      }
+    }
+    return '';
+  }
+
   hideResponses() {
     this.responseViewVisible = false;
     this.utilitiesService.setLtiHeight();

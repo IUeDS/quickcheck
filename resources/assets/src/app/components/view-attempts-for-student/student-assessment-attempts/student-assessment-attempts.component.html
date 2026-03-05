@@ -31,7 +31,7 @@
                     <span class="fa fa-angle-double-left" aria-hidden="true"></span>
                     Back to attempts
                 </a>
-                <h1 id="response-header" tabindex="-1">Responses for {{ this.responseAttempt.student.lis_person_name_given }} {{ this.responseAttempt.student.lis_person_name_family }}'s attempt</h1>
+                <h1 id="response-header" tabindex="-1">Responses for {{ getUserName() }}'s attempt</h1>
                 <p class="lead">Starting at {{ this.utilitiesService.formatTimeWithTimeZone(this.responseAttempt.created_at, this.courseContext.time_zone) }}</p>
                 <qc-responses
                     [attempt]="this.responseAttempt"

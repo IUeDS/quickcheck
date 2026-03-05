@@ -232,36 +232,6 @@ class LtiContext {
     }
 
     /**
-    * Get student's given name for the current launch
-    *
-    * @return string
-    */
-
-    public function getGivenName()
-    {
-        if (!$this->launchValues) {
-            return false;
-        }
-
-        return $this->launchValues['given_name'];
-    }
-
-    /**
-    * Get student's family name for the current launch
-    *
-    * @return string
-    */
-
-    public function getFamilyName()
-    {
-        if (!$this->launchValues) {
-            return false;
-        }
-
-        return $this->launchValues['family_name'];
-    }
-
-    /**
     * Get decoded launch values from JWT after it's been unencrypted
     *
     * @return []
@@ -450,7 +420,12 @@ class LtiContext {
     public function getUserLoginId()
     {
         if (!$this->launchValues) {
-            return false;
+            return null;
+        }
+
+        //login ID only stored for instructors, not students
+        if (!$this->isInstructor()) {
+            return null;
         }
 
         return $this->launchValues[$this->customKey]->canvas_user_login_id;
@@ -569,27 +544,22 @@ class LtiContext {
         $logMessage = 'LTI launch data missing for the following value: ';
 
         if (!$this->getContextId()) {
-            Log::info($logMessage + 'context ID');
+            Log::info($logMessage . 'context ID');
             $missingValue = true;
         }
 
         if (!$this->getCourseId()) {
-            Log::info($logMessage + 'course ID');
+            Log::info($logMessage . 'course ID');
             $missingValue = true;
         }
 
         if (!$this->getUserId()) {
-            Log::info($logMessage + 'user ID');
+            Log::info($logMessage . 'user ID');
             $missingValue = true;
         }
 
-        if (!$this->getUserLoginId()) {
-            Log::info($logMessage + 'user login ID');
-            $missingValue = true;
-        }
-
-        if (!$this->getGivenName()) {
-            Log::info($logMessage + 'given name');
+        if ($this->isInstructor() && !$this->getUserLoginId()) {
+            Log::info($logMessage . 'user login ID');
             $missingValue = true;
         }
 
@@ -654,12 +624,9 @@ class LtiContext {
         $student = Student::where('lti_custom_user_id', '=', $canvasUserId)->first();
         if (!$student) {
             $student = new Student();
-            $givenName = $this->getGivenName();
-            $familyName = $this->getFamilyName();
             $canvasUserId = $this->getUserId();
-            $canvasLoginId = $this->getUserLoginId();
             $personSourcedId = $this->getPersonSourcedid();
-            $student->initialize($givenName, $familyName, $canvasUserId, $canvasLoginId, $personSourcedId);
+            $student->initialize($canvasUserId, $personSourcedId);
         }
 
         //M. Mallon, 5/26/20: person sourced ID was not previously saved, so add to existing users if needed.
